@@ -45,3 +45,7 @@ Route::get('/sitemap.xml', function () {
     $content = view('sitemap', compact('colleges'));
     return response($content, 200)->header('Content-Type', 'text/xml');
 });
+
+Route::get('/api/states/{state_id}/cities', function ($state_id) {
+    return App\Models\City::where('state_id', $state_id)->where('status', true)->orderBy('name')->get();
+});

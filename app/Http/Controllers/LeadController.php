@@ -29,14 +29,14 @@ class LeadController extends Controller
             'message' => 'Thank you! Our expert counselor will contact you shortly.'
         ]);
 
-$lead = Lead::create($validated);
+        $lead = Lead::create($validated);
 
-// Send Email Alert to Admin (runs if SMTP configured)
-try {
-    Mail::to('admin@growpec.com')->send(new NewLeadAlertMail($lead));
-} catch (\Exception $e) {
-    // Log error if mail fails, without blocking user
-    \Log::error('Lead mail failed: ' . $e->getMessage());
-}
+        // Send Email Alert to Admin (runs if SMTP configured)
+        try {
+            Mail::to('admin@growpec.com')->send(new NewLeadAlertMail($lead));
+        } catch (\Exception $e) {
+            // Log error if mail fails, without blocking user
+            \Log::error('Lead mail failed: ' . $e->getMessage());
+        }
     }
 }
