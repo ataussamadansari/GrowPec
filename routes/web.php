@@ -9,15 +9,21 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
 use App\Http\Controllers\Admin\CollegeManagerController as AdminCollege;
 use App\Http\Controllers\Admin\LeadManagerController as AdminLead;
 
+use App\Http\Controllers\Admin\CourseManagerController as AdminCourse;
+
+
 // Admin Panel Routes (Protected by Auth & AdminMiddleware)
 Route::prefix('admin')->name('admin.')->middleware(['web'])->group(function () {
     
     // Dashboard Stats
     Route::get('/dashboard', [AdminDashboard::class, 'index'])->name('dashboard');
+    
+    // Courses CRUD Management
+    Route::resource('courses', AdminCourse::class);
 
     // College CRUD Management
     Route::resource('colleges', AdminCollege::class);
-
+    
     // Leads CRM & Export
     Route::get('/leads', [AdminLead::class, 'index'])->name('leads.index');
     Route::post('/leads/{id}/status', [AdminLead::class, 'updateStatus'])->name('leads.updateStatus');
