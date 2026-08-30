@@ -139,12 +139,6 @@
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('colleges.online') ? 'active' : '' }}" href="{{ route('colleges.online') }}">Online Colleges</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('about') }}">About Us</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('contact') }}">Contact</a>
-                    </li>
                 </ul>
 
                 <!-- User Auth Area in Navbar (Dropdown Menu matching screenshot) -->
