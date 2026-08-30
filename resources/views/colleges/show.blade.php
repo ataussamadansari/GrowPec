@@ -1,205 +1,245 @@
 @extends('layouts.app')
 
-@section('title', $college->name . ' - Admission, Courses, Fees & Placements | GrowPec')
+@section('title', $college->name . ' - Admission, Courses, Fees, Placements & Brochure | GrowPec')
 
 @push('styles')
 <style>
-    .college-header-banner {
+    .college-header-section {
         background: #ffffff;
-        border-bottom: 1px solid #E5E7EB;
-        padding: 30px 0 20px;
+        border-bottom: 1px solid #E2E8F0;
+        padding: 25px 0;
     }
-    .college-banner-img {
+
+    .college-main-banner {
         width: 100%;
         height: 320px;
         object-fit: cover;
         border-radius: 16px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-    }
-    .college-logo-box {
-        width: 70px;
-        height: 70px;
-        background: #ffffff;
-        border: 2px solid #E5E7EB;
-        border-radius: 12px;
-        padding: 5px;
-        object-fit: contain;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
     }
 
-    /* Sticky Right Lead Form */
-    .sticky-lead-card {
+    /* 🎯 Dynamic Left Quick Jump Sticky Navigation */
+    .quick-nav-sidebar {
         position: sticky;
         top: 90px;
         background: #ffffff;
-        border-radius: 16px;
-        border: 2px solid var(--primary-purple);
-        box-shadow: 0 10px 25px rgba(46, 30, 107, 0.08);
+        border: 1px solid #E2E8F0;
+        border-radius: 14px;
+        padding: 10px 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
     }
 
-    /* BoostMyTalent Snapshot Table */
-    .snapshot-table th {
-        background-color: var(--accent-gold);
-        color: #000;
-        font-weight: 700;
-        padding: 12px 16px;
-    }
-    .snapshot-table td {
-        padding: 12px 16px;
-        font-size: 0.92rem;
-        vertical-align: middle;
-    }
-
-    /* Detail Content Cards */
-    .detail-card {
-        background: #ffffff;
-        border: 1px solid #E5E7EB;
-        border-radius: 16px;
-        padding: 25px;
-        margin-bottom: 25px;
-    }
-    .detail-card-title {
-        font-weight: 800;
-        color: var(--primary-purple);
-        font-size: 1.25rem;
-        margin-bottom: 18px;
-        padding-bottom: 10px;
-        border-bottom: 2px solid #F0EDFA;
+    .quick-nav-link {
         display: flex;
         align-items: center;
         gap: 8px;
+        padding: 9px 12px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #475569;
+        text-decoration: none;
+        border-radius: 8px;
+        margin-bottom: 4px;
+        transition: all 0.2s ease-in-out;
     }
 
-    /* Courses Table */
-    .courses-table thead th {
-        background: #F4F1FA;
-        color: var(--primary-purple);
+    .quick-nav-link:hover {
+        background: #FAF8FF;
+        color: #4E3797;
+    }
+
+    .quick-nav-link.active {
+        background: #ECE8F6;
+        color: #4E3797;
         font-weight: 700;
-        font-size: 0.88rem;
-    }
-    .courses-table tbody td {
-        vertical-align: middle;
-        font-size: 0.9rem;
+        border-left: 4px solid #4E3797;
     }
 
-    /* Facilities Badges */
-    .facility-badge {
+    /* Content Cards */
+    .content-block {
+        background: #ffffff;
+        border: 1px solid #E2E8F0;
+        border-radius: 16px;
+        padding: 25px;
+        margin-bottom: 25px;
+        scroll-margin-top: 105px;
+    }
+
+    .content-block-header {
+        font-size: 1.25rem;
+        font-weight: 800;
+        color: #2E1E6B;
+        margin-bottom: 18px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #F1EEF9;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    /* BoostMyTalent Yellow Header Table */
+    .table-yellow-header thead th {
+        background: #F59E0B !important;
+        color: #000000 !important;
+        font-weight: 700;
+        padding: 12px 16px;
+    }
+
+    .highlight-pill {
         background: #FAF8FF;
         border: 1px solid #E4DEF7;
-        padding: 10px 16px;
         border-radius: 10px;
-        font-weight: 600;
+        padding: 11px 16px;
+        margin-bottom: 10px;
         font-size: 0.88rem;
-        color: var(--primary-purple);
+        color: #334155;
+        display: flex;
+        align-items: center;
+    }
+
+    .step-card {
+        background: #F8FAFC;
+        border-left: 4px solid #4E3797;
+        border-radius: 8px;
+        padding: 15px 18px;
+        margin-bottom: 12px;
+    }
+
+    .step-number {
+        width: 32px;
+        height: 32px;
+        background: #4E3797;
+        color: #fff;
+        font-weight: bold;
+        border-radius: 50%;
         display: inline-flex;
         align-items: center;
-        gap: 8px;
+        justify-content: center;
+        font-size: 0.88rem;
+    }
+
+    /* Right Sticky Admission Card */
+    .admission-support-card {
+        background: #ffffff;
+        border-radius: 24px;
+        border: 1px solid #EEF2F6;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        position: sticky;
+        top: 90px;
+    }
+
+    .form-label-custom {
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: #475569;
+        margin-bottom: 4px;
+        display: block;
+    }
+
+    .form-control-pill {
+        border-radius: 25px !important;
+        border: 1px solid #CBD5E1 !important;
+        padding: 9px 18px !important;
+        font-size: 0.88rem !important;
+        color: #1E293B !important;
+    }
+
+    .btn-save-custom {
+        background: #4E3797 !important;
+        color: #ffffff !important;
+        font-weight: 700 !important;
+        border-radius: 25px !important;
+        font-size: 0.95rem !important;
     }
 </style>
 @endpush
 
 @section('content')
 
-<!-- 1. Breadcrumb & Top Bar -->
+<!-- Breadcrumb -->
 <div class="bg-light py-2 border-bottom small">
     <div class="container">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item"><a href="{{ route('home') }}" class="text-decoration-none text-muted">Home</a></li>
                 <li class="breadcrumb-item"><a href="{{ $college->college_mode == 'online' ? route('colleges.online') : route('colleges.regular') }}" class="text-decoration-none text-muted">{{ $college->college_mode == 'online' ? 'Online Colleges' : 'Regular Colleges' }}</a></li>
-                <li class="breadcrumb-item active fw-bold text-dark" aria-current="page">{{ $college->name }}</li>
+                <li class="breadcrumb-item active fw-bold text-dark">{{ $college->name }}</li>
             </ol>
         </nav>
     </div>
 </div>
 
-<!-- 2. College Banner & Top Info -->
-<div class="college-header-banner">
+<!-- Header Section: Full Banner, Info & Buttons -->
+<div class="college-header-section">
     <div class="container">
-        <div class="row g-4 align-items-center">
-            <div class="col-lg-8">
-                <div class="position-relative mb-3">
-                    <img src="{{ $college->banner_image ?? 'https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1200&q=80' }}" class="college-banner-img" alt="{{ $college->name }}">
-                </div>
-
-                <div class="d-flex align-items-start gap-3">
+        <div class="row">
+            <div class="col-12">
+                <img src="{{ $college->banner_url }}" class="college-main-banner mb-4" alt="{{ $college->name }}">
+                
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3">
                     <div>
                         <div class="d-flex flex-wrap gap-2 mb-2">
                             <span class="badge bg-primary-subtle text-primary fw-bold">{{ $college->college_type }} University</span>
-                            <span class="badge bg-{{ $college->college_mode == 'online' ? 'success' : 'dark' }}-subtle text-dark fw-bold">
-                                {{ strtoupper($college->college_mode) }}
-                            </span>
+                            <span class="badge bg-{{ $college->college_mode == 'online' ? 'success' : 'dark' }}-subtle text-dark fw-bold">{{ strtoupper($college->college_mode) }}</span>
                             @if($college->approvals)
-                                <span class="badge bg-warning-subtle text-dark fw-bold"><i class="bi bi-shield-check me-1"></i>{{ $college->approvals }}</span>
+                            <span class="badge bg-warning-subtle text-dark fw-bold"><i class="bi bi-shield-check me-1"></i>{{ $college->approvals }}</span>
                             @endif
-                            <span class="badge bg-light text-dark border fw-bold"><i class="bi bi-star-fill text-warning me-1"></i>{{ $college->rating }} / 5 ({{ $college->reviews_count }} Reviews)</span>
+                            <span class="badge bg-light text-dark border fw-bold"><i class="bi bi-star-fill text-warning me-1"></i>{{ $college->rating }} ({{ $college->reviews_count }} Reviews)</span>
                         </div>
 
-                        <h2 class="fw-bold mb-1" style="color: var(--primary-purple);">{{ $college->name }}</h2>
-                        <p class="text-muted small mb-0">
+                        <h2 class="fw-bold mb-1" style="color: #2E1E6B;">{{ $college->name }}</h2>
+                        <p class="text-muted small mb-3">
                             <i class="bi bi-geo-alt-fill text-danger me-1"></i>{{ $college->address ?? $college->city . ', ' . $college->state }}
                             @if($college->university_name) • Affiliated to: <strong>{{ $college->university_name }}</strong> @endif
                             @if($college->established_year) • Estd: <strong>{{ $college->established_year }}</strong> @endif
                         </p>
                     </div>
-                </div>
-            </div>
 
-            <!-- Sticky Direct Enquiry Form -->
-            <div class="col-lg-4">
-                <div class="sticky-lead-card p-4">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <h5 class="fw-bold mb-0" style="color: var(--primary-purple);">🎯 Apply for Admission</h5>
-                        <span class="badge bg-success-subtle text-success small">Free Guidance</span>
+                    <!-- Action Buttons -->
+                    <div class="d-flex flex-wrap gap-2 align-self-md-center">
+                        <a href="#admissionSupportForm" class="btn btn-purple btn-sm fw-bold px-4 py-2" style="background: #4E3797; color: #fff;">
+                            <i class="bi bi-send-fill me-1"></i> Apply Now
+                        </a>
+                        @if($college->brochure_pdf)
+                        <a href="{{ asset('storage/' . $college->brochure_pdf) }}" target="_blank" class="btn btn-warning btn-sm fw-bold px-4 py-2 text-dark">
+                            <i class="bi bi-download me-1"></i> Download Brochure
+                        </a>
+                        @endif
+                        <a href="https://wa.me/918858285271?text=Hello,%20I%20am%20interested%20in%20{{ urlencode($college->name) }}" target="_blank" class="btn btn-success btn-sm fw-bold px-3 py-2">
+                            <i class="bi bi-whatsapp me-1"></i> WhatsApp Query
+                        </a>
                     </div>
-                    <p class="text-muted small mb-3">Get detailed fee structures, brochures & scholarship options.</p>
-
-                    <form action="{{ route('lead.submit') }}" method="POST" id="collegeDetailLeadForm">
-                        @csrf
-                        <input type="hidden" name="college_id" value="{{ $college->id }}">
-                        <input type="hidden" name="source" value="college_detail_sidebar">
-
-                        <div class="mb-2">
-                            <label class="form-label small fw-semibold">Full Name *</label>
-                            <input type="text" name="name" class="form-control form-control-sm" placeholder="Enter student name" required>
-                        </div>
-                        <div class="mb-2">
-                            <label class="form-label small fw-semibold">WhatsApp Number *</label>
-                            <input type="tel" name="phone" class="form-control form-control-sm" placeholder="10-digit mobile number" required>
-                        </div>
-                        <div class="mb-2">
-                            <label class="form-label small fw-semibold">Email Address</label>
-                            <input type="email" name="email" class="form-control form-control-sm" placeholder="student@example.com">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label small fw-semibold">Select Course</label>
-                            <select name="course_id" class="form-select form-select-sm">
-                                <option value="">Select Interested Course</option>
-                                @foreach($college->collegeCourses as $cc)
-                                    <option value="{{ $cc->course_id }}">{{ $cc->course->name }} ({{ $cc->course->level }}) - ₹{{ number_format($cc->fee_amount) }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div id="collegeDetailFormMsg"></div>
-                        <button type="submit" class="btn btn-gold w-100 py-2 fw-bold">
-                            Get Free Counselling & Brochure
-                        </button>
-                    </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- 3. Main Detail Tabs & Content -->
+<!-- Main Body: Dynamic Left Nav (2) + Content Blocks (6) + Sticky Form (4) = 12 Cols -->
 <div class="container py-4">
     <div class="row g-4">
-        <div class="col-lg-8">
 
-            <!-- A. Quick Facts Table (BoostMyTalent Style) -->
-            <div class="detail-card">
-                <h5 class="detail-card-title"><i class="bi bi-info-circle-fill text-warning"></i> Quick Facts & Snapshot</h5>
+        <!-- 🎯 1. Dynamic Left Sticky Navigation (col-lg-2) -->
+        <div class="col-lg-2 d-none d-lg-block">
+            <div class="quick-nav-sidebar">
+                <small class="text-muted fw-bold d-block mb-2 px-2">QUICK JUMP</small>
+                @foreach($quickNav as $index => $nav)
+                <a href="#{{ $nav['id'] }}" class="quick-nav-link {{ $index === 0 ? 'active' : '' }}" data-target="{{ $nav['id'] }}">
+                    <i class="bi {{ $nav['icon'] }}"></i>
+                    <span>{{ $nav['title'] }}</span>
+                </a>
+                @endforeach
+            </div>
+        </div>
+
+        <!-- 2. Main Content Blocks (col-lg-6) -->
+        <div class="col-lg-6">
+
+            <!-- A. Quick Facts Table & Overview -->
+            <div class="content-block" id="sec-overview">
+                <h5 class="content-block-header"><i class="bi bi-info-circle-fill text-warning"></i> Quick Facts & Snapshot</h5>
                 <div class="table-responsive">
-                    <table class="table table-bordered snapshot-table mb-0">
+                    <table class="table table-bordered table-yellow-header mb-0">
                         <thead>
                             <tr>
                                 <th style="width: 40%;">Particulars</th>
@@ -212,7 +252,7 @@
                                 <td class="fw-bold">{{ ucfirst($college->college_mode) }} Mode</td>
                             </tr>
                             <tr>
-                                <td class="fw-semibold text-muted">Institute Ownership</td>
+                                <td class="fw-semibold text-muted">Ownership / Status</td>
                                 <td>{{ $college->college_type }} University</td>
                             </tr>
                             <tr>
@@ -220,7 +260,7 @@
                                 <td><span class="badge bg-success-subtle text-success border">{{ $college->approvals ?? 'UGC / AICTE Approved' }}</span></td>
                             </tr>
                             <tr>
-                                <td class="fw-semibold text-muted">Campus Location & Area</td>
+                                <td class="fw-semibold text-muted">Campus Location</td>
                                 <td>{{ $college->city }}, {{ $college->state }} {{ $college->campus_size ? '('.$college->campus_size.')' : '' }}</td>
                             </tr>
                             @if($college->highest_package)
@@ -235,142 +275,244 @@
                                 <td class="fw-bold">{{ $college->average_package }}</td>
                             </tr>
                             @endif
-                            @if($college->top_recruiters)
-                            <tr>
-                                <td class="fw-semibold text-muted">Top Hiring Partners</td>
-                                <td>{{ $college->top_recruiters }}</td>
-                            </tr>
-                            @endif
+                            @if($college->college_mode !== 'online')
                             <tr>
                                 <td class="fw-semibold text-muted">Hostel Availability</td>
                                 <td>
                                     @if($college->has_boys_hostel) <span class="badge bg-light text-dark border me-1">Boys Hostel</span> @endif
                                     @if($college->has_girls_hostel) <span class="badge bg-light text-dark border">Girls Hostel</span> @endif
-                                    @if(!$college->has_boys_hostel && !$college->has_girls_hostel) <span class="text-muted">Day Scholar / Off-Campus</span> @endif
+                                    @if(!$college->has_boys_hostel && !$college->has_girls_hostel) <span class="text-muted">Day Scholar</span> @endif
                                 </td>
                             </tr>
+                            @endif
                         </tbody>
                     </table>
                 </div>
-            </div>
 
-            <!-- B. About & Overview -->
-            <div class="detail-card">
-                <h5 class="detail-card-title"><i class="bi bi-file-text-fill text-primary"></i> About {{ $college->name }}</h5>
-                <p class="text-secondary leading-relaxed mb-0">
-                    {{ $college->overview ?? $college->name . ' is a premier institution located in '.$college->city.', '.$college->state.'. Offering industry-aligned programs with excellent academic faculty, state-of-the-art laboratory infrastructure, and dedicated placement training.' }}
-                </p>
-            </div>
-
-            <!-- C. Courses, Fees & Eligibility Table -->
-            <div class="detail-card">
-                <h5 class="detail-card-title"><i class="bi bi-mortarboard-fill text-success"></i> Courses, Fees & Eligibility</h5>
-                <div class="table-responsive">
-                    <table class="table table-hover courses-table mb-0">
-                        <thead>
-                            <tr>
-                                <th>Course</th>
-                                <th>Duration</th>
-                                <th>Annual Fee</th>
-                                <th>Eligibility</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse($college->collegeCourses as $cc)
-                                <tr>
-                                    <td>
-                                        <div class="fw-bold text-dark">{{ $cc->course->name }}</div>
-                                        @if($cc->specialization) <small class="text-muted">{{ $cc->specialization }}</small> @endif
-                                    </td>
-                                    <td><span class="badge bg-light text-secondary border">{{ $cc->course->duration }}</span></td>
-                                    <td>
-                                        <span class="fw-bold text-dark">₹{{ number_format($cc->fee_amount) }}</span>
-                                        <small class="text-muted d-block">/ {{ str_replace('_', ' ', $cc->fee_type) }}</small>
-                                    </td>
-                                    <td><small class="text-secondary">{{ $cc->eligibility ?? '10+2 / Graduation with required aggregate' }}</small></td>
-                                    <td>
-                                        <button class="btn btn-gold btn-sm fw-bold px-3" data-bs-toggle="modal" data-bs-target="#counselingModal" onclick="document.querySelector('#counselingModal select[name=course_id]').value='{{ $cc->course_id }}'">
-                                            Apply
-                                        </button>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="5" class="text-center py-3 text-muted">Courses information is being updated. Contact support for instant fee quotation.</td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
+                <div class="mt-4">
+                    <h6 class="fw-bold text-dark mb-2">About {{ $college->name }}</h6>
+                    <p class="text-secondary leading-relaxed mb-0 small">
+                        {{ $college->overview ?? $college->name . ' is a premier institution located in '.$college->city.', '.$college->state.'. Offering industry-aligned programs with experienced faculty and career placement assistance.' }}
+                    </p>
                 </div>
             </div>
 
-            <!-- D. Facilities & Amenities -->
-            <div class="detail-card">
-                <h5 class="detail-card-title"><i class="bi bi-buildings-fill text-warning"></i> Campus Facilities & Infrastructure</h5>
+            <!-- B. Dynamic Key Highlights -->
+            @if(!empty($college->highlights) && count($college->highlights) > 0)
+            <div class="content-block" id="sec-highlights">
+                <h5 class="content-block-header"><i class="bi bi-star-fill text-warning"></i> Key Highlights & USPs</h5>
+                @foreach($college->highlights as $highlight)
+                <div class="highlight-pill">
+                    <i class="bi bi-check-circle-fill text-success me-2 fs-5"></i>
+                    <span>{{ $highlight }}</span>
+                </div>
+                @endforeach
+            </div>
+            @endif
+
+            <!-- C. Courses, Fees & Specializations -->
+            @if($college->collegeCourses->count() > 0)
+            <div class="content-block" id="sec-courses">
+                <h5 class="content-block-header"><i class="bi bi-mortarboard-fill text-primary"></i> Courses, Fees & Specializations</h5>
+
+                @foreach($college->collegeCourses as $cc)
+                <div class="border rounded-3 p-3 mb-3 bg-light">
+                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
+                        <div>
+                            <h6 class="fw-bold mb-0 text-dark">{{ $cc->course->name }} <span class="badge bg-primary-subtle text-primary small">{{ $cc->course->level }}</span></h6>
+                            <small class="text-muted">{{ $cc->course->duration }} • {{ $cc->specialization ?? 'General' }}</small>
+                        </div>
+                        <div class="text-end">
+                            <div class="fw-bold text-success fs-5">₹{{ number_format($cc->fee_amount) }}</div>
+                            <small class="text-muted">/ {{ str_replace('_', ' ', $cc->fee_type) }}</small>
+                        </div>
+                    </div>
+
+                    <div class="small text-secondary mb-3">
+                        <strong>Eligibility:</strong> {{ $cc->eligibility ?? '10+2 / Graduation with required minimum aggregate' }}
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <a href="#admissionSupportForm" class="btn btn-warning btn-sm fw-bold px-3 text-dark">
+                            Apply for {{ $cc->course->name }}
+                        </a>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+            @endif
+
+            <!-- D. Admission Process -->
+            @if(!empty($college->admission_process))
+            <div class="content-block" id="sec-admission">
+                <h5 class="content-block-header"><i class="bi bi-card-checklist text-success"></i> Admission Process</h5>
+                <div class="small text-secondary leading-relaxed">
+                    {!! nl2br(e($college->admission_process)) !!}
+                </div>
+            </div>
+            @endif
+
+            <!-- E. Placements & Recruiters -->
+            @if(!empty($college->highest_package) || !empty($college->average_package) || !empty($college->top_recruiters))
+            <div class="content-block" id="sec-placements">
+                <h5 class="content-block-header"><i class="bi bi-briefcase-fill text-danger"></i> Placement Records & Recruiters</h5>
+                <div class="row g-3 mb-3 text-center">
+                    @if($college->highest_package)
+                    <div class="col-md-6">
+                        <div class="p-3 bg-light rounded-3 border">
+                            <small class="text-muted d-block">Highest Package</small>
+                            <h4 class="fw-bold text-success mb-0">{{ $college->highest_package }}</h4>
+                        </div>
+                    </div>
+                    @endif
+                    @if($college->average_package)
+                    <div class="col-md-6">
+                        <div class="p-3 bg-light rounded-3 border">
+                            <small class="text-muted d-block">Average Package</small>
+                            <h4 class="fw-bold text-dark mb-0">{{ $college->average_package }}</h4>
+                        </div>
+                    </div>
+                    @endif
+                </div>
+                @if($college->top_recruiters)
+                <div class="p-3 bg-light rounded-3">
+                    <strong class="small d-block text-dark mb-1">Prominent Hiring Partners:</strong>
+                    <p class="small text-muted mb-0">{{ $college->top_recruiters }}</p>
+                </div>
+                @endif
+            </div>
+            @endif
+
+            <!-- F. Scholarships -->
+            @if(!empty($college->scholarship_info))
+            <div class="content-block" id="sec-scholarships">
+                <h5 class="content-block-header"><i class="bi bi-award-fill text-warning"></i> Scholarships & Financial Aid</h5>
+                <p class="small text-secondary mb-0 leading-relaxed">{{ $college->scholarship_info }}</p>
+            </div>
+            @endif
+
+            <!-- G. Sample Degree Certificate Preview -->
+            @if($college->certificate_url)
+            <div class="content-block" id="sec-certificate">
+                <h5 class="content-block-header"><i class="bi bi-patch-check-fill text-success"></i> Sample Degree & Certification</h5>
+                <p class="small text-muted mb-3">Degrees are approved by UGC, AICTE, and globally validated for government and corporate careers.</p>
+                <div class="text-center p-3 bg-light rounded-3 border">
+                    <img src="{{ $college->certificate_url }}" class="img-fluid rounded border shadow-sm" style="max-height: 340px;" alt="Sample Certificate">
+                </div>
+            </div>
+            @endif
+
+            <!-- H. Facilities -->
+            @if($college->college_mode !== 'online' && ($college->has_boys_hostel || $college->has_girls_hostel || $college->campus_size))
+            <div class="content-block" id="sec-facilities">
+                <h5 class="content-block-header"><i class="bi bi-buildings-fill text-info"></i> Campus Amenities & Infrastructure</h5>
                 <div class="d-flex flex-wrap gap-2">
-                    <div class="facility-badge"><i class="bi bi-wifi text-primary"></i> High-Speed Wi-Fi</div>
-                    <div class="facility-badge"><i class="bi bi-book text-success"></i> Central Library</div>
-                    @if($college->has_boys_hostel) <div class="facility-badge"><i class="bi bi-house text-dark"></i> Boys Hostel</div> @endif
-                    @if($college->has_girls_hostel) <div class="facility-badge"><i class="bi bi-house-heart text-danger"></i> Girls Hostel</div> @endif
-                    <div class="facility-badge"><i class="bi bi-cup-hot text-warning"></i> Cafeteria</div>
-                    <div class="facility-badge"><i class="bi bi-dribbble text-danger"></i> Sports Complex</div>
-                    <div class="facility-badge"><i class="bi bi-hospital text-info"></i> Medical Center</div>
-                    <div class="facility-badge"><i class="bi bi-bus-front text-secondary"></i> Transport Services</div>
+                    <span class="badge bg-light text-dark border p-2"><i class="bi bi-wifi text-primary me-1"></i> High-Speed Wi-Fi</span>
+                    <span class="badge bg-light text-dark border p-2"><i class="bi bi-book text-success me-1"></i> Central Digital Library</span>
+                    @if($college->has_boys_hostel) <span class="badge bg-light text-dark border p-2"><i class="bi bi-house text-dark me-1"></i> Boys Hostel</span> @endif
+                    @if($college->has_girls_hostel) <span class="badge bg-light text-dark border p-2"><i class="bi bi-house-heart text-danger me-1"></i> Girls Hostel</span> @endif
+                    <span class="badge bg-light text-dark border p-2"><i class="bi bi-cup-hot text-warning me-1"></i> Cafeteria & Food Court</span>
+                    <span class="badge bg-light text-dark border p-2"><i class="bi bi-dribbble text-danger me-1"></i> Sports Arena</span>
                 </div>
             </div>
+            @endif
 
-            <!-- E. Frequently Asked Questions (FAQs) -->
-            <div class="detail-card">
-                <h5 class="detail-card-title"><i class="bi bi-question-circle-fill text-info"></i> Frequently Asked Questions</h5>
-                <div class="accordion" id="collegeFaqAccordion">
+            <!-- I. Dynamic FAQs -->
+            @if(!empty($college->faqs) && count($college->faqs) > 0)
+            <div class="content-block" id="sec-faqs">
+                <h5 class="content-block-header"><i class="bi bi-question-circle-fill text-warning"></i> Frequently Asked Questions</h5>
+                <div class="accordion" id="collegeFaqs">
+                    @foreach($college->faqs as $idx => $faq)
                     <div class="accordion-item">
                         <h2 class="accordion-header">
-                            <button class="accordion-button fw-bold text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
-                                Is {{ $college->name }} UGC & Government Approved?
+                            <button class="accordion-button {{ $idx > 0 ? 'collapsed' : '' }} fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq_{{ $idx }}">
+                                {{ $faq['question'] ?? 'Question' }}
                             </button>
                         </h2>
-                        <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#collegeFaqAccordion">
-                            <div class="accordion-body text-secondary small">
-                                Yes, {{ $college->name }} holds proper accreditations including {{ $college->approvals ?? 'UGC and statutory regulatory approvals' }}, making degrees valid for government and private sector jobs globally.
+                        <div id="faq_{{ $idx }}" class="accordion-collapse collapse {{ $idx === 0 ? 'show' : '' }}" data-bs-parent="#collegeFaqs">
+                            <div class="accordion-body small text-secondary">
+                                {{ $faq['answer'] ?? '' }}
                             </div>
                         </div>
                     </div>
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button collapsed fw-bold text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
-                                Are scholarships or No-Cost EMI options available?
-                            </button>
-                        </h2>
-                        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#collegeFaqAccordion">
-                            <div class="accordion-body text-secondary small">
-                                Yes, merit-based scholarships and zero-interest EMI loan assistance are provided to eligible students during counseling.
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
+            @endif
 
         </div>
 
-        <!-- Right Related Colleges Column -->
+        <!-- 3. Right Sticky Admission Support Form (col-lg-4) -->
         <div class="col-lg-4">
-            <div class="detail-card">
-                <h6 class="fw-bold mb-3" style="color: var(--primary-purple);"><i class="bi bi-building me-1 text-warning"></i> Similar Colleges Nearby</h6>
-                @forelse($relatedColleges as $rel)
-                    <div class="d-flex gap-3 mb-3 pb-3 border-bottom">
-                        <img src="{{ $rel->banner_image ?? 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=150&q=80' }}" class="rounded-3" style="width: 75px; height: 60px; object-fit: cover;">
-                        <div>
-                            <a href="{{ route('college.show', $rel->slug) }}" class="fw-bold text-dark text-decoration-none small d-block mb-1">
-                                {{ $rel->name }}
-                            </a>
-                            <small class="text-muted"><i class="bi bi-geo-alt me-1 text-danger"></i>{{ $rel->city }} • <i class="bi bi-star-fill text-warning"></i> {{ $rel->rating }}</small>
-                        </div>
+            <div class="admission-support-card shadow-sm p-4">
+                <h5 class="fw-bold mb-4" style="color: #2E1E6B; font-size: 1.15rem;">Get 1-on-1 Admission Support</h5>
+
+                <form action="{{ route('lead.submit') }}" method="POST" id="admissionSupportForm">
+                    @csrf
+                    <input type="hidden" name="college_id" value="{{ $college->id }}">
+                    <input type="hidden" name="source" value="college_detail_right_card">
+
+                    <!-- Name -->
+                    <div class="mb-3">
+                        <label class="form-label form-label-custom">Name <span class="text-danger">*</span></label>
+                        <input type="text" name="name" class="form-control form-control-pill" placeholder="Enter your full name" required>
                     </div>
-                @empty
-                    <p class="text-muted small mb-0">Explore more colleges in our directory.</p>
-                @endforelse
-                <a href="{{ route('colleges.regular') }}" class="btn btn-outline-purple btn-sm w-100 mt-2">View All Colleges</a>
+
+                    <!-- Mobile -->
+                    <div class="mb-3">
+                        <label class="form-label form-label-custom">Mobile <span class="text-danger">*</span></label>
+                        <input type="tel" name="phone" class="form-control form-control-pill" placeholder="Enter WhatsApp number" required>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="mb-3">
+                        <label class="form-label form-label-custom">Email <span class="text-danger">*</span></label>
+                        <input type="email" name="email" class="form-control form-control-pill" placeholder="Enter email address" required>
+                    </div>
+
+                    <!-- Course -->
+                    <div class="mb-3">
+                        <label class="form-label form-label-custom">Course <span class="text-danger">*</span></label>
+                        <select name="course_id" class="form-select form-control-pill" required>
+                            <option value="">Select Options</option>
+                            @foreach($college->collegeCourses as $cc)
+                            <option value="{{ $cc->course_id }}">{{ $cc->course->name }} @if($cc->specialization) ({{ $cc->specialization }}) @endif</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- State -->
+                    <div class="mb-3">
+                        <label class="form-label form-label-custom">Current State <span class="text-danger">*</span></label>
+                        <select name="state" id="leadCardStateSelect" class="form-select form-control-pill" required>
+                            <option value="">Select Options</option>
+                            @php
+                            $leadStates = \App\Models\State::where('status', true)->orderBy('name')->get();
+                            @endphp
+                            @foreach($leadStates as $st)
+                            <option value="{{ $st->name }}" data-id="{{ $st->id }}">{{ $st->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- City -->
+                    <div class="mb-4">
+                        <label class="form-label form-label-custom">Current City <span class="text-danger">*</span></label>
+                        <select name="city" id="leadCardCitySelect" class="form-select form-control-pill" required>
+                            <option value="">Select Options</option>
+                        </select>
+                    </div>
+
+                    <div id="admissionSupportMsg"></div>
+
+                    <button type="submit" id="admissionSupportBtn" class="btn btn-save-custom w-100 py-2">
+                        Save
+                    </button>
+
+                    <p class="text-center text-muted mt-3 mb-0" style="font-size: 0.8rem;">
+                        I accept and agree to the <a href="#" class="fw-bold text-dark text-decoration-none">Terms of Use</a>
+                    </p>
+                </form>
             </div>
         </div>
 
@@ -379,36 +521,92 @@
 
 @push('scripts')
 <script>
-    document.getElementById('collegeDetailLeadForm')?.addEventListener('submit', function(e) {
-        e.preventDefault();
-        const form = this;
-        const btn = form.querySelector('button[type=submit]');
-        const msgDiv = document.getElementById('collegeDetailFormMsg');
+document.addEventListener('DOMContentLoaded', function () {
+    // 🎯 Dynamic ScrollSpy for Left Quick Navigation
+    const navLinks = document.querySelectorAll('.quick-nav-link');
+    const sections = Array.from(navLinks).map(link => document.getElementById(link.getAttribute('data-target'))).filter(Boolean);
 
-        btn.disabled = true;
-        btn.innerText = 'Submitting Application...';
+    window.addEventListener('scroll', () => {
+        let currentSectionId = '';
+        const scrollPosition = window.scrollY + 140;
 
-        fetch("{{ route('lead.submit') }}", {
-            method: "POST",
-            headers: {
-                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                "Accept": "application/json"
-            },
-            body: new FormData(form)
-        })
-        .then(res => res.json())
-        .then(data => {
-            btn.disabled = false;
-            btn.innerText = 'Get Free Counselling & Brochure';
-            msgDiv.innerHTML = `<div class="alert alert-success py-2 small mt-2">${data.message}</div>`;
-            form.reset();
-        })
-        .catch(err => {
-            btn.disabled = false;
-            btn.innerText = 'Get Free Counselling & Brochure';
-            msgDiv.innerHTML = `<div class="alert alert-danger py-2 small mt-2">Submission failed. Please try again.</div>`;
+        sections.forEach(section => {
+            if (section.offsetTop <= scrollPosition) {
+                currentSectionId = section.getAttribute('id');
+            }
+        });
+
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('data-target') === currentSectionId) {
+                link.classList.add('active');
+            }
         });
     });
+
+    // Dynamic State -> City loading
+    const stateDropdown = document.getElementById('leadCardStateSelect');
+    const cityDropdown = document.getElementById('leadCardCitySelect');
+
+    if (stateDropdown) {
+        stateDropdown.addEventListener('change', function () {
+            const selectedOpt = this.options[this.selectedIndex];
+            const stateId = selectedOpt ? selectedOpt.getAttribute('data-id') : null;
+
+            cityDropdown.innerHTML = '<option value="">Loading...</option>';
+
+            if (stateId) {
+                fetch(`/api/states/${stateId}/cities`)
+                    .then(res => res.json())
+                    .then(cities => {
+                        cityDropdown.innerHTML = '<option value="">Select Options</option>';
+                        cities.forEach(c => {
+                            cityDropdown.innerHTML += `<option value="${c.name}">${c.name}</option>`;
+                        });
+                    })
+                    .catch(() => {
+                        cityDropdown.innerHTML = '<option value="">Select Options</option>';
+                    });
+            } else {
+                cityDropdown.innerHTML = '<option value="">Select Options</option>';
+            }
+        });
+    }
+
+    // AJAX Lead Submission
+    const leadForm = document.getElementById('admissionSupportForm');
+    if (leadForm) {
+        leadForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const btn = document.getElementById('admissionSupportBtn');
+            const msg = document.getElementById('admissionSupportMsg');
+
+            btn.disabled = true;
+            btn.innerText = 'Saving...';
+
+            fetch("{{ route('lead.submit') }}", {
+                method: "POST",
+                headers: {
+                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    "Accept": "application/json"
+                },
+                body: new FormData(this)
+            })
+            .then(res => res.json())
+            .then(data => {
+                btn.disabled = false;
+                btn.innerText = 'Save';
+                msg.innerHTML = `<div class="alert alert-success py-2 small rounded-pill text-center mb-3">${data.message || 'Thank you! We will contact you soon.'}</div>`;
+                leadForm.reset();
+            })
+            .catch(() => {
+                btn.disabled = false;
+                btn.innerText = 'Save';
+                msg.innerHTML = `<div class="alert alert-danger py-2 small rounded-pill text-center mb-3">Something went wrong. Try again.</div>`;
+            });
+        });
+    }
+});
 </script>
 @endpush
 
