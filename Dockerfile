@@ -1,6 +1,26 @@
+# ============================================
+# Stage 1: Build frontend assets
+# ============================================
+FROM node:22-alpine AS frontend
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm ci
+
+COPY resources ./resources
+COPY public ./public
+COPY vite.config.* ./
+COPY package.json ./
+
+RUN npm run build
+
+
+# ============================================
+# Stage 2: Laravel + Apache
+# ============================================
 FROM php:8.2-apache
 
-# Apache document root
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 
 # System dependencies + PHP extensions
@@ -25,28 +45,28 @@ RUN apt-get update && apt-get install -y \
     && a2enmod rewrite \
     && rm -rf /var/lib/apt/lists/*
 
+
 # Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Node.js + npm
-COPY --from=node:22-alpine /usr/local/bin/node /usr/local/bin/node
-COPY --from=node:22-alpine /usr/local/lib/node_modules /usr/local/lib/node_modules
-
-RUN ln -s /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm
 
 WORKDIR /var/www/html
 
-# Copy application
+# Copy Laravel application
 COPY . .
 
-# Install PHP dependencies
+
+# Install production PHP dependencies
 RUN composer install \
     --no-dev \
     --optimize-autoloader \
-    --no-interaction
+    --no-interaction \
+    --prefer-dist
 
-# Install frontend dependencies and build Vite
-RUN npm ci && npm run build
+
+# Copy Vite production build
+COPY --from=frontend /app/public/build ./public/build
+
 
 # Apache configuration
 RUN printf '%s\n' \
@@ -59,12 +79,15 @@ RUN printf '%s\n' \
     '</VirtualHost>' \
     > /etc/apache2/sites-available/000-default.conf
 
-# Laravel permissions
+
+# Laravel writable directories
 RUN chown -R www-data:www-data \
     storage \
     bootstrap/cache
 
+
 EXPOSE 80
 
-# Run migrations then start Apache
+
+# Start Laravel
 CMD ["sh", "-c", "php artisan migrate --force && apache2-foreground"]
