@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,6 +12,7 @@
             background-color: #F4F6F9;
             font-family: system-ui, -apple-system, sans-serif;
         }
+
         .admin-sidebar {
             width: 250px;
             min-height: 100vh;
@@ -19,10 +21,12 @@
             position: fixed;
             z-index: 100;
         }
+
         .admin-content {
             margin-left: 250px;
             padding: 25px;
         }
+
         .sidebar-link {
             color: #A5A1B8;
             text-decoration: none;
@@ -33,11 +37,13 @@
             margin: 4px 10px;
             transition: all 0.2s ease;
         }
+
         .sidebar-link:hover,
         .sidebar-link.active {
             background: #2E1E6B;
             color: #fff;
         }
+
         .stat-card {
             background: #fff;
             border-radius: 12px;
@@ -46,17 +52,24 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Sidebar -->
     <div class="admin-sidebar p-3 d-flex flex-column justify-content-between">
         <div>
-            <h4 class="fw-bold text-white mb-4 px-2">
-                Grow<span class="text-warning">Pec</span> 
-                <small class="fs-6 text-white-50">Admin</small>
-            </h4>
+            <div class="mb-4 px-2">
+                <a href="{{ route('admin.dashboard') }}" class="d-inline-block">
+                    <img src="{{ asset('assets/growpec.png') }}" alt="GrowPEC Admin" class="bg-white p-1 rounded-2" style="height: 42px; max-width: 190px; object-fit: contain;">
+                </a>
+                <small class="d-block text-white-50 mt-1" style="font-size: 0.75rem;">Admin Management Portal</small>
+            </div>
             <nav class="nav flex-column">
                 <a class="sidebar-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}">
                     <i class="bi bi-speedometer2 me-2"></i> Dashboard
+                </a>
+                <!-- 🎯 Hero Banners Manager -->
+                <a class="sidebar-link {{ request()->routeIs('admin.banners.*') ? 'active' : '' }}" href="{{ route('admin.banners.index') }}">
+                    <i class="bi bi-image me-2"></i> Hero Banners
                 </a>
                 <a class="sidebar-link {{ request()->routeIs('admin.streams.*') ? 'active' : '' }}" href="{{ route('admin.streams.index') }}">
                     <i class="bi bi-diagram-3 me-2"></i> Streams
@@ -129,4 +142,5 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     @stack('scripts')
 </body>
+
 </html>

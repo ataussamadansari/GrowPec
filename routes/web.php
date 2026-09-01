@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\CourseManagerController as AdminCourse;
 use App\Http\Controllers\Admin\LocationController as AdminLocation;
 use App\Http\Controllers\Admin\StreamManagerController as AdminStream;
 use App\Http\Controllers\Admin\SpecializationManagerController as AdminSpecialization;
+use App\Http\Controllers\Admin\BannerManagerController as AdminBanner;
 use App\Http\Controllers\StudentProfileController;
 
 // Middleware
@@ -108,6 +109,8 @@ Route::prefix('admin')
 
         // Dashboard
         Route::get('/dashboard', [AdminDashboard::class, 'index'])->name('dashboard');
+
+        Route::resource('banners', AdminBanner::class);
 
         // Academic Resources (Streams, Courses, Specializations, Colleges)
         Route::resource('streams', AdminStream::class);

@@ -14,7 +14,7 @@
     }
 
     /* =========================================================
-       1. HERO FULL SCREEN SLIDER
+       1. 🎯 100% FULL WIDTH & FULL SCREEN HEIGHT HERO SLIDER
        ========================================================= */
     .hero-slider-section {
         width: 100%;
@@ -30,12 +30,22 @@
         overflow: hidden;
     }
 
+    /* Full screen viewport height (Screen size minus Navbar) */
     .hero-banner-img {
         width: 100%;
-        height: calc(100vh - 380px);
+        height: calc(100vh - 280px);
         min-height: 520px;
         object-fit: cover;
         display: block;
+    }
+
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+        background-color: rgba(0, 0, 0, 0.45);
+        border-radius: 50%;
+        background-size: 50%;
+        width: 48px;
+        height: 48px;
     }
 
     .carousel-indicators [data-bs-target] {
@@ -56,73 +66,7 @@
     }
 
     /* =========================================================
-       2. 🎯 PARTNER UNIVERSITIES MARQUEE STRIP
-       ========================================================= */
-    .partner-strip-section {
-        background: #ffffff;
-        border-bottom: 1px solid #E5E7EB;
-        padding: 22px 0;
-        overflow: hidden;
-    }
-
-    .partner-marquee-container {
-        overflow: hidden;
-        white-space: nowrap;
-        position: relative;
-    }
-
-    .partner-marquee-track {
-        display: inline-flex;
-        align-items: center;
-        gap: 40px;
-        animation: marqueeScroll 28s linear infinite;
-    }
-
-    .partner-marquee-track:hover {
-        animation-play-state: paused;
-    }
-
-    @keyframes marqueeScroll {
-        0% {
-            transform: translateX(0);
-        }
-
-        100% {
-            transform: translateX(-50%);
-        }
-    }
-
-    .partner-logo-pill {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-
-        min-width: 170px;
-        min-height: 95px;
-        padding: 14px 18px;
-
-        gap: 8px;
-    }
-
-    /* Icon */
-    .partner-logo-pill i {
-        font-size: 30px;
-        line-height: 1;
-        display: block;
-    }
-
-    /* Text */
-    .partner-logo-pill span {
-        font-size: 14px;
-        line-height: 1.3;
-        font-weight: 600;
-        white-space: normal;
-    }
-
-    /* =========================================================
-       3. PROGRAM CARDS
+       2. PROGRAM CARDS
        ========================================================= */
     .program-section {
         background: #ffffff;
@@ -167,7 +111,7 @@
     }
 
     /* =========================================================
-       4. SECTION HEADINGS
+       3. SECTION HEADINGS
        ========================================================= */
     .section-title {
         color: var(--gp-purple);
@@ -193,7 +137,7 @@
     }
 
     /* =========================================================
-       5. COLLEGE CARDS
+       4. COLLEGE CARDS
        ========================================================= */
     .college-grid-section {
         background: var(--gp-bg);
@@ -348,99 +292,7 @@
     }
 
     /* =========================================================
-       6. 🎯 TOP CITIES BUTTONS
-       ========================================================= */
-    .city-card-btn {
-        background: #ffffff;
-        border: 1px solid #E2E8F0;
-        border-radius: 14px;
-        padding: 14px 18px;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        text-decoration: none;
-        color: #1E293B;
-        font-weight: 700;
-        font-size: 0.92rem;
-        transition: all 0.2s ease;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
-    }
-
-    .city-card-btn:hover {
-        background: var(--gp-purple);
-        color: #ffffff;
-        border-color: var(--gp-purple);
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(75, 46, 131, 0.15);
-    }
-
-    .city-card-btn i {
-        font-size: 1.25rem;
-        color: var(--gp-gold);
-    }
-
-    .city-card-btn:hover i {
-        color: #ffffff;
-    }
-
-    /* =========================================================
-       7. 🎯 GD / PI COUNSELLING BANNER
-       ========================================================= */
-    .gd-pi-banner {
-        background: linear-gradient(135deg, #1E1346 0%, #2E1E6B 60%, #442B8D 100%);
-        color: #ffffff;
-        border-radius: 24px;
-        padding: 40px;
-        position: relative;
-        overflow: hidden;
-        box-shadow: 0 15px 35px rgba(30, 19, 70, 0.18);
-    }
-
-    .gd-pill {
-        background: rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        padding: 8px 16px;
-        border-radius: 30px;
-        font-size: 0.85rem;
-        font-weight: 600;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        backdrop-filter: blur(4px);
-    }
-
-    /* =========================================================
-       8. ADVISOR CALL STRIP
-       ========================================================= */
-    .advisor-call-strip {
-        background: linear-gradient(135deg, #2E1E6B 0%, #1E1346 100%);
-        color: #ffffff;
-        border-radius: 18px;
-        padding: 25px 30px;
-        text-align: center;
-    }
-
-    .btn-call-gold {
-        background: var(--gp-gold);
-        color: #17120a;
-        font-weight: 800;
-        border-radius: 30px;
-        padding: 10px 28px;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        font-size: 1.05rem;
-        transition: all 0.2s ease;
-    }
-
-    .btn-call-gold:hover {
-        background: var(--gp-gold-hover);
-        color: #17120a;
-        transform: scale(1.02);
-    }
-
-    /* =========================================================
-       9. FEATURE PROPOSITIONS
+       5. FEATURE VALUE PROPOSITIONS
        ========================================================= */
     .feature-box {
         background: #ffffff;
@@ -475,10 +327,6 @@
             height: 50vh;
             min-height: 320px;
         }
-
-        .gd-pi-banner {
-            padding: 25px;
-        }
     }
 
     @media (max-width: 575.98px) {
@@ -493,25 +341,25 @@
 @section('content')
 
 {{-- =========================================================
-     1. HERO FULL SCREEN SLIDER (No Text, 3s Auto Transition)
+     1. 🎯 100% FULL WIDTH & FULL SCREEN BANNER SLIDER (AUTO SLIDE ONLY)
      ========================================================= --}}
 <section class="hero-slider-section">
     <div id="heroBannerCarousel" class="carousel slide carousel-fade hero-carousel-container" data-bs-ride="carousel" data-bs-interval="3000">
-
-        <!-- Indicators (Dots) -->
+        
+        <!-- Bottom Indicators (Dots) -->
         @php
-        $bannerCount = isset($heroBanners) ? $heroBanners->count() : 0;
+            $bannerCount = isset($heroBanners) ? $heroBanners->count() : 0;
         @endphp
 
         @if($bannerCount > 1 || $bannerCount === 0)
         <div class="carousel-indicators mb-3">
             @if($bannerCount > 0)
-            @foreach($heroBanners as $index => $banner)
-            <button type="button" data-bs-target="#heroBannerCarousel" data-bs-slide-to="{{ $index }}" class="{{ $index === 0 ? 'active' : '' }}" aria-current="{{ $index === 0 ? 'true' : 'false' }}"></button>
-            @endforeach
+                @foreach($heroBanners as $index => $banner)
+                <button type="button" data-bs-target="#heroBannerCarousel" data-bs-slide-to="{{ $index }}" class="{{ $index === 0 ? 'active' : '' }}" aria-current="{{ $index === 0 ? 'true' : 'false' }}"></button>
+                @endforeach
             @else
-            <button type="button" data-bs-target="#heroBannerCarousel" data-bs-slide-to="0" class="active" aria-current="true"></button>
-            <button type="button" data-bs-target="#heroBannerCarousel" data-bs-slide-to="1"></button>
+                <button type="button" data-bs-target="#heroBannerCarousel" data-bs-slide-to="0" class="active" aria-current="true"></button>
+                <button type="button" data-bs-target="#heroBannerCarousel" data-bs-slide-to="1"></button>
             @endif
         </div>
         @endif
@@ -519,19 +367,19 @@
         <!-- Banner Slides -->
         <div class="carousel-inner">
             @if($bannerCount > 0)
-            @foreach($heroBanners as $index => $banner)
-            <div class="carousel-item {{ $index === 0 ? 'active' : '' }}" data-bs-interval="3000">
-                <img src="{{ $banner->image_url }}" class="d-block w-100 hero-banner-img" alt="{{ $banner->title ?: 'GrowPEC Banner' }}">
-            </div>
-            @endforeach
+                @foreach($heroBanners as $index => $banner)
+                <div class="carousel-item {{ $index === 0 ? 'active' : '' }}" data-bs-interval="3000">
+                    <img src="{{ $banner->image_url }}" class="d-block w-100 hero-banner-img" alt="{{ $banner->title ?: 'GrowPEC Banner' }}">
+                </div>
+                @endforeach
             @else
-            <!-- Fallback Images -->
-            <div class="carousel-item active" data-bs-interval="3000">
-                <img src="{{ asset('assets/hero_b1.jpg') }}" class="d-block w-100 hero-banner-img" alt="GrowPEC Banner 1">
-            </div>
-            <div class="carousel-item" data-bs-interval="3000">
-                <img src="{{ asset('assets/hero_b2.jpg') }}" class="d-block w-100 hero-banner-img" alt="GrowPEC Banner 2">
-            </div>
+                <!-- Fallback Images -->
+                <div class="carousel-item active" data-bs-interval="3000">
+                    <img src="{{ asset('assets/hero_b1.jpg') }}" class="d-block w-100 hero-banner-img" alt="GrowPEC Banner 1">
+                </div>
+                <div class="carousel-item" data-bs-interval="3000">
+                    <img src="{{ asset('assets/hero_b2.jpg') }}" class="d-block w-100 hero-banner-img" alt="GrowPEC Banner 2">
+                </div>
             @endif
         </div>
 
@@ -539,125 +387,7 @@
 </section>
 
 {{-- =========================================================
-     2. 🎯 PARTNER UNIVERSITIES MARQUEE LOGO STRIP (Video 0:01)
-     ========================================================= --}}
-<section class="partner-strip-section">
-    <div class="container text-center mb-3">
-        <span class="badge bg-warning-subtle text-dark border px-3 py-2 fw-bold" style="font-size: 0.82rem;">
-            <i class="bi bi-patch-check-fill text-warning me-1"></i> Explore 300+ Best-Matched Partner Universities
-        </span>
-    </div>
-
-    <div class="partner-marquee-container">
-        <div class="partner-marquee-track">
-
-            <div class="partner-logo-pill">
-                <i class="bi bi-buildings-fill"></i>
-                <span>Amity University</span>
-            </div>
-
-            <div class="partner-logo-pill">
-                <i class="bi bi-mortarboard-fill"></i>
-                <span>Lovely Professional University (LPU)</span>
-            </div>
-
-            <div class="partner-logo-pill">
-                <i class="bi bi-bank2"></i>
-                <span>Chandigarh University</span>
-            </div>
-
-            <div class="partner-logo-pill">
-                <i class="bi bi-award-fill"></i>
-                <span>Manipal University Online</span>
-            </div>
-
-            <div class="partner-logo-pill">
-                <i class="bi bi-building"></i>
-                <span>Ganpat University</span>
-            </div>
-
-            <div class="partner-logo-pill">
-                <i class="bi bi-diagram-3-fill"></i>
-                <span>Sharda University</span>
-            </div>
-
-            <div class="partner-logo-pill">
-                <i class="bi bi-bank"></i>
-                <span>D.Y. Patil University</span>
-            </div>
-
-            <div class="partner-logo-pill">
-                <i class="bi bi-buildings"></i>
-                <span>Future University Bareilly</span>
-            </div>
-
-            <div class="partner-logo-pill">
-                <i class="bi bi-mortarboard"></i>
-                <span>Sanskriti University</span>
-            </div>
-
-            <div class="partner-logo-pill">
-                <i class="bi bi-award"></i>
-                <span>Quantum University</span>
-            </div>
-
-            <!-- Duplicate Set -->
-            <div class="partner-logo-pill">
-                <i class="bi bi-buildings-fill"></i>
-                <span>Amity University</span>
-            </div>
-
-            <div class="partner-logo-pill">
-                <i class="bi bi-mortarboard-fill"></i>
-                <span>Lovely Professional University (LPU)</span>
-            </div>
-
-            <div class="partner-logo-pill">
-                <i class="bi bi-bank2"></i>
-                <span>Chandigarh University</span>
-            </div>
-
-            <div class="partner-logo-pill">
-                <i class="bi bi-award-fill"></i>
-                <span>Manipal University Online</span>
-            </div>
-
-            <div class="partner-logo-pill">
-                <i class="bi bi-building"></i>
-                <span>Ganpat University</span>
-            </div>
-
-            <div class="partner-logo-pill">
-                <i class="bi bi-diagram-3-fill"></i>
-                <span>Sharda University</span>
-            </div>
-
-            <div class="partner-logo-pill">
-                <i class="bi bi-bank"></i>
-                <span>D.Y. Patil University</span>
-            </div>
-
-            <div class="partner-logo-pill">
-                <i class="bi bi-buildings"></i>
-                <span>Future University Bareilly</span>
-            </div>
-
-            <div class="partner-logo-pill">
-                <i class="bi bi-mortarboard"></i>
-                <span>Sanskriti University</span>
-            </div>
-
-            <div class="partner-logo-pill">
-                <i class="bi bi-award"></i>
-                <span>Quantum University</span>
-            </div>
-
-        </div>
-    </div>
-</section>
-
-{{-- =========================================================
-     3. EXPLORE TOP PROGRAMS
+     2. EXPLORE TOP PROGRAMS
      ========================================================= --}}
 <section class="py-5 program-section">
     <div class="container">
@@ -683,7 +413,7 @@
 </section>
 
 {{-- =========================================================
-     4. TOP REGULAR COLLEGES
+     3. TOP REGULAR COLLEGES
      ========================================================= --}}
 <section class="py-5 college-grid-section">
     <div class="container">
@@ -746,39 +476,7 @@
 </section>
 
 {{-- =========================================================
-     5. 🎯 GD / PI CONFIDENCE COACHING BANNER (Video 0:20)
-     ========================================================= --}}
-<section class="py-4 bg-white">
-    <div class="container">
-        <div class="gd-pi-banner">
-            <div class="row align-items-center g-4">
-                <div class="col-lg-8">
-                    <span class="badge bg-warning text-dark fw-bold mb-2">🎯 Interview & Career Support</span>
-                    <h2 class="fw-extrabold mb-3">Crack Your GD & PI With Confidence</h2>
-                    <p class="text-white-50 mb-4 small">
-                        Personalized mentoring from industry experts to crack Group Discussions and Personal Interviews for top university admissions.
-                    </p>
-                    <div class="d-flex flex-wrap gap-2 mb-4">
-                        <span class="gd-pill"><i class="bi bi-check-circle-fill text-warning"></i> Expert Feedback & Tips</span>
-                        <span class="gd-pill"><i class="bi bi-check-circle-fill text-warning"></i> GD Techniques</span>
-                        <span class="gd-pill"><i class="bi bi-check-circle-fill text-warning"></i> Custom PI Coaching</span>
-                        <span class="gd-pill"><i class="bi bi-check-circle-fill text-warning"></i> Resume Writing</span>
-                        <span class="gd-pill"><i class="bi bi-check-circle-fill text-warning"></i> Confidence Training</span>
-                    </div>
-                    <button class="btn btn-gold fw-bold px-4 py-2" onclick="openEnquiryModal('GD/PI Coaching')">
-                        <i class="bi bi-telephone-fill me-1"></i> Book Free Consultation Session
-                    </button>
-                </div>
-                <div class="col-lg-4 text-center d-none d-lg-block">
-                    <i class="bi bi-mortarboard-fill" style="font-size: 8rem; opacity: 0.25;"></i>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-{{-- =========================================================
-     6. TOP ONLINE & DISTANCE UNIVERSITIES
+     4. TOP ONLINE & DISTANCE UNIVERSITIES
      ========================================================= --}}
 <section class="py-5 online-section">
     <div class="container">
@@ -839,52 +537,7 @@
 </section>
 
 {{-- =========================================================
-     7. 🎯 TOP CITIES FOR HIGHER EDUCATION (Video 0:28)
-     ========================================================= --}}
-<section class="py-5 bg-white">
-    <div class="container">
-        <div class="text-center mb-4">
-            <h3 class="section-title">Top Cities for Admissions & Higher Education</h3>
-            <p class="section-subtitle mb-0">Explore top universities and institutes across major educational hubs</p>
-        </div>
-
-        <div class="row row-cols-2 row-cols-md-4 g-3">
-            @forelse($popularCities as $city)
-            <div class="col">
-                <a href="{{ route('colleges.regular') }}?cities[]={{ $city->name }}" class="city-card-btn">
-                    <i class="bi bi-buildings"></i>
-                    <span>{{ $city->name }}</span>
-                </a>
-            </div>
-            @empty
-            <div class="col"><a href="{{ route('colleges.regular') }}?cities[]=Lucknow" class="city-card-btn"><i class="bi bi-buildings"></i> Lucknow</a></div>
-            <div class="col"><a href="{{ route('colleges.regular') }}?cities[]=Noida" class="city-card-btn"><i class="bi bi-buildings"></i> Noida</a></div>
-            <div class="col"><a href="{{ route('colleges.regular') }}?cities[]=Delhi" class="city-card-btn"><i class="bi bi-buildings"></i> Delhi NCR</a></div>
-            <div class="col"><a href="{{ route('colleges.regular') }}?cities[]=Mumbai" class="city-card-btn"><i class="bi bi-buildings"></i> Mumbai</a></div>
-            @endforelse
-        </div>
-    </div>
-</section>
-
-{{-- =========================================================
-     8. 🎯 CONNECT WITH A PROGRAM ADVISOR STRIP (Video 0:32)
-     ========================================================= --}}
-<section class="py-3 bg-white">
-    <div class="container">
-        <div class="advisor-call-strip shadow-sm d-flex justify-content-between align-items-center flex-wrap gap-3">
-            <div class="text-start">
-                <h4 class="fw-bold mb-1">Connect With A Program Advisor For FREE Guidance!</h4>
-                <small class="text-white-50">Instant callback & fee comparison across top universities</small>
-            </div>
-            <a href="tel:+918858285271" class="btn-call-gold shadow">
-                <i class="bi bi-telephone-outbound-fill me-2"></i> +91 8858285271
-            </a>
-        </div>
-    </div>
-</section>
-
-{{-- =========================================================
-     9. WHY CHOOSE GROWPEC
+     5. WHY CHOOSE GROWPEC
      ========================================================= --}}
 <section class="py-5 bg-white">
     <div class="container">
