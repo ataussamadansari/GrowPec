@@ -1,433 +1,148 @@
 @extends('layouts.app')
 
-@section('title', $college->name . ' - Admission, Courses, Fees, Placements & Brochure | GrowPec')
-
-@push('styles')
-<style>
-    :root {
-        --primary-purple: #2E1E6B;
-        --secondary-purple: #4E3797;
-        --accent-gold: #F5A623;
-        --accent-gold-hover: #E09612;
-        --table-yellow: #F59E0B;
-        --table-purple: #ECE8F6;
-        --bg-light: #F8F9FC;
-    }
-
-    /* =========================================================
-       1. HERO HEADER SECTION
-       ========================================================= */
-    .college-hero-section {
-        background: #ffffff;
-        border-bottom: 1px solid #E2E8F0;
-        padding: 25px 0 35px;
-    }
-
-    .college-banner-container {
-        position: relative;
-        width: 100%;
-        height: 330px;
-        border-radius: 20px;
-        overflow: hidden;
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-        background: #000;
-    }
-
-    .college-main-banner-img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-    }
-
-    /* Overlapping Logo on Top-Left of Banner */
-    .college-logo-overlay {
-        position: absolute;
-        top: 18px;
-        left: 18px;
-        width: 72px;
-        height: 72px;
-        background: #ffffff;
-        border-radius: 16px;
-        padding: 6px;
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-        z-index: 10;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .college-logo-overlay img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        border-radius: 12px;
-    }
-
-    .college-hero-title {
-        font-size: 1.65rem;
-        font-weight: 800;
-        color: var(--primary-purple);
-        line-height: 1.3;
-    }
-
-    /* Action Buttons */
-    .btn-apply-purple {
-        background: var(--primary-purple);
-        color: #ffffff;
-        font-weight: 700;
-        border-radius: 25px;
-        padding: 8px 22px;
-        border: none;
-        transition: all 0.2s;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-    }
-
-    .btn-apply-purple:hover {
-        background: var(--secondary-purple);
-        color: #ffffff;
-        transform: translateY(-1px);
-    }
-
-    .btn-brochure-gold {
-        background: var(--accent-gold);
-        color: #17120a;
-        font-weight: 700;
-        border-radius: 25px;
-        padding: 8px 22px;
-        border: none;
-        transition: all 0.2s;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-    }
-
-    .btn-brochure-gold:hover {
-        background: var(--accent-gold-hover);
-        color: #17120a;
-        transform: translateY(-1px);
-    }
-
-    .btn-whatsapp-green {
-        background: #25D366;
-        color: #ffffff;
-        font-weight: 700;
-        border-radius: 25px;
-        padding: 8px 20px;
-        border: none;
-        transition: all 0.2s;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-    }
-
-    .btn-whatsapp-green:hover {
-        background: #1EBE5D;
-        color: #ffffff;
-        transform: translateY(-1px);
-    }
-
-    /* Right Admission Support Card */
-    .admission-support-card {
-        background: #ffffff;
-        border-radius: 24px;
-        border: 1px solid #EEF2F6;
-        box-shadow: 0 10px 35px rgba(0, 0, 0, 0.06);
-        padding: 24px;
-    }
-
-    .form-control-pill {
-        border-radius: 25px !important;
-        border: 1px solid #CBD5E1 !important;
-        padding: 8px 16px !important;
-        font-size: 0.86rem !important;
-        color: #1E293B !important;
-        background-color: #ffffff;
-    }
-
-    .form-control-pill:focus {
-        border-color: var(--secondary-purple) !important;
-        box-shadow: 0 0 0 3px rgba(78, 55, 151, 0.12) !important;
-    }
-
-    .btn-save-pill {
-        background: var(--secondary-purple) !important;
-        color: #ffffff !important;
-        font-weight: 700 !important;
-        border-radius: 25px !important;
-        padding: 9px !important;
-        border: none !important;
-        font-size: 0.95rem !important;
-        transition: all 0.2s ease;
-    }
-
-    .btn-save-pill:hover {
-        background: var(--primary-purple) !important;
-        transform: translateY(-1px);
-    }
-
-    /* =========================================================
-       2. DYNAMIC LEFT QUICK JUMP STICKY NAVIGATION
-       ========================================================= */
-    .quick-nav-sidebar {
-        position: sticky;
-        top: 90px;
-        background: #ffffff;
-        border: 1px solid #E2E8F0;
-        border-radius: 16px;
-        padding: 10px 8px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
-    }
-
-    .quick-nav-link {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        padding: 9px 14px;
-        font-size: 0.84rem;
-        font-weight: 600;
-        color: #475569;
-        text-decoration: none;
-        border-radius: 10px;
-        margin-bottom: 4px;
-        transition: all 0.2s ease-in-out;
-    }
-
-    .quick-nav-link:hover {
-        background: #FAF8FF;
-        color: var(--secondary-purple);
-    }
-
-    .quick-nav-link.active {
-        background: var(--table-purple);
-        color: var(--secondary-purple);
-        font-weight: 700;
-        border-left: 4px solid var(--secondary-purple);
-    }
-
-    /* =========================================================
-       3. CONTENT BLOCKS & TABLES
-       ========================================================= */
-    .content-block {
-        background: #ffffff;
-        border: 1px solid #E2E8F0;
-        border-radius: 18px;
-        padding: 28px;
-        margin-bottom: 25px;
-        scroll-margin-top: 105px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
-    }
-
-    .content-block-header {
-        font-size: 1.25rem;
-        font-weight: 800;
-        color: var(--primary-purple);
-        margin-bottom: 18px;
-        padding-bottom: 10px;
-        border-bottom: 2px solid #F1EEF9;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    /* Yellow Header Table (BoostMyTalent Style) */
-    .table-yellow-header thead th {
-        background: var(--table-yellow) !important;
-        color: #000000 !important;
-        font-weight: 700;
-        padding: 12px 16px;
-        border: 1px solid #E5E7EB;
-        font-size: 0.9rem;
-    }
-
-    .table-yellow-header tbody td {
-        padding: 11px 16px;
-        border: 1px solid #E5E7EB;
-        font-size: 0.88rem;
-    }
-
-    /* Purple Header Course Table (BoostMyTalent Style) */
-    .table-course-header thead th {
-        background: var(--table-purple) !important;
-        color: var(--primary-purple) !important;
-        font-weight: 700;
-        padding: 11px 14px;
-        border: 1px solid #E2E8F0;
-        font-size: 0.85rem;
-    }
-
-    .table-course-header tbody td {
-        padding: 11px 14px;
-        border: 1px solid #E2E8F0;
-        font-size: 0.85rem;
-        vertical-align: middle;
-    }
-
-    .highlight-pill {
-        background: #FAF8FF;
-        border: 1px solid #E4DEF7;
-        border-radius: 10px;
-        padding: 11px 16px;
-        margin-bottom: 10px;
-        font-size: 0.88rem;
-        color: #334155;
-        display: flex;
-        align-items: center;
-    }
-
-    .step-card {
-        background: #F8FAFC;
-        border-left: 4px solid var(--secondary-purple);
-        border-radius: 10px;
-        padding: 16px 18px;
-        margin-bottom: 12px;
-    }
-
-    .step-number {
-        width: 32px;
-        height: 32px;
-        background: var(--secondary-purple);
-        color: #fff;
-        font-weight: bold;
-        border-radius: 50%;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 0.88rem;
-        flex-shrink: 0;
-    }
-
-    .certificate-frame-box {
-        background: #FAF8FF;
-        border: 2px dashed #CBD5E1;
-        border-radius: 16px;
-        padding: 20px;
-        text-align: center;
-    }
-
-    @media (max-width: 991.98px) {
-        .college-banner-container {
-            height: 240px;
-        }
-    }
-</style>
-@endpush
+@section('title', $college->name . ' - Admission, Courses, Fees, Placements & Brochure | GrowPEC')
 
 @section('content')
-
-<!-- Top Breadcrumb -->
-<div class="bg-light py-2 border-bottom small">
-    <div class="container">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb mb-0">
-                <li class="breadcrumb-item"><a href="{{ route('home') }}" class="text-decoration-none text-muted">Home</a></li>
-                <li class="breadcrumb-item"><a href="{{ $college->college_mode == 'online' ? route('colleges.online') : route('colleges.regular') }}" class="text-decoration-none text-muted">{{ $college->college_mode == 'online' ? 'Online Colleges' : 'Regular Colleges' }}</a></li>
-                <li class="breadcrumb-item active fw-bold text-dark">{{ $college->name }}</li>
-            </ol>
+<!-- Breadcrumb -->
+<div class="bg-gray-50 py-3 border-b border-gray-200 text-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <nav class="flex items-center gap-2" aria-label="breadcrumb">
+            <a href="{{ route('home') }}" class="text-gray-600 hover:text-gray-900">Home</a>
+            <span class="text-gray-400">/</span>
+            <a href="{{ $college->college_mode == 'online' ? route('colleges.online') : route('colleges.regular') }}" class="text-gray-600 hover:text-gray-900">
+                {{ $college->college_mode == 'online' ? 'Online Colleges' : 'Regular Colleges' }}
+            </a>
+            <span class="text-gray-400">/</span>
+            <span class="font-bold text-gray-900">{{ $college->name }}</span>
         </nav>
     </div>
 </div>
 
-<!-- =========================================================
-     1. HERO HEADER (Banner, Logo Overlay, Info & Admission Form)
-     ========================================================= -->
-<div class="college-hero-section">
-    <div class="container">
-        <div class="row g-4 align-items-start">
-
-            <!-- Left Side: Banner, Info, Badges & Actions (col-lg-8) -->
-            <div class="col-lg-8">
-
-                <!-- Banner Image with Logo Overlay -->
-                <div class="college-banner-container mb-3">
-                    <div class="college-logo-overlay">
-                        <img src="{{ $college->logo_url ?? $college->banner_url }}" alt="{{ $college->name }} logo">
+<!-- HERO SECTION: Banner, Logo Overlay, Info & Admission Form -->
+<div class="bg-white border-b border-gray-200 py-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+            
+            <!-- Left: Banner & Info (2 cols on desktop) -->
+            <div class="lg:col-span-2">
+                <!-- Banner with Logo Overlay -->
+                <div class="relative rounded-2xl overflow-hidden bg-black shadow-lg mb-4" style="height: 330px;">
+                    <img src="{{ $college->banner_url }}" class="w-full h-full object-cover" alt="{{ $college->name }}">
+                    <!-- Logo Overlay -->
+                    <div class="absolute top-4 left-4 w-20 h-20 bg-white rounded-2xl p-1.5 shadow-lg flex items-center justify-center">
+                        <img src="{{ $college->logo_url ?? $college->banner_url }}" alt="{{ $college->name }} logo" class="w-full h-full object-contain rounded-lg">
                     </div>
-                    <img src="{{ $college->banner_url }}" class="college-main-banner-img" alt="{{ $college->name }}">
                 </div>
 
-                <!-- Badges -->
-                <div class="d-flex flex-wrap gap-2 mb-2">
-                    <span class="badge bg-primary-subtle text-primary fw-bold px-3 py-1">{{ $college->college_type }} University</span>
-                    <span class="badge bg-{{ $college->college_mode == 'online' ? 'success' : 'dark' }}-subtle text-dark fw-bold px-3 py-1">{{ strtoupper($college->college_mode) }}</span>
+                <!-- Badges Row -->
+                <div class="flex flex-wrap gap-2 mb-4">
+                    <span class="inline-flex items-center px-3 py-1.5 bg-blue-50 text-blue-700 text-xs font-bold rounded-full">
+                        {{ $college->college_type }} University
+                    </span>
+                    <span class="inline-flex items-center px-3 py-1.5 {{ $college->college_mode == 'online' ? 'bg-green-50 text-green-700' : 'bg-gray-100 text-gray-900' }} text-xs font-bold rounded-full">
+                        {{ strtoupper($college->college_mode) }}
+                    </span>
                     @if($college->approvals)
-                    <span class="badge bg-warning-subtle text-dark fw-bold px-3 py-1"><i class="bi bi-shield-check me-1"></i>{{ $college->approvals }}</span>
+                    <span class="inline-flex items-center px-3 py-1.5 bg-yellow-50 text-yellow-700 text-xs font-bold rounded-full gap-1">
+                        <i class="bi bi-shield-check"></i> {{ $college->approvals }}
+                    </span>
                     @endif
-                    <span class="badge bg-light text-dark border fw-bold px-3 py-1"><i class="bi bi-star-fill text-warning me-1"></i>{{ $college->rating }} ({{ $college->reviews_count }} Reviews)</span>
+                    <span class="inline-flex items-center px-3 py-1.5 bg-white border border-gray-300 text-gray-900 text-xs font-bold rounded-full gap-1">
+                        <i class="bi bi-star-fill text-yellow-400"></i> {{ $college->rating }} ({{ $college->reviews_count }} Reviews)
+                    </span>
+                    @if($college->entrance_exams)
+                    <span class="inline-flex items-center px-3 py-1.5 bg-cyan-50 text-cyan-700 text-xs font-bold rounded-full gap-1">
+                        <i class="bi bi-pencil-fill"></i> Exams: {{ $college->entrance_exams }}
+                    </span>
+                    @endif
+                    @if($college->is_featured)
+                    <span class="inline-flex items-center px-3 py-1.5 bg-red-50 text-red-700 text-xs font-bold rounded-full gap-1">
+                        <i class="bi bi-patch-check-fill"></i> Featured
+                    </span>
+                    @endif
                 </div>
 
                 <!-- Title & Affiliation -->
-                <h2 class="college-hero-title mb-1">{{ $college->name }}</h2>
-                <p class="text-muted small mb-3">
-                    <i class="bi bi-geo-alt-fill text-danger me-1"></i>{{ $college->address ?? $college->city . ', ' . $college->state }}
-                    @if($college->university_name) • Affiliated to: <strong>{{ $college->university_name }}</strong> @endif
-                    @if($college->established_year) • Estd. Year: <strong>{{ $college->established_year }}</strong> @endif
+                <h1 class="text-3xl font-bold text-purple-900 mb-2">{{ $college->name }}</h1>
+                <p class="text-gray-700 text-sm mb-4">
+                    <i class="bi bi-geo-alt-fill text-red-600 mr-1"></i>
+                    {{ $college->address ?? ($college->city . ', ' . $college->state) }}
+                    @if($college->university_name)
+                        • Affiliated to: <strong>{{ $college->university_name }}</strong>
+                    @endif
+                    @if($college->established_year)
+                        • Estd. Year: <strong>{{ $college->established_year }}</strong>
+                    @endif
+                    @if($college->campus_size)
+                        • Campus: <strong>{{ $college->campus_size }}</strong>
+                    @endif
                 </p>
 
                 <!-- Action Buttons -->
-                <div class="d-flex flex-wrap gap-2">
-                    <a href="tel:8858285271" class="btn-apply-purple">
-                        <i class="bi bi-telephone-forward me-1"></i> Get in Touch
+                <div class="flex flex-wrap gap-2">
+                    <a href="#admissionSupportForm" class="inline-flex items-center gap-2 px-6 py-2.5 bg-purple-900 text-white font-bold rounded-full hover:bg-purple-800 transition">
+                        <i class="bi bi-telephone-forward"></i> Get in Touch
                     </a>
                     @if($college->brochure_pdf)
-                    <a href="{{ asset('storage/' . $college->brochure_pdf) }}" target="_blank" class="btn-brochure-gold">
-                        <i class="bi bi-download me-1"></i> Download Brochure
+                    <a href="{{ asset('storage/' . $college->brochure_pdf) }}" target="_blank" class="inline-flex items-center gap-2 px-6 py-2.5 bg-yellow-500 text-gray-900 font-bold rounded-full hover:bg-yellow-600 transition">
+                        <i class="bi bi-download"></i> Download Brochure
                     </a>
                     @endif
-                    <a href="https://wa.me/918858285271?text=Hello,%20I%20am%20interested%20in%20{{ urlencode($college->name) }} {{ urlencode($college->city) }} Admission, Please guide with official Fees and Scholarship options." target="_blank" class="btn-whatsapp-green">
-                        <i class="bi bi-whatsapp me-1"></i> WhatsApp Query
+                    <a href="https://wa.me/{{ $siteSettings['general.whatsapp_number'] ?? '918858285271' }}?text=Hello,%20I%20am%20interested%20in%20{{ urlencode($college->name) }}%20{{ urlencode($college->city) }}%20Admission.%20Please%20guide%20with%20Fees%20and%20Scholarship%20details." 
+                       target="_blank" 
+                       class="inline-flex items-center gap-2 px-6 py-2.5 bg-green-500 text-white font-bold rounded-full hover:bg-green-600 transition">
+                        <i class="bi bi-whatsapp"></i> WhatsApp Query
                     </a>
                 </div>
-
             </div>
 
-            <!-- Right Side: Admission Support Form Card (col-lg-4) -->
-            <div class="col-lg-4">
-                <div class="admission-support-card">
-                    <h5 class="fw-bold mb-3" style="color: var(--primary-purple); font-size: 1.15rem;">
-                        Get 1-on-1 Admission Support
-                    </h5>
-
+            <!-- Right: Sticky Admission Form (1 col on desktop) -->
+            <div class="lg:col-span-1">
+                <div class="bg-white border border-gray-200 rounded-2xl shadow-lg p-6 sticky top-32 max-h-[calc(100vh-150px)] overflow-y-auto">
+                    <h4 class="text-lg font-bold text-purple-900 mb-4 flex items-center gap-2">
+                        <i class="bi bi-headset text-yellow-500"></i> Get 1-on-1 Support
+                    </h4>
+                    
                     <form action="{{ route('lead.submit') }}" method="POST" id="admissionSupportForm">
                         @csrf
                         <input type="hidden" name="college_id" value="{{ $college->id }}">
                         <input type="hidden" name="source" value="college_detail_page">
 
                         <!-- Name -->
-                        <div class="mb-2">
-                            <label class="form-label small fw-bold text-muted mb-1">Name <span class="text-danger">*</span></label>
-                            <input type="text" name="name" class="form-control form-control-pill" placeholder="Enter your full name" required>
+                        <div class="mb-3">
+                            <label class="block text-xs font-bold text-gray-700 mb-1.5">Name <span class="text-red-600">*</span></label>
+                            <input type="text" name="name" class="w-full px-4 py-2 border border-gray-300 rounded-full text-sm bg-white focus:border-purple-600 focus:ring-2 focus:ring-purple-100" value="{{ Auth::user()->name ?? '' }}" placeholder="Enter your full name" required>
                         </div>
 
                         <!-- Mobile -->
-                        <div class="mb-2">
-                            <label class="form-label small fw-bold text-muted mb-1">Mobile <span class="text-danger">*</span></label>
-                            <input type="tel" name="phone" class="form-control form-control-pill" placeholder="WhatsApp number" required>
+                        <div class="mb-3">
+                            <label class="block text-xs font-bold text-gray-700 mb-1.5">Mobile <span class="text-red-600">*</span></label>
+                            <input type="tel" name="phone" class="w-full px-4 py-2 border border-gray-300 rounded-full text-sm bg-white focus:border-purple-600 focus:ring-2 focus:ring-purple-100" value="{{ Auth::user()->phone ?? '' }}" placeholder="WhatsApp mobile" maxlength="10" required>
                         </div>
 
                         <!-- Email -->
-                        <div class="mb-2">
-                            <label class="form-label small fw-bold text-muted mb-1">Email <span class="text-danger">*</span></label>
-                            <input type="email" name="email" class="form-control form-control-pill" placeholder="Enter email address" required>
+                        <div class="mb-3">
+                            <label class="block text-xs font-bold text-gray-700 mb-1.5">Email <span class="text-red-600">*</span></label>
+                            <input type="email" name="email" class="w-full px-4 py-2 border border-gray-300 rounded-full text-sm bg-white focus:border-purple-600 focus:ring-2 focus:ring-purple-100" value="{{ str_ends_with(Auth::user()->email ?? '', '@growpec.local') ? '' : (Auth::user()->email ?? '') }}" placeholder="Enter email" required>
                         </div>
 
                         <!-- Course -->
-                        <div class="mb-2">
-                            <label class="form-label small fw-bold text-muted mb-1">Course <span class="text-danger">*</span></label>
-                            <select name="course_id" class="form-select form-control-pill" required>
-                                <option value="">Select Course</option>
+                        <div class="mb-3">
+                            <label class="block text-xs font-bold text-gray-700 mb-1.5">Program <span class="text-red-600">*</span></label>
+                            <select name="course_id" class="w-full px-4 py-2 border border-gray-300 rounded-full text-sm bg-white focus:border-purple-600 focus:ring-2 focus:ring-purple-100" required>
+                                <option value="">-- Choose Course --</option>
                                 @foreach($college->collegeCourses as $cc)
-                                <option value="{{ $cc->course_id }}">{{ $cc->course->name }} @if($cc->specialization) ({{ $cc->specialization }}) @endif</option>
+                                <option value="{{ $cc->course_id }}">
+                                    {{ $cc->course->name }} @if($cc->specialization) ({{ $cc->specialization }}) @endif
+                                </option>
                                 @endforeach
                             </select>
                         </div>
 
                         <!-- State -->
-                        <div class="mb-2">
-                            <label class="form-label small fw-bold text-muted mb-1">Current State <span class="text-danger">*</span></label>
-                            <select name="state" id="leadCardStateSelect" class="form-select form-control-pill" required>
+                        <div class="mb-3">
+                            <label class="block text-xs font-bold text-gray-700 mb-1.5">State <span class="text-red-600">*</span></label>
+                            <select name="state" id="leadCardStateSelect" class="w-full px-4 py-2 border border-gray-300 rounded-full text-sm bg-white focus:border-purple-600 focus:ring-2 focus:ring-purple-100" required>
                                 <option value="">Select State</option>
                                 @php
                                 $leadStates = \App\Models\State::where('status', true)->orderBy('name')->get();
@@ -439,42 +154,39 @@
                         </div>
 
                         <!-- City -->
-                        <div class="mb-3">
-                            <label class="form-label small fw-bold text-muted mb-1">Current City <span class="text-danger">*</span></label>
-                            <select name="city" id="leadCardCitySelect" class="form-select form-control-pill" required>
-                                <option value="">Select City</option>
+                        <div class="mb-4">
+                            <label class="block text-xs font-bold text-gray-700 mb-1.5">City <span class="text-red-600">*</span></label>
+                            <select name="city" id="leadCardCitySelect" class="w-full px-4 py-2 border border-gray-300 rounded-full text-sm bg-white focus:border-purple-600 focus:ring-2 focus:ring-purple-100" required>
+                                <option value="">Choose State First</option>
                             </select>
                         </div>
 
                         <div id="admissionSupportMsg"></div>
 
-                        <button type="submit" id="admissionSupportBtn" class="btn btn-save-pill w-100 shadow-sm">
+                        <button type="submit" id="admissionSupportBtn" class="w-full py-2.5 bg-purple-700 text-white font-bold rounded-full text-sm hover:bg-purple-600 transition shadow-sm">
                             Save & Request Callback
                         </button>
 
-                        <p class="text-center text-muted mt-2 mb-0" style="font-size: 0.76rem;">
-                            I accept and agree to the <a href="#" class="fw-bold text-dark text-decoration-none">Terms of Use</a>
+                        <p class="text-center text-gray-600 mt-2 mb-0 text-xs">
+                            100% Free & Unbiased Guidance
                         </p>
                     </form>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
 
-<!-- =========================================================
-     2. MAIN CONTENT (Dynamic Left Sticky Nav + Content Blocks)
-     ========================================================= -->
-<div class="container py-4">
-    <div class="row g-4">
-
-        <!-- 🎯 Left Side: Dynamic Sticky Navigation (col-lg-2) -->
-        <div class="col-lg-2 d-none d-lg-block">
-            <div class="quick-nav-sidebar">
-                <small class="text-muted fw-bold d-block mb-2 px-2 text-uppercase" style="letter-spacing: 0.5px; font-size: 0.72rem;">QUICK JUMP</small>
+<!-- MAIN CONTENT: Quick Nav Sidebar + Content Blocks -->
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        
+        <!-- Left Sidebar: Quick Navigation (1 col on desktop) -->
+        <div class="hidden lg:block lg:col-span-1">
+            <div class="bg-white border border-gray-200 rounded-2xl p-2.5 sticky top-32 max-h-[calc(100vh-150px)] overflow-y-auto">
+                <p class="text-xs font-bold text-gray-600 uppercase px-3 py-2 tracking-wide">Quick Jump</p>
                 @foreach($quickNav as $index => $nav)
-                <a href="#{{ $nav['id'] }}" class="quick-nav-link {{ $index === 0 ? 'active' : '' }}" data-target="{{ $nav['id'] }}">
+                <a href="#{{ $nav['id'] }}" class="quick-nav-link flex items-center gap-2 px-3 py-2.5 text-sm font-semibold text-gray-700 hover:bg-purple-50 hover:text-purple-700 rounded-xl transition {{ $index === 0 ? 'bg-purple-100 text-purple-700 border-l-4 border-purple-700' : '' }}" data-target="{{ $nav['id'] }}">
                     <i class="bi {{ $nav['icon'] }}"></i>
                     <span>{{ $nav['title'] }}</span>
                 </a>
@@ -482,58 +194,64 @@
             </div>
         </div>
 
-        <!-- 🎯 Right Side: Detailed Content Blocks (col-lg-10) -->
-        <div class="col-lg-10">
+        <!-- Right Side: Content Blocks (3 cols on desktop) -->
+        <div class="lg:col-span-3">
 
-            <!-- 1. Quick Facts Table & Overview (BoostMyTalent Yellow Header) -->
-            <div class="content-block" id="sec-overview">
-                <h5 class="content-block-header">
-                    <i class="bi bi-info-circle-fill text-warning"></i> Quick Facts & Snapshot
-                </h5>
-                <div class="table-responsive">
-                    <table class="table table-bordered table-yellow-header mb-0">
+            <!-- 1. QUICK FACTS TABLE -->
+            <div class="bg-white border border-gray-200 rounded-2xl p-7 mb-6 scroll-mt-28" id="sec-overview">
+                <h3 class="text-xl font-bold text-purple-900 mb-4 pb-3 border-b-2 border-purple-100 flex items-center gap-2">
+                    <i class="bi bi-info-circle-fill text-yellow-500"></i> Quick Facts & Snapshot
+                </h3>
+                <div class="overflow-x-auto mb-6">
+                    <table class="w-full">
                         <thead>
                             <tr>
-                                <th style="width: 38%;">Particulars</th>
-                                <th>Statistics & Details</th>
+                                <th class="bg-yellow-500 text-black font-bold px-4 py-3 text-left text-sm border border-gray-300" style="width: 40%;">Particulars</th>
+                                <th class="bg-yellow-500 text-black font-bold px-4 py-3 text-left text-sm border border-gray-300">Details</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="text-sm">
                             <tr>
-                                <td class="fw-semibold text-muted">Mode of Education</td>
-                                <td class="fw-bold text-dark">{{ ucfirst($college->college_mode) }} Mode</td>
+                                <td class="font-semibold text-gray-600 px-4 py-2 border border-gray-300">Mode of Education</td>
+                                <td class="font-bold text-gray-900 px-4 py-2 border border-gray-300">{{ ucfirst($college->college_mode) }} Mode</td>
+                            </tr>
+                            <tr class="bg-gray-50">
+                                <td class="font-semibold text-gray-600 px-4 py-2 border border-gray-300">Ownership / Status</td>
+                                <td class="px-4 py-2 border border-gray-300">{{ $college->college_type }} University</td>
                             </tr>
                             <tr>
-                                <td class="fw-semibold text-muted">Ownership / Status</td>
-                                <td>{{ $college->college_type }} University</td>
+                                <td class="font-semibold text-gray-600 px-4 py-2 border border-gray-300">Approvals & Accreditations</td>
+                                <td class="px-4 py-2 border border-gray-300"><span class="inline-block bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-semibold">{{ $college->approvals ?? 'UGC / AICTE / DEB Approved' }}</span></td>
                             </tr>
-                            <tr>
-                                <td class="fw-semibold text-muted">Approvals & Accreditations</td>
-                                <td><span class="badge bg-success-subtle text-success border">{{ $college->approvals ?? 'UGC / AICTE / DEB Approved' }}</span></td>
+                            @if($college->entrance_exams)
+                            <tr class="bg-gray-50">
+                                <td class="font-semibold text-gray-600 px-4 py-2 border border-gray-300">Accepted Entrance Exams</td>
+                                <td class="font-bold text-blue-600 px-4 py-2 border border-gray-300">{{ $college->entrance_exams }}</td>
                             </tr>
+                            @endif
                             <tr>
-                                <td class="fw-semibold text-muted">Campus Location</td>
-                                <td>{{ $college->city }}, {{ $college->state }} {{ $college->campus_size ? '('.$college->campus_size.')' : '' }}</td>
+                                <td class="font-semibold text-gray-600 px-4 py-2 border border-gray-300">Campus Location</td>
+                                <td class="px-4 py-2 border border-gray-300">{{ $college->city }}, {{ $college->state }} {{ $college->campus_size ? '('.$college->campus_size.')' : '' }}</td>
                             </tr>
                             @if($college->highest_package)
-                            <tr>
-                                <td class="fw-semibold text-muted">Highest Salary Package</td>
-                                <td class="text-success fw-bold">{{ $college->highest_package }}</td>
+                            <tr class="bg-gray-50">
+                                <td class="font-semibold text-gray-600 px-4 py-2 border border-gray-300">Highest Salary Package</td>
+                                <td class="font-bold text-green-600 text-lg px-4 py-2 border border-gray-300">{{ $college->highest_package }}</td>
                             </tr>
                             @endif
                             @if($college->average_package)
                             <tr>
-                                <td class="fw-semibold text-muted">Average Salary Package</td>
-                                <td class="fw-bold text-dark">{{ $college->average_package }}</td>
+                                <td class="font-semibold text-gray-600 px-4 py-2 border border-gray-300">Average Salary Package</td>
+                                <td class="font-bold text-gray-900 px-4 py-2 border border-gray-300">{{ $college->average_package }}</td>
                             </tr>
                             @endif
                             @if($college->college_mode !== 'online')
-                            <tr>
-                                <td class="fw-semibold text-muted">Hostel Facilities</td>
-                                <td>
-                                    @if($college->has_boys_hostel) <span class="badge bg-light text-dark border me-1">Boys Hostel</span> @endif
-                                    @if($college->has_girls_hostel) <span class="badge bg-light text-dark border">Girls Hostel</span> @endif
-                                    @if(!$college->has_boys_hostel && !$college->has_girls_hostel) <span class="text-muted">Day Scholar Campus</span> @endif
+                            <tr class="bg-gray-50">
+                                <td class="font-semibold text-gray-600 px-4 py-2 border border-gray-300">Hostel Facilities</td>
+                                <td class="px-4 py-2 border border-gray-300">
+                                    @if($college->has_boys_hostel) <span class="inline-block bg-gray-100 text-gray-900 px-2 py-1 rounded text-xs font-semibold mr-1">Boys Hostel</span> @endif
+                                    @if($college->has_girls_hostel) <span class="inline-block bg-gray-100 text-gray-900 px-2 py-1 rounded text-xs font-semibold">Girls Hostel</span> @endif
+                                    @if(!$college->has_boys_hostel && !$college->has_girls_hostel) <span class="text-gray-600">Day Scholar Campus</span> @endif
                                 </td>
                             </tr>
                             @endif
@@ -541,64 +259,70 @@
                     </table>
                 </div>
 
-                <div class="mt-4">
-                    <h6 class="fw-bold text-dark mb-2">About {{ $college->name }}</h6>
-                    <p class="text-secondary leading-relaxed mb-0 small">
-                        {{ $college->overview ?? $college->name . ' is a recognized premier institution located in '.$college->city.', '.$college->state.'. Offering industry-aligned programs with experienced faculty, modern research labs, and dedicated career placement support.' }}
-                    </p>
+                <!-- About Section -->
+                <div class="pt-4 border-t border-gray-200">
+                    <h4 class="font-bold text-gray-900 mb-3">About {{ $college->name }}</h4>
+                    <div class="text-gray-700 leading-relaxed text-sm space-y-3">
+                        @if(!empty($college->overview))
+                            {!! $college->overview !!}
+                        @else
+                            <p>{{ $college->name }} is a premier institution located in {{ $college->city }}, {{ $college->state }}. Offering verified industry-aligned degree programs with experienced faculty, modern research facilities, and active placement assistance.</p>
+                        @endif
+                    </div>
                 </div>
             </div>
 
-            <!-- 2. Dynamic Key Highlights -->
+            <!-- 2. KEY HIGHLIGHTS -->
             @if(!empty($college->highlights) && count($college->highlights) > 0)
-            <div class="content-block" id="sec-highlights">
-                <h5 class="content-block-header">
-                    <i class="bi bi-star-fill text-warning"></i> Key Highlights & USPs
-                </h5>
-                @foreach($college->highlights as $highlight)
-                <div class="highlight-pill">
-                    <i class="bi bi-check-circle-fill text-success me-2 fs-5"></i>
-                    <span>{{ $highlight }}</span>
+            <div class="bg-white border border-gray-200 rounded-2xl p-7 mb-6 scroll-mt-28" id="sec-highlights">
+                <h3 class="text-xl font-bold text-purple-900 mb-4 pb-3 border-b-2 border-purple-100 flex items-center gap-2">
+                    <i class="bi bi-star-fill text-yellow-500"></i> Key Highlights & USPs
+                </h3>
+                <div class="space-y-3">
+                    @foreach($college->highlights as $highlight)
+                    <div class="flex items-start gap-3 p-3 bg-purple-50 border border-purple-200 rounded-lg">
+                        <i class="bi bi-check-circle-fill text-green-600 mt-0.5 text-lg flex-shrink-0"></i>
+                        <span class="font-semibold text-gray-800">{{ $highlight }}</span>
+                    </div>
+                    @endforeach
                 </div>
-                @endforeach
             </div>
             @endif
 
-            <!-- 3. Courses, Specializations & Fee Structure Table (Purple Header) -->
+            <!-- 3. COURSES & FEES TABLE -->
             @if($college->collegeCourses->count() > 0)
-            <div class="content-block" id="sec-courses">
-                <h5 class="content-block-header">
-                    <i class="bi bi-mortarboard-fill text-primary"></i> Courses, Fees & Specializations
-                </h5>
-
-                <div class="table-responsive">
-                    <table class="table table-bordered table-course-header mb-0">
+            <div class="bg-white border border-gray-200 rounded-2xl p-7 mb-6 scroll-mt-28" id="sec-courses">
+                <h3 class="text-xl font-bold text-purple-900 mb-4 pb-3 border-b-2 border-purple-100 flex items-center gap-2">
+                    <i class="bi bi-mortarboard-fill text-blue-600"></i> Courses, Fees & Specializations
+                </h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
                         <thead>
                             <tr>
-                                <th>Course / Program</th>
-                                <th>Specialization</th>
-                                <th>Duration</th>
-                                <th>Eligibility</th>
-                                <th>Fee Structure</th>
-                                <th class="text-center">Action</th>
+                                <th class="bg-purple-100 text-purple-900 font-bold px-3 py-2.5 text-left border border-gray-300">Course</th>
+                                <th class="bg-purple-100 text-purple-900 font-bold px-3 py-2.5 text-left border border-gray-300">Specialization</th>
+                                <th class="bg-purple-100 text-purple-900 font-bold px-3 py-2.5 text-left border border-gray-300">Duration</th>
+                                <th class="bg-purple-100 text-purple-900 font-bold px-3 py-2.5 text-left border border-gray-300">Eligibility</th>
+                                <th class="bg-purple-100 text-purple-900 font-bold px-3 py-2.5 text-left border border-gray-300">Fee Structure</th>
+                                <th class="bg-purple-100 text-purple-900 font-bold px-3 py-2.5 text-center border border-gray-300">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($college->collegeCourses as $cc)
                             <tr>
-                                <td class="fw-bold text-dark">
+                                <td class="font-bold text-gray-900 px-3 py-2 border border-gray-300">
                                     {{ $cc->course->name }}
-                                    <span class="badge bg-primary-subtle text-primary ms-1" style="font-size: 0.7rem;">{{ $cc->course->level }}</span>
+                                    <span class="inline-block bg-blue-100 text-blue-700 text-xs font-semibold px-2 py-0.5 rounded ml-1">{{ $cc->course->level }}</span>
                                 </td>
-                                <td>{{ $cc->specialization ?: 'General / Core' }}</td>
-                                <td>{{ $cc->course->duration }}</td>
-                                <td class="small text-muted">{{ $cc->eligibility ?: '10+2 with 50% / Graduation' }}</td>
-                                <td>
-                                    <strong class="text-success fs-6">₹{{ number_format($cc->fee_amount) }}</strong>
-                                    <small class="text-muted d-block" style="font-size: 0.72rem;">/ {{ str_replace('_', ' ', $cc->fee_type) }}</small>
+                                <td class="px-3 py-2 border border-gray-300 text-gray-700">{{ $cc->specialization ?: 'General / Core' }}</td>
+                                <td class="px-3 py-2 border border-gray-300 text-gray-700">{{ $cc->course->duration }}</td>
+                                <td class="px-3 py-2 border border-gray-300 text-gray-600 text-xs">{{ $cc->eligibility ?: '10+2 with 50% / Graduation' }}</td>
+                                <td class="px-3 py-2 border border-gray-300">
+                                    <strong class="text-green-600 text-lg block">₹ {{ number_format($cc->fee_amount) }}</strong>
+                                    <small class="text-gray-600">/ {{ str_replace('_', ' ', $cc->fee_type) }}</small>
                                 </td>
-                                <td class="text-center">
-                                    <a href="#admissionSupportForm" class="btn btn-warning btn-sm fw-bold px-3 text-dark rounded-pill" style="font-size: 0.78rem;">
+                                <td class="px-3 py-2 border border-gray-300 text-center">
+                                    <a href="#admissionSupportForm" class="inline-block px-4 py-1.5 bg-yellow-500 text-gray-900 font-bold rounded-full text-xs hover:bg-yellow-600 transition">
                                         Apply Now
                                     </a>
                                 </td>
@@ -610,171 +334,158 @@
             </div>
             @endif
 
-            <!-- 4. Step-by-Step Admission Process -->
+            <!-- 4. ADMISSION PROCESS -->
             @if(!empty($college->admission_process))
-            <div class="content-block" id="sec-admission">
-                <h5 class="content-block-header">
-                    <i class="bi bi-card-checklist text-success"></i> Step-by-Step Admission Process
-                </h5>
-                <div class="step-card">
-                    <div class="d-flex gap-3 align-items-center">
-                        <span class="step-number">1</span>
-                        <div>
-                            <h6 class="fw-bold mb-1 text-dark">Online Application Registration</h6>
-                            <p class="text-muted small mb-0">Fill out the online application form with personal, academic, and contact details.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="step-card">
-                    <div class="d-flex gap-3 align-items-center">
-                        <span class="step-number">2</span>
-                        <div>
-                            <h6 class="fw-bold mb-1 text-dark">Document Upload & Verification</h6>
-                            <p class="text-muted small mb-0">Submit marksheets, photo ID, and previous qualifying degree certificates for administrative verification.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="step-card">
-                    <div class="d-flex gap-3 align-items-center">
-                        <span class="step-number">3</span>
-                        <div>
-                            <h6 class="fw-bold mb-1 text-dark">Fee Payment & Enrollment Confirmation</h6>
-                            <p class="text-muted small mb-0">Complete the course fee payment or opt for Easy No-Cost EMI to generate your student ID.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="small text-secondary mt-3">
-                    {!! nl2br(e($college->admission_process)) !!}
+            <div class="bg-white border border-gray-200 rounded-2xl p-7 mb-6 scroll-mt-28" id="sec-admission">
+                <h3 class="text-xl font-bold text-purple-900 mb-4 pb-3 border-b-2 border-purple-100 flex items-center gap-2">
+                    <i class="bi bi-card-checklist text-green-600"></i> Step-by-Step Admission Process
+                </h3>
+                <div class="text-gray-700 leading-relaxed text-sm space-y-3">
+                    {!! $college->admission_process !!}
                 </div>
             </div>
             @endif
 
-            <!-- 5. Approvals & Accreditations -->
-            <div class="content-block" id="sec-approvals">
-                <h5 class="content-block-header">
-                    <i class="bi bi-shield-check text-warning"></i> Approvals & Accreditations
-                </h5>
-                <div class="table-responsive">
-                    <table class="table table-bordered table-yellow-header mb-0">
+            <!-- 5. APPROVALS & ACCREDITATIONS -->
+            <div class="bg-white border border-gray-200 rounded-2xl p-7 mb-6 scroll-mt-28" id="sec-approvals">
+                <h3 class="text-xl font-bold text-purple-900 mb-4 pb-3 border-b-2 border-purple-100 flex items-center gap-2">
+                    <i class="bi bi-shield-check text-yellow-500"></i> Approvals & Accreditations
+                </h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
                         <thead>
                             <tr>
-                                <th>Statutory Body</th>
-                                <th>Accreditation & Approval Status</th>
-                                <th>Validity</th>
+                                <th class="bg-yellow-500 text-black font-bold px-4 py-3 text-left border border-gray-300">Statutory Body</th>
+                                <th class="bg-yellow-500 text-black font-bold px-4 py-3 text-left border border-gray-300">Accreditation Status</th>
+                                <th class="bg-yellow-500 text-black font-bold px-4 py-3 text-left border border-gray-300">Validity</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td class="fw-bold">University Grants Commission (UGC)</td>
-                                <td>Fully Recognized under section 2(f) / 12(B)</td>
-                                <td><span class="badge bg-success-subtle text-success">Valid Nationwide</span></td>
+                                <td class="font-bold px-4 py-2 border border-gray-300">University Grants Commission (UGC)</td>
+                                <td class="px-4 py-2 border border-gray-300">Fully Recognized under section 2(f) / 12(B)</td>
+                                <td class="px-4 py-2 border border-gray-300"><span class="inline-block bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-semibold">Valid Nationwide</span></td>
+                            </tr>
+                            <tr class="bg-gray-50">
+                                <td class="font-bold px-4 py-2 border border-gray-300">AICTE / Distance Education Bureau (DEB)</td>
+                                <td class="px-4 py-2 border border-gray-300">Approved for Technical & Management Programs</td>
+                                <td class="px-4 py-2 border border-gray-300"><span class="inline-block bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-semibold">Approved</span></td>
                             </tr>
                             <tr>
-                                <td class="fw-bold">AICTE / Distance Education Bureau (DEB)</td>
-                                <td>Approved for Technical & Management Programs</td>
-                                <td><span class="badge bg-success-subtle text-success">Approved</span></td>
-                            </tr>
-                            <tr>
-                                <td class="fw-bold">NAAC Accreditation</td>
-                                <td>{{ $college->approvals ?: 'Accredited with Grade A+' }}</td>
-                                <td><span class="badge bg-primary-subtle text-primary">Certified</span></td>
+                                <td class="font-bold px-4 py-2 border border-gray-300">Accreditation Badges</td>
+                                <td class="px-4 py-2 border border-gray-300">{{ $college->approvals ?: 'Accredited with Grade A+' }}</td>
+                                <td class="px-4 py-2 border border-gray-300"><span class="inline-block bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs font-semibold">Certified</span></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-
-            <!-- 6. Sample Degree / Certificate Preview -->
+            <!-- 6. SAMPLE DEGREE & CERTIFICATE -->
             @if($college->certificate_url)
-            <div class="content-block" id="sec-certificate">
-                <h5 class="content-block-header">
-                    <i class="bi bi-patch-check-fill text-success"></i> Sample Degree & Certification
-                </h5>
-                <p class="small text-muted mb-3">
+            <div class="bg-white border border-gray-200 rounded-2xl p-7 mb-6 scroll-mt-28" id="sec-certificate">
+                <h3 class="text-xl font-bold text-purple-900 mb-4 pb-3 border-b-2 border-purple-100 flex items-center gap-2">
+                    <i class="bi bi-patch-check-fill text-green-600"></i> Sample Degree & Certification
+                </h3>
+                <p class="text-gray-600 text-sm mb-4">
                     Degrees awarded by {{ $college->name }} carry full government approvals and are valid for all state/central government jobs, corporate hiring, and higher studies worldwide.
                 </p>
-                <div class="certificate-frame-box">
-                    <img src="{{ $college->certificate_url }}" class="img-fluid rounded shadow-sm" style="max-height: 380px; object-fit: contain;" alt="Sample Certificate">
+                <div class="border-2 border-dashed border-gray-300 rounded-2xl p-6 bg-purple-50 text-center">
+                    <img src="{{ $college->certificate_url }}" class="mx-auto rounded-lg shadow-md" style="max-height: 380px; object-fit: contain;" alt="Sample Certificate">
                 </div>
             </div>
             @endif
 
-            <!-- 7. Placements & Top Recruiters -->
+            <!-- 7. PLACEMENTS & RECRUITERS -->
             @if(!empty($college->highest_package) || !empty($college->average_package) || !empty($college->top_recruiters))
-            <div class="content-block" id="sec-placements">
-                <h5 class="content-block-header">
-                    <i class="bi bi-briefcase-fill text-danger"></i> Placement Records & Recruiters
-                </h5>
-                <div class="row g-3 mb-3 text-center">
+            <div class="bg-white border border-gray-200 rounded-2xl p-7 mb-6 scroll-mt-28" id="sec-placements">
+                <h3 class="text-xl font-bold text-purple-900 mb-4 pb-3 border-b-2 border-purple-100 flex items-center gap-2">
+                    <i class="bi bi-briefcase-fill text-red-600"></i> Placement Records & Recruiters
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                     @if($college->highest_package)
-                    <div class="col-md-6">
-                        <div class="p-3 bg-light rounded-3 border">
-                            <small class="text-muted d-block">Highest Salary Package</small>
-                            <h4 class="fw-bold text-success mb-0">{{ $college->highest_package }}</h4>
-                        </div>
+                    <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                        <p class="text-gray-600 text-xs mb-1">Highest Salary Package</p>
+                        <h3 class="text-2xl font-bold text-green-600">{{ $college->highest_package }}</h3>
                     </div>
                     @endif
                     @if($college->average_package)
-                    <div class="col-md-6">
-                        <div class="p-3 bg-light rounded-3 border">
-                            <small class="text-muted d-block">Average Salary Package</small>
-                            <h4 class="fw-bold text-dark mb-0">{{ $college->average_package }}</h4>
-                        </div>
+                    <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                        <p class="text-gray-600 text-xs mb-1">Average Salary Package</p>
+                        <h3 class="text-2xl font-bold text-gray-900">{{ $college->average_package }}</h3>
                     </div>
                     @endif
                 </div>
                 @if($college->top_recruiters)
-                <div class="p-3 bg-light rounded-3">
-                    <strong class="small d-block text-dark mb-1">Prominent Hiring Partners:</strong>
-                    <p class="small text-muted mb-0">{{ $college->top_recruiters }}</p>
+                <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <p class="font-bold text-gray-900 text-sm mb-2 flex items-center gap-2">
+                        <i class="bi bi-building-check text-blue-600"></i> Prominent Hiring Partners
+                    </p>
+                    <p class="text-gray-700 text-sm">{{ $college->top_recruiters }}</p>
                 </div>
                 @endif
             </div>
             @endif
 
-            <!-- 8. Scholarships & Financial Aid -->
+            <!-- 8. SCHOLARSHIPS & FINANCIAL AID -->
             @if(!empty($college->scholarship_info))
-            <div class="content-block" id="sec-scholarships">
-                <h5 class="content-block-header">
-                    <i class="bi bi-award-fill text-warning"></i> Scholarships & Financial Support
-                </h5>
-                <p class="small text-secondary mb-0 leading-relaxed">{{ $college->scholarship_info }}</p>
-            </div>
-            @endif
-
-            <!-- 9. Campus Facilities -->
-            @if($college->college_mode !== 'online' && ($college->has_boys_hostel || $college->has_girls_hostel || $college->campus_size))
-            <div class="content-block" id="sec-facilities">
-                <h5 class="content-block-header">
-                    <i class="bi bi-buildings-fill text-info"></i> Campus Infrastructure & Facilities
-                </h5>
-                <div class="d-flex flex-wrap gap-2">
-                    <span class="badge bg-light text-dark border p-2"><i class="bi bi-wifi text-primary me-1"></i> High-Speed Wi-Fi</span>
-                    <span class="badge bg-light text-dark border p-2"><i class="bi bi-book text-success me-1"></i> Central Digital Library</span>
-                    @if($college->has_boys_hostel) <span class="badge bg-light text-dark border p-2"><i class="bi bi-house text-dark me-1"></i> Boys Hostel</span> @endif
-                    @if($college->has_girls_hostel) <span class="badge bg-light text-dark border p-2"><i class="bi bi-house-heart text-danger me-1"></i> Girls Hostel</span> @endif
-                    <span class="badge bg-light text-dark border p-2"><i class="bi bi-cup-hot text-warning me-1"></i> Cafeteria & Food Court</span>
-                    <span class="badge bg-light text-dark border p-2"><i class="bi bi-dribbble text-danger me-1"></i> Sports Arena</span>
+            <div class="bg-white border border-gray-200 rounded-2xl p-7 mb-6 scroll-mt-28" id="sec-scholarships">
+                <h3 class="text-xl font-bold text-purple-900 mb-4 pb-3 border-b-2 border-purple-100 flex items-center gap-2">
+                    <i class="bi bi-award-fill text-yellow-500"></i> Scholarships & Financial Support
+                </h3>
+                <div class="text-gray-700 leading-relaxed text-sm space-y-3">
+                    {!! $college->scholarship_info !!}
                 </div>
             </div>
             @endif
 
-            <!-- 10. Dynamic FAQs -->
+            <!-- 9. CAMPUS INFRASTRUCTURE & FACILITIES -->
+            @if($college->college_mode !== 'online' && ($college->has_boys_hostel || $college->has_girls_hostel || $college->campus_size || !empty($college->facilities)))
+            <div class="bg-white border border-gray-200 rounded-2xl p-7 mb-6 scroll-mt-28" id="sec-facilities">
+                <h3 class="text-xl font-bold text-purple-900 mb-4 pb-3 border-b-2 border-purple-100 flex items-center gap-2">
+                    <i class="bi bi-buildings-fill text-blue-600"></i> Campus Infrastructure & Facilities
+                </h3>
+                <div class="flex flex-wrap gap-2">
+                    @if(!empty($college->facilities) && is_array($college->facilities))
+                        @foreach($college->facilities as $fac)
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 text-gray-900 text-xs font-semibold rounded-full border border-gray-300">
+                            <i class="bi bi-check-circle-fill text-blue-600"></i> {{ $fac }}
+                        </span>
+                        @endforeach
+                    @endif
+                    @if($college->has_boys_hostel) 
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 text-gray-900 text-xs font-semibold rounded-full border border-gray-300">
+                            <i class="bi bi-house text-gray-900"></i> Boys Hostel
+                        </span>
+                    @endif
+                    @if($college->has_girls_hostel) 
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 text-gray-900 text-xs font-semibold rounded-full border border-gray-300">
+                            <i class="bi bi-house-heart text-red-600"></i> Girls Hostel
+                        </span>
+                    @endif
+                    @if($college->campus_size) 
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 text-gray-900 text-xs font-semibold rounded-full border border-gray-300">
+                            <i class="bi bi-geo-alt text-yellow-500"></i> Campus: {{ $college->campus_size }}
+                        </span>
+                    @endif
+                </div>
+            </div>
+            @endif
+
+            <!-- 10. FAQs -->
             @if(!empty($college->faqs) && count($college->faqs) > 0)
-            <div class="content-block" id="sec-faqs">
-                <h5 class="content-block-header">
-                    <i class="bi bi-question-circle-fill text-warning"></i> Frequently Asked Questions
-                </h5>
-                <div class="accordion" id="collegeFaqs">
+            <div class="bg-white border border-gray-200 rounded-2xl p-7 mb-6 scroll-mt-28" id="sec-faqs">
+                <h3 class="text-xl font-bold text-purple-900 mb-4 pb-3 border-b-2 border-purple-100 flex items-center gap-2">
+                    <i class="bi bi-question-circle-fill text-yellow-500"></i> Frequently Asked Questions
+                </h3>
+                <div id="collegeFaqs" class="space-y-2">
                     @foreach($college->faqs as $idx => $faq)
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button {{ $idx > 0 ? 'collapsed' : '' }} fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq_{{ $idx }}">
-                                {{ $faq['question'] ?? 'Question' }}
-                            </button>
-                        </h2>
-                        <div id="faq_{{ $idx }}" class="accordion-collapse collapse {{ $idx === 0 ? 'show' : '' }}" data-bs-parent="#collegeFaqs">
-                            <div class="accordion-body small text-secondary">
+                    <div class="border border-gray-200 rounded-lg overflow-hidden">
+                        <button class="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition font-bold text-gray-900" type="button" data-bs-toggle="collapse" data-bs-target="#faq_{{ $idx }}">
+                            {{ $faq['question'] ?? 'Question' }}
+                            <i class="bi bi-chevron-down text-gray-600"></i>
+                        </button>
+                        <div id="faq_{{ $idx }}" class="collapse {{ $idx === 0 ? 'show' : '' }}" data-bs-parent="#collegeFaqs">
+                            <div class="px-4 py-3 bg-gray-50 text-gray-700 text-sm border-t border-gray-200">
                                 {{ $faq['answer'] ?? '' }}
                             </div>
                         </div>
@@ -784,15 +495,37 @@
             </div>
             @endif
 
-        </div>
+            <!-- 11. RELATED INSTITUTES -->
+            @if(isset($relatedColleges) && $relatedColleges->count() > 0)
+            <div class="mt-6 pt-4">
+                <h3 class="text-xl font-bold text-gray-900 mb-4">Similar Institutes in {{ $college->state }}</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    @foreach($relatedColleges as $rel)
+                    <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition p-4">
+                        <img src="{{ $rel->banner_url }}" class="rounded-lg mb-3 w-full" style="height: 120px; object-fit: cover;" alt="{{ $rel->name }}">
+                        <h6 class="font-bold text-gray-900 mb-1.5">
+                            <a href="{{ route('college.show', $rel->slug) }}" class="text-gray-900 hover:text-purple-700">{{ $rel->name }}</a>
+                        </h6>
+                        <p class="text-gray-600 text-xs mb-3 flex items-center gap-1">
+                            <i class="bi bi-geo-alt text-red-600"></i> {{ $rel->city }}, {{ $rel->state }}
+                        </p>
+                        <a href="{{ route('college.show', $rel->slug) }}" class="block w-full px-4 py-2 bg-purple-100 text-purple-900 font-bold rounded-lg text-sm text-center hover:bg-purple-200 transition">
+                            View College
+                        </a>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+            @endif
 
+        </div>
     </div>
 </div>
 
 @push('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // 🎯 Dynamic ScrollSpy for Left Quick Navigation
+        // 1. Dynamic ScrollSpy for Quick Navigation
         const navLinks = document.querySelectorAll('.quick-nav-link');
         const sections = Array.from(navLinks).map(link => document.getElementById(link.getAttribute('data-target'))).filter(Boolean);
 
@@ -807,14 +540,14 @@
             });
 
             navLinks.forEach(link => {
-                link.classList.remove('active');
+                link.classList.remove('bg-purple-100', 'text-purple-700', 'border-l-4', 'border-purple-700');
                 if (link.getAttribute('data-target') === currentSectionId) {
-                    link.classList.add('active');
+                    link.classList.add('bg-purple-100', 'text-purple-700', 'border-l-4', 'border-purple-700');
                 }
             });
         });
 
-        // Dynamic State -> City loading in Admission Card
+        // 2. State -> City dropdown
         const stateDropdown = document.getElementById('leadCardStateSelect');
         const cityDropdown = document.getElementById('leadCardCitySelect');
 
@@ -843,7 +576,7 @@
             });
         }
 
-        // AJAX Lead Submission in Admission Card
+        // 3. AJAX Lead Submission
         const leadForm = document.getElementById('admissionSupportForm');
         if (leadForm) {
             leadForm.addEventListener('submit', function(e) {
@@ -855,29 +588,28 @@
                 btn.innerText = 'Saving...';
 
                 fetch("{{ route('lead.submit') }}", {
-                        method: "POST",
-                        headers: {
-                            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                            "Accept": "application/json"
-                        },
-                        body: new FormData(this)
-                    })
-                    .then(res => res.json())
-                    .then(data => {
-                        btn.disabled = false;
-                        btn.innerText = 'Save & Request Callback';
-                        msg.innerHTML = `<div class="alert alert-success py-2 small rounded-pill text-center mb-3">${data.message || 'Thank you! We will contact you soon.'}</div>`;
-                        leadForm.reset();
-                    })
-                    .catch(() => {
-                        btn.disabled = false;
-                        btn.innerText = 'Save & Request Callback';
-                        msg.innerHTML = `<div class="alert alert-danger py-2 small rounded-pill text-center mb-3">Something went wrong. Try again.</div>`;
-                    });
+                    method: "POST",
+                    headers: {
+                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        "Accept": "application/json"
+                    },
+                    body: new FormData(this)
+                })
+                .then(res => res.json())
+                .then(data => {
+                    btn.disabled = false;
+                    btn.innerText = 'Save & Request Callback';
+                    msg.innerHTML = `<div class="alert alert-success py-2 px-4 text-center text-sm rounded-lg mb-3 bg-green-100 text-green-800">${data.message || 'Thank you! We will contact you soon.'}</div>`;
+                    leadForm.reset();
+                })
+                .catch(() => {
+                    btn.disabled = false;
+                    btn.innerText = 'Save & Request Callback';
+                    msg.innerHTML = `<div class="alert alert-danger py-2 px-4 text-center text-sm rounded-lg mb-3 bg-red-100 text-red-800">Something went wrong. Try again.</div>`;
+                });
             });
         }
     });
 </script>
 @endpush
-
 @endsection

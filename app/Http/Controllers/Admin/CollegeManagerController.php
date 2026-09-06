@@ -17,11 +17,13 @@ class CollegeManagerController extends Controller
     public function index(Request $request)
     {
         $query = College::with('courses')->latest();
+
         if ($request->filled('search')) {
             $query->where('name', 'LIKE', '%' . $request->search . '%')
                 ->orWhere('city', 'LIKE', '%' . $request->search . '%');
         }
-        $colleges = $query->paginate(10)->withQueryString();
+
+        $colleges = $query->paginate(12)->withQueryString();
         return view('admin.colleges.index', compact('colleges'));
     }
 
@@ -30,16 +32,8 @@ class CollegeManagerController extends Controller
         $streams = Stream::with(['courses.specializations'])->orderBy('name')->get();
         $courses = Course::with(['stream', 'specializations'])->orderBy('name')->get();
         $states  = State::where('status', true)->orderBy('name')->get();
-
         return view('admin.colleges.create', compact('streams', 'courses', 'states'));
     }
-
-    // public function create()
-    // {
-    //     $courses = Course::orderBy('name')->get();
-    //     $states  = State::where('status', true)->orderBy('name')->get();
-    //     return view('admin.colleges.create', compact('courses', 'states'));
-    // }
 
     public function store(Request $request)
     {
@@ -54,21 +48,29 @@ class CollegeManagerController extends Controller
             'established_year'         => 'nullable|string|max:10',
             'campus_size'              => 'nullable|string|max:50',
             'approvals'                => 'nullable|string|max:255',
+            'entrance_exams'           => 'nullable|string|max:255',
+            'rating'                   => 'nullable|numeric|between:1,5',
+            'reviews_count'            => 'nullable|integer|min:0',
             'highest_package'          => 'nullable|string|max:50',
             'average_package'          => 'nullable|string|max:50',
             'top_recruiters'           => 'nullable|string',
             'overview'                 => 'nullable|string',
             'admission_process'        => 'nullable|string',
             'scholarship_info'         => 'nullable|string',
-            'banner_image'             => 'nullable|image|mimes:jpeg,png,jpg,webp|max:3072',
-            'logo'                     => 'nullable|image|mimes:jpeg,png,jpg,webp,svg|max:1024',
-            'sample_certificate_image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:3072',
+            'banner_image'             => 'nullable|image|mimes:jpeg,png,jpg,webp|max:4096',
+            'logo'                     => 'nullable|image|mimes:jpeg,png,jpg,webp,svg|max:2048',
+            'sample_certificate_image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:4096',
             'brochure_pdf'             => 'nullable|mimes:pdf|max:10240',
         ]);
 
-        $validated['slug'] = Str::slug($request->name) . '-' . rand(100, 999);
-        $validated['has_boys_hostel'] = $request->has('has_boys_hostel');
+        $validated['slug']             = Str::slug($request->name) . '-' . rand(100, 999);
+        $validated['has_boys_hostel']  = $request->has('has_boys_hostel');
         $validated['has_girls_hostel'] = $request->has('has_girls_hostel');
+        $validated['is_featured']      = $request->has('is_featured');
+        $validated['status']           = $request->has('status');
+        $validated['rating']           = $request->input('rating', 4.5);
+        $validated['reviews_count']    = $request->input('reviews_count', 150);
+        $validated['facilities']       = $request->input('facilities', []);
 
         // File uploads
         if ($request->hasFile('banner_image')) {
@@ -88,6 +90,7 @@ class CollegeManagerController extends Controller
         if ($request->filled('highlights')) {
             $validated['highlights'] = array_values(array_filter($request->highlights));
         }
+
         if ($request->filled('faq_questions')) {
             $faqs = [];
             foreach ($request->faq_questions as $idx => $q) {
@@ -119,24 +122,14 @@ class CollegeManagerController extends Controller
         return redirect()->route('admin.colleges.index')->with('success', 'College created and published successfully!');
     }
 
-
     public function edit($id)
     {
         $college = College::with(['collegeCourses.course.stream'])->findOrFail($id);
         $streams = Stream::with(['courses.specializations'])->orderBy('name')->get();
         $courses = Course::with(['stream', 'specializations'])->orderBy('name')->get();
         $states  = State::where('status', true)->orderBy('name')->get();
-
         return view('admin.colleges.edit', compact('college', 'streams', 'courses', 'states'));
     }
-
-    // public function edit($id)
-    // {
-    //     $college = College::with('collegeCourses')->findOrFail($id);
-    //     $courses = Course::orderBy('name')->get();
-    //     $states  = State::where('status', true)->orderBy('name')->get();
-    //     return view('admin.colleges.edit', compact('college', 'courses', 'states'));
-    // }
 
     public function update(Request $request, $id)
     {
@@ -153,20 +146,28 @@ class CollegeManagerController extends Controller
             'established_year'         => 'nullable|string|max:10',
             'campus_size'              => 'nullable|string|max:50',
             'approvals'                => 'nullable|string|max:255',
+            'entrance_exams'           => 'nullable|string|max:255',
+            'rating'                   => 'nullable|numeric|between:1,5',
+            'reviews_count'            => 'nullable|integer|min:0',
             'highest_package'          => 'nullable|string|max:50',
             'average_package'          => 'nullable|string|max:50',
             'top_recruiters'           => 'nullable|string',
             'overview'                 => 'nullable|string',
             'admission_process'        => 'nullable|string',
             'scholarship_info'         => 'nullable|string',
-            'banner_image'             => 'nullable|image|mimes:jpeg,png,jpg,webp|max:3072',
-            'logo'                     => 'nullable|image|mimes:jpeg,png,jpg,webp,svg|max:1024',
-            'sample_certificate_image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:3072',
+            'banner_image'             => 'nullable|image|mimes:jpeg,png,jpg,webp|max:4096',
+            'logo'                     => 'nullable|image|mimes:jpeg,png,jpg,webp,svg|max:2048',
+            'sample_certificate_image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:4096',
             'brochure_pdf'             => 'nullable|mimes:pdf|max:10240',
         ]);
 
-        $validated['has_boys_hostel'] = $request->has('has_boys_hostel');
+        $validated['has_boys_hostel']  = $request->has('has_boys_hostel');
         $validated['has_girls_hostel'] = $request->has('has_girls_hostel');
+        $validated['is_featured']      = $request->has('is_featured');
+        $validated['status']           = $request->has('status');
+        $validated['rating']           = $request->input('rating', $college->rating);
+        $validated['reviews_count']    = $request->input('reviews_count', $college->reviews_count);
+        $validated['facilities']       = $request->input('facilities', []);
 
         if ($request->hasFile('banner_image')) {
             if ($college->banner_image && Storage::disk('public')->exists($college->banner_image)) {
@@ -174,18 +175,21 @@ class CollegeManagerController extends Controller
             }
             $validated['banner_image'] = $request->file('banner_image')->store('colleges/banners', 'public');
         }
+
         if ($request->hasFile('logo')) {
             if ($college->logo && Storage::disk('public')->exists($college->logo)) {
                 Storage::disk('public')->delete($college->logo);
             }
             $validated['logo'] = $request->file('logo')->store('colleges/logos', 'public');
         }
+
         if ($request->hasFile('sample_certificate_image')) {
             if ($college->sample_certificate_image && Storage::disk('public')->exists($college->sample_certificate_image)) {
                 Storage::disk('public')->delete($college->sample_certificate_image);
             }
             $validated['sample_certificate_image'] = $request->file('sample_certificate_image')->store('colleges/certificates', 'public');
         }
+
         if ($request->hasFile('brochure_pdf')) {
             if ($college->brochure_pdf && Storage::disk('public')->exists($college->brochure_pdf)) {
                 Storage::disk('public')->delete($college->brochure_pdf);
@@ -235,7 +239,6 @@ class CollegeManagerController extends Controller
         if ($college->sample_certificate_image) Storage::disk('public')->delete($college->sample_certificate_image);
         if ($college->brochure_pdf) Storage::disk('public')->delete($college->brochure_pdf);
         $college->delete();
-
         return back()->with('success', 'College deleted.');
     }
 }

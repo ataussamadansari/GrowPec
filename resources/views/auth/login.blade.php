@@ -4,174 +4,101 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login - GrowPec</title>
-    
-    <!-- Bootstrap 5 & Icons -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <style>
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background: linear-gradient(135deg, #1E1346 0%, #2E1E6B 50%, #4A2E9E 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        .login-card {
-            background: #ffffff;
-            border-radius: 24px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
-            width: 100%;
-            max-width: 440px;
-            overflow: hidden;
-        }
-        .login-header {
-            background: #FAF8FF;
-            border-bottom: 1px solid #ECE8F6;
-            padding: 30px 25px 20px;
-            text-align: center;
-        }
-        .btn-gold {
-            background-color: #F5A623;
-            color: #000;
-            font-weight: 700;
-            border-radius: 12px;
-            padding: 12px 20px;
-            border: none;
-            transition: all 0.3s ease;
-        }
-        .btn-gold:hover {
-            background-color: #E09612;
-            color: #000;
-            transform: translateY(-1px);
-        }
-        .form-control-custom {
-            border-radius: 12px;
-            padding: 12px 16px;
-            border: 1px solid #CBD5E1;
-            font-size: 0.95rem;
-        }
-        .form-control-custom:focus {
-            border-color: #2E1E6B;
-            box-shadow: 0 0 0 3px rgba(46, 30, 107, 0.15);
-        }
-        .demo-credentials-box {
-            background: #F1EFF8;
-            border-left: 4px solid #F5A623;
-            border-radius: 8px;
-            padding: 10px 14px;
-            font-size: 0.82rem;
-            color: #334155;
-        }
-    </style>
+    @vite(['resources/css/app.css'])
 </head>
-<body>
+<body class="bg-gradient-to-br from-purple-900 via-purple-800 to-purple-900 min-h-screen flex items-center justify-center p-4">
 
-<div class="login-card">
+<div class="w-full max-w-md bg-white rounded-3xl shadow-2xl overflow-hidden">
     <!-- Header -->
-    <div class="login-header">
-        <a href="{{ route('home') }}" class="text-decoration-none">
-            <h3 class="fw-extrabold mb-1" style="color: #2E1E6B;">
-                <i class="bi bi-mortarboard-fill text-warning me-1"></i>Grow<span style="color: #F5A623;">Pec</span>
-            </h3>
+    <div class="bg-purple-50 border-b border-purple-200 px-6 py-8 text-center">
+        <a href="{{ route('home') }}" class="inline-block">
+            <h2 class="text-2xl font-extrabold text-purple-900">
+                Grow<span class="text-yellow-500">Pec</span>
+            </h2>
         </a>
-        <p class="text-muted small mb-0">Admin Management Portal</p>
+        <p class="text-gray-600 text-sm mt-1">Admin Management Portal</p>
     </div>
 
-    <div class="p-4 pt-4">
+    <div class="px-6 py-6">
         <!-- Flash Alerts -->
         @if(session('error'))
-        <div class="alert alert-danger py-2 small mb-3">
-            <i class="bi bi-exclamation-triangle-fill me-1"></i> {{ session('error') }}
+        <div class="mb-4 p-3 bg-red-50 border-l-4 border-red-500 text-red-700 text-sm rounded">
+            <i class="bi bi-exclamation-triangle-fill mr-2"></i> {{ session('error') }}
         </div>
         @endif
 
         @if(session('success'))
-        <div class="alert alert-success py-2 small mb-3">
-            <i class="bi bi-check-circle-fill me-1"></i> {{ session('success') }}
+        <div class="mb-4 p-3 bg-green-50 border-l-4 border-green-500 text-green-700 text-sm rounded">
+            <i class="bi bi-check-circle-fill mr-2"></i> {{ session('success') }}
         </div>
         @endif
 
         <!-- Login Form -->
-        <form action="{{ route('login.submit') }}" method="POST">
+        <form action="{{ route('login.submit') }}" method="POST" class="space-y-4">
             @csrf
 
             <!-- Email -->
-            <div class="mb-3">
-                <label class="form-label small fw-bold text-dark">Email Address</label>
-                <div class="input-group">
-                    <span class="input-group-text bg-light border-end-0" style="border-radius: 12px 0 0 12px;">
-                        <i class="bi bi-envelope text-muted"></i>
+            <div>
+                <label class="block text-sm font-bold text-gray-900 mb-2">Email Address</label>
+                <div class="relative">
+                    <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                        <i class="bi bi-envelope"></i>
                     </span>
-                    <input type="email" 
-                           name="email" 
-                           value="{{ old('email') }}" 
-                           class="form-control form-control-custom border-start-0 @error('email') is-invalid @enderror" 
-                           placeholder="admin@growpec.com" 
-                           style="border-radius: 0 12px 12px 0;" 
-                           required 
+                    <input type="email"
+                           name="email"
+                           value="{{ old('email') }}"
+                           class="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent transition @error('email') border-red-500 @enderror"
+                           placeholder="admin@growpec.com"
+                           required
                            autofocus>
                 </div>
                 @error('email')
-                    <small class="text-danger d-block mt-1">{{ $message }}</small>
+                    <small class="text-red-600 text-xs mt-1 block">{{ $message }}</small>
                 @enderror
             </div>
 
             <!-- Password -->
-            <div class="mb-3">
-                <label class="form-label small fw-bold text-dark">Password</label>
-                <div class="input-group">
-                    <span class="input-group-text bg-light border-end-0" style="border-radius: 12px 0 0 12px;">
-                        <i class="bi bi-lock text-muted"></i>
+            <div>
+                <label class="block text-sm font-bold text-gray-900 mb-2">Password</label>
+                <div class="relative">
+                    <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                        <i class="bi bi-lock"></i>
                     </span>
-                    <input type="password" 
-                           name="password" 
+                    <input type="password"
+                           name="password"
                            id="passwordInput"
-                           class="form-control form-control-custom border-start-0 @error('password') is-invalid @enderror" 
-                           placeholder="••••••••" 
-                           style="border-radius: 0 12px 12px 0;" 
+                           class="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent transition @error('password') border-red-500 @enderror"
+                           placeholder="••••••••"
                            required>
                 </div>
                 @error('password')
-                    <small class="text-danger d-block mt-1">{{ $message }}</small>
+                    <small class="text-red-600 text-xs mt-1 block">{{ $message }}</small>
                 @enderror
             </div>
 
             <!-- Remember Me -->
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="remember" id="rememberMe" {{ old('remember') ? 'checked' : '' }}>
-                    <label class="form-check-label small text-muted" for="rememberMe">
-                        Keep me signed in
-                    </label>
-                </div>
+            <div class="flex items-center justify-between">
+                <label class="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" name="remember" id="rememberMe" {{ old('remember') ? 'checked' : '' }} class="w-4 h-4 text-purple-600 rounded focus:ring-2 focus:ring-purple-500">
+                    <span class="text-sm text-gray-600">Keep me signed in</span>
+                </label>
             </div>
 
             <!-- Submit Button -->
-            <button type="submit" class="btn btn-gold w-100 shadow-sm mb-3">
-                <i class="bi bi-box-arrow-in-right me-1"></i> Sign In to Dashboard
+            <button type="submit" class="w-full bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold py-2.5 px-4 rounded-xl transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2 mt-6">
+                <i class="bi bi-box-arrow-in-right"></i> Sign In to Dashboard
             </button>
-
-            <!-- Quick Demo Credentials Hint -->
-            <div class="demo-credentials-box mb-2">
-                <strong class="d-block text-dark">Default Super Admin:</strong>
-                <div>Email: <code>admin@growpec.com</code></div>
-                <div>Pass: <code>password123</code></div>
-            </div>
         </form>
     </div>
 
     <!-- Card Footer -->
-    <div class="text-center py-3 bg-light border-top small text-muted">
-        <a href="{{ route('home') }}" class="text-decoration-none text-dark fw-semibold">
-            <i class="bi bi-arrow-left me-1"></i> Back to GrowPec Website
+    <div class="text-center py-4 bg-gray-50 border-t border-gray-200">
+        <a href="{{ route('home') }}" class="text-gray-900 font-semibold text-sm hover:text-purple-900 transition flex items-center justify-center gap-1">
+            <i class="bi bi-arrow-left"></i> Back to GrowPec Website
         </a>
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

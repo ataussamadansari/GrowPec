@@ -1,573 +1,444 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'GrowPec - Discover Top Colleges & Online Degrees in India')</title>
 
+    <title>@yield('title', ($siteSettings['general.site_name'] ?? 'GrowPEC') . ' - ' . ($siteSettings['general.site_tagline'] ?? 'Admission Guidance'))</title>
+    <meta name="description" content="{{ $siteSettings['general.site_description'] ?? 'Compare verified college fees, check UGC & AICTE approvals, scholarships, and connect with top counselors.' }}">
+
+    @if(!empty($siteSettings['general.favicon']))
+    <link rel="icon" type="image/png" href="{{ asset($siteSettings['general.favicon']) }}">
+    @else
     <link rel="icon" type="image/png" href="{{ asset('assets/growpec.png') }}">
+    @endif
 
-    <!-- Bootstrap 5 CSS & Icons -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Icons & Assets -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    @php
+        $primaryBg     = $siteSettings['theme.primary_color'] ?? '#2E1E6B';
+        $secondaryBg   = $siteSettings['theme.secondary_purple'] ?? '#4E3797';
+        $accentBg      = $siteSettings['theme.accent_gold'] ?? '#F5A623';
+        $topbarBg      = $siteSettings['theme.topbar_color'] ?? '#F5A623';
+        $bodyBg        = $siteSettings['theme.body_bg'] ?? '#F8F9FC';
+    @endphp
 
     <style>
         :root {
             --primary-purple: #2E1E6B;
-            --primary-dark: #1E1346;
+            --secondary-purple: #4E3797;
             --accent-gold: #F5A623;
-            --accent-gold-hover: #E09612;
+            --topbar-bg: #F5A623;
             --bg-light: #F8F9FC;
-            --text-dark: #1F2937;
-            --text-muted: #6B7280;
         }
-
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: 'DM Sans', sans-serif;
             background-color: var(--bg-light);
-            color: var(--text-dark);
+            color: #1F2937;
         }
-
-        .top-notice-bar {
-            background-color: var(--accent-gold);
-            color: #000;
-            font-size: 0.85rem;
-            font-weight: 600;
-            padding: 6px 0;
-            text-align: center;
-        }
-
-        /* Navbar & Logo */
-        .main-navbar {
-            background: #ffffff;
-            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
-            padding: 10px 0;
-        }
-
-        .navbar-brand {
-            padding: 0;
-            display: inline-flex;
-            align-items: center;
-        }
-
-        .navbar-logo-img {
-            height: 46px;
-            max-width: 210px;
-            object-fit: contain;
-            transition: transform 0.2s ease;
-        }
-
-        /* Header Search Bar */
-        .header-search-wrap {
-            position: relative;
-            min-width: 260px;
-            max-width: 320px;
-            width: 100%;
-        }
-
-        .header-search-input {
-            border-radius: 25px !important;
-            border: 1px solid #CBD5E1 !important;
-            padding: 7px 16px 7px 36px !important;
-            font-size: 0.85rem !important;
-            background-color: #F8FAFC !important;
-            color: #1E293B !important;
-        }
-
-        .header-search-input:focus {
-            background-color: #ffffff !important;
-            border-color: var(--primary-purple) !important;
-            box-shadow: 0 0 0 3px rgba(46, 30, 107, 0.12) !important;
-        }
-
-        .header-search-icon {
-            position: absolute;
-            left: 13px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #94A3B8;
-            font-size: 0.9rem;
-            pointer-events: none;
-            z-index: 5;
-        }
-
-        .live-search-dropdown {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: #ffffff;
-            border-radius: 12px;
-            border: 1px solid #E2E8F0;
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
-            z-index: 1050;
-            max-height: 350px;
-            overflow-y: auto;
-            margin-top: 6px;
-        }
-
-        .live-search-item {
-            padding: 9px 12px;
-            display: block;
+        a {
             text-decoration: none;
-            color: #1E293B;
-            border-bottom: 1px solid #F1F5F9;
-        }
-
-        .live-search-item:hover {
-            background: #FAF8FF;
-        }
-
-        @media (max-width: 991.98px) {
-            .header-search-wrap {
-                min-width: 100%;
-                max-width: 100%;
-            }
-        }
-
-        .nav-link {
-            font-weight: 600;
-            color: #374151 !important;
-            margin: 0 8px;
-            transition: color 0.2s;
-            font-size: 0.92rem;
-        }
-
-        .nav-link:hover,
-        .nav-link.active {
-            color: var(--primary-purple) !important;
-        }
-
-        .btn-gold {
-            background-color: var(--accent-gold);
-            color: #000;
-            font-weight: 700;
-            border-radius: 8px;
-            padding: 8px 18px;
-            border: none;
-            transition: all 0.3s ease;
-        }
-
-        .btn-gold:hover {
-            background-color: var(--accent-gold-hover);
-            color: #000;
-            transform: translateY(-1px);
-        }
-
-        /* Footer & Logo */
-        footer {
-            background-color: #0F0A2A;
-            color: #9CA3AF;
-            padding: 50px 0 20px;
-            font-size: 0.9rem;
-        }
-
-        .footer-logo-img {
-            height: 52px;
-            max-width: 220px;
-            object-fit: contain;
-            background: #ffffff;
-            padding: 6px 12px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        footer a {
-            color: #D1D5DB;
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-
-        footer a:hover {
-            color: var(--accent-gold);
-        }
-
-        footer h6 {
-            color: #fff;
-            font-weight: 700;
-            margin-bottom: 20px;
-        }
-
-        @media (max-width: 991.98px) {
-            .header-search-wrap {
-                max-width: 100%;
-                margin: 10px 0;
-            }
-
-            .navbar-logo-img {
-                height: 38px;
-                max-width: 160px;
-            }
+            color: inherit;
         }
     </style>
+
+    @if(!empty($siteSettings['api.google_analytics_id']))
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ $siteSettings['api.google_analytics_id'] }}"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){ dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', @json($siteSettings['api.google_analytics_id']));
+    </script>
+    @endif
+
     @stack('styles')
 </head>
+<body class="min-h-screen flex flex-col">
 
-<body>
-    <!-- Top Announcement Bar -->
-    <div class="top-notice-bar">
-        Need Admission Guidance? Call our Expert Counselors: <a href="tel:+918858285271" class="text-dark fw-bold text-decoration-underline">+91 8858285271</a> | 100% Verified Information
+    <!-- Maintenance Alert -->
+    @if(($siteSettings['features.maintenance_mode'] ?? '0') == '1' && Auth::check() && in_array(Auth::user()->role, ['super_admin', 'sub_admin']))
+    <div class="sticky top-0 z-50 w-full bg-red-600 text-white py-2 px-4 text-center font-bold text-sm">
+        <i class="bi bi-exclamation-triangle-fill mr-2"></i>
+        MAINTENANCE MODE IS ACTIVE! Public visitors see the maintenance screen.
+        <a href="{{ route('admin.settings.index') }}" class="text-white underline ml-2">Turn Off in Settings</a>
+    </div>
+    @endif
+
+    <!-- Top Notice Bar -->
+    <div class="w-full bg-amber-400 text-gray-950 py-1.5 px-4 text-center text-xs sm:text-sm font-semibold fixed top-0 z-50 left-0 right-0">
+        Need Admission Guidance? Call our Expert Counselors:
+        <a href="tel:{{ $siteSettings['general.support_phone'] ?? '+918858285271' }}" class="font-bold underline ml-1">
+            {{ $siteSettings['general.support_phone'] ?? '+91 8858285271' }}
+        </a>
+        <span class="ml-2 hidden sm:inline">| 100% Verified Information</span>
     </div>
 
     <!-- Main Navigation Header -->
-    <nav class="navbar navbar-expand-lg main-navbar sticky-top">
-        <div class="container">
+    <nav class="fixed top-7 left-0 right-0 z-40 w-full bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <a href="{{ route('home') }}" class="flex-shrink-0">
+                    <img src="{{ asset($siteSettings['general.logo'] ?? 'assets/growpec.png') }}" alt="{{ $siteSettings['general.site_name'] ?? 'GrowPEC' }}" class="h-11 w-auto object-contain">
+                </a>
 
-            <!-- 1. Header Logo -->
-            <a class="navbar-brand me-3" href="{{ route('home') }}">
-                <img src="{{ asset('assets/growpec.png') }}" alt="GrowPEC Logo" class="navbar-logo-img">
-            </a>
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center gap-6 lg:gap-8 flex-1 ml-8">
+                    <a href="{{ route('home') }}" class="text-gray-700 hover:text-purple-900 font-semibold text-sm transition {{ request()->routeIs('home') ? 'text-purple-900 font-bold' : '' }}">
+                        Home
+                    </a>
+                    <a href="{{ route('colleges.regular') }}" class="text-gray-700 hover:text-purple-900 font-semibold text-sm transition {{ request()->routeIs('colleges.regular') ? 'text-purple-900 font-bold' : '' }}">
+                        Regular Colleges
+                    </a>
+                    @if(($siteSettings['features.enable_online_colleges'] ?? '1') == '1')
+                    <a href="{{ route('colleges.online') }}" class="text-gray-700 hover:text-purple-900 font-semibold text-sm transition {{ request()->routeIs('colleges.online') ? 'text-purple-900 font-bold' : '' }}">
+                        Online Colleges
+                    </a>
+                    @endif
 
-            <!-- Mobile Toggler Button (Mobile view ke liye zaroori) -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <!-- 2. Navigation Links, Search & User Area -->
-            <div class="collapse navbar-collapse" id="navbarContent">
-                <ul class="navbar-nav mx-auto mb-2 mb-lg-0 align-items-lg-center">
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('colleges.regular') ? 'active' : '' }}" href="{{ route('colleges.regular') }}">Regular Colleges</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('colleges.online') ? 'active' : '' }}" href="{{ route('colleges.online') }}">Online Colleges</a>
-                    </li>
-
-                    <!-- 3. 🔍 Header Search Bar -->
-                    <li class="nav-item my-2 my-lg-0">
-                        <div class="header-search-wrap mx-lg-2">
-                            <i class="bi bi-search header-search-icon"></i>
-                            <form action="{{ route('colleges.regular') }}" method="GET" id="headerSearchForm" class="m-0">
-                                <input type="text"
-                                    name="search"
-                                    id="headerSearchInput"
-                                    class="form-control header-search-input"
-                                    placeholder="Search colleges, courses, city..."
-                                    autocomplete="off"
-                                    value="{{ request('search') }}">
-                            </form>
-
-                            <!-- Live Auto-Suggest Results Dropdown -->
-                            <div id="headerSearchResults" class="live-search-dropdown d-none"></div>
-                        </div>
-                    </li>
-                </ul>
-
-                <!-- 4. User Profile / Auth Area -->
-                <div class="d-flex align-items-center gap-2 mt-2 mt-lg-0">
-                    @auth
-                    <div class="dropdown">
-                        <button class="btn btn-white btn-sm rounded-3 fw-semibold px-3 py-2 dropdown-toggle d-flex align-items-center gap-2 shadow-sm"
-                            type="button"
-                            id="studentDropdownBtn"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                            style="background: #ffffff; border: 1px solid #CBD5E1; color: #1E293B;">
-                            <i class="bi bi-person-circle fs-5" style="color: #1E293B;"></i>
-                            <span>Hi, {{ explode(' ', Auth::user()->name)[0] }}</span>
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end shadow border-0 py-2 mt-2"
-                            aria-labelledby="studentDropdownBtn"
-                            style="border-radius: 12px; min-width: 190px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08) !important;">
-                            @if(in_array(Auth::user()->role, ['super_admin', 'sub_admin']))
-                            <li>
-                                <a class="dropdown-item py-2 px-3 fw-semibold text-primary d-flex align-items-center gap-2" href="{{ route('admin.dashboard') }}">
-                                    <i class="bi bi-speedometer2 fs-6"></i>
-                                    <span>Admin Dashboard</span>
-                                </a>
-                            </li>
-                            <li>
-                                <hr class="dropdown-divider my-1">
-                            </li>
-                            @endif
-                            <li>
-                                <a class="dropdown-item py-2 px-3 fw-semibold d-flex align-items-center gap-2"
-                                    href="{{ route('student.profile') }}"
-                                    style="color: #2E1E6B;">
-                                    <i class="bi bi-person-fill fs-5" style="color: #2E1E6B;"></i>
-                                    <span>User Profile</span>
-                                </a>
-                            </li>
-                            <li>
-                                <hr class="dropdown-divider my-1" style="border-color: #F1EFF8;">
-                            </li>
-                            <li>
-                                <form action="{{ route('logout') }}" method="POST" class="m-0">
-                                    @csrf
-                                    <button type="submit" class="dropdown-item py-2 px-3 fw-semibold d-flex align-items-center gap-2" style="color: #2E1E6B;">
-                                        <i class="bi bi-box-arrow-left fs-5" style="color: #2E1E6B;"></i>
-                                        <span>Logout</span>
-                                    </button>
-                                </form>
-                            </li>
-                        </ul>
+                    <!-- Search Bar -->
+                    <div class="relative flex-1 max-w-xs">
+                        <i class="bi bi-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm z-10"></i>
+                        <form action="{{ route('colleges.regular') }}" method="GET" id="headerSearchForm" class="w-full">
+                            <input type="text" name="search" id="headerSearchInput" class="w-full pl-9 pr-4 py-2 text-sm border border-gray-300 rounded-full bg-gray-50 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:bg-white transition" placeholder="Search colleges, courses..." value="{{ request('search') }}" autocomplete="off">
+                        </form>
+                        <div id="headerSearchResults" class="absolute top-full left-0 right-0 bg-white border border-gray-200 rounded-xl shadow-xl mt-1 max-h-96 overflow-y-auto hidden z-50"></div>
                     </div>
-                    @else
-                    <!-- Guest: Sign In Button -->
-                    <button class="btn btn-gold btn-sm fw-bold px-3 py-2 rounded-pill shadow-sm" data-bs-toggle="modal" data-bs-target="#studentAuthModal">
-                        <i class="bi bi-person-fill me-1"></i> Sign In / Register
-                    </button>
+                </div>
+
+                <!-- User Profile / Auth Area -->
+                <div class="flex items-center gap-4">
+                    @auth
+                    <div class="relative group">
+                        <button class="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-gray-900 bg-white border border-gray-300 rounded-full hover:bg-gray-50 transition">
+                            <i class="bi bi-person-circle text-lg text-purple-900"></i>
+                            <span class="hidden sm:inline">Hi, {{ explode(' ', Auth::user()->name)[0] }}</span>
+                        </button>
+                        <div class="absolute right-0 mt-1 w-48 bg-white border border-gray-200 rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition duration-150 z-50 py-1">
+                            @if(in_array(Auth::user()->role, ['super_admin', 'sub_admin']))
+                            <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-2 px-4 py-2 text-sm text-purple-900 font-semibold hover:bg-purple-50">
+                                <i class="bi bi-speedometer2"></i> Admin Dashboard
+                            </a>
+                            <hr class="my-1 border-gray-100">
+                            @endif
+                            <a href="{{ route('student.profile') }}" class="flex items-center gap-2 px-4 py-2 text-sm text-gray-800 font-semibold hover:bg-purple-50">
+                                <i class="bi bi-person-badge"></i> User Profile
+                            </a>
+                            <hr class="my-1 border-gray-100">
+                            <form action="{{ route('logout') }}" method="POST">
+                                @csrf
+                                <button type="submit" class="w-full text-left px-4 py-2 text-sm font-semibold text-red-600 hover:bg-red-50 flex items-center gap-2">
+                                    <i class="bi bi-box-arrow-left"></i> Logout
+                                </button>
+                            </form>
+                        </div>
+                    </div>
                     @endauth
                 </div>
 
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden ml-4 p-2 text-gray-700 hover:bg-gray-100 rounded-lg" id="mobileMenuBtn" aria-label="Toggle navigation">
+                    <i class="bi bi-list text-2xl"></i>
+                </button>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div class="md:hidden hidden pb-4 border-t border-gray-200 mt-2 space-y-1" id="mobileMenu">
+                <a href="{{ route('home') }}" class="block px-4 py-2.5 rounded-lg text-gray-700 hover:bg-purple-50 hover:text-purple-900 font-semibold text-sm">Home</a>
+                <a href="{{ route('colleges.regular') }}" class="block px-4 py-2.5 rounded-lg text-gray-700 hover:bg-purple-50 hover:text-purple-900 font-semibold text-sm">Regular Colleges</a>
+                @if(($siteSettings['features.enable_online_colleges'] ?? '1') == '1')
+                <a href="{{ route('colleges.online') }}" class="block px-4 py-2.5 rounded-lg text-gray-700 hover:bg-purple-50 hover:text-purple-900 font-semibold text-sm">Online Colleges</a>
+                @endif
             </div>
         </div>
     </nav>
 
     <!-- Main Page Content -->
-    <main>
+    <main class="pt-28 flex-1">
         @yield('content')
     </main>
 
-    <!-- 1. Phone + OTP Auth Modal -->
-    <div class="modal fade" id="studentAuthModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-sm" style="max-width: 380px;">
-            <div class="modal-content border-0 shadow-lg" style="border-radius: 20px; overflow: hidden;">
-                <div class="modal-header text-white" style="background: var(--primary-purple);">
-                    <div>
-                        <h6 class="modal-title fw-bold mb-0">Student Sign In / Register</h6>
-                        <small class="text-white-50" style="font-size: 0.75rem;">Fast OTP verification without password</small>
-                    </div>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+    <!-- Tailwind Global Enquiry Modal -->
+    <div id="counselingModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/60 backdrop-blur-sm transition-opacity" role="dialog" aria-modal="true">
+        <div class="relative w-full max-w-lg rounded-2xl bg-white shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between bg-violet-950 px-6 py-4 text-white">
+                <div>
+                    <h5 class="text-lg font-bold" id="globalModalTitle">Admission Guidance Enquiry</h5>
+                    <p class="text-xs text-violet-200">Direct connection with certified university counselors</p>
                 </div>
-                <div class="modal-body p-4">
-                    <!-- STEP 1: Enter Name & Phone -->
-                    <div id="otpStep1">
-                        <div class="mb-3">
-                            <label class="form-label small fw-bold text-dark">Your Name</label>
-                            <input type="text" id="authUserName" class="form-control form-control-sm" placeholder="Enter your full name">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label small fw-bold text-dark">Mobile Number *</label>
-                            <div class="input-group input-group-sm">
-                                <span class="input-group-text bg-light fw-bold">+91</span>
-                                <input type="tel" id="authUserPhone" class="form-control" placeholder="10-digit mobile number" maxlength="10" required>
-                            </div>
-                        </div>
-                        <div id="otpSendMsg"></div>
-                        <button type="button" id="sendOtpBtn" class="btn btn-gold btn-sm w-100 py-2 fw-bold mt-1 shadow-sm">
-                            Get OTP <i class="bi bi-arrow-right ms-1"></i>
-                        </button>
+                <button type="button" onclick="closeEnquiryModal()" class="text-white/80 hover:text-white rounded-lg p-1 text-xl focus:outline-none" aria-label="Close">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+            <!-- Modal Body -->
+            <div class="p-6">
+                <form id="globalLeadForm" class="space-y-4">
+                    @csrf
+                    <input type="hidden" name="college_id" id="modalTargetCollegeId" value="">
+                    <input type="hidden" name="source" id="modalLeadSource" value="popup_modal">
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5">Full Name *</label>
+                        <input type="text" name="name" class="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm outline-none focus:border-purple-600 focus:ring-2 focus:ring-purple-100" value="{{ Auth::user()->name ?? '' }}" placeholder="Your full name" required>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5">Mobile Number *</label>
+                        <input type="tel" name="phone" class="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm outline-none focus:border-purple-600 focus:ring-2 focus:ring-purple-100" value="{{ Auth::user()->phone ?? '' }}" placeholder="WhatsApp mobile number" maxlength="10" required>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5">Email Address</label>
+                        <input type="email" name="email" class="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm outline-none focus:border-purple-600 focus:ring-2 focus:ring-purple-100" value="{{ str_ends_with(Auth::user()->email ?? '', '@growpec.local') ? '' : (Auth::user()->email ?? '') }}" placeholder="name@example.com">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5">Your City *</label>
+                        <input type="text" name="city" class="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm outline-none focus:border-purple-600 focus:ring-2 focus:ring-purple-100" value="{{ Auth::user()->city ?? '' }}" placeholder="e.g. Varanasi, Lucknow, Delhi" required>
                     </div>
 
-                    <!-- STEP 2: Enter 4-digit OTP -->
-                    <div id="otpStep2" style="display: none;">
-                        <div class="text-center mb-3">
-                            <div class="mb-2">
-                                <span class="badge bg-warning-subtle text-dark border px-3 py-2 fw-bold">Demo OTP: 1234</span>
-                            </div>
-                            <h6 class="fw-bold mb-1 text-dark">Enter 4-Digit Code</h6>
-                            <small class="text-muted">Code sent to +91 <strong id="displayPhone"></strong></small>
-                        </div>
-                        <div class="mb-3">
-                            <input type="text" id="otpInput" class="form-control text-center fw-extrabold fs-3"
-                                placeholder="• • • •" maxlength="4" style="letter-spacing: 12px;">
-                        </div>
-                        <div id="otpVerifyMsg"></div>
-                        <button type="button" id="verifyOtpBtn" class="btn btn-purple btn-sm w-100 py-2 fw-bold mb-2 shadow-sm">
-                            Verify & Continue <i class="bi bi-check-circle ms-1"></i>
-                        </button>
-                        <div class="d-flex justify-content-between align-items-center mt-2 pt-2 border-top small">
-                            <button type="button" id="resendOtpBtn" class="btn btn-link btn-sm p-0 text-decoration-none text-muted" disabled>
-                                Resend in <span id="timerCount">30</span>s
-                            </button>
-                            <button type="button" id="backToStep1Btn" class="btn btn-link btn-sm p-0 text-decoration-none text-primary fw-semibold">
-                                Edit Number
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                    <div id="leadFormResponse"></div>
+
+                    <button type="submit" id="leadSubmitBtn" class="w-full rounded-xl bg-amber-400 hover:bg-amber-300 py-3 text-sm font-extrabold text-violet-950 transition transform hover:-translate-y-0.5 shadow-md">
+                        Submit Application Enquiry
+                    </button>
+                </form>
             </div>
         </div>
     </div>
 
-    <!-- 2. Global Enquiry Modal -->
-    <div class="modal fade" id="counselingModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content border-0 shadow-lg" style="border-radius: 16px; overflow: hidden;">
-                <div class="modal-header text-white" style="background: var(--primary-purple);">
-                    <div>
-                        <h5 class="modal-title fw-bold mb-0">Admission Guidance Enquiry</h5>
-                        <small class="text-white-50">Direct connection with certified university experts</small>
-                    </div>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body p-4">
-                    <form id="globalLeadForm">
-                        @csrf
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold small">Full Name *</label>
-                            <input type="text" name="name" class="form-control" value="{{ Auth::user()->name ?? '' }}" placeholder="Your name" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold small">Mobile Number *</label>
-                            <input type="tel" name="phone" class="form-control" value="{{ Auth::user()->phone ?? '' }}" placeholder="WhatsApp number" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold small">Email Address</label>
-                            <input type="email" name="email" class="form-control" value="{{ str_ends_with(Auth::user()->email ?? '', '@growpec.local') ? '' : (Auth::user()->email ?? '') }}" placeholder="name@example.com">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold small">Your City *</label>
-                            <input type="text" name="city" class="form-control" placeholder="e.g. Varanasi, Lucknow, Delhi" required>
-                        </div>
-                        <div id="leadFormResponse"></div>
-                        <button type="submit" id="leadSubmitBtn" class="btn btn-gold w-100 py-2 mt-2 fw-bold">
-                            Submit Application Enquiry
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!-- Floating WhatsApp Quick Chat Button -->
+    @if(($siteSettings['features.enable_floating_whatsapp'] ?? '1') == '1')
+    <a href="https://wa.me/{{ $siteSettings['general.whatsapp_number'] ?? '918858285271' }}?text=Hello%20GrowPEC,%20I%20am%20looking%20for%20admission%20guidance."
+       target="_blank"
+       class="fixed bottom-6 right-6 w-14 h-14 bg-green-500 text-white rounded-full flex items-center justify-center text-2xl shadow-xl hover:bg-green-600 transition z-40"
+       title="Chat on WhatsApp">
+        <i class="bi bi-whatsapp"></i>
+    </a>
+    @endif
 
     <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="row g-4 mb-4">
-                <div class="col-lg-4 col-md-6">
-                    <div class="mb-3">
-                        <a href="{{ route('home') }}">
-                            <img src="{{ asset('assets/growpec.png') }}" alt="GrowPEC Logo" class="footer-logo-img">
-                        </a>
-                    </div>
-                    <p class="small text-secondary mb-3">
-                        <strong>Grow Pinnacle Education Consulting Pvt. Ltd.</strong> — India's trusted college discovery and admission guidance platform.
+    <footer class="bg-slate-950 text-gray-400 py-16 mt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <a href="{{ route('home') }}" class="inline-block mb-4">
+                        <img src="{{ asset($siteSettings['general.footer_logo'] ?? $siteSettings['general.logo'] ?? 'assets/growpec.png') }}" alt="{{ $siteSettings['general.site_name'] ?? 'GrowPEC' }}" class="h-12 w-auto object-contain">
+                    </a>
+                    <p class="text-sm text-gray-400 mb-4">
+                        <strong>{{ $siteSettings['general.site_name'] ?? 'GrowPEC' }}</strong> — {{ $siteSettings['general.site_tagline'] ?? 'India\'s trusted college discovery and admission guidance platform.' }}
                     </p>
-                    <p class="small mb-1"><i class="bi bi-geo-alt text-warning me-2"></i>Varanasi, Uttar Pradesh, India</p>
-                    <p class="small mb-1"><i class="bi bi-telephone text-warning me-2"></i>+91 8858285271</p>
-                    <p class="small"><i class="bi bi-envelope text-warning me-2"></i>info@growpec.com</p>
+                    <div class="space-y-2 text-sm">
+                        <p class="flex items-center gap-2">
+                            <i class="bi bi-geo-alt text-amber-400"></i>
+                            {{ $siteSettings['general.office_address'] ?? 'Varanasi, Uttar Pradesh, India' }}
+                        </p>
+                        <p class="flex items-center gap-2">
+                            <i class="bi bi-telephone text-amber-400"></i>
+                            {{ $siteSettings['general.support_phone'] ?? '+91 8858285271' }}
+                        </p>
+                        <p class="flex items-center gap-2">
+                            <i class="bi bi-envelope text-amber-400"></i>
+                            {{ $siteSettings['general.support_email'] ?? 'info@growpec.com' }}
+                        </p>
+                    </div>
                 </div>
-
-                <div class="col-lg-2 col-md-6 col-6">
-                    <h6>Quick Links</h6>
-                    <ul class="list-unstyled small">
-                        <li class="mb-2"><a href="{{ route('colleges.regular') }}">Regular Colleges</a></li>
-                        <li class="mb-2"><a href="{{ route('colleges.online') }}">Online Colleges</a></li>
-                        <li class="mb-2"><a href="{{ route('about') }}">About Us</a></li>
-                        <li class="mb-2"><a href="{{ route('contact') }}">Contact Support</a></li>
+                <div>
+                    <h3 class="text-white font-bold text-lg mb-4">Quick Links</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="{{ route('colleges.regular') }}" class="text-gray-400 hover:text-amber-400 transition">Regular Colleges</a></li>
+                        @if(($siteSettings['features.enable_online_colleges'] ?? '1') == '1')
+                        <li><a href="{{ route('colleges.online') }}" class="text-gray-400 hover:text-amber-400 transition">Online Colleges</a></li>
+                        @endif
+                        <li><a href="{{ route('about') }}" class="text-gray-400 hover:text-amber-400 transition">About Us</a></li>
+                        <li><a href="{{ route('contact') }}" class="text-gray-400 hover:text-amber-400 transition">Contact Support</a></li>
                     </ul>
                 </div>
-
-                <div class="col-lg-3 col-md-6 col-6">
-                    <h6>Top Programs</h6>
-                    <ul class="list-unstyled small">
-                        <li class="mb-2"><a href="{{ route('colleges.regular') }}?courses[]=mba">MBA / PGDM</a></li>
-                        <li class="mb-2"><a href="{{ route('colleges.regular') }}?courses[]=btech">B.Tech Engineering</a></li>
-                        <li class="mb-2"><a href="{{ route('colleges.regular') }}?courses[]=bca">BCA / MCA</a></li>
-                        <li class="mb-2"><a href="{{ route('colleges.regular') }}?courses[]=bpharm">B.Pharm / D.Pharm</a></li>
+                <div>
+                    <h3 class="text-white font-bold text-lg mb-4">Top Programs</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="{{ route('colleges.regular') }}?courses[]=mba" class="text-gray-400 hover:text-amber-400 transition">MBA / PGDM</a></li>
+                        <li><a href="{{ route('colleges.regular') }}?courses[]=btech" class="text-gray-400 hover:text-amber-400 transition">B.Tech Engineering</a></li>
+                        <li><a href="{{ route('colleges.regular') }}?courses[]=bca" class="text-gray-400 hover:text-amber-400 transition">BCA / MCA</a></li>
+                        <li><a href="{{ route('colleges.regular') }}?courses[]=bpharm" class="text-gray-400 hover:text-amber-400 transition">B.Pharm / D.Pharm</a></li>
                     </ul>
                 </div>
-
-                <div class="col-lg-3 col-md-6">
-                    <h6>Support</h6>
-                    <p class="small text-secondary mb-3">Get 100% unbiased expert guidance for your career and college admissions.</p>
+                <div>
+                    <h3 class="text-white font-bold text-lg mb-4">Support</h3>
+                    <p class="text-sm text-gray-400">Get 100% unbiased expert guidance for your career and college admissions.</p>
                 </div>
             </div>
-
-            <hr class="border-secondary my-4">
-            <div class="text-center small text-secondary">
-                © {{ date('Y') }} GrowPEC. All rights reserved.
+            <hr class="border-gray-800 my-8">
+            <div class="text-center text-sm text-gray-500">
+                &copy; {{ date('Y') }} {{ $siteSettings['general.site_name'] ?? 'GrowPEC' }}. All rights reserved.
             </div>
         </div>
     </footer>
 
-    <!-- Bootstrap 5 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- 🔍 Live Header Search Script -->
+    <!-- Header Live Search Script -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const searchInput = document.getElementById('headerSearchInput');
-            const resultsBox = document.getElementById('headerSearchResults');
-            let debounceTimer;
-
-            if (searchInput && resultsBox) {
-                searchInput.addEventListener('input', function() {
-                    const query = this.value.trim();
-                    clearTimeout(debounceTimer);
-
-                    if (query.length < 2) {
-                        resultsBox.classList.add('d-none');
-                        resultsBox.innerHTML = '';
-                        return;
-                    }
-
-                    debounceTimer = setTimeout(() => {
-                        fetch(`{{ route('api.liveSearch') }}?q=${encodeURIComponent(query)}`)
-                            .then(res => res.json())
-                            .then(data => {
-                                let html = '';
-                                const colleges = data.colleges || [];
-                                const courses = data.courses || [];
-
-                                if (colleges.length === 0 && courses.length === 0) {
-                                    html = `<div class="p-3 text-muted text-center small"><i class="bi bi-search me-1"></i> No matching colleges or courses.</div>`;
-                                } else {
-                                    if (colleges.length > 0) {
-                                        html += `<div class="px-3 py-1 bg-light small fw-bold text-uppercase text-muted" style="font-size: 0.72rem; letter-spacing: 0.5px;">Colleges</div>`;
-                                        colleges.forEach(col => {
-                                            const collegeUrl = `{{ url('/college') }}/${col.slug}`;
-                                            html += `
-                                            <a href="${collegeUrl}" class="live-search-item d-flex align-items-center justify-content-between">
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('headerSearchInput');
+        const resultsBox = document.getElementById('headerSearchResults');
+        let debounceTimer;
+        if (searchInput && resultsBox) {
+            searchInput.addEventListener('input', function() {
+                const query = this.value.trim();
+                clearTimeout(debounceTimer);
+                if (query.length < 2) {
+                    resultsBox.classList.add('hidden');
+                    resultsBox.innerHTML = '';
+                    return;
+                }
+                debounceTimer = setTimeout(() => {
+                    fetch(`{{ route('api.liveSearch') }}?q=${encodeURIComponent(query)}`)
+                        .then(res => res.json())
+                        .then(data => {
+                            let html = '';
+                            const colleges = data.colleges || [];
+                            const courses = data.courses || [];
+                            if (colleges.length === 0 && courses.length === 0) {
+                                html = `<div class="p-4 text-gray-500 text-center text-sm"><i class="bi bi-search mr-1"></i> No matching colleges or courses.</div>`;
+                            } else {
+                                if (colleges.length > 0) {
+                                    html += `<div class="px-4 py-2 bg-gray-50 text-[11px] font-bold uppercase tracking-wider text-gray-500">Colleges</div>`;
+                                    colleges.forEach(col => {
+                                        const collegeUrl = `{{ url('/college') }}/${col.slug}`;
+                                        html += `
+                                            <a href="${collegeUrl}" class="flex items-center justify-between px-4 py-2.5 hover:bg-purple-50 transition border-b border-gray-100 last:border-b-0">
                                                 <div>
-                                                    <div class="fw-semibold text-dark small mb-0">${col.name}</div>
-                                                    <small class="text-muted" style="font-size: 0.75rem;"><i class="bi bi-geo-alt me-1 text-danger"></i>${col.city}</small>
+                                                    <div class="font-semibold text-gray-900 text-sm">${col.name}</div>
+                                                    <small class="text-gray-500 text-xs flex items-center gap-1 mt-0.5"><i class="bi bi-geo-alt text-red-600"></i>${col.city}</small>
                                                 </div>
-                                                <span class="badge bg-primary-subtle text-primary small">${col.college_mode.toUpperCase()}</span>
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-purple-100 text-purple-800">${col.college_mode.toUpperCase()}</span>
                                             </a>
                                         `;
-                                        });
-                                    }
-
-                                    if (courses.length > 0) {
-                                        html += `<div class="px-3 py-1 bg-light small fw-bold text-uppercase text-muted mt-1" style="font-size: 0.72rem; letter-spacing: 0.5px;">Programs / Courses</div>`;
-                                        courses.forEach(c => {
-                                            const courseUrl = `{{ route('colleges.regular') }}?courses[]=${c.slug}`;
-                                            html += `
-                                            <a href="${courseUrl}" class="live-search-item d-flex align-items-center justify-content-between">
-                                                <div class="small fw-semibold text-dark"><i class="bi bi-mortarboard text-warning me-2"></i>${c.name}</div>
-                                                <span class="badge bg-light text-dark border small">${c.level}</span>
+                                    });
+                                }
+                                if (courses.length > 0) {
+                                    html += `<div class="px-4 py-2 bg-gray-50 text-[11px] font-bold uppercase tracking-wider text-gray-500">Programs / Courses</div>`;
+                                    courses.forEach(c => {
+                                        const courseUrl = `{{ route('colleges.regular') }}?courses[]=${c.slug}`;
+                                        html += `
+                                            <a href="${courseUrl}" class="flex items-center justify-between px-4 py-2.5 hover:bg-purple-50 transition border-b border-gray-100 last:border-b-0">
+                                                <div class="text-sm font-semibold text-gray-900 flex items-center gap-2"><i class="bi bi-mortarboard text-amber-500"></i>${c.name}</div>
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-gray-100 text-gray-700">${c.level}</span>
                                             </a>
                                         `;
-                                        });
-                                    }
-
-                                    html += `
-                                    <div class="p-2 border-top text-center bg-light">
-                                        <a href="{{ route('colleges.regular') }}?search=${encodeURIComponent(query)}" class="small fw-bold text-primary text-decoration-none">
+                                    });
+                                }
+                                html += `
+                                    <div class="p-2.5 border-t border-gray-100 text-center bg-gray-50">
+                                        <a href="{{ route('colleges.regular') }}?search=${encodeURIComponent(query)}" class="text-xs font-bold text-purple-900 hover:text-purple-700 inline-flex items-center gap-1">
                                             View all results for "${query}" <i class="bi bi-arrow-right"></i>
                                         </a>
                                     </div>
                                 `;
-                                }
+                            }
+                            resultsBox.innerHTML = html;
+                            resultsBox.classList.remove('hidden');
+                        })
+                        .catch(() => {
+                            resultsBox.classList.add('hidden');
+                        });
+                }, 220);
+            });
+            document.addEventListener('click', function(e) {
+                if (!searchInput.contains(e.target) && !resultsBox.contains(e.target)) {
+                    resultsBox.classList.add('hidden');
+                }
+            });
+        }
+    });
 
-                                resultsBox.innerHTML = html;
-                                resultsBox.classList.remove('d-none');
-                            })
-                            .catch(() => {
-                                resultsBox.classList.add('d-none');
-                            });
-                    }, 220);
-                });
-
-                // Close dropdown on outside click
-                document.addEventListener('click', function(e) {
-                    if (!searchInput.contains(e.target) && !resultsBox.contains(e.target)) {
-                        resultsBox.classList.add('d-none');
-                    }
-                });
+    // Pure Tailwind Modal Functions
+    window.openEnquiryModal = function(collegeId = null, collegeName = null) {
+        const modalEl = document.getElementById('counselingModal');
+        if (!modalEl) return;
+        const collegeInput = document.getElementById('modalTargetCollegeId');
+        const modalTitle   = document.getElementById('globalModalTitle');
+        const sourceInput  = document.getElementById('modalLeadSource');
+        if (collegeId) {
+            collegeInput.value = collegeId;
+            sourceInput.value  = 'college_card_btn';
+            if (collegeName && modalTitle) {
+                modalTitle.innerText = 'Inquiry: ' + collegeName;
             }
-        });
-    </script>
+        } else {
+            collegeInput.value = '';
+            sourceInput.value  = 'popup_modal';
+            if (modalTitle) {
+                modalTitle.innerText = 'Admission Guidance Enquiry';
+            }
+        }
+        modalEl.classList.remove('hidden');
+        modalEl.classList.add('flex');
+    };
 
+    window.closeEnquiryModal = function() {
+        const modalEl = document.getElementById('counselingModal');
+        if (!modalEl) return;
+        modalEl.classList.add('hidden');
+        modalEl.classList.remove('flex');
+    };
+
+    // Close on click outside modal window
+    document.getElementById('counselingModal')?.addEventListener('click', function(e) {
+        if (e.target === this) closeEnquiryModal();
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeEnquiryModal();
+    });
+
+    // Global Lead Submit AJAX
+    document.getElementById('globalLeadForm')?.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const form = this;
+        const btn = document.getElementById('leadSubmitBtn');
+        const respDiv = document.getElementById('leadFormResponse');
+        btn.disabled = true;
+        btn.innerText = 'Submitting...';
+        fetch("{{ route('lead.submit') }}", {
+            method: "POST",
+            headers: {
+                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                "Accept": "application/json"
+            },
+            body: new FormData(form)
+        })
+        .then(res => res.json())
+        .then(data => {
+            btn.disabled = false;
+            btn.innerText = 'Submit Application Enquiry';
+            respDiv.innerHTML = `<div class="p-3 bg-green-50 border border-green-200 text-green-800 text-sm rounded-xl text-center my-2">${data.message}</div>`;
+            form.reset();
+            setTimeout(() => {
+                closeEnquiryModal();
+                window.location.reload();
+            }, 1200);
+        })
+        .catch(() => {
+            btn.disabled = false;
+            btn.innerText = 'Submit Application Enquiry';
+            respDiv.innerHTML = `<div class="p-3 bg-red-50 border border-red-200 text-red-800 text-sm rounded-xl text-center my-2">Something went wrong. Please try again.</div>`;
+        });
+    });
+
+    // Mobile Navigation Toggle
+    document.addEventListener('DOMContentLoaded', function() {
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        if (mobileMenuBtn && mobileMenu) {
+            mobileMenuBtn.addEventListener('click', function() {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
+    });
+    </script>
     @stack('scripts')
 </body>
-
 </html>

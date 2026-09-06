@@ -8,15 +8,18 @@ use App\Models\Course;
 use App\Models\Stream;
 use App\Models\Banner;
 use App\Models\City;
+use App\Models\Partner;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        // 🎯 Fetch all active banners ordered by sort index
+        // Fetch all active banners
         $heroBanners = Banner::where('status', true)->orderBy('sort_order', 'asc')->get();
 
-        // 1. Featured Regular Colleges
+        // 🎯 Fetch active partner universities for marquee strip
+        $partners = Partner::where('status', true)->orderBy('sort_order', 'asc')->get();
+
         $regularColleges = College::where('college_mode', 'regular')
             ->where('status', true)
             ->with(['courses'])
@@ -24,7 +27,6 @@ class HomeController extends Controller
             ->take(8)
             ->get();
 
-        // 2. Featured Online Colleges
         $onlineColleges = College::where('college_mode', 'online')
             ->where('status', true)
             ->with(['courses'])
@@ -34,13 +36,21 @@ class HomeController extends Controller
 
         $popularCourses = Course::take(8)->get();
         $streams = Stream::take(6)->get();
-        // 5. Dynamic Popular Cities (Admin Managed)
+
         $popularCities = City::where('is_popular', true)->where('status', true)->take(8)->get();
         if ($popularCities->isEmpty()) {
             $popularCities = City::where('status', true)->take(8)->get();
         }
 
-        return view('home', compact('heroBanners', 'regularColleges', 'onlineColleges', 'popularCourses', 'streams', 'popularCities'));
+        return view('home', compact(
+            'heroBanners',
+            'partners',
+            'regularColleges',
+            'onlineColleges',
+            'popularCourses',
+            'streams',
+            'popularCities'
+        ));
     }
 
     public function liveSearch(Request $request)
