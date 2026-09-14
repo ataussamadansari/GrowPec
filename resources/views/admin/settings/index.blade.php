@@ -3,166 +3,655 @@
 @section('title', 'Master System Settings - GrowPec Admin')
 @section('header', 'Master Platform Management')
 
-@push('styles')
-<style>
-    .settings-nav .nav-link {
-        color: #475569;
-        font-weight: 600;
-        border-radius: 12px;
-        padding: 12px 18px;
-        margin-bottom: 6px;
-        border: none;
-        transition: all 0.2s;
-    }
 
-    .settings-nav .nav-link:hover {
-        background: #F1EFF8;
-        color: #2E1E6B;
-    }
-
-    .settings-nav .nav-link.active {
-        background: #2E1E6B !important;
-        color: #ffffff !important;
-        box-shadow: 0 4px 12px rgba(46, 30, 107, 0.2);
-    }
-
-    .card-setting-box {
-        background: #ffffff;
-        border: 1px solid #E2E8F0;
-        border-radius: 18px;
-        padding: 28px;
-    }
-
-    .color-picker-box {
-        height: 44px;
-        padding: 4px;
-        border-radius: 10px;
-        cursor: pointer;
-    }
-
-    /* Pre-set Color Palette Cards */
-    .palette-preset-card {
-        border: 2px solid #E2E8F0;
-        border-radius: 14px;
-        padding: 12px 14px;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        background: #F8FAFC;
-    }
-
-    .palette-preset-card:hover {
-        border-color: #2E1E6B;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-    }
-
-    .palette-color-dot {
-        width: 22px;
-        height: 22px;
-        border-radius: 50%;
-        display: inline-block;
-        border: 2px solid #ffffff;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
-    }
-
-    /* 🎯 BRANDING & LOGO CARDS CSS */
-    .branding-card {
-        border: 1px solid #E2E8F0;
-        border-radius: 16px;
-        background: #F8FAFC;
-        padding: 18px;
-        transition: all 0.2s ease;
-    }
-
-    .branding-card:hover {
-        border-color: #CBD5E1;
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04);
-    }
-
-    .logo-preview-stage {
-        height: 85px;
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        overflow: hidden;
-        border: 1px dashed #CBD5E1;
-        margin-bottom: 12px;
-    }
-
-    .logo-preview-stage.light-stage {
-        background: #ffffff;
-        background-image: radial-gradient(#E2E8F0 1px, transparent 1px);
-        background-size: 12px 12px;
-    }
-
-    .logo-preview-stage.dark-stage {
-        background: #0F0A2A;
-        border-color: #312E55;
-    }
-
-    .logo-display-img {
-        max-height: 52px;
-        max-width: 220px;
-        object-fit: contain;
-        display: block;
-    }
-
-    .browser-tab-preview {
-        background: #E2E8F0;
-        border-radius: 10px 10px 0 0;
-        padding: 6px 14px;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 0.78rem;
-        font-weight: 600;
-        color: #334155;
-    }
-</style>
-@endpush
 
 @section('content')
-<form action="{{ route('admin.settings.update') }}" method="POST" enctype="multipart/form-data">
+<style>
+.gp-settings-page{
+    --gp-navy:#002B67;
+    --gp-navy-dark:#001B45;
+    --gp-blue:#174B8F;
+    --gp-green:#008A43;
+    --gp-green-dark:#006B35;
+    --gp-gold:#D9A400;
+    --gp-gold-dark:#B78300;
+    --gp-bg:#F5F7FA;
+    --gp-border:#DCE5EF;
+    --gp-text:#172033;
+    --gp-muted:#6F7D91;
+    width:100%;
+    max-width:none;
+    min-width:0;
+    color:var(--gp-text);
+}
+.gp-settings-page,
+.gp-settings-page *{box-sizing:border-box}
+
+.gp-settings-hero{
+    position:relative;
+    isolation:isolate;
+    overflow:hidden;
+    width:100%;
+    margin:0 0 20px;
+    padding:30px 32px;
+    border-radius:20px;
+    color:#fff;
+    background:linear-gradient(135deg,#001B45 0%,#002B67 58%,#174B8F 100%);
+    box-shadow:0 16px 34px rgba(0,43,103,.14);
+}
+.gp-settings-hero::before,
+.gp-settings-hero::after{
+    content:"";
+    position:absolute;
+    pointer-events:none;
+    border:1px solid rgba(255,255,255,.13);
+    border-radius:50%;
+}
+.gp-settings-hero::before{
+    width:300px;height:300px;
+    right:-125px;bottom:-205px;
+    box-shadow:0 0 0 32px rgba(255,255,255,.025),0 0 0 64px rgba(255,255,255,.018);
+}
+.gp-settings-hero::after{
+    width:180px;height:180px;
+    right:-72px;bottom:-112px;
+}
+.gp-settings-hero>*{position:relative;z-index:1}
+.gp-settings-kicker{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    min-height:30px;
+    padding:6px 12px;
+    border:1px solid rgba(255,255,255,.18);
+    border-radius:999px;
+    background:rgba(255,255,255,.09);
+    color:rgba(255,255,255,.96);
+    font-size:.63rem;
+    font-weight:850;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+}
+.gp-settings-hero h2{
+    margin:12px 0 6px;
+    font-size:1.65rem;
+    line-height:1.15;
+    font-weight:850;
+    letter-spacing:-.03em;
+}
+.gp-settings-hero p{
+    max-width:980px;
+    margin:0;
+    color:rgba(255,255,255,.79);
+    font-size:.76rem;
+    line-height:1.6;
+}
+
+.gp-settings-layout{
+    display:grid;
+    grid-template-columns:minmax(230px,270px) minmax(0,1fr);
+    gap:20px;
+    align-items:start;
+    width:100%;
+    min-width:0;
+}
+.gp-settings-sidebar,
+.gp-settings-content{
+    width:100%;
+    max-width:none;
+    min-width:0;
+    border:1px solid var(--gp-border);
+    border-radius:18px;
+    background:#fff;
+    box-shadow:0 10px 30px rgba(20,35,60,.055);
+}
+.gp-settings-sidebar{
+    position:sticky;
+    top:92px;
+    padding:14px;
+    z-index:5;
+}
+.gp-settings-content{
+    padding:24px;
+    overflow:hidden;
+}
+.gp-control-label{
+    display:block;
+    padding:7px 10px 10px;
+    color:#7A8799;
+    font-size:.59rem;
+    font-weight:850;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+}
+.gp-settings-nav{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+.gp-settings-nav .nav-link{
+    width:100%;
+    min-height:46px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:10px 12px;
+    border:1px solid transparent;
+    border-radius:11px;
+    background:#fff;
+    color:#536177;
+    font-size:.71rem;
+    font-weight:750;
+    line-height:1.3;
+    text-align:left;
+    transition:all .18s ease;
+}
+.gp-settings-nav .nav-link i{
+    flex:0 0 21px;
+    width:21px;
+    color:#8291A5;
+    font-size:.95rem;
+    text-align:center;
+}
+.gp-settings-nav .nav-link:hover{
+    border-color:#D8E5F2;
+    background:#F5F9FD;
+    color:var(--gp-navy);
+    transform:translateX(2px);
+}
+.gp-settings-nav .nav-link.active{
+    border-color:#B8D2EA !important;
+    background:linear-gradient(135deg,#EDF5FC,#E5F0FA) !important;
+    color:var(--gp-navy) !important;
+    box-shadow:none !important;
+}
+.gp-settings-nav .nav-link.active i{color:var(--gp-green)}
+
+.gp-save-box{
+    margin-top:14px;
+    padding-top:14px;
+    border-top:1px solid var(--gp-border);
+}
+.gp-save-btn{
+    width:100%;
+    min-height:47px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:7px;
+    padding:0 16px;
+    border:1px solid var(--gp-gold);
+    border-radius:11px;
+    background:linear-gradient(135deg,#E0AB00,#C79200);
+    color:#172033;
+    font-size:.7rem;
+    font-weight:850;
+    box-shadow:0 7px 16px rgba(217,164,0,.2);
+    transition:all .18s ease;
+    cursor:pointer;
+}
+.gp-save-btn:hover{
+    border-color:var(--gp-gold-dark);
+    background:linear-gradient(135deg,#C79200,#B78300);
+    color:#fff;
+    transform:translateY(-1px);
+    box-shadow:0 9px 20px rgba(183,131,0,.22);
+}
+.gp-save-btn:active{transform:translateY(0)}
+.gp-save-btn:focus-visible{
+    outline:0;
+    box-shadow:0 0 0 4px rgba(217,164,0,.18);
+}
+
+.gp-settings-page .tab-content,
+.gp-settings-page .tab-pane{width:100%;min-width:0}
+.gp-settings-page .tab-pane>h5{
+    display:flex;
+    align-items:flex-start;
+    gap:8px;
+    margin:0 0 16px !important;
+    padding:0 0 12px !important;
+    border-bottom:1px solid var(--gp-border) !important;
+    color:var(--gp-navy) !important;
+    font-size:1rem;
+    line-height:1.35;
+    font-weight:850 !important;
+}
+.gp-settings-page .tab-pane>h5 i{color:var(--gp-green)}
+.gp-settings-page .tab-pane>p.text-muted{
+    margin-top:-7px;
+    color:var(--gp-muted) !important;
+    font-size:.68rem;
+    line-height:1.6;
+}
+.gp-settings-page h6{
+    color:var(--gp-text);
+    font-size:.75rem;
+    line-height:1.4;
+}
+.gp-settings-page .form-label{
+    margin-bottom:6px;
+    color:var(--gp-text);
+    font-size:.68rem;
+    font-weight:800;
+}
+.gp-settings-page .form-control,
+.gp-settings-page .form-select{
+    width:100%;
+    min-width:0;
+    min-height:43px;
+    border:1px solid #D5DFEA;
+    border-radius:10px;
+    background:#fff;
+    color:var(--gp-text);
+    font-size:.71rem;
+    font-weight:600;
+}
+.gp-settings-page textarea.form-control{
+    min-height:90px;
+    resize:vertical;
+}
+.gp-settings-page .form-control::placeholder{color:#9AA6B6}
+.gp-settings-page .form-control:focus,
+.gp-settings-page .form-select:focus{
+    border-color:#7DA8D4;
+    box-shadow:0 0 0 3px rgba(23,75,143,.09);
+}
+.gp-settings-page small.text-muted{
+    color:#7A8798 !important;
+    font-size:.61rem !important;
+    line-height:1.5;
+}
+.gp-settings-page .bg-light{background:#F8FAFC !important}
+.gp-settings-page .border{border-color:var(--gp-border) !important}
+.gp-settings-page .rounded-3,
+.gp-settings-page .rounded-4{border-radius:13px !important}
+.gp-settings-page .shadow-sm{box-shadow:0 7px 20px rgba(20,35,60,.045) !important}
+
+.gp-settings-page .tab-pane .row{min-width:0}
+.gp-settings-page .tab-pane .row>[class*="col-"]{min-width:0}
+.gp-settings-page .tab-pane .p-3.bg-light.rounded-3.border,
+.gp-settings-page .tab-pane .card.p-4{
+    height:100%;
+    min-width:0;
+}
+.gp-settings-page .tab-pane .card.p-4{
+    padding:17px !important;
+    border-color:var(--gp-border);
+    border-radius:13px !important;
+}
+.gp-settings-page .tab-pane .form-check-input{
+    width:42px;
+    height:23px;
+    margin-top:0;
+    cursor:pointer;
+}
+.gp-settings-page .tab-pane .form-check-input:checked{
+    border-color:var(--gp-green);
+    background-color:var(--gp-green);
+}
+.gp-settings-page .tab-pane .list-group-item{
+    background:transparent;
+    border-color:#EAF0F5;
+}
+.gp-settings-page .btn{
+    min-height:41px;
+    border-radius:10px;
+    font-weight:800;
+}
+.gp-settings-page .btn-primary{
+    border-color:var(--gp-navy);
+    background:var(--gp-navy);
+}
+.gp-settings-page .btn-primary:hover{
+    border-color:var(--gp-navy-dark);
+    background:var(--gp-navy-dark);
+}
+.gp-settings-page .btn-warning{
+    border-color:var(--gp-gold);
+    background:var(--gp-gold);
+    color:#172033;
+}
+.gp-settings-page .btn-outline-primary{
+    border-color:#BFD3E7;
+    color:var(--gp-navy);
+}
+.gp-settings-page .btn-outline-primary:hover{
+    border-color:var(--gp-navy);
+    background:var(--gp-navy);
+    color:#fff;
+}
+.gp-settings-page .form-switch .form-check-input{margin-left:0}
+
+.gp-settings-page input[type="color"]{
+    flex:0 0 48px;
+    width:48px !important;
+    min-width:48px;
+    min-height:43px;
+    height:43px;
+    padding:4px;
+    border-radius:9px;
+    cursor:pointer;
+}
+.gp-settings-page .font-monospace{font-size:.67rem !important}
+
+.gp-settings-page .palette-preset-card{
+    height:100%;
+    min-height:92px;
+    padding:13px;
+    border:2px solid var(--gp-border);
+    border-radius:12px;
+    background:#fff;
+    cursor:pointer;
+    transition:all .18s ease;
+}
+.gp-settings-page .palette-preset-card:hover{
+    border-color:#9FBEDB;
+    transform:translateY(-2px);
+    box-shadow:0 8px 18px rgba(20,35,60,.07);
+}
+.gp-settings-page .palette-color-dot{
+    width:23px;
+    height:23px;
+    display:block;
+    border:2px solid #fff;
+    border-radius:50%;
+    box-shadow:0 2px 5px rgba(0,0,0,.12);
+}
+
+.gp-settings-page #previewTopbar,
+.gp-settings-page #previewPrimaryBtn,
+.gp-settings-page #previewAccentBtn{
+    min-height:45px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:0 18px;
+    border-radius:999px;
+    border:0 !important;
+    font-size:.71rem;
+    font-weight:800;
+    box-shadow:0 6px 13px rgba(20,35,60,.1);
+}
+.gp-settings-page #previewPrimaryBtn,
+.gp-settings-page #previewAccentBtn{cursor:default}
+
+.gp-settings-page .gp-ad-preview{
+    width:100%;
+    min-height:100px;
+    max-height:145px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    margin-top:10px;
+    padding:7px;
+    border:1px solid var(--gp-border);
+    border-radius:10px;
+    background:#F8FAFC;
+}
+.gp-settings-page .gp-ad-preview img{
+    width:100%;
+    max-height:125px;
+    object-fit:cover;
+    border-radius:7px;
+}
+
+.gp-settings-page .settings-section-card{
+    padding:16px;
+    border:1px solid var(--gp-border);
+    border-radius:13px;
+    background:#F8FAFC;
+}
+.gp-settings-page .settings-section-card + .settings-section-card{margin-top:14px}
+
+@media (max-width:1199.98px){
+    .gp-settings-layout{
+        grid-template-columns:minmax(210px,240px) minmax(0,1fr);
+        gap:15px;
+    }
+    .gp-settings-sidebar{top:84px}
+    .gp-settings-content{padding:19px}
+    .gp-settings-sidebar{padding:11px}
+}
+
+@media (max-width:991.98px){
+    .gp-settings-layout{
+        grid-template-columns:minmax(0,1fr);
+        gap:14px;
+    }
+    .gp-settings-sidebar{
+        position:relative;
+        top:auto;
+        padding:13px;
+    }
+    .gp-settings-nav{
+        display:grid;
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:7px;
+    }
+    .gp-settings-nav .nav-link{
+        min-height:47px;
+    }
+    .gp-save-box{margin-top:12px;padding-top:12px}
+    .gp-save-btn{min-height:47px}
+    .gp-settings-content{padding:18px}
+}
+
+@media (max-width:767.98px){
+    .gp-settings-hero{
+        margin-bottom:13px;
+        padding:20px 17px;
+        border-radius:15px;
+    }
+    .gp-settings-hero h2{font-size:1.22rem}
+    .gp-settings-hero p{font-size:.68rem}
+    .gp-settings-layout{gap:12px}
+    .gp-settings-sidebar,
+    .gp-settings-content{border-radius:14px}
+    .gp-settings-sidebar{padding:10px}
+    .gp-control-label{padding:5px 7px 8px}
+    .gp-settings-nav{
+        grid-template-columns:1fr;
+        gap:5px;
+    }
+    .gp-settings-nav .nav-link{
+        min-height:44px;
+        padding:9px 10px;
+        font-size:.68rem;
+    }
+    .gp-settings-content{padding:13px}
+    .gp-settings-page .tab-pane>h5{
+        font-size:.88rem;
+        line-height:1.4;
+    }
+    .gp-settings-page .tab-pane>p.text-muted{font-size:.61rem}
+    .gp-settings-page .row.g-3,
+    .gp-settings-page .row.g-4{
+        --bs-gutter-x:.75rem;
+        --bs-gutter-y:.75rem;
+    }
+    .gp-settings-page .form-label{font-size:.65rem}
+    .gp-settings-page .form-control,
+    .gp-settings-page .form-select{
+        min-height:42px;
+        font-size:.68rem;
+    }
+    .gp-settings-page textarea.form-control{min-height:84px}
+    .gp-settings-page #previewTopbar,
+    .gp-settings-page #previewPrimaryBtn,
+    .gp-settings-page #previewAccentBtn{
+        width:100%;
+        min-height:43px;
+        font-size:.68rem;
+    }
+    .gp-settings-page .d-flex.justify-content-between.align-items-center{
+        align-items:flex-start !important;
+    }
+    .gp-settings-page .tab-pane .list-group-item{
+        gap:12px;
+        padding-top:14px !important;
+        padding-bottom:14px !important;
+    }
+    .gp-settings-page .tab-pane .list-group-item > div:first-child{
+        min-width:0;
+        padding-right:8px;
+    }
+    .gp-settings-page .tab-pane .list-group-item .fw-bold{
+        font-size:.72rem;
+        line-height:1.4;
+    }
+    .gp-settings-page .tab-pane .list-group-item small{
+        display:block;
+        margin-top:3px;
+    }
+    .gp-settings-page .palette-preset-card{
+        min-height:80px;
+    }
+}
+
+@media (max-width:480px){
+    .gp-settings-hero{padding:17px 13px}
+    .gp-settings-hero h2{font-size:1.08rem}
+    .gp-settings-hero p{font-size:.63rem}
+    .gp-settings-content{padding:10px}
+    .gp-settings-sidebar{padding:8px}
+    .gp-settings-page .tab-pane>h5{font-size:.82rem}
+    .gp-settings-page .tab-pane .p-3.bg-light.rounded-3.border,
+    .gp-settings-page .tab-pane .card.p-4{
+        padding:12px !important;
+    }
+    .gp-settings-page input[type="color"]{
+        flex-basis:44px;
+        width:44px !important;
+        min-width:44px;
+        height:42px;
+    }
+    .gp-settings-page .font-monospace{
+        min-width:0;
+        font-size:.62rem !important;
+    }
+    .gp-save-btn{min-height:45px}
+}
+</style>
+
+<style>
+/* Guaranteed page-local styling: this block is rendered inside the content section. */
+.gp-settings-page{
+    width:100% !important;
+    max-width:none !important;
+    min-width:0 !important;
+    margin:0 !important;
+    padding:0 !important;
+}
+.gp-settings-page .gp-settings-layout{
+    width:100% !important;
+    max-width:none !important;
+    min-width:0 !important;
+}
+.gp-settings-page .gp-settings-content{
+    width:100% !important;
+    max-width:none !important;
+    min-width:0 !important;
+}
+.gp-settings-page .gp-settings-content > .tab-content,
+.gp-settings-page .gp-settings-content .tab-pane{
+    width:100% !important;
+    max-width:none !important;
+    min-width:0 !important;
+}
+.gp-settings-page .row{
+    width:100%;
+    max-width:none;
+    min-width:0;
+}
+.gp-settings-page [class*="col-"]{
+    min-width:0;
+}
+.gp-settings-page img{
+    max-width:100%;
+}
+.gp-settings-page input,
+.gp-settings-page select,
+.gp-settings-page textarea,
+.gp-settings-page button{
+    max-width:100%;
+}
+.gp-settings-page .form-control,
+.gp-settings-page .form-select{
+    box-shadow:none;
+}
+.gp-settings-page .form-control:focus,
+.gp-settings-page .form-select:focus{
+    box-shadow:0 0 0 3px rgba(23,75,143,.10);
+}
+@media (max-width:991.98px){
+    .gp-settings-page .gp-settings-layout{
+        display:grid !important;
+        grid-template-columns:1fr !important;
+    }
+    .gp-settings-page .gp-settings-sidebar,
+    .gp-settings-page .gp-settings-content{
+        width:100% !important;
+    }
+    .gp-settings-page .gp-settings-sidebar{
+        position:relative !important;
+        top:auto !important;
+    }
+}
+@media (max-width:767.98px){
+    .gp-settings-page .row{
+        --bs-gutter-x:.75rem;
+        --bs-gutter-y:.75rem;
+    }
+}
+</style>
+<div class="gp-settings-page">
+    <div class="gp-settings-hero">
+        <span class="gp-settings-kicker">
+            <i class="bi bi-sliders2"></i>
+            GrowPec Control Center
+        </span>
+        <h2>Master Platform Settings</h2>
+        <p>Manage website identity, contact details, theme, homepage features, advertisements and integrations from one responsive control panel.</p>
+    </div>
+
+    <form action="{{ route('admin.settings.update') }}" method="POST" enctype="multipart/form-data">
     @csrf
 
-    <div class="row g-4">
-        <!-- 👈 Left Sidebar Navigation Tabs -->
-        <div class="col-lg-3">
-            <div class="card-setting-box shadow-sm p-3">
-                <small class="text-muted fw-bold d-block mb-3 px-2 text-uppercase" style="font-size: 0.72rem; letter-spacing: 0.5px;">Control Tabs</small>
+    <div class="gp-settings-layout">
+        <aside class="gp-settings-sidebar">
+            <div>
+                <small class="gp-control-label">Control Tabs</small>
 
-                <div class="nav flex-column settings-nav" id="settingsTab" role="tablist">
+                <div class="nav flex-column gp-settings-nav" id="settingsTab" role="tablist">
                     <button class="nav-link active text-start" id="tab-general-btn" data-bs-toggle="pill" data-bs-target="#tab-general" type="button">
-                        <i class="bi bi-sliders me-2"></i> General & SEO
+                        <i class="bi bi-sliders me-2"></i> General & Branding
                     </button>
                     <button class="nav-link text-start" id="tab-features-btn" data-bs-toggle="pill" data-bs-target="#tab-features" type="button">
-                        <i class="bi bi-toggles me-2"></i> Feature Switches
+                        <i class="bi bi-toggles me-2"></i> Feature Controls
+                    </button>
+                    <button class="nav-link text-start" id="tab-theme-btn" data-bs-toggle="pill" data-bs-target="#tab-theme" type="button">
+                        <i class="bi bi-palette-fill me-2"></i> Theme & Colors
                     </button>
                     <button class="nav-link text-start" id="tab-ads-btn" data-bs-toggle="pill" data-bs-target="#tab-ads" type="button">
-                        <i class="bi bi-badge-ad me-2"></i> Ad Banners (Ads)
+                        <i class="bi bi-badge-ad me-2"></i> Ad Banners
                     </button>
-                    <!-- <button class="nav-link text-start" id="tab-apis-btn" data-bs-toggle="pill" data-bs-target="#tab-apis" type="button">
-                        <i class="bi bi-cpu me-2"></i> APIs (OTP / FCM)
-                    </button> -->
-                </div>
+                    <button class="nav-link text-start" id="tab-apis-btn" data-bs-toggle="pill" data-bs-target="#tab-apis" type="button">
+                        <i class="bi bi-cpu-fill me-2"></i> APIs & Gateways
+                    </button>
+</div>
 
-                <div class="mt-4 pt-3 border-top px-2">
-                    <button type="submit" class="btn btn-warning w-100 fw-bold shadow-sm py-2">
+                <div class="gp-save-box">
+                    <button type="submit" class="gp-save-btn">
                         <i class="bi bi-check-circle me-1"></i> Save Changes
                     </button>
                 </div>
             </div>
-        </div>
-
-        <!-- 👉 Right Settings Panes -->
-        <div class="col-lg-9">
-            <div class="card-setting-box shadow-sm">
+        </aside>
+        <section class="gp-settings-content">
                 <div class="tab-content" id="settingsTabContent">
-
-                    <!-- 1. GENERAL, BRANDING & SEO -->
-                    <div class="tab-pane fade show active" id="tab-general" role="tabpanel">
+<div class="tab-pane fade show active" id="tab-general" role="tabpanel">
                         <h5 class="fw-bold text-primary mb-3 pb-2 border-bottom">
                             <i class="bi bi-sliders me-1"></i> 1. Website Branding, SEO & Contact Info
                         </h5>
@@ -183,23 +672,18 @@
                             <textarea name="general___site_description" rows="2" class="form-control" placeholder="Brief summary of the portal for Google search results...">{{ $settings['general.site_description'] ?? '' }}</textarea>
                             <small class="text-muted">Appears in search engine snippets and meta tags.</small>
                         </div>
-
-                        <!-- 🎯 BRANDING & LOGOS SECTION (100% FIXED INLINE SIZING) -->
-                        <h6 class="fw-bold text-dark mb-3 mt-4 pt-2 border-top">
+<h6 class="fw-bold text-dark mb-3 mt-4 pt-2 border-top">
                             <i class="bi bi-images me-1 text-warning"></i> Website Logos & Favicon Assets
                         </h6>
 
                         <div class="row g-3 mb-4">
-                            <!-- 1. Header Logo (Light Navbar) -->
-                            <div class="col-md-4">
+<div class="col-md-4">
                                 <div class="p-3 border rounded-3 bg-light h-100">
                                     <div class="d-flex justify-content-between align-items-center mb-2">
                                         <strong class="small text-dark">Header Logo</strong>
                                         <span class="badge bg-white text-muted border">Navbar (Light)</span>
                                     </div>
-
-                                    <!-- Constrained Stage -->
-                                    <div class="border rounded-3 p-2 text-center bg-white shadow-sm mb-2"
+<div class="border rounded-3 p-2 text-center bg-white shadow-sm mb-2"
                                         style="height: 85px; display: flex; align-items: center; justify-content: center; overflow: hidden; background-image: radial-gradient(#E2E8F0 1px, transparent 1px); background-size: 10px 10px;">
                                         <img id="headerLogoLivePreview"
                                             src="{{ asset($settings['general.logo'] ?? 'assets/growpec.png') }}"
@@ -212,18 +696,14 @@
                                     <small class="text-muted d-block mt-1" style="font-size: 0.72rem;">Rec: Transparent PNG (240x60 px)</small>
                                 </div>
                             </div>
-
-                            <!-- 2. Footer Logo (Dark Footer) -->
-                            <div class="col-md-4">
+<div class="col-md-4">
                                 <div class="p-3 border rounded-3 bg-light h-100">
                                     <div class="d-flex justify-content-between align-items-center mb-2">
                                         <strong class="small text-dark">Footer Logo</strong>
-                                        <span class="badge bg-dark text-white">Footer (Dark #0F0A2A)</span>
+                                        <span class="badge bg-dark text-white">Footer (Dark #001B45)</span>
                                     </div>
-
-                                    <!-- Constrained Stage -->
-                                    <div class="border rounded-3 p-2 text-center shadow-sm mb-2"
-                                        style="height: 85px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #0F0A2A; border-color: #312E55 !important;">
+<div class="border rounded-3 p-2 text-center shadow-sm mb-2"
+                                        style="height: 85px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #001B45; border-color: #174B8F !important;">
                                         <img id="footerLogoLivePreview"
                                             src="{{ asset($settings['general.footer_logo'] ?? $settings['general.logo'] ?? 'assets/growpec.png') }}"
                                             alt="Footer Logo"
@@ -235,17 +715,13 @@
                                     <small class="text-muted d-block mt-1" style="font-size: 0.72rem;">White/Light logo for dark background</small>
                                 </div>
                             </div>
-
-                            <!-- 3. Browser Favicon -->
-                            <div class="col-md-4">
+<div class="col-md-4">
                                 <div class="p-3 border rounded-3 bg-light h-100">
                                     <div class="d-flex justify-content-between align-items-center mb-2">
                                         <strong class="small text-dark">Website Favicon</strong>
                                         <span class="badge bg-white text-muted border">Browser Tab</span>
                                     </div>
-
-                                    <!-- Constrained Stage -->
-                                    <div class="border rounded-3 p-2 text-center bg-white shadow-sm mb-2"
+<div class="border rounded-3 p-2 text-center bg-white shadow-sm mb-2"
                                         style="height: 85px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
                                         <div class="shadow-sm px-3 py-1 rounded-3 d-inline-flex align-items-center gap-2 border bg-light">
                                             <img id="faviconLivePreview"
@@ -262,9 +738,7 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Contact Information -->
-                        <h6 class="fw-bold text-dark mb-3 mt-4 pt-2 border-top">
+<h6 class="fw-bold text-dark mb-3 mt-4 pt-2 border-top">
                             <i class="bi bi-telephone-fill me-1 text-primary"></i> Support & Contact Details
                         </h6>
                         <div class="row g-3 mb-3">
@@ -287,71 +761,56 @@
                             <textarea name="general___office_address" rows="2" class="form-control">{{ $settings['general.office_address'] ?? 'Varanasi, Uttar Pradesh, India' }}</textarea>
                         </div>
                     </div>
-
-                    <!-- 2. UI THEME & PRE-SET COLOR PALETTES -->
-                    <div class="tab-pane fade" id="tab-theme" role="tabpanel">
+<div class="tab-pane fade" id="tab-theme" role="tabpanel">
                         <h5 class="fw-bold text-primary mb-2 pb-2 border-bottom">
                             <i class="bi bi-palette-fill me-1"></i> 2. UI Theme & Color Management
                         </h5>
                         <p class="text-muted small mb-3">Pre-set curated theme par click karein ya fir individual colors ko customize karein. Text color background ke hisaab se <strong>automatically adjust</strong> hoga.</p>
-
-                        <!-- Live Button Contrast Preview Box -->
-                        <div class="p-3 mb-4 rounded-3 border bg-light shadow-sm">
+<div class="p-3 mb-4 rounded-3 border bg-light shadow-sm">
                             <small class="text-muted fw-bold d-block mb-2 text-uppercase" style="font-size: 0.72rem; letter-spacing: 0.5px;">
                                 Live Automatic Contrast Preview
                             </small>
 
                             <div class="d-flex flex-wrap gap-3 align-items-center">
-
-                                <!-- Topbar Preview -->
-                                <div
+<div
                                     id="previewTopbar"
                                     class="px-3 py-2 rounded-pill small fw-bold shadow-sm"
-                                    data-color="{{ $settings['theme.topbar_color'] ?? '#F5A623' }}">
+                                    data-color="{{ $settings['theme.topbar_color'] ?? '#D9A400' }}">
                                     Top Notice Bar Phone Link
                                 </div>
-
-                                <!-- Primary Button Preview -->
-                                <button
+<button
                                     type="button"
                                     id="previewPrimaryBtn"
                                     class="btn btn-sm px-4 py-2 rounded-pill fw-bold shadow-sm"
-                                    data-color="{{ $settings['theme.primary_color'] ?? '#2E1E6B' }}">
+                                    data-color="{{ $settings['theme.primary_color'] ?? '#002B67' }}">
                                     Primary Button (Free Counselling)
                                 </button>
-
-                                <!-- Accent Button Preview -->
-                                <button
+<button
                                     type="button"
                                     id="previewAccentBtn"
                                     class="btn btn-sm px-4 py-2 rounded-pill fw-bold shadow-sm"
-                                    data-color="{{ $settings['theme.accent_gold'] ?? '#F5A623' }}">
+                                    data-color="{{ $settings['theme.accent_gold'] ?? '#D9A400' }}">
                                     Accent Button (Apply Now)
                                 </button>
 
                             </div>
                         </div>
-
-                        <!-- A. ONE-CLICK PRESET PALETTES -->
-                        <label class="form-label small fw-bold text-dark mb-2">🎯 Curated One-Click Color Palettes</label>
+<label class="form-label small fw-bold text-dark mb-2">🎯 Curated One-Click Color Palettes</label>
                         <div class="row g-2 mb-4">
-                            <!-- Preset 1 -->
-                            <div class="col-md-4">
-                                <div class="palette-preset-card" onclick="applyPalette('#2E1E6B', '#4E3797', '#F5A623', '#F5A623', '#F8F9FC')">
+<div class="col-md-4">
+                                <div class="palette-preset-card" onclick="applyPalette('#002B67', '#174B8F', '#D9A400', '#D9A400', '#F5F7FA')">
                                     <div class="d-flex justify-content-between align-items-center mb-1">
-                                        <strong class="small text-dark">Royal Purple & Gold (Default)</strong>
+                                        <strong class="small text-dark">GrowPec Navy & Gold (Default)</strong>
                                     </div>
                                     <div class="d-flex gap-1">
-                                        <span class="palette-color-dot" style="background: #2E1E6B;"></span>
-                                        <span class="palette-color-dot" style="background: #4E3797;"></span>
-                                        <span class="palette-color-dot" style="background: #F5A623;"></span>
-                                        <span class="palette-color-dot" style="background: #F8F9FC;"></span>
+                                        <span class="palette-color-dot" style="background: #002B67;"></span>
+                                        <span class="palette-color-dot" style="background: #174B8F;"></span>
+                                        <span class="palette-color-dot" style="background: #D9A400;"></span>
+                                        <span class="palette-color-dot" style="background: #F5F7FA;"></span>
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Preset 2 -->
-                            <div class="col-md-4">
+<div class="col-md-4">
                                 <div class="palette-preset-card" onclick="applyPalette('#0F2C59', '#1E40AF', '#F97316', '#F97316', '#F8FAFC')">
                                     <div class="d-flex justify-content-between align-items-center mb-1">
                                         <strong class="small text-dark">Navy Blue & Orange</strong>
@@ -364,9 +823,7 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Preset 3 -->
-                            <div class="col-md-4">
+<div class="col-md-4">
                                 <div class="palette-preset-card" onclick="applyPalette('#581845', '#900C3F', '#FFC300', '#FFC300', '#FAFAFA')">
                                     <div class="d-flex justify-content-between align-items-center mb-1">
                                         <strong class="small text-dark">Deep Maroon & Amber</strong>
@@ -379,9 +836,7 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Preset 4 -->
-                            <div class="col-md-4">
+<div class="col-md-4">
                                 <div class="palette-preset-card" onclick="applyPalette('#064E3B', '#047857', '#F59E0B', '#F59E0B', '#F0FDF4')">
                                     <div class="d-flex justify-content-between align-items-center mb-1">
                                         <strong class="small text-dark">Emerald Green & Gold</strong>
@@ -394,9 +849,7 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Preset 5 -->
-                            <div class="col-md-4">
+<div class="col-md-4">
                                 <div class="palette-preset-card" onclick="applyPalette('#881337', '#BE123C', '#4F46E5', '#4F46E5', '#FFF1F2')">
                                     <div class="d-flex justify-content-between align-items-center mb-1">
                                         <strong class="small text-dark">Crimson & Indigo</strong>
@@ -410,81 +863,67 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!-- B. INDIVIDUAL COLOR PICKERS -->
-                        <label class="form-label small fw-bold text-dark mb-2">🎨 Fine-Tune Individual Color Tokens</label>
+<label class="form-label small fw-bold text-dark mb-2">🎨 Fine-Tune Individual Color Tokens</label>
                         <div class="row g-3 mb-3">
-                            <!-- Primary Color -->
-                            <div class="col-md-4">
+<div class="col-md-4">
                                 <div class="p-3 bg-light rounded-3 border">
                                     <label class="form-label small fw-bold">Primary Brand Color</label>
                                     <div class="d-flex align-items-center gap-2">
-                                        <input type="color" id="primaryColorPicker" name="theme___primary_color" value="{{ $settings['theme.primary_color'] ?? '#2E1E6B' }}" class="form-control form-control-color color-picker-box w-25">
-                                        <input type="text" id="primaryColorText" class="form-control form-control-sm font-monospace" value="{{ $settings['theme.primary_color'] ?? '#2E1E6B' }}" readonly>
+                                        <input type="color" id="primaryColorPicker" name="theme___primary_color" value="{{ $settings['theme.primary_color'] ?? '#002B67' }}" class="form-control form-control-color color-picker-box w-25">
+                                        <input type="text" id="primaryColorText" class="form-control form-control-sm font-monospace" value="{{ $settings['theme.primary_color'] ?? '#002B67' }}" readonly>
                                     </div>
                                     <small class="text-muted d-block mt-1">Navbar, Footers & Main Headings</small>
                                 </div>
                             </div>
-
-                            <!-- Secondary Purple -->
-                            <div class="col-md-4">
+<div class="col-md-4">
                                 <div class="p-3 bg-light rounded-3 border">
                                     <label class="form-label small fw-bold">Secondary Accent Color</label>
                                     <div class="d-flex align-items-center gap-2">
-                                        <input type="color" id="secondaryColorPicker" name="theme___secondary_purple" value="{{ $settings['theme.secondary_purple'] ?? '#4E3797' }}" class="form-control form-control-color color-picker-box w-25">
-                                        <input type="text" id="secondaryColorText" class="form-control form-control-sm font-monospace" value="{{ $settings['theme.secondary_purple'] ?? '#4E3797' }}" readonly>
+                                        <input type="color" id="secondaryColorPicker" name="theme___secondary_purple" value="{{ $settings['theme.secondary_purple'] ?? '#174B8F' }}" class="form-control form-control-color color-picker-box w-25">
+                                        <input type="text" id="secondaryColorText" class="form-control form-control-sm font-monospace" value="{{ $settings['theme.secondary_purple'] ?? '#174B8F' }}" readonly>
                                     </div>
                                     <small class="text-muted d-block mt-1">Subheadings, active tabs, hovers</small>
                                 </div>
                             </div>
-
-                            <!-- Accent CTA Color -->
-                            <div class="col-md-4">
+<div class="col-md-4">
                                 <div class="p-3 bg-light rounded-3 border">
                                     <label class="form-label small fw-bold">Accent / CTA Button Color</label>
                                     <div class="d-flex align-items-center gap-2">
-                                        <input type="color" id="accentColorPicker" name="theme___accent_gold" value="{{ $settings['theme.accent_gold'] ?? '#F5A623' }}" class="form-control form-control-color color-picker-box w-25">
-                                        <input type="text" id="accentColorText" class="form-control form-control-sm font-monospace" value="{{ $settings['theme.accent_gold'] ?? '#F5A623' }}" readonly>
+                                        <input type="color" id="accentColorPicker" name="theme___accent_gold" value="{{ $settings['theme.accent_gold'] ?? '#D9A400' }}" class="form-control form-control-color color-picker-box w-25">
+                                        <input type="text" id="accentColorText" class="form-control form-control-sm font-monospace" value="{{ $settings['theme.accent_gold'] ?? '#D9A400' }}" readonly>
                                     </div>
                                     <small class="text-muted d-block mt-1">Apply Now, View Details, Badges</small>
                                 </div>
                             </div>
-
-                            <!-- Topbar Color -->
-                            <div class="col-md-4">
+<div class="col-md-4">
                                 <div class="p-3 bg-light rounded-3 border">
                                     <label class="form-label small fw-bold">Top Notice Bar Color</label>
                                     <div class="d-flex align-items-center gap-2">
-                                        <input type="color" id="topbarColorPicker" name="theme___topbar_color" value="{{ $settings['theme.topbar_color'] ?? '#F5A623' }}" class="form-control form-control-color color-picker-box w-25">
-                                        <input type="text" id="topbarColorText" class="form-control form-control-sm font-monospace" value="{{ $settings['theme.topbar_color'] ?? '#F5A623' }}" readonly>
+                                        <input type="color" id="topbarColorPicker" name="theme___topbar_color" value="{{ $settings['theme.topbar_color'] ?? '#D9A400' }}" class="form-control form-control-color color-picker-box w-25">
+                                        <input type="text" id="topbarColorText" class="form-control form-control-sm font-monospace" value="{{ $settings['theme.topbar_color'] ?? '#D9A400' }}" readonly>
                                     </div>
                                     <small class="text-muted d-block mt-1">Top announcement strip</small>
                                 </div>
                             </div>
-
-                            <!-- Body Background -->
-                            <div class="col-md-4">
+<div class="col-md-4">
                                 <div class="p-3 bg-light rounded-3 border">
                                     <label class="form-label small fw-bold">Body Background Color</label>
                                     <div class="d-flex align-items-center gap-2">
-                                        <input type="color" id="bodyBgPicker" name="theme___body_bg" value="{{ $settings['theme.body_bg'] ?? '#F8F9FC' }}" class="form-control form-control-color color-picker-box w-25">
-                                        <input type="text" id="bodyBgText" class="form-control form-control-sm font-monospace" value="{{ $settings['theme.body_bg'] ?? '#F8F9FC' }}" readonly>
+                                        <input type="color" id="bodyBgPicker" name="theme___body_bg" value="{{ $settings['theme.body_bg'] ?? '#F5F7FA' }}" class="form-control form-control-color color-picker-box w-25">
+                                        <input type="text" id="bodyBgText" class="form-control form-control-sm font-monospace" value="{{ $settings['theme.body_bg'] ?? '#F5F7FA' }}" readonly>
                                     </div>
                                     <small class="text-muted d-block mt-1">Light canvas background</small>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <!-- 3. FEATURE SWITCHES & ACTIONS -->
-                    <div class="tab-pane fade" id="tab-features" role="tabpanel">
+<div class="tab-pane fade" id="tab-features" role="tabpanel">
                         <h5 class="fw-bold text-primary mb-3 pb-2 border-bottom">
-                            <i class="bi bi-toggles me-1"></i> 3. Platform Action & Feature Switches
+                            <i class="bi bi-toggles me-1"></i> 3. Platform Action & Feature Controls
                         </h5>
 
                         <div class="list-group list-group-flush mb-3">
-                            <!-- Toggle 2: Online Colleges Section -->
-                            <div class="list-group-item d-flex justify-content-between align-items-center px-0 py-3">
+<div class="list-group-item d-flex justify-content-between align-items-center px-0 py-3">
                                 <div>
                                     <div class="fw-bold text-dark">Enable Online & Distance Universities Section</div>
                                     <small class="text-muted">Controls whether the Online Universities section and filter options are active.</small>
@@ -493,9 +932,7 @@
                                     <input class="form-check-input" type="checkbox" name="features___enable_online_colleges" value="1" {{ ($settings['features.enable_online_colleges'] ?? '1') == '1' ? 'checked' : '' }}>
                                 </div>
                             </div>
-
-                            <!-- Toggle 3: Partner Universities Marquee Strip -->
-                            <div class="list-group-item d-flex justify-content-between align-items-center px-0 py-3">
+<div class="list-group-item d-flex justify-content-between align-items-center px-0 py-3">
                                 <div>
                                     <div class="fw-bold text-dark">Partner Universities Marquee Logo Strip</div>
                                     <small class="text-muted">Turn off to completely hide the scrolling university logos banner from the homepage.</small>
@@ -504,9 +941,7 @@
                                     <input class="form-check-input" type="checkbox" name="features___enable_partner_strip" value="1" {{ ($settings['features.enable_partner_strip'] ?? '1') == '1' ? 'checked' : '' }}>
                                 </div>
                             </div>
-
-                            <!-- Toggle 4: Floating WhatsApp Button -->
-                            <div class="list-group-item d-flex justify-content-between align-items-center px-0 py-3">
+<div class="list-group-item d-flex justify-content-between align-items-center px-0 py-3">
                                 <div>
                                     <div class="fw-bold text-dark">Floating WhatsApp Quick Chat Button</div>
                                     <small class="text-muted">Displays sticky round WhatsApp button on the bottom-right of every user screen.</small>
@@ -515,9 +950,7 @@
                                     <input class="form-check-input" type="checkbox" name="features___enable_floating_whatsapp" value="1" {{ ($settings['features.enable_floating_whatsapp'] ?? '1') == '1' ? 'checked' : '' }}>
                                 </div>
                             </div>
-
-                            <!-- Toggle 5: Lead Email Notification -->
-                            <div class="list-group-item d-flex justify-content-between align-items-center px-0 py-3">
+<div class="list-group-item d-flex justify-content-between align-items-center px-0 py-3">
                                 <div>
                                     <div class="fw-bold text-dark">Instant Lead Email Alerts</div>
                                     <small class="text-muted">Sends automated notification email to admin whenever a student submits an inquiry.</small>
@@ -526,9 +959,7 @@
                                     <input class="form-check-input" type="checkbox" name="features___enable_lead_email_alert" value="1" {{ ($settings['features.enable_lead_email_alert'] ?? '1') == '1' ? 'checked' : '' }}>
                                 </div>
                             </div>
-
-                            <!-- Toggle 6: Maintenance Mode -->
-                            <div class="list-group-item d-flex justify-content-between align-items-center px-0 py-3">
+<div class="list-group-item d-flex justify-content-between align-items-center px-0 py-3">
                                 <div>
                                     <div class="fw-bold text-danger">Website Maintenance Mode</div>
                                     <small class="text-muted">Displays temporary maintenance page to public visitors while admin panel remains accessible.</small>
@@ -539,16 +970,12 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- 🎯 5. ADVERTISEMENT BANNERS (ONLY IMAGE + SHOW/HIDE) -->
-                    <div class="tab-pane fade" id="tab-ads" role="tabpanel">
+<div class="tab-pane fade" id="tab-ads" role="tabpanel">
                         <h5 class="fw-bold text-primary mb-2 pb-2 border-bottom">
                             <i class="bi bi-badge-ad me-1"></i> 5. Advertisement Banners Management
                         </h5>
                         <p class="text-muted small mb-4">Website par aane wale ad banners ko yahan se manage karein. Sirf banner image upload karein aur switch se show/hide karein.</p>
-
-                        <!-- Card 1: College Listing In-Feed Ad Banner -->
-                        <div class="card p-4 rounded-4 border shadow-sm mb-4">
+<div class="card p-4 rounded-4 border shadow-sm mb-4">
                             <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
                                 <div>
                                     <h6 class="fw-bold text-dark mb-0">1. Colleges Listing Page Ad Banner</h6>
@@ -582,9 +1009,7 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Card 2: Homepage Mid-Page Ad Banner -->
-                        <div class="card p-4 rounded-4 border shadow-sm">
+<div class="card p-4 rounded-4 border shadow-sm">
                             <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
                                 <div>
                                     <h6 class="fw-bold text-dark mb-0">2. Homepage Mid-Page Promo Banner</h6>
@@ -619,15 +1044,11 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- 4. APIS & GATEWAYS (OTP, FCM, ANALYTICS) -->
-                    <div class="tab-pane fade" id="tab-apis" role="tabpanel">
+<div class="tab-pane fade" id="tab-apis" role="tabpanel">
                         <h5 class="fw-bold text-primary mb-3 pb-2 border-bottom">
                             <i class="bi bi-cpu me-1"></i> 4. Third-Party APIs (SMS Gateway, Firebase FCM, Analytics)
                         </h5>
-
-                        <!-- SMS / OTP Provider -->
-                        <div class="bg-light p-3 rounded-3 border mb-4">
+<div class="bg-light p-3 rounded-3 border mb-4">
                             <h6 class="fw-bold text-dark mb-2"><i class="bi bi-chat-dots-fill text-warning me-1"></i> SMS & OTP Gateway Setup</h6>
                             <div class="row g-3">
                                 <div class="col-md-4">
@@ -644,9 +1065,7 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Firebase Cloud Messaging (FCM) -->
-                        <div class="bg-light p-3 rounded-3 border mb-4">
+<div class="bg-light p-3 rounded-3 border mb-4">
                             <h6 class="fw-bold text-dark mb-2"><i class="bi bi-bell-fill text-danger me-1"></i> Firebase Cloud Messaging (Push Notifications)</h6>
                             <div class="row g-3">
                                 <div class="col-md-6">
@@ -659,9 +1078,7 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Google Analytics -->
-                        <div class="bg-light p-3 rounded-3 border mb-3">
+<div class="bg-light p-3 rounded-3 border mb-3">
                             <h6 class="fw-bold text-dark mb-2"><i class="bi bi-graph-up text-primary me-1"></i> Google Analytics Tracking</h6>
                             <div class="row g-3">
                                 <div class="col-md-6">
@@ -674,16 +1091,13 @@
 
                 </div>
             </div>
-        </div>
+        </section>
     </div>
-</form>
+    </form>
+</div>
 
 @push('scripts')
 <script>
-    // ============================================================
-    // 1. AUTOMATIC TEXT CONTRAST
-    // ============================================================
-
     function getContrastYIQ(hexcolor) {
 
         if (!hexcolor) {
@@ -718,12 +1132,6 @@
             '#111827' :
             '#FFFFFF';
     }
-
-
-    // ============================================================
-    // 2. UPDATE LIVE PREVIEW
-    // ============================================================
-
     function updateLivePreviews() {
 
         const primaryPicker =
@@ -737,13 +1145,13 @@
 
 
         const primary =
-            primaryPicker?.value || '#2E1E6B';
+            primaryPicker?.value || '#002B67';
 
         const accent =
-            accentPicker?.value || '#F5A623';
+            accentPicker?.value || '#D9A400';
 
         const topbar =
-            topbarPicker?.value || '#F5A623';
+            topbarPicker?.value || '#D9A400';
 
 
         // --------------------------------------------------------
@@ -802,12 +1210,6 @@
             );
         }
     }
-
-
-    // ============================================================
-    // 3. APPLY PRESET COLOR PALETTE
-    // ============================================================
-
     function applyPalette(
         primary,
         secondary,
@@ -900,12 +1302,6 @@
         // Update preview
         updateLivePreviews();
     }
-
-
-    // ============================================================
-    // 4. COLOR PICKER → TEXT INPUT SYNC
-    // ============================================================
-
     const colorPickerGroups = [
         'primaryColor',
         'secondaryColor',
@@ -948,12 +1344,6 @@
             );
         }
     });
-
-
-    // ============================================================
-    // 5. HEADER LOGO LIVE PREVIEW
-    // ============================================================
-
     const headerLogoInput =
         document.getElementById('headerLogoInput');
 
@@ -994,12 +1384,6 @@
             }
         );
     }
-
-
-    // ============================================================
-    // 6. FOOTER LOGO LIVE PREVIEW
-    // ============================================================
-
     const footerLogoInput =
         document.getElementById('footerLogoInput');
 
@@ -1040,12 +1424,6 @@
             }
         );
     }
-
-
-    // ============================================================
-    // 7. FAVICON LIVE PREVIEW
-    // ============================================================
-
     const faviconInput =
         document.getElementById('faviconInput');
 
@@ -1086,12 +1464,6 @@
             }
         );
     }
-
-
-    // ============================================================
-    // 8. INITIALIZE EVERYTHING AFTER PAGE LOAD
-    // ============================================================
-
     document.addEventListener(
         'DOMContentLoaded',
         function() {
@@ -1101,9 +1473,7 @@
         }
     );
 
-    //
 
-    // Live preview for Ad Banners
     document.getElementById('listingAdInput')?.addEventListener('change', function() {
         const preview = document.getElementById('listingAdPreview');
         if (this.files && this.files[0] && preview) {

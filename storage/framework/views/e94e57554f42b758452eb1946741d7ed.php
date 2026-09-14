@@ -5,144 +5,564 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $__env->yieldContent('title', 'Admin Dashboard - GrowPec'); ?></title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
     <style>
+        :root {
+            --gp-navy: #002B67;
+            --gp-navy-dark: #001B45;
+            --gp-blue: #174B8F;
+            --gp-green: #008A43;
+            --gp-green-dark: #006B35;
+            --gp-gold: #D9A400;
+            --gp-bg: #F5F7FA;
+            --gp-border: #E4E9F0;
+            --gp-text: #172033;
+            --gp-muted: #718096;
+            --sidebar-width: 258px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            background-color: #F4F6F9;
-            font-family: system-ui, -apple-system, sans-serif;
+            margin: 0;
+            background: var(--gp-bg);
+            color: var(--gp-text);
+            font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         }
 
+        a {
+            text-decoration: none;
+        }
+
+        /* SIDEBAR */
         .admin-sidebar {
-            width: 250px;
-            min-height: 100vh;
-            background: #1E1346;
-            color: #fff;
             position: fixed;
-            z-index: 100;
+            inset: 0 auto 0 0;
+            width: var(--sidebar-width);
+            height: 100vh;
+            z-index: 1040;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(180deg, var(--gp-navy-dark) 0%, var(--gp-navy) 100%);
+            color: #fff;
+            box-shadow: 8px 0 28px rgba(0, 27, 69, .08);
+            transition: transform .25s ease;
         }
 
-        .admin-content {
-            margin-left: 250px;
-            padding: 25px;
+        .admin-brand {
+            padding: 22px 19px 18px;
+            border-bottom: 1px solid rgba(255, 255, 255, .09);
+        }
+
+        .admin-brand-logo {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+            padding: 5px 9px;
+            border-radius: 10px;
+        }
+
+        .admin-brand-logo img {
+            width: auto;
+            height: 38px;
+            max-width: 175px;
+            object-fit: contain;
+        }
+
+        .admin-brand small {
+            display: block;
+            margin-top: 9px;
+            color: rgba(255, 255, 255, .56);
+            font-size: .68rem;
+            font-weight: 600;
+            letter-spacing: .02em;
+        }
+
+        .sidebar-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px 10px;
+        }
+
+        .sidebar-label {
+            padding: 8px 12px 6px;
+            color: rgba(255, 255, 255, .35);
+            font-size: .62rem;
+            font-weight: 800;
+            letter-spacing: .12em;
+            text-transform: uppercase;
         }
 
         .sidebar-link {
-            color: #A5A1B8;
-            text-decoration: none;
-            padding: 12px 20px;
-            display: block;
-            font-weight: 500;
-            border-radius: 8px;
-            margin: 4px 10px;
-            transition: all 0.2s ease;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            width: 100%;
+            min-height: 43px;
+            margin: 3px 0;
+            padding: 10px 12px;
+            border-radius: 10px;
+            color: rgba(255, 255, 255, .66);
+            font-size: .79rem;
+            font-weight: 650;
+            transition: .18s ease;
         }
 
-        .sidebar-link:hover,
-        .sidebar-link.active {
-            background: #2E1E6B;
+        .sidebar-link i {
+            width: 20px;
+            text-align: center;
+            font-size: 1rem;
+            color: rgba(255, 255, 255, .52);
+        }
+
+        .sidebar-link:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, .075);
+        }
+
+        .sidebar-link:hover i {
             color: #fff;
         }
 
-        .stat-card {
+        .sidebar-link.active {
+            color: #fff;
+            background: linear-gradient(90deg, rgba(0, 138, 67, .95), rgba(0, 138, 67, .62));
+            box-shadow: 0 7px 18px rgba(0, 0, 0, .12);
+        }
+
+        .sidebar-link.active i {
+            color: #fff;
+        }
+
+        .sidebar-link.active::before {
+            content: "";
+            position: absolute;
+            left: -10px;
+            width: 3px;
+            height: 22px;
+            border-radius: 0 4px 4px 0;
+            background: var(--gp-gold);
+        }
+
+        .sidebar-footer {
+            padding: 14px 15px;
+            border-top: 1px solid rgba(255, 255, 255, .09);
+        }
+
+        .sidebar-website {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            margin-bottom: 9px;
+            color: rgba(255, 255, 255, .58);
+            font-size: .68rem;
+            font-weight: 700;
+        }
+
+        .sidebar-website:hover {
+            color: #fff;
+        }
+
+        .logout-btn {
+            min-height: 40px;
+            border: 1px solid rgba(255, 255, 255, .12);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, .055);
+            color: rgba(255, 255, 255, .78);
+            font-size: .76rem;
+        }
+
+        .logout-btn:hover {
+            border-color: rgba(255, 255, 255, .2);
+            background: rgba(255, 255, 255, .1);
+            color: #fff;
+        }
+
+        /* MAIN */
+        .admin-main {
+            min-height: 100vh;
+            margin-left: var(--sidebar-width);
+        }
+
+        .admin-topbar {
+            position: sticky;
+            top: 0;
+            z-index: 900;
+            min-height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 13px 28px;
+            background: rgba(255, 255, 255, .96);
+            border-bottom: 1px solid var(--gp-border);
+            backdrop-filter: blur(12px);
+        }
+
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            min-width: 0;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            width: 39px;
+            height: 39px;
+            border: 1px solid var(--gp-border);
+            border-radius: 10px;
             background: #fff;
+            color: var(--gp-navy);
+        }
+
+        .page-title {
+            margin: 0;
+            color: var(--gp-navy-dark);
+            font-size: 1.16rem;
+            font-weight: 800;
+            letter-spacing: -.02em;
+        }
+
+        .page-subtitle {
+            margin: 3px 0 0;
+            color: var(--gp-muted);
+            font-size: .67rem;
+        }
+
+        .admin-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .admin-avatar {
+            width: 39px;
+            height: 39px;
+            display: grid;
+            place-items: center;
+            flex: 0 0 39px;
             border-radius: 12px;
-            padding: 20px;
-            border: 1px solid #E2E8F0;
+            background: linear-gradient(135deg, var(--gp-navy), var(--gp-blue));
+            color: #fff;
+            font-size: .88rem;
+            font-weight: 800;
+        }
+
+        .admin-user-name {
+            color: var(--gp-text);
+            font-size: .76rem;
+            font-weight: 800;
+            line-height: 1.25;
+        }
+
+        .admin-user-email {
+            color: var(--gp-muted);
+            font-size: .63rem;
+        }
+
+        .role-badge {
+            margin-left: 4px;
+            padding: 6px 9px;
+            border-radius: 999px;
+            background: #FFF5D5;
+            color: #765800;
+            font-size: .59rem;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .admin-content {
+            padding: 26px 28px 35px;
+        }
+
+        .admin-alert {
+            border: 0;
+            border-radius: 12px;
+            font-size: .76rem;
+            box-shadow: 0 5px 16px rgba(0, 0, 0, .04);
+        }
+
+        /* Mobile overlay */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 1030;
+            background: rgba(0, 18, 45, .45);
+        }
+
+        @media (max-width: 991.98px) {
+            :root {
+                --sidebar-width: 245px;
+            }
+
+            .admin-sidebar {
+                transform: translateX(-100%);
+            }
+
+            body.sidebar-open .admin-sidebar {
+                transform: translateX(0);
+            }
+
+            body.sidebar-open .sidebar-overlay {
+                display: block;
+            }
+
+            .admin-main {
+                margin-left: 0;
+            }
+
+            .mobile-menu-btn {
+                display: inline-grid;
+                place-items: center;
+            }
+
+            .admin-topbar {
+                padding: 12px 20px;
+            }
+
+            .admin-content {
+                padding: 22px 20px 30px;
+            }
+        }
+
+        @media (max-width: 575.98px) {
+            .admin-topbar {
+                min-height: 65px;
+                padding: 10px 14px;
+            }
+
+            .admin-content {
+                padding: 18px 14px 28px;
+            }
+
+            .page-title {
+                font-size: 1rem;
+            }
+
+            .page-subtitle {
+                display: none;
+            }
+
+            .admin-user-info,
+            .role-badge {
+                display: none;
+            }
+
+            .admin-avatar {
+                width: 36px;
+                height: 36px;
+                flex-basis: 36px;
+            }
         }
     </style>
 </head>
 
 <body>
-    <!-- Sidebar -->
-    <div class="admin-sidebar p-3 d-flex flex-column justify-content-between">
-        <div>
-            <div class="mb-4 px-2">
-                <a href="<?php echo e(route('admin.dashboard')); ?>" class="d-inline-block">
-                    <img src="<?php echo e(asset('assets/growpec.png')); ?>" alt="GrowPEC Admin" class="bg-white p-1 rounded-2" style="height: 42px; max-width: 190px; object-fit: contain;">
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<aside class="admin-sidebar" id="adminSidebar">
+
+        <div class="admin-brand">
+            <a href="<?php echo e(route('admin.dashboard')); ?>" class="admin-brand-logo">
+                <img src="<?php echo e(asset('assets/growpec.png')); ?>" alt="GrowPec Admin">
+            </a>
+            <small>Admin Management Portal</small>
+        </div>
+
+        <div class="sidebar-scroll">
+            <div class="sidebar-label">Main</div>
+
+            <nav>
+                <a class="sidebar-link <?php echo e(request()->routeIs('admin.dashboard') ? 'active' : ''); ?>" aria-current="<?php echo e(request()->routeIs('admin.dashboard') ? 'page' : 'false'); ?>"
+                    href="<?php echo e(route('admin.dashboard')); ?>">
+                    <i class="bi bi-grid-1x2-fill"></i>
+                    <span>Dashboard</span>
                 </a>
-                <small class="d-block text-white-50 mt-1" style="font-size: 0.75rem;">Admin Management Portal</small>
-            </div>
-            <nav class="nav flex-column">
-                <a class="sidebar-link <?php echo e(request()->routeIs('admin.dashboard') ? 'active' : ''); ?>" href="<?php echo e(route('admin.dashboard')); ?>">
-                    <i class="bi bi-speedometer2 me-2"></i> Dashboard
+
+                <a class="sidebar-link <?php echo e(request()->routeIs('admin.streams.*') ? 'active' : ''); ?>" aria-current="<?php echo e(request()->routeIs('admin.streams.*') ? 'page' : 'false'); ?>"
+                    href="<?php echo e(route('admin.streams.index')); ?>">
+                    <i class="bi bi-diagram-3-fill"></i>
+                    <span>Streams</span>
                 </a>
-                <!-- 🎯 Hero Banners Manager -->
-                <a class="sidebar-link <?php echo e(request()->routeIs('admin.banners.*') ? 'active' : ''); ?>" href="<?php echo e(route('admin.banners.index')); ?>">
-                    <i class="bi bi-image me-2"></i> Hero Banners
+
+                <a class="sidebar-link <?php echo e(request()->routeIs('admin.courses.*') ? 'active' : ''); ?>" aria-current="<?php echo e(request()->routeIs('admin.courses.*') ? 'page' : 'false'); ?>"
+                    href="<?php echo e(route('admin.courses.index')); ?>">
+                    <i class="bi bi-mortarboard-fill"></i>
+                    <span>Courses</span>
                 </a>
-                <a class="sidebar-link <?php echo e(request()->routeIs('admin.streams.*') ? 'active' : ''); ?>" href="<?php echo e(route('admin.streams.index')); ?>">
-                    <i class="bi bi-diagram-3 me-2"></i> Streams
+
+                <a class="sidebar-link <?php echo e(request()->routeIs('admin.specializations.*') ? 'active' : ''); ?>" aria-current="<?php echo e(request()->routeIs('admin.specializations.*') ? 'page' : 'false'); ?>"
+                    href="<?php echo e(route('admin.specializations.index')); ?>">
+                    <i class="bi bi-tags-fill"></i>
+                    <span>Specializations</span>
                 </a>
-                <a class="sidebar-link <?php echo e(request()->routeIs('admin.courses.*') ? 'active' : ''); ?>" href="<?php echo e(route('admin.courses.index')); ?>">
-                    <i class="bi bi-mortarboard me-2"></i> Courses
+
+
+                <a class="sidebar-link <?php echo e(request()->routeIs('admin.colleges.*') ? 'active' : ''); ?>" aria-current="<?php echo e(request()->routeIs('admin.colleges.*') ? 'page' : 'false'); ?>"
+                    href="<?php echo e(route('admin.colleges.index')); ?>">
+                    <i class="bi bi-building-fill"></i>
+                    <span>Colleges List</span>
                 </a>
-                <a class="sidebar-link <?php echo e(request()->routeIs('admin.specializations.*') ? 'active' : ''); ?>" href="<?php echo e(route('admin.specializations.index')); ?>">
-                    <i class="bi bi-tags me-2"></i> Specializations
+
+                <a class="sidebar-link <?php echo e(request()->routeIs('admin.locations.*') ? 'active' : ''); ?>" aria-current="<?php echo e(request()->routeIs('admin.locations.*') ? 'page' : 'false'); ?>"
+                    href="<?php echo e(route('admin.locations.index')); ?>">
+                    <i class="bi bi-geo-alt-fill"></i>
+                    <span>States & Cities</span>
                 </a>
-                <a class="sidebar-link <?php echo e(request()->routeIs('admin.locations.*') ? 'active' : ''); ?>" href="<?php echo e(route('admin.locations.index')); ?>">
-                    <i class="bi bi-geo-alt me-2"></i> States & Cities
+                <div class="sidebar-label mt-3">Management</div>
+
+                <a class="sidebar-link <?php echo e(request()->routeIs('admin.leads.*') ? 'active' : ''); ?>" aria-current="<?php echo e(request()->routeIs('admin.leads.*') ? 'page' : 'false'); ?>"
+                    href="<?php echo e(route('admin.leads.index')); ?>">
+                    <i class="bi bi-person-lines-fill"></i>
+                    <span>Leads CRM</span>
                 </a>
-                <a class="sidebar-link <?php echo e(request()->routeIs('admin.colleges.*') ? 'active' : ''); ?>" href="<?php echo e(route('admin.colleges.index')); ?>">
-                    <i class="bi bi-building me-2"></i> Colleges List
+
+                <a class="sidebar-link <?php echo e(request()->routeIs('admin.partners.*') ? 'active' : ''); ?>" aria-current="<?php echo e(request()->routeIs('admin.partners.*') ? 'page' : 'false'); ?>"
+                    href="<?php echo e(route('admin.partners.index')); ?>">
+                    <i class="bi bi-award-fill"></i>
+                    <span>Partner Universities</span>
                 </a>
-                <a class="sidebar-link <?php echo e(request()->routeIs('admin.leads.*') ? 'active' : ''); ?>" href="<?php echo e(route('admin.leads.index')); ?>">
-                    <i class="bi bi-person-lines-fill me-2"></i> Leads CRM
+
+                <a class="sidebar-link <?php echo e(request()->routeIs('admin.partners.*') ? 'active' : ''); ?>" aria-current="<?php echo e(request()->routeIs('admin.partners.*') ? 'page' : 'false'); ?>"
+                    href="<?php echo e(route('admin.banners.index')); ?>">
+                    <i class="bi bi-award-fill"></i>
+                    <span>Hero Banner</span>
                 </a>
+
+                <a class="sidebar-link <?php echo e(request()->routeIs('admin.settings.*') ? 'active' : ''); ?>" aria-current="<?php echo e(request()->routeIs('admin.settings.*') ? 'page' : 'false'); ?>"
+                    href="<?php echo e(route('admin.settings.index')); ?>">
+                    <i class="bi bi-sliders2"></i>
+                    <span>Settings</span>
+                </a>
+
+                <div class="sidebar-label mt-3">System</div>
+
                 <a class="sidebar-link" href="<?php echo e(route('home')); ?>" target="_blank">
-                    <i class="bi bi-box-arrow-up-right me-2"></i> Visit Website
+                    <i class="bi bi-box-arrow-up-right"></i>
+                    <span>Visit Website</span>
                 </a>
             </nav>
         </div>
 
-        <!-- Sidebar Bottom Logout -->
-        <div class="px-2 pt-3 border-top border-secondary">
+        <div class="sidebar-footer">
+            <div class="sidebar-website">
+                <i class="bi bi-shield-check"></i>
+                GrowPec Admin
+            </div>
+
             <form action="<?php echo e(route('logout')); ?>" method="POST">
                 <?php echo csrf_field(); ?>
-                <button type="submit" class="btn btn-sm btn-outline-danger w-100 fw-bold">
-                    <i class="bi bi-box-arrow-right me-1"></i> Sign Out
+                <button type="submit" class="btn logout-btn w-100 fw-bold">
+                    <i class="bi bi-box-arrow-right me-1"></i>
+                    Sign Out
                 </button>
             </form>
         </div>
-    </div>
+    </aside>
 
-    <!-- Main Content -->
-    <div class="admin-content">
-        <!-- Top Navigation Bar -->
-        <div class="d-flex justify-content-between align-items-center mb-4 bg-white p-3 rounded-4 shadow-sm border">
-            <h4 class="fw-bold mb-0 text-dark"><?php echo $__env->yieldContent('header', 'Dashboard'); ?></h4>
-            <div class="d-flex align-items-center gap-3">
-                <div class="text-end d-none d-sm-block">
-                    <div class="fw-bold text-dark"><?php echo e(Auth::user()->name ?? 'Administrator'); ?></div>
-                    <small class="text-muted"><?php echo e(Auth::user()->email ?? 'admin@growpec.com'); ?></small>
+<main class="admin-main">
+
+        <header class="admin-topbar">
+            <div class="topbar-left">
+                <button type="button" class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu">
+                    <i class="bi bi-list fs-5"></i>
+                </button>
+
+                <div>
+                    <h1 class="page-title"><?php echo $__env->yieldContent('header', 'Dashboard'); ?></h1>
+                    <p class="page-subtitle">Manage your GrowPec platform from one place.</p>
                 </div>
-                <span class="badge bg-warning text-dark fw-bold px-3 py-2">
+            </div>
+
+            <div class="admin-user">
+                <div class="admin-user-info text-end">
+                    <div class="admin-user-name">
+                        <?php echo e(Auth::user()->name ?? 'Administrator'); ?>
+
+                    </div>
+                    <div class="admin-user-email">
+                        <?php echo e(Auth::user()->email ?? 'admin@growpec.com'); ?>
+
+                    </div>
+                </div>
+
+                <div class="admin-avatar">
+                    <?php echo e(strtoupper(substr(Auth::user()->name ?? 'A', 0, 1))); ?>
+
+                </div>
+
+                <span class="role-badge">
                     <?php echo e(ucfirst(str_replace('_', ' ', Auth::user()->role ?? 'super_admin'))); ?>
 
                 </span>
             </div>
+        </header>
+
+        <div class="admin-content">
+
+            <?php if(session('success')): ?>
+            <div class="alert alert-success admin-alert alert-dismissible fade show mb-4" role="alert">
+                <i class="bi bi-check-circle-fill me-1"></i>
+                <?php echo e(session('success')); ?>
+
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            <?php endif; ?>
+
+            <?php if(session('error')): ?>
+            <div class="alert alert-danger admin-alert alert-dismissible fade show mb-4" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-1"></i>
+                <?php echo e(session('error')); ?>
+
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            <?php endif; ?>
+
+            <?php echo $__env->yieldContent('content'); ?>
+
         </div>
-
-        <?php if(session('success')): ?>
-        <div class="alert alert-success alert-dismissible fade show rounded-3" role="alert">
-            <i class="bi bi-check-circle-fill me-1"></i> <?php echo e(session('success')); ?>
-
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-        <?php endif; ?>
-
-        <?php if(session('error')): ?>
-        <div class="alert alert-danger alert-dismissible fade show rounded-3" role="alert">
-            <i class="bi bi-exclamation-triangle-fill me-1"></i> <?php echo e(session('error')); ?>
-
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-        <?php endif; ?>
-
-        <?php echo $__env->yieldContent('content'); ?>
-    </div>
+    </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuBtn = document.getElementById('mobileMenuBtn');
+            const overlay = document.getElementById('sidebarOverlay');
+
+            function closeSidebar() {
+                document.body.classList.remove('sidebar-open');
+            }
+
+            menuBtn?.addEventListener('click', function() {
+                document.body.classList.toggle('sidebar-open');
+            });
+
+            overlay?.addEventListener('click', closeSidebar);
+
+            document.querySelectorAll('.sidebar-link').forEach(link => {
+                link.addEventListener('click', function() {
+                    if (window.innerWidth <= 991) closeSidebar();
+                });
+            });
+
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 991) closeSidebar();
+            });
+        });
+    </script>
+
     <?php echo $__env->yieldPushContent('scripts'); ?>
 </body>
 
