@@ -1,8 +1,8 @@
-@extends('layouts.app')
 
-@section('title', 'GrowPec - Your Career Deserves A Better College | Admission Guidance')
 
-@push('styles')
+<?php $__env->startSection('title', 'GrowPec - Your Career Deserves A Better College | Admission Guidance'); ?>
+
+<?php $__env->startPush('styles'); ?>
 <style>
     :root {
         --gp-purple: #001F59;
@@ -3191,13 +3191,11 @@ section {
     }
 
 </style>
-@endpush
+<?php $__env->stopPush(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 
-{{-- =========================================================
-     1. 🎯 ADMISSION SEARCH / SUCCESS MESSAGE
-     ========================================================= --}}
+
 <section class="admission-hero-section">
     <div class="container">
         <div class="admission-hero-content">
@@ -3215,7 +3213,7 @@ section {
                 personalized admission guidance from GrowPec.
             </p>
 
-            <form action="{{ route('colleges.regular') }}" method="GET" class="admission-search-box" id="homeSearchForm">
+            <form action="<?php echo e(route('colleges.regular')); ?>" method="GET" class="admission-search-box" id="homeSearchForm">
                 <div class="admission-search-inner">
                     <span class="admission-search-icon" aria-hidden="true">
                         <i class="bi bi-search"></i>
@@ -3250,9 +3248,7 @@ section {
     </div>
 </section>
 
-{{-- =========================================================
-     2. 🎯 PARTNER UNIVERSITIES MARQUEE LOGO STRIP (Video 0:01)
-     ========================================================= --}}
+
 <section class="partner-strip-section">
     <div class="container text-center mb-3">
         <span class="badge bg-warning-subtle text-dark border px-3 py-2 fw-bold" style="font-size: 0.82rem;">
@@ -3368,9 +3364,7 @@ section {
     </div>
 </section>
 
-{{-- =========================================================
-     3. TOP REGULAR COLLEGES
-     ========================================================= --}}
+
 <section class="py-5 college-grid-section">
     <div class="container">
         <div class="d-flex justify-content-between align-items-end mb-4">
@@ -3383,64 +3377,63 @@ section {
             </div>
         </div>
 
-        {{-- Show only 10 colleges on homepage; horizontal scroll on all devices --}}
+        
         <div class="top-colleges-scroll">
-            @forelse($regularColleges->take(4) as $college)
+            <?php $__empty_1 = true; $__currentLoopData = $regularColleges->take(4); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $college): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
             <div class="top-college-item">
-                <a href="{{ route('college.show', $college->slug) }}" class="college-card">
+                <a href="<?php echo e(route('college.show', $college->slug)); ?>" class="college-card">
                     <div class="college-image-wrapper">
-                        <img src="{{ $college->banner_url }}" class="college-card-img" alt="{{ $college->name }}" loading="lazy">
-                        @if($college->college_type)
-                        <span class="college-type-pill">{{ $college->college_type }}</span>
-                        @endif
+                        <img src="<?php echo e($college->banner_url); ?>" class="college-card-img" alt="<?php echo e($college->name); ?>" loading="lazy">
+                        <?php if($college->college_type): ?>
+                        <span class="college-type-pill"><?php echo e($college->college_type); ?></span>
+                        <?php endif; ?>
                         <div class="college-logo-wrapper">
-                            <img src="{{ $college->logo_url ?? $college->banner_url }}" class="college-logo" alt="{{ $college->name }} logo" loading="lazy">
+                            <img src="<?php echo e($college->logo_url ?? $college->banner_url); ?>" class="college-logo" alt="<?php echo e($college->name); ?> logo" loading="lazy">
                         </div>
                     </div>
 
                     <div class="college-card-body">
-                        <h5 class="college-name">{{ $college->name }}</h5>
+                        <h5 class="college-name"><?php echo e($college->name); ?></h5>
                         <div class="college-info">
                             <div class="college-info-row">
                                 <span class="college-info-icon"><i class="bi bi-bank2"></i></span>
-                                <span class="college-info-text">{{ $college->college_type ?: 'University / College' }}</span>
+                                <span class="college-info-text"><?php echo e($college->college_type ?: 'University / College'); ?></span>
                             </div>
                             <div class="college-info-row">
                                 <span class="college-info-icon"><i class="bi bi-geo-alt-fill text-danger"></i></span>
-                                <span class="college-info-text">{{ $college->state }}, {{ $college->city }}</span>
+                                <span class="college-info-text"><?php echo e($college->state); ?>, <?php echo e($college->city); ?></span>
                             </div>
                             <div class="college-info-row">
                                 <span class="college-info-icon"><i class="bi bi-gear-fill"></i></span>
                                 <span class="college-info-text">
-                                    @if($college->established_year)
-                                    Estd year {{ $college->established_year }}
-                                    @else
+                                    <?php if($college->established_year): ?>
+                                    Estd year <?php echo e($college->established_year); ?>
+
+                                    <?php else: ?>
                                     Established info unavailable
-                                    @endif
+                                    <?php endif; ?>
                                 </span>
                             </div>
                         </div>
                     </div>
                 </a>
             </div>
-            @empty
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
             <div class="col-12 text-center py-5">
                 <p class="text-muted mb-0">Colleges are being updated. Check back soon!</p>
             </div>
-            @endforelse
+            <?php endif; ?>
         </div>
 
         <div class="college-view-all-wrap">
-            <a href="{{ route('colleges.regular') }}" class="btn btn-outline-primary btn-sm section-link">
+            <a href="<?php echo e(route('colleges.regular')); ?>" class="btn btn-outline-primary btn-sm section-link">
                 View All <i class="bi bi-chevron-right"></i>
             </a>
         </div>
     </div>
 </section>
 
-{{-- =========================================================
-     4. 🎯 GD / PI — AD STYLE PROMO
-     ========================================================= --}}
+
 <section class="py-4 bg-white">
     <div class="container">
         <div class="gd-pi-ad">
@@ -3502,9 +3495,7 @@ section {
     </div>
 </section>
 
-{{-- =========================================================
-     5. TOP ONLINE & DISTANCE UNIVERSITIES
-     ========================================================= --}}
+
 <section class="py-5 online-section">
     <div class="container">
         <div class="d-flex justify-content-between align-items-end mb-4">
@@ -3515,60 +3506,59 @@ section {
         </div>
 
         <div class="row g-4 college-grid">
-            @forelse($onlineColleges->take(4) as $college)
+            <?php $__empty_1 = true; $__currentLoopData = $onlineColleges->take(4); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $college): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
             <div class="col-xl-3 col-lg-4 col-md-6">
-                <a href="{{ route('college.show', $college->slug) }}" class="college-card">
+                <a href="<?php echo e(route('college.show', $college->slug)); ?>" class="college-card">
                     <div class="college-image-wrapper">
-                        <img src="{{ $college->banner_url }}" class="college-card-img" alt="{{ $college->name }}" loading="lazy">
+                        <img src="<?php echo e($college->banner_url); ?>" class="college-card-img" alt="<?php echo e($college->name); ?>" loading="lazy">
                         <span class="college-type-pill online">100% Online</span>
                         <div class="college-logo-wrapper">
-                            <img src="{{ $college->logo_url ?? $college->banner_url }}" class="college-logo" alt="{{ $college->name }} logo" loading="lazy">
+                            <img src="<?php echo e($college->logo_url ?? $college->banner_url); ?>" class="college-logo" alt="<?php echo e($college->name); ?> logo" loading="lazy">
                         </div>
                     </div>
 
                     <div class="college-card-body">
-                        <h5 class="college-name">{{ $college->name }}</h5>
+                        <h5 class="college-name"><?php echo e($college->name); ?></h5>
                         <div class="college-info">
                             <div class="college-info-row">
                                 <span class="college-info-icon"><i class="bi bi-bank2"></i></span>
-                                <span class="college-info-text">{{ $college->college_type ?: 'University' }}</span>
+                                <span class="college-info-text"><?php echo e($college->college_type ?: 'University'); ?></span>
                             </div>
                             <div class="college-info-row">
                                 <span class="college-info-icon"><i class="bi bi-geo-alt-fill text-danger"></i></span>
-                                <span class="college-info-text">{{ $college->state }}, {{ $college->city }}</span>
+                                <span class="college-info-text"><?php echo e($college->state); ?>, <?php echo e($college->city); ?></span>
                             </div>
                             <div class="college-info-row">
                                 <span class="college-info-icon"><i class="bi bi-gear-fill"></i></span>
                                 <span class="college-info-text">
-                                    @if($college->established_year)
-                                    Estd year {{ $college->established_year }}
-                                    @else
+                                    <?php if($college->established_year): ?>
+                                    Estd year <?php echo e($college->established_year); ?>
+
+                                    <?php else: ?>
                                     Established info unavailable
-                                    @endif
+                                    <?php endif; ?>
                                 </span>
                             </div>
                         </div>
                     </div>
                 </a>
             </div>
-            @empty
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
             <div class="col-12 text-center py-5">
                 <p class="text-muted mb-0">Online universities data coming soon.</p>
             </div>
-            @endforelse
+            <?php endif; ?>
         </div>
 
         <div class="college-view-all-wrap">
-            <a href="{{ route('colleges.online') }}" class="btn btn-outline-primary btn-sm section-link">
+            <a href="<?php echo e(route('colleges.online')); ?>" class="btn btn-outline-primary btn-sm section-link">
                 View All <i class="bi bi-chevron-right"></i>
             </a>
         </div>
     </div>
 </section>
 
-{{-- =========================================================
-     6. 🏙️ TOP CITIES FOR MBA & PGDM
-     ========================================================= --}}
+
 <section class="py-5 bg-white">
     <div class="container">
         <div class="cities-heading">
@@ -3577,7 +3567,7 @@ section {
         </div>
 
         <div class="row row-cols-2 row-cols-md-4 g-3 cities-grid">
-            @php
+            <?php
                 $cityIcons = [
                     'new-delhi' => 'bi-building',
                     'delhi-ncr' => 'bi-building',
@@ -3588,55 +3578,53 @@ section {
                     'kolkata' => 'bi-bank2',
                     'lucknow' => 'bi-building',
                 ];
-            @endphp
+            ?>
 
-            @forelse($popularCities as $city)
-            @php
+            <?php $__empty_1 = true; $__currentLoopData = $popularCities; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $city): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+            <?php
                 $citySlug = \Illuminate\Support\Str::slug($city->name);
                 $cityIcon = $cityIcons[$citySlug] ?? 'bi-buildings';
-            @endphp
+            ?>
             <div class="col">
-                <a href="{{ route('colleges.regular') }}?cities[]={{ $city->name }}" class="city-card-btn">
+                <a href="<?php echo e(route('colleges.regular')); ?>?cities[]=<?php echo e($city->name); ?>" class="city-card-btn">
                     <div class="city-card-image">
                         <span class="city-icon-badge">
-                            <i class="bi {{ $cityIcon }}"></i>
+                            <i class="bi <?php echo e($cityIcon); ?>"></i>
                         </span>
                     </div>
                     <div class="city-card-body">
-                        <span class="city-card-name">{{ $city->name }}</span>
+                        <span class="city-card-name"><?php echo e($city->name); ?></span>
                     </div>
                 </a>
             </div>
-            @empty
-            @foreach([
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+            <?php $__currentLoopData = [
                 ['name' => 'New Delhi', 'icon' => 'bi-building'],
                 ['name' => 'Bangalore', 'icon' => 'bi-buildings'],
                 ['name' => 'Hyderabad', 'icon' => 'bi-bank'],
                 ['name' => 'Mumbai', 'icon' => 'bi-building'],
                 ['name' => 'Kolkata', 'icon' => 'bi-bank2'],
                 ['name' => 'Lucknow', 'icon' => 'bi-building']
-            ] as $city)
+            ]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $city): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <div class="col">
-                <a href="{{ route('colleges.regular') }}?cities[]={{ $city['name'] }}" class="city-card-btn">
+                <a href="<?php echo e(route('colleges.regular')); ?>?cities[]=<?php echo e($city['name']); ?>" class="city-card-btn">
                     <div class="city-card-image">
                         <span class="city-icon-badge">
-                            <i class="bi {{ $city['icon'] }}"></i>
+                            <i class="bi <?php echo e($city['icon']); ?>"></i>
                         </span>
                     </div>
                     <div class="city-card-body">
-                        <span class="city-card-name">{{ $city['name'] }}</span>
+                        <span class="city-card-name"><?php echo e($city['name']); ?></span>
                     </div>
                 </a>
             </div>
-            @endforeach
-            @endforelse
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            <?php endif; ?>
         </div>
     </div>
 </section>
 
-{{-- =========================================================
-     7. 🎯 CONNECT WITH A PROGRAM ADVISOR STRIP (Video 0:32)
-     ========================================================= --}}
+
 <section class="py-3 bg-white">
     <div class="container">
         <div class="advisor-call-strip shadow-sm d-flex justify-content-between align-items-center flex-wrap gap-3">
@@ -3651,9 +3639,7 @@ section {
     </div>
 </section>
 
-{{-- =========================================================
-     9. ✨ WHY CHOOSE GROWPEC
-     ========================================================= --}}
+
 <section class="py-5 why-growpec-section">
     <div class="container why-growpec-inner">
         <div class="text-center mb-4">
@@ -3709,9 +3695,7 @@ section {
 
 
 
-{{-- =========================================================
-     10. EXPLORE TOP PROGRAMS
-     ========================================================= --}}
+
 <section class="py-5 program-section">
     <div class="container">
         <div class="program-heading-wrap text-center">
@@ -3726,16 +3710,17 @@ section {
         </div>
 
         <div class="row row-cols-2 row-cols-md-4 g-3 program-grid">
-            @foreach($popularCourses as $course)
+            <?php $__currentLoopData = $popularCourses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $course): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <div class="col">
-                <a href="{{ route('colleges.regular') }}?courses[]={{ $course->slug }}" class="program-card">
+                <a href="<?php echo e(route('colleges.regular')); ?>?courses[]=<?php echo e($course->slug); ?>" class="program-card">
                     <div>
                         <div class="program-icon-wrap">
                             <i class="bi bi-mortarboard-fill"></i>
                         </div>
-                        <div class="program-name">{{ $course->name }}</div>
+                        <div class="program-name"><?php echo e($course->name); ?></div>
                         <div class="program-meta">
-                            {{ $course->level }} <span class="mx-1">•</span> {{ $course->duration }}
+                            <?php echo e($course->level); ?> <span class="mx-1">•</span> <?php echo e($course->duration); ?>
+
                         </div>
                     </div>
                     <span class="program-arrow">
@@ -3743,15 +3728,13 @@ section {
                     </span>
                 </a>
             </div>
-            @endforeach
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </div>
     </div>
 </section>
 
-{{-- =========================================================
-     HOME LIVE SEARCH SCRIPT
-     ========================================================= --}}
-@push('scripts')
+
+<?php $__env->startPush('scripts'); ?>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const input = document.getElementById('homeSearchInput');
@@ -3799,7 +3782,7 @@ document.addEventListener('DOMContentLoaded', function () {
         timer = setTimeout(() => {
             controller = new AbortController();
 
-            fetch(`{{ route('api.liveSearch') }}?q=${encodeURIComponent(query)}`, {
+            fetch(`<?php echo e(route('api.liveSearch')); ?>?q=${encodeURIComponent(query)}`, {
                 headers: { 'Accept': 'application/json' },
                 signal: controller.signal
             })
@@ -3825,7 +3808,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     html += '<div class="live-search-group-title">Colleges & Universities</div>';
 
                     colleges.forEach(college => {
-                        const url = `{{ url('/college') }}/${encodeURIComponent(college.slug)}`;
+                        const url = `<?php echo e(url('/college')); ?>/${encodeURIComponent(college.slug)}`;
                         const city = college.city ? escapeHtml(college.city) : 'India';
                         const mode = college.college_mode
                             ? escapeHtml(String(college.college_mode).toUpperCase())
@@ -3849,7 +3832,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     html += '<div class="live-search-group-title">Programs / Courses</div>';
 
                     courses.forEach(course => {
-                        const url = `{{ route('colleges.regular') }}?courses[]=${encodeURIComponent(course.slug)}`;
+                        const url = `<?php echo e(route('colleges.regular')); ?>?courses[]=${encodeURIComponent(course.slug)}`;
                         const level = course.level ? escapeHtml(course.level) : 'Program';
 
                         html += `
@@ -3868,7 +3851,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 html += `
                     <div class="live-search-footer">
-                        <a href="{{ route('colleges.regular') }}?search=${encodeURIComponent(query)}">
+                        <a href="<?php echo e(route('colleges.regular')); ?>?search=${encodeURIComponent(query)}">
                             View all results for "${escapeHtml(query)}"
                             <i class="bi bi-arrow-right ms-1"></i>
                         </a>
@@ -3932,6 +3915,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
 
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\Laravel\GrowPec\resources\views/home.blade.php ENDPATH**/ ?>

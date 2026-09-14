@@ -73,7 +73,7 @@
 <div class="login-card">
     <!-- Header -->
     <div class="login-header">
-        <a href="{{ route('home') }}" class="text-decoration-none">
+        <a href="<?php echo e(route('home')); ?>" class="text-decoration-none">
             <h3 class="fw-extrabold mb-1" style="color: #2E1E6B;">
                 <i class="bi bi-mortarboard-fill text-warning me-1"></i>Grow<span style="color: #F5A623;">Pec</span>
             </h3>
@@ -83,21 +83,23 @@
 
     <div class="p-4 pt-4">
         <!-- Flash Alerts -->
-        @if(session('error'))
+        <?php if(session('error')): ?>
         <div class="alert alert-danger py-2 small mb-3">
-            <i class="bi bi-exclamation-triangle-fill me-1"></i> {{ session('error') }}
-        </div>
-        @endif
+            <i class="bi bi-exclamation-triangle-fill me-1"></i> <?php echo e(session('error')); ?>
 
-        @if(session('success'))
-        <div class="alert alert-success py-2 small mb-3">
-            <i class="bi bi-check-circle-fill me-1"></i> {{ session('success') }}
         </div>
-        @endif
+        <?php endif; ?>
+
+        <?php if(session('success')): ?>
+        <div class="alert alert-success py-2 small mb-3">
+            <i class="bi bi-check-circle-fill me-1"></i> <?php echo e(session('success')); ?>
+
+        </div>
+        <?php endif; ?>
 
         <!-- Login Form -->
-        <form action="{{ route('login.submit') }}" method="POST">
-            @csrf
+        <form action="<?php echo e(route('login.submit')); ?>" method="POST">
+            <?php echo csrf_field(); ?>
 
             <!-- Email -->
             <div class="mb-3">
@@ -108,16 +110,30 @@
                     </span>
                     <input type="email" 
                            name="email" 
-                           value="{{ old('email') }}" 
-                           class="form-control form-control-custom border-start-0 @error('email') is-invalid @enderror" 
+                           value="<?php echo e(old('email')); ?>" 
+                           class="form-control form-control-custom border-start-0 <?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" 
                            placeholder="admin@growpec.com" 
                            style="border-radius: 0 12px 12px 0;" 
                            required 
                            autofocus>
                 </div>
-                @error('email')
-                    <small class="text-danger d-block mt-1">{{ $message }}</small>
-                @enderror
+                <?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                    <small class="text-danger d-block mt-1"><?php echo e($message); ?></small>
+                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
             </div>
 
             <!-- Password -->
@@ -130,20 +146,34 @@
                     <input type="password" 
                            name="password" 
                            id="passwordInput"
-                           class="form-control form-control-custom border-start-0 @error('password') is-invalid @enderror" 
+                           class="form-control form-control-custom border-start-0 <?php $__errorArgs = ['password'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" 
                            placeholder="••••••••" 
                            style="border-radius: 0 12px 12px 0;" 
                            required>
                 </div>
-                @error('password')
-                    <small class="text-danger d-block mt-1">{{ $message }}</small>
-                @enderror
+                <?php $__errorArgs = ['password'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                    <small class="text-danger d-block mt-1"><?php echo e($message); ?></small>
+                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
             </div>
 
             <!-- Remember Me -->
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="remember" id="rememberMe" {{ old('remember') ? 'checked' : '' }}>
+                    <input class="form-check-input" type="checkbox" name="remember" id="rememberMe" <?php echo e(old('remember') ? 'checked' : ''); ?>>
                     <label class="form-check-label small text-muted" for="rememberMe">
                         Keep me signed in
                     </label>
@@ -166,7 +196,7 @@
 
     <!-- Card Footer -->
     <div class="text-center py-3 bg-light border-top small text-muted">
-        <a href="{{ route('home') }}" class="text-decoration-none text-dark fw-semibold">
+        <a href="<?php echo e(route('home')); ?>" class="text-decoration-none text-dark fw-semibold">
             <i class="bi bi-arrow-left me-1"></i> Back to GrowPec Website
         </a>
     </div>
@@ -174,4 +204,4 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-</html>
+</html><?php /**PATH D:\Laravel\GrowPec\resources\views/auth/login.blade.php ENDPATH**/ ?>

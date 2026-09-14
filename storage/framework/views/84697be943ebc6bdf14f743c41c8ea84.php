@@ -1,8 +1,8 @@
-@extends('layouts.app')
 
-@section('title', 'Contact Us - GrowPec | Get Admission Guidance')
 
-@push('styles')
+<?php $__env->startSection('title', 'Contact Us - GrowPec | Get Admission Guidance'); ?>
+
+<?php $__env->startPush('styles'); ?>
 <style>
     :root {
         --gp-navy: #002B67;
@@ -683,13 +683,11 @@
         }
     }
 </style>
-@endpush
+<?php $__env->stopPush(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 
-{{-- =========================================================
-     1. CONTACT HERO
-     ========================================================= --}}
+
 <section class="contact-hero">
     <div class="container">
         <div class="row align-items-center g-5">
@@ -751,9 +749,7 @@
     </div>
 </section>
 
-{{-- =========================================================
-     2. CONTACT FORM + INFORMATION
-     ========================================================= --}}
+
 <section class="contact-section">
     <div class="container">
         <div class="row g-4 align-items-stretch">
@@ -835,9 +831,9 @@
                     </div>
 
                     <form id="contactPageLeadForm"
-                          action="{{ route('lead.submit') }}"
+                          action="<?php echo e(route('lead.submit')); ?>"
                           method="POST">
-                        @csrf
+                        <?php echo csrf_field(); ?>
 
                         <input type="hidden" name="source" value="contact_page">
 
@@ -947,9 +943,7 @@
     </div>
 </section>
 
-{{-- =========================================================
-     3. WHAT CAN WE HELP WITH
-     ========================================================= --}}
+
 <section class="contact-help-section">
     <div class="container">
         <div class="contact-heading">
@@ -1004,9 +998,7 @@
     </div>
 </section>
 
-{{-- =========================================================
-     4. FAQ
-     ========================================================= --}}
+
 <section class="contact-faq">
     <div class="container">
         <div class="contact-heading">
@@ -1108,9 +1100,7 @@
     </div>
 </section>
 
-{{-- =========================================================
-     5. FINAL CTA
-     ========================================================= --}}
+
 <section class="pb-5">
     <div class="container">
         <div class="contact-cta">
@@ -1132,7 +1122,7 @@
 </section>
 
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('contactPageLeadForm');
@@ -1192,6 +1182,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
 
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\Laravel\GrowPec\resources\views/pages/contact.blade.php ENDPATH**/ ?>

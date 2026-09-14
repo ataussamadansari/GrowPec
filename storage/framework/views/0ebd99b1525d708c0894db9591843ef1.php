@@ -1,8 +1,8 @@
-@extends('layouts.app')
 
-@section('title', $college->name . ' - Admission, Courses, Fees, Placements & Brochure | GrowPec')
 
-@push('styles')
+<?php $__env->startSection('title', $college->name . ' - Admission, Courses, Fees, Placements & Brochure | GrowPec'); ?>
+
+<?php $__env->startPush('styles'); ?>
 <style>
     :root {
         --primary-purple: #002B67;
@@ -449,18 +449,18 @@
     }
 
 </style>
-@endpush
+<?php $__env->stopPush(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 
 <!-- Top Breadcrumb -->
 <div class="bg-light py-2 border-bottom small">
     <div class="container">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb mb-0">
-                <li class="breadcrumb-item"><a href="{{ route('home') }}" class="text-decoration-none text-muted">Home</a></li>
-                <li class="breadcrumb-item"><a href="{{ $college->college_mode == 'online' ? route('colleges.online') : route('colleges.regular') }}" class="text-decoration-none text-muted">{{ $college->college_mode == 'online' ? 'Online Colleges' : 'Regular Colleges' }}</a></li>
-                <li class="breadcrumb-item active fw-bold text-dark">{{ $college->name }}</li>
+                <li class="breadcrumb-item"><a href="<?php echo e(route('home')); ?>" class="text-decoration-none text-muted">Home</a></li>
+                <li class="breadcrumb-item"><a href="<?php echo e($college->college_mode == 'online' ? route('colleges.online') : route('colleges.regular')); ?>" class="text-decoration-none text-muted"><?php echo e($college->college_mode == 'online' ? 'Online Colleges' : 'Regular Colleges'); ?></a></li>
+                <li class="breadcrumb-item active fw-bold text-dark"><?php echo e($college->name); ?></li>
             </ol>
         </nav>
     </div>
@@ -479,27 +479,28 @@
                 <!-- Banner Image with Logo Overlay -->
                 <div class="college-banner-container mb-3">
                     <div class="college-logo-overlay">
-                        <img src="{{ $college->logo_url ?? $college->banner_url }}" alt="{{ $college->name }} logo">
+                        <img src="<?php echo e($college->logo_url ?? $college->banner_url); ?>" alt="<?php echo e($college->name); ?> logo">
                     </div>
-                    <img src="{{ $college->banner_url }}" class="college-main-banner-img" alt="{{ $college->name }}">
+                    <img src="<?php echo e($college->banner_url); ?>" class="college-main-banner-img" alt="<?php echo e($college->name); ?>">
                 </div>
 
                 <!-- Badges -->
                 <div class="d-flex flex-wrap gap-2 mb-2">
-                    <span class="badge bg-primary-subtle text-primary fw-bold px-3 py-1">{{ $college->college_type }} University</span>
-                    <span class="badge bg-{{ $college->college_mode == 'online' ? 'success' : 'dark' }}-subtle text-dark fw-bold px-3 py-1">{{ strtoupper($college->college_mode) }}</span>
-                    @if($college->approvals)
-                    <span class="badge bg-warning-subtle text-dark fw-bold px-3 py-1"><i class="bi bi-shield-check me-1"></i>{{ $college->approvals }}</span>
-                    @endif
-                    <span class="badge bg-light text-dark border fw-bold px-3 py-1"><i class="bi bi-star-fill text-warning me-1"></i>{{ $college->rating }} ({{ $college->reviews_count }} Reviews)</span>
+                    <span class="badge bg-primary-subtle text-primary fw-bold px-3 py-1"><?php echo e($college->college_type); ?> University</span>
+                    <span class="badge bg-<?php echo e($college->college_mode == 'online' ? 'success' : 'dark'); ?>-subtle text-dark fw-bold px-3 py-1"><?php echo e(strtoupper($college->college_mode)); ?></span>
+                    <?php if($college->approvals): ?>
+                    <span class="badge bg-warning-subtle text-dark fw-bold px-3 py-1"><i class="bi bi-shield-check me-1"></i><?php echo e($college->approvals); ?></span>
+                    <?php endif; ?>
+                    <span class="badge bg-light text-dark border fw-bold px-3 py-1"><i class="bi bi-star-fill text-warning me-1"></i><?php echo e($college->rating); ?> (<?php echo e($college->reviews_count); ?> Reviews)</span>
                 </div>
 
                 <!-- Title & Affiliation -->
-                <h2 class="college-hero-title mb-1">{{ $college->name }}</h2>
+                <h2 class="college-hero-title mb-1"><?php echo e($college->name); ?></h2>
                 <p class="text-muted small mb-3">
-                    <i class="bi bi-geo-alt-fill text-danger me-1"></i>{{ $college->address ?? $college->city . ', ' . $college->state }}
-                    @if($college->university_name) • Affiliated to: <strong>{{ $college->university_name }}</strong> @endif
-                    @if($college->established_year) • Estd. Year: <strong>{{ $college->established_year }}</strong> @endif
+                    <i class="bi bi-geo-alt-fill text-danger me-1"></i><?php echo e($college->address ?? $college->city . ', ' . $college->state); ?>
+
+                    <?php if($college->university_name): ?> • Affiliated to: <strong><?php echo e($college->university_name); ?></strong> <?php endif; ?>
+                    <?php if($college->established_year): ?> • Estd. Year: <strong><?php echo e($college->established_year); ?></strong> <?php endif; ?>
                 </p>
 
                 <!-- Action Buttons -->
@@ -507,12 +508,12 @@
                     <a href="tel:8858285271" class="btn-apply-purple">
                         <i class="bi bi-telephone-forward me-1"></i> Get in Touch
                     </a>
-                    @if($college->brochure_pdf)
-                    <a href="{{ asset('storage/' . $college->brochure_pdf) }}" target="_blank" class="btn-brochure-gold">
+                    <?php if($college->brochure_pdf): ?>
+                    <a href="<?php echo e(asset('storage/' . $college->brochure_pdf)); ?>" target="_blank" class="btn-brochure-gold">
                         <i class="bi bi-download me-1"></i> Download Brochure
                     </a>
-                    @endif
-                    <a href="https://wa.me/918858285271?text=Hello,%20I%20am%20interested%20in%20{{ urlencode($college->name) }} {{ urlencode($college->city) }} Admission, Please guide with official Fees and Scholarship options." target="_blank" class="btn-whatsapp-green">
+                    <?php endif; ?>
+                    <a href="https://wa.me/918858285271?text=Hello,%20I%20am%20interested%20in%20<?php echo e(urlencode($college->name)); ?> <?php echo e(urlencode($college->city)); ?> Admission, Please guide with official Fees and Scholarship options." target="_blank" class="btn-whatsapp-green">
                         <i class="bi bi-whatsapp me-1"></i> WhatsApp Query
                     </a>
                 </div>
@@ -526,9 +527,9 @@
                         Get 1-on-1 Admission Support
                     </h5>
 
-                    <form action="{{ route('lead.submit') }}" method="POST" id="admissionSupportForm">
-                        @csrf
-                        <input type="hidden" name="college_id" value="{{ $college->id }}">
+                    <form action="<?php echo e(route('lead.submit')); ?>" method="POST" id="admissionSupportForm">
+                        <?php echo csrf_field(); ?>
+                        <input type="hidden" name="college_id" value="<?php echo e($college->id); ?>">
                         <input type="hidden" name="source" value="college_detail_page">
 
                         <!-- Name -->
@@ -554,9 +555,9 @@
                             <label class="form-label small fw-bold text-muted mb-1">Course <span class="text-danger">*</span></label>
                             <select name="course_id" class="form-select form-control-pill" required>
                                 <option value="">Select Course</option>
-                                @foreach($college->collegeCourses as $cc)
-                                <option value="{{ $cc->course_id }}">{{ $cc->course->name }} @if($cc->specialization) ({{ $cc->specialization }}) @endif</option>
-                                @endforeach
+                                <?php $__currentLoopData = $college->collegeCourses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $cc): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($cc->course_id); ?>"><?php echo e($cc->course->name); ?> <?php if($cc->specialization): ?> (<?php echo e($cc->specialization); ?>) <?php endif; ?></option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </select>
                         </div>
 
@@ -565,12 +566,12 @@
                             <label class="form-label small fw-bold text-muted mb-1">Current State <span class="text-danger">*</span></label>
                             <select name="state" id="leadCardStateSelect" class="form-select form-control-pill" required>
                                 <option value="">Select State</option>
-                                @php
+                                <?php
                                 $leadStates = \App\Models\State::where('status', true)->orderBy('name')->get();
-                                @endphp
-                                @foreach($leadStates as $st)
-                                <option value="{{ $st->name }}" data-id="{{ $st->id }}">{{ $st->name }}</option>
-                                @endforeach
+                                ?>
+                                <?php $__currentLoopData = $leadStates; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $st): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($st->name); ?>" data-id="<?php echo e($st->id); ?>"><?php echo e($st->name); ?></option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </select>
                         </div>
 
@@ -609,12 +610,12 @@
         <div class="col-lg-2 d-none d-lg-block">
             <div class="quick-nav-sidebar">
                 <small class="text-muted fw-bold d-block mb-2 px-2 text-uppercase" style="letter-spacing: 0.5px; font-size: 0.72rem;">QUICK JUMP</small>
-                @foreach($quickNav as $index => $nav)
-                <a href="#{{ $nav['id'] }}" class="quick-nav-link {{ $index === 0 ? 'active' : '' }}" data-target="{{ $nav['id'] }}">
-                    <i class="bi {{ $nav['icon'] }}"></i>
-                    <span>{{ $nav['title'] }}</span>
+                <?php $__currentLoopData = $quickNav; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $nav): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <a href="#<?php echo e($nav['id']); ?>" class="quick-nav-link <?php echo e($index === 0 ? 'active' : ''); ?>" data-target="<?php echo e($nav['id']); ?>">
+                    <i class="bi <?php echo e($nav['icon']); ?>"></i>
+                    <span><?php echo e($nav['title']); ?></span>
                 </a>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
         </div>
 
@@ -637,71 +638,72 @@
                         <tbody>
                             <tr>
                                 <td class="fw-semibold text-muted">Mode of Education</td>
-                                <td class="fw-bold text-dark">{{ ucfirst($college->college_mode) }} Mode</td>
+                                <td class="fw-bold text-dark"><?php echo e(ucfirst($college->college_mode)); ?> Mode</td>
                             </tr>
                             <tr>
                                 <td class="fw-semibold text-muted">Ownership / Status</td>
-                                <td>{{ $college->college_type }} University</td>
+                                <td><?php echo e($college->college_type); ?> University</td>
                             </tr>
                             <tr>
                                 <td class="fw-semibold text-muted">Approvals & Accreditations</td>
-                                <td><span class="badge bg-success-subtle text-success border">{{ $college->approvals ?? 'UGC / AICTE / DEB Approved' }}</span></td>
+                                <td><span class="badge bg-success-subtle text-success border"><?php echo e($college->approvals ?? 'UGC / AICTE / DEB Approved'); ?></span></td>
                             </tr>
                             <tr>
                                 <td class="fw-semibold text-muted">Campus Location</td>
-                                <td>{{ $college->city }}, {{ $college->state }} {{ $college->campus_size ? '('.$college->campus_size.')' : '' }}</td>
+                                <td><?php echo e($college->city); ?>, <?php echo e($college->state); ?> <?php echo e($college->campus_size ? '('.$college->campus_size.')' : ''); ?></td>
                             </tr>
-                            @if($college->highest_package)
+                            <?php if($college->highest_package): ?>
                             <tr>
                                 <td class="fw-semibold text-muted">Highest Salary Package</td>
-                                <td class="text-success fw-bold">{{ $college->highest_package }}</td>
+                                <td class="text-success fw-bold"><?php echo e($college->highest_package); ?></td>
                             </tr>
-                            @endif
-                            @if($college->average_package)
+                            <?php endif; ?>
+                            <?php if($college->average_package): ?>
                             <tr>
                                 <td class="fw-semibold text-muted">Average Salary Package</td>
-                                <td class="fw-bold text-dark">{{ $college->average_package }}</td>
+                                <td class="fw-bold text-dark"><?php echo e($college->average_package); ?></td>
                             </tr>
-                            @endif
-                            @if($college->college_mode !== 'online')
+                            <?php endif; ?>
+                            <?php if($college->college_mode !== 'online'): ?>
                             <tr>
                                 <td class="fw-semibold text-muted">Hostel Facilities</td>
                                 <td>
-                                    @if($college->has_boys_hostel) <span class="badge bg-light text-dark border me-1">Boys Hostel</span> @endif
-                                    @if($college->has_girls_hostel) <span class="badge bg-light text-dark border">Girls Hostel</span> @endif
-                                    @if(!$college->has_boys_hostel && !$college->has_girls_hostel) <span class="text-muted">Day Scholar Campus</span> @endif
+                                    <?php if($college->has_boys_hostel): ?> <span class="badge bg-light text-dark border me-1">Boys Hostel</span> <?php endif; ?>
+                                    <?php if($college->has_girls_hostel): ?> <span class="badge bg-light text-dark border">Girls Hostel</span> <?php endif; ?>
+                                    <?php if(!$college->has_boys_hostel && !$college->has_girls_hostel): ?> <span class="text-muted">Day Scholar Campus</span> <?php endif; ?>
                                 </td>
                             </tr>
-                            @endif
+                            <?php endif; ?>
                         </tbody>
                     </table>
                 </div>
 
                 <div class="mt-4">
-                    <h6 class="fw-bold text-dark mb-2">About {{ $college->name }}</h6>
+                    <h6 class="fw-bold text-dark mb-2">About <?php echo e($college->name); ?></h6>
                     <p class="text-secondary leading-relaxed mb-0 small">
-                        {{ $college->overview ?? $college->name . ' is a recognized premier institution located in '.$college->city.', '.$college->state.'. Offering industry-aligned programs with experienced faculty, modern research labs, and dedicated career placement support.' }}
+                        <?php echo e($college->overview ?? $college->name . ' is a recognized premier institution located in '.$college->city.', '.$college->state.'. Offering industry-aligned programs with experienced faculty, modern research labs, and dedicated career placement support.'); ?>
+
                     </p>
                 </div>
             </div>
 
             <!-- 2. Dynamic Key Highlights -->
-            @if(!empty($college->highlights) && count($college->highlights) > 0)
+            <?php if(!empty($college->highlights) && count($college->highlights) > 0): ?>
             <div class="content-block" id="sec-highlights">
                 <h5 class="content-block-header">
                     <i class="bi bi-star-fill text-warning"></i> Key Highlights & USPs
                 </h5>
-                @foreach($college->highlights as $highlight)
+                <?php $__currentLoopData = $college->highlights; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $highlight): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <div class="highlight-pill">
                     <i class="bi bi-check-circle-fill text-success me-2 fs-5"></i>
-                    <span>{{ $highlight }}</span>
+                    <span><?php echo e($highlight); ?></span>
                 </div>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
-            @endif
+            <?php endif; ?>
 
             <!-- 3. Courses, Specializations & Fee Structure Table (Purple Header) -->
-            @if($college->collegeCourses->count() > 0)
+            <?php if($college->collegeCourses->count() > 0): ?>
             <div class="content-block" id="sec-courses">
                 <h5 class="content-block-header">
                     <i class="bi bi-mortarboard-fill text-primary"></i> Courses, Fees & Specializations
@@ -720,18 +722,19 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($college->collegeCourses as $cc)
+                            <?php $__currentLoopData = $college->collegeCourses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $cc): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <tr>
                                 <td class="fw-bold text-dark">
-                                    {{ $cc->course->name }}
-                                    <span class="badge bg-primary-subtle text-primary ms-1" style="font-size: 0.7rem;">{{ $cc->course->level }}</span>
+                                    <?php echo e($cc->course->name); ?>
+
+                                    <span class="badge bg-primary-subtle text-primary ms-1" style="font-size: 0.7rem;"><?php echo e($cc->course->level); ?></span>
                                 </td>
-                                <td>{{ $cc->specialization ?: 'General / Core' }}</td>
-                                <td>{{ $cc->course->duration }}</td>
-                                <td class="small text-muted">{{ $cc->eligibility ?: '10+2 with 50% / Graduation' }}</td>
+                                <td><?php echo e($cc->specialization ?: 'General / Core'); ?></td>
+                                <td><?php echo e($cc->course->duration); ?></td>
+                                <td class="small text-muted"><?php echo e($cc->eligibility ?: '10+2 with 50% / Graduation'); ?></td>
                                 <td>
-                                    <strong class="text-success fs-6">₹{{ number_format($cc->fee_amount) }}</strong>
-                                    <small class="text-muted d-block" style="font-size: 0.72rem;">/ {{ str_replace('_', ' ', $cc->fee_type) }}</small>
+                                    <strong class="text-success fs-6">₹<?php echo e(number_format($cc->fee_amount)); ?></strong>
+                                    <small class="text-muted d-block" style="font-size: 0.72rem;">/ <?php echo e(str_replace('_', ' ', $cc->fee_type)); ?></small>
                                 </td>
                                 <td class="text-center">
                                     <a href="#admissionSupportForm" class="btn btn-warning btn-sm fw-bold px-3 text-dark rounded-pill" style="font-size: 0.78rem;">
@@ -739,15 +742,15 @@
                                     </a>
                                 </td>
                             </tr>
-                            @endforeach
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </tbody>
                     </table>
                 </div>
             </div>
-            @endif
+            <?php endif; ?>
 
             <!-- 4. Step-by-Step Admission Process -->
-            @if(!empty($college->admission_process))
+            <?php if(!empty($college->admission_process)): ?>
             <div class="content-block" id="sec-admission">
                 <h5 class="content-block-header">
                     <i class="bi bi-card-checklist text-success"></i> Step-by-Step Admission Process
@@ -780,10 +783,11 @@
                     </div>
                 </div>
                 <div class="small text-secondary mt-3">
-                    {!! nl2br(e($college->admission_process)) !!}
+                    <?php echo nl2br(e($college->admission_process)); ?>
+
                 </div>
             </div>
-            @endif
+            <?php endif; ?>
 
             <!-- 5. Approvals & Accreditations -->
             <div class="content-block" id="sec-approvals">
@@ -812,7 +816,7 @@
                             </tr>
                             <tr>
                                 <td class="fw-bold">NAAC Accreditation</td>
-                                <td>{{ $college->approvals ?: 'Accredited with Grade A+' }}</td>
+                                <td><?php echo e($college->approvals ?: 'Accredited with Grade A+'); ?></td>
                                 <td><span class="badge bg-primary-subtle text-primary">Certified</span></td>
                             </tr>
                         </tbody>
@@ -821,65 +825,65 @@
             </div>
 
             <!-- 6. Sample Degree / Certificate Preview -->
-            @if($college->certificate_url)
+            <?php if($college->certificate_url): ?>
             <div class="content-block" id="sec-certificate">
                 <h5 class="content-block-header">
                     <i class="bi bi-patch-check-fill text-success"></i> Sample Degree & Certification
                 </h5>
                 <p class="small text-muted mb-3">
-                    Degrees awarded by {{ $college->name }} carry full government approvals and are valid for all state/central government jobs, corporate hiring, and higher studies worldwide.
+                    Degrees awarded by <?php echo e($college->name); ?> carry full government approvals and are valid for all state/central government jobs, corporate hiring, and higher studies worldwide.
                 </p>
                 <div class="certificate-frame-box">
-                    <img src="{{ $college->certificate_url }}" class="img-fluid rounded shadow-sm" style="max-height: 380px; object-fit: contain;" alt="Sample Certificate">
+                    <img src="<?php echo e($college->certificate_url); ?>" class="img-fluid rounded shadow-sm" style="max-height: 380px; object-fit: contain;" alt="Sample Certificate">
                 </div>
             </div>
-            @endif
+            <?php endif; ?>
 
             <!-- 7. Placements & Top Recruiters -->
-            @if(!empty($college->highest_package) || !empty($college->average_package) || !empty($college->top_recruiters))
+            <?php if(!empty($college->highest_package) || !empty($college->average_package) || !empty($college->top_recruiters)): ?>
             <div class="content-block" id="sec-placements">
                 <h5 class="content-block-header">
                     <i class="bi bi-briefcase-fill text-danger"></i> Placement Records & Recruiters
                 </h5>
                 <div class="row g-3 mb-3 text-center">
-                    @if($college->highest_package)
+                    <?php if($college->highest_package): ?>
                     <div class="col-md-6">
                         <div class="p-3 bg-light rounded-3 border">
                             <small class="text-muted d-block">Highest Salary Package</small>
-                            <h4 class="fw-bold text-success mb-0">{{ $college->highest_package }}</h4>
+                            <h4 class="fw-bold text-success mb-0"><?php echo e($college->highest_package); ?></h4>
                         </div>
                     </div>
-                    @endif
-                    @if($college->average_package)
+                    <?php endif; ?>
+                    <?php if($college->average_package): ?>
                     <div class="col-md-6">
                         <div class="p-3 bg-light rounded-3 border">
                             <small class="text-muted d-block">Average Salary Package</small>
-                            <h4 class="fw-bold text-dark mb-0">{{ $college->average_package }}</h4>
+                            <h4 class="fw-bold text-dark mb-0"><?php echo e($college->average_package); ?></h4>
                         </div>
                     </div>
-                    @endif
+                    <?php endif; ?>
                 </div>
-                @if($college->top_recruiters)
+                <?php if($college->top_recruiters): ?>
                 <div class="p-3 bg-light rounded-3">
                     <strong class="small d-block text-dark mb-1">Prominent Hiring Partners:</strong>
-                    <p class="small text-muted mb-0">{{ $college->top_recruiters }}</p>
+                    <p class="small text-muted mb-0"><?php echo e($college->top_recruiters); ?></p>
                 </div>
-                @endif
+                <?php endif; ?>
             </div>
-            @endif
+            <?php endif; ?>
 
             <!-- 8. Scholarships & Financial Aid -->
-            @if(!empty($college->scholarship_info))
+            <?php if(!empty($college->scholarship_info)): ?>
             <div class="content-block" id="sec-scholarships">
                 <h5 class="content-block-header">
                     <i class="bi bi-award-fill text-warning"></i> Scholarships & Financial Support
                 </h5>
-                <p class="small text-secondary mb-0 leading-relaxed">{{ $college->scholarship_info }}</p>
+                <p class="small text-secondary mb-0 leading-relaxed"><?php echo e($college->scholarship_info); ?></p>
             </div>
-            @endif
+            <?php endif; ?>
 
             <!-- 9. Campus Facilities -->
-            @if($college->college_mode !== 'online' && ($college->has_boys_hostel || $college->has_girls_hostel || $college->campus_size))
+            <?php if($college->college_mode !== 'online' && ($college->has_boys_hostel || $college->has_girls_hostel || $college->campus_size)): ?>
             <div class="content-block" id="sec-facilities">
                 <h5 class="content-block-header">
                     <i class="bi bi-buildings-fill text-info"></i> Campus Infrastructure & Facilities
@@ -887,45 +891,47 @@
                 <div class="d-flex flex-wrap gap-2">
                     <span class="badge bg-light text-dark border p-2"><i class="bi bi-wifi text-primary me-1"></i> High-Speed Wi-Fi</span>
                     <span class="badge bg-light text-dark border p-2"><i class="bi bi-book text-success me-1"></i> Central Digital Library</span>
-                    @if($college->has_boys_hostel) <span class="badge bg-light text-dark border p-2"><i class="bi bi-house text-dark me-1"></i> Boys Hostel</span> @endif
-                    @if($college->has_girls_hostel) <span class="badge bg-light text-dark border p-2"><i class="bi bi-house-heart text-danger me-1"></i> Girls Hostel</span> @endif
+                    <?php if($college->has_boys_hostel): ?> <span class="badge bg-light text-dark border p-2"><i class="bi bi-house text-dark me-1"></i> Boys Hostel</span> <?php endif; ?>
+                    <?php if($college->has_girls_hostel): ?> <span class="badge bg-light text-dark border p-2"><i class="bi bi-house-heart text-danger me-1"></i> Girls Hostel</span> <?php endif; ?>
                     <span class="badge bg-light text-dark border p-2"><i class="bi bi-cup-hot text-warning me-1"></i> Cafeteria & Food Court</span>
                     <span class="badge bg-light text-dark border p-2"><i class="bi bi-dribbble text-danger me-1"></i> Sports Arena</span>
                 </div>
             </div>
-            @endif
+            <?php endif; ?>
 
             <!-- 10. Dynamic FAQs -->
-            @if(!empty($college->faqs) && count($college->faqs) > 0)
+            <?php if(!empty($college->faqs) && count($college->faqs) > 0): ?>
             <div class="content-block" id="sec-faqs">
                 <h5 class="content-block-header">
                     <i class="bi bi-question-circle-fill text-warning"></i> Frequently Asked Questions
                 </h5>
                 <div class="accordion" id="collegeFaqs">
-                    @foreach($college->faqs as $idx => $faq)
+                    <?php $__currentLoopData = $college->faqs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $idx => $faq): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <div class="accordion-item">
                         <h2 class="accordion-header">
-                            <button class="accordion-button {{ $idx > 0 ? 'collapsed' : '' }} fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq_{{ $idx }}">
-                                {{ $faq['question'] ?? 'Question' }}
+                            <button class="accordion-button <?php echo e($idx > 0 ? 'collapsed' : ''); ?> fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq_<?php echo e($idx); ?>">
+                                <?php echo e($faq['question'] ?? 'Question'); ?>
+
                             </button>
                         </h2>
-                        <div id="faq_{{ $idx }}" class="accordion-collapse collapse {{ $idx === 0 ? 'show' : '' }}" data-bs-parent="#collegeFaqs">
+                        <div id="faq_<?php echo e($idx); ?>" class="accordion-collapse collapse <?php echo e($idx === 0 ? 'show' : ''); ?>" data-bs-parent="#collegeFaqs">
                             <div class="accordion-body small text-secondary">
-                                {{ $faq['answer'] ?? '' }}
+                                <?php echo e($faq['answer'] ?? ''); ?>
+
                             </div>
                         </div>
                     </div>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>
             </div>
-            @endif
+            <?php endif; ?>
 
         </div>
 
     </div>
 </div>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // 🎯 Dynamic ScrollSpy for Left Quick Navigation
@@ -990,7 +996,7 @@
                 btn.disabled = true;
                 btn.innerText = 'Saving...';
 
-                fetch("{{ route('lead.submit') }}", {
+                fetch("<?php echo e(route('lead.submit')); ?>", {
                         method: "POST",
                         headers: {
                             "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
@@ -1014,6 +1020,7 @@
         }
     });
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
 
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\Laravel\GrowPec\resources\views/colleges/show.blade.php ENDPATH**/ ?>

@@ -14,32 +14,108 @@ class HomeController extends Controller
 {
     public function index()
     {
-        // Fetch all active banners
-        $heroBanners = Banner::where('status', true)->orderBy('sort_order', 'asc')->get();
+        $heroBanners = Banner::where('status', true)
+            ->orderBy('sort_order', 'asc')
+            ->get();
 
-        // 🎯 Fetch active partner universities for marquee strip
-        $partners = Partner::where('status', true)->orderBy('sort_order', 'asc')->get();
+        $partners = Partner::where('status', true)
+            ->orderBy('sort_order', 'asc')
+            ->get();
 
         $regularColleges = College::where('college_mode', 'regular')
             ->where('status', true)
-            ->with(['courses'])
-            ->orderBy('is_featured', 'desc')
+            ->select([
+                'id',
+                'name',
+                'slug',
+                'logo',
+                'banner_image',
+                'college_mode',
+                'college_type',
+                'university_name',
+                'state',
+                'city',
+                'established_year',
+                'rating',
+                'is_featured',
+            ])
+            ->orderByDesc('is_featured')
+            ->orderByDesc('rating')
             ->take(8)
             ->get();
 
         $onlineColleges = College::where('college_mode', 'online')
             ->where('status', true)
-            ->with(['courses'])
-            ->orderBy('is_featured', 'desc')
+            ->select([
+                'id',
+                'name',
+                'slug',
+                'logo',
+                'banner_image',
+                'college_mode',
+                'college_type',
+                'university_name',
+                'state',
+                'city',
+                'established_year',
+                'rating',
+                'is_featured',
+            ])
+            ->orderByDesc('is_featured')
+            ->orderByDesc('rating')
             ->take(8)
             ->get();
 
-        $popularCourses = Course::take(8)->get();
-        $streams = Stream::take(6)->get();
+        // courses table has no status column
+        $popularCourses = Course::select([
+            'id',
+            'stream_id',
+            'name',
+            'slug',
+            'level',
+            'degree_type',
+            'duration',
+        ])
+            ->orderBy('name')
+            ->take(8)
+            ->get();
 
-        $popularCities = City::where('is_popular', true)->where('status', true)->take(8)->get();
+        // streams table has no status column
+        $streams = Stream::select([
+            'id',
+            'name',
+            'slug',
+            'icon',
+        ])
+            ->orderBy('name')
+            ->take(6)
+            ->get();
+
+        $popularCities = City::where('is_popular', true)
+            ->where('status', true)
+            ->select([
+                'id',
+                'state_id',
+                'name',
+                'slug',
+                'is_popular',
+            ])
+            ->orderBy('name')
+            ->take(8)
+            ->get();
+
         if ($popularCities->isEmpty()) {
-            $popularCities = City::where('status', true)->take(8)->get();
+            $popularCities = City::where('status', true)
+                ->select([
+                    'id',
+                    'state_id',
+                    'name',
+                    'slug',
+                    'is_popular',
+                ])
+                ->orderBy('name')
+                ->take(8)
+                ->get();
         }
 
         return view('home', compact(
@@ -55,9 +131,13 @@ class HomeController extends Controller
 
     public function liveSearch(Request $request)
     {
-        $term = $request->get('q', '');
+        $term = trim($request->get('q', ''));
+
         if (strlen($term) < 2) {
-            return response()->json([]);
+            return response()->json([
+                'colleges' => [],
+                'courses' => [],
+            ]);
         }
 
         $colleges = College::where('status', true)
@@ -65,18 +145,31 @@ class HomeController extends Controller
                 $q->where('name', 'LIKE', "%{$term}%")
                     ->orWhere('city', 'LIKE', "%{$term}%");
             })
-            ->select('id', 'name', 'slug', 'city', 'college_mode')
+            ->select([
+                'id',
+                'name',
+                'slug',
+                'city',
+                'college_mode',
+            ])
+            ->orderBy('name')
             ->take(5)
             ->get();
 
         $courses = Course::where('name', 'LIKE', "%{$term}%")
-            ->select('id', 'name', 'slug', 'level')
+            ->select([
+                'id',
+                'name',
+                'slug',
+                'level',
+            ])
+            ->orderBy('name')
             ->take(4)
             ->get();
 
         return response()->json([
             'colleges' => $colleges,
-            'courses'  => $courses
+            'courses' => $courses,
         ]);
     }
 }

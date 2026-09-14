@@ -1,42 +1,22 @@
 @extends('admin.layout')
-
 @section('title', 'Edit College: ' . $college->name . ' - GrowPec Admin')
 @section('header', 'Edit College: ' . $college->name)
-
-@push('styles')
-<!-- Summernote Lite CSS (Zero Conflict Rich Text Editor) -->
-<link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.css" rel="stylesheet">
-<style>
-    .note-editor.note-frame {
-        border-radius: 12px;
-        border-color: #CBD5E1;
-        overflow: hidden;
-    }
-    .note-toolbar {
-        background: #F8FAFC !important;
-        border-bottom: 1px solid #E2E8F0 !important;
-    }
-</style>
-@endpush
 
 @section('content')
 <form action="{{ route('admin.colleges.update', $college->id) }}" method="POST" enctype="multipart/form-data">
     @csrf
     @method('PUT')
-
     <div class="row g-4">
-        <!-- 👈 Left Column -->
+        <!-- Left Column: Main Info, Courses, Highlights & FAQs -->
         <div class="col-lg-8">
-            
-            <!-- 1. Basic Info -->
+            <!-- 1. Basic Information -->
             <div class="bg-white p-4 rounded-4 shadow-sm border mb-4">
                 <h5 class="fw-bold mb-3 text-primary"><i class="bi bi-building me-1"></i> 1. Basic College Information</h5>
-                
+
                 <div class="mb-3">
                     <label class="form-label small fw-bold">College Name *</label>
                     <input type="text" name="name" value="{{ old('name', $college->name) }}" class="form-control" required>
                 </div>
-
                 <div class="row g-3 mb-3">
                     <div class="col-md-6">
                         <label class="form-label small fw-bold">College Mode *</label>
@@ -47,7 +27,7 @@
                         </select>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label small fw-bold">Ownership / Status *</label>
+                        <label class="form-label small fw-bold">Ownership / Type *</label>
                         <select name="college_type" class="form-select" required>
                             <option value="Private" {{ old('college_type', $college->college_type) == 'Private' ? 'selected' : '' }}>Private University</option>
                             <option value="Govt" {{ old('college_type', $college->college_type) == 'Govt' ? 'selected' : '' }}>Government University</option>
@@ -56,22 +36,15 @@
                         </select>
                     </div>
                 </div>
-
-                <div class="row g-3 mb-3">
-                    <div class="col-md-6">
-                        <label class="form-label small fw-bold">Affiliated University / Accreditations</label>
-                        <input type="text" name="university_name" value="{{ old('university_name', $college->university_name) }}" class="form-control" placeholder="e.g. UGC Recognized / AKTU Affiliated">
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label small fw-bold">Approvals Badges</label>
-                        <input type="text" name="approvals" value="{{ old('approvals', $college->approvals) }}" class="form-control" placeholder="e.g. UGC, AICTE, NAAC A+, DEB">
-                    </div>
+                <div class="mb-3">
+                    <label class="form-label small fw-bold">Affiliated University</label>
+                    <input type="text" name="university_name" value="{{ old('university_name', $college->university_name) }}" class="form-control" placeholder="e.g. UGC Recognized / AKTU Affiliated">
                 </div>
 
-                <!-- Media Uploads & Previews -->
+                <!-- Previews & File Uploads -->
                 <div class="row g-3 mb-3">
                     <div class="col-md-6">
-                        <label class="form-label small fw-bold">Change Banner Image (1200x500 px)</label>
+                        <label class="form-label small fw-bold">Banner Image</label>
                         <input type="file" name="banner_image" class="form-control form-control-sm" accept="image/*">
                         @if($college->banner_image)
                         <div class="mt-2">
@@ -81,30 +54,29 @@
                         @endif
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label small fw-bold">Change College Logo (PNG / Square)</label>
+                        <label class="form-label small fw-bold">College Logo</label>
                         <input type="file" name="logo" class="form-control form-control-sm" accept="image/*">
                         @if($college->logo)
                         <div class="mt-2 d-flex align-items-center gap-2">
                             <img src="{{ $college->logo_url }}" class="rounded border p-1" style="width: 50px; height: 50px; object-fit: contain;" alt="Current Logo">
-                            <small class="text-muted">Current Active Logo</small>
+                            <small class="text-muted">Current Logo</small>
                         </div>
                         @endif
                     </div>
                 </div>
-
-                <div class="row g-3 mb-2">
+                <div class="row g-3 mb-3">
                     <div class="col-md-6">
-                        <label class="form-label small fw-bold">Change Sample Degree Certificate</label>
+                        <label class="form-label small fw-bold">Sample Degree Certificate</label>
                         <input type="file" name="sample_certificate_image" class="form-control form-control-sm" accept="image/*">
                         @if($college->certificate_url)
                         <div class="mt-2 d-flex align-items-center gap-2">
                             <img src="{{ $college->certificate_url }}" class="rounded border" style="height: 50px; object-fit: contain;" alt="Current Certificate">
-                            <small class="text-muted">Certificate Attached</small>
+                            <small class="text-muted">Current Certificate Attached</small>
                         </div>
                         @endif
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label small fw-bold">Change Brochure PDF</label>
+                        <label class="form-label small fw-bold">Brochure PDF</label>
                         <input type="file" name="brochure_pdf" class="form-control form-control-sm" accept=".pdf">
                         @if($college->brochure_pdf)
                         <div class="mt-2">
@@ -115,13 +87,21 @@
                         @endif
                     </div>
                 </div>
+                <div class="mb-3">
+                    <label class="form-label small fw-bold">About / Overview Narrative</label>
+                    <textarea name="overview" rows="3" class="form-control">{{ old('overview', $college->overview) }}</textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label small fw-bold">Admission Process Steps</label>
+                    <textarea name="admission_process" rows="3" class="form-control">{{ old('admission_process', $college->admission_process) }}</textarea>
+                </div>
             </div>
 
             <!-- 2. Dynamic Courses, Streams & Specializations (EDIT) -->
             <div class="bg-white p-4 rounded-4 shadow-sm border mb-4">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <div>
-                        <h5 class="fw-bold mb-0 text-primary"><i class="bi bi-mortarboard me-1"></i> 2. Courses, Fees & Specializations</h5>
+                        <h5 class="fw-bold mb-0 text-primary"><i class="bi bi-mortarboard me-1"></i> 2. Courses, Streams & Specializations</h5>
                         <small class="text-muted">Manage offerings, streams & specializations</small>
                     </div>
                     <button type="button" class="btn btn-sm btn-outline-success fw-bold" id="addCourseRowBtn">
@@ -135,12 +115,11 @@
                         data-initial-course-id="{{ $cc->course_id }}"
                         data-initial-stream-id="{{ $cc->course->stream_id ?? '' }}"
                         data-initial-specialization="{{ $cc->specialization ?? '' }}">
-                        
                         <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0 m-2 remove-course-btn" title="Remove Course">
                             <i class="bi bi-trash"></i>
                         </button>
-
                         <div class="row g-2 mb-2">
+                            <!-- Stream Select -->
                             <div class="col-md-4">
                                 <label class="form-label small fw-bold">1. Stream</label>
                                 <select class="form-select form-select-sm stream-dropdown">
@@ -150,6 +129,7 @@
                                     @endforeach
                                 </select>
                             </div>
+                            <!-- Course Select -->
                             <div class="col-md-4">
                                 <label class="form-label small fw-bold">2. Course *</label>
                                 <select name="course_ids[]" class="form-select form-select-sm course-dropdown" required>
@@ -161,6 +141,7 @@
                                     @endforeach
                                 </select>
                             </div>
+                            <!-- Specialization Select -->
                             <div class="col-md-4">
                                 <label class="form-label small fw-bold">3. Specialization</label>
                                 <select name="specializations[]" class="form-select form-select-sm specialization-dropdown">
@@ -169,6 +150,9 @@
                                     @foreach($cc->course->specializations as $sp)
                                     <option value="{{ $sp->name }}" {{ $cc->specialization == $sp->name ? 'selected' : '' }}>{{ $sp->name }}</option>
                                     @endforeach
+                                    @endif
+                                    @if($cc->specialization && (!$cc->course || !$cc->course->specializations->contains('name', $cc->specialization)))
+                                    <option value="{{ $cc->specialization }}" selected>{{ $cc->specialization }}</option>
                                     @endif
                                 </select>
                             </div>
@@ -194,7 +178,7 @@
                         </div>
                     </div>
                     @empty
-                    <!-- Default fallback row -->
+                    <!-- Default fallback row if no course is attached yet -->
                     <div class="p-3 border rounded-3 bg-light mb-3 course-card-row position-relative">
                         <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0 m-2 remove-course-btn"><i class="bi bi-trash"></i></button>
                         <div class="row g-2 mb-2">
@@ -246,44 +230,24 @@
                 </div>
             </div>
 
-            <!-- 3. Rich Text Customizations (Bold, Italic, Lists) -->
-            <div class="bg-white p-4 rounded-4 shadow-sm border mb-4">
-                <h5 class="fw-bold mb-3 text-primary"><i class="bi bi-fonts me-1"></i> 3. Detailed Sections (Rich Text Customizations)</h5>
-
-                <div class="mb-4">
-                    <label class="form-label small fw-bold">About / Overview Narrative (Bold, Italic, Headings, Bullets)</label>
-                    <textarea name="overview" class="summernote">{{ old('overview', $college->overview) }}</textarea>
-                </div>
-
-                <div class="mb-4">
-                    <label class="form-label small fw-bold">Step-by-Step Admission Process</label>
-                    <textarea name="admission_process" class="summernote">{{ old('admission_process', $college->admission_process) }}</textarea>
-                </div>
-
-                <div class="mb-2">
-                    <label class="form-label small fw-bold">Scholarship & Financial Aid Details</label>
-                    <textarea name="scholarship_info" class="summernote">{{ old('scholarship_info', $college->scholarship_info) }}</textarea>
-                </div>
-            </div>
-
-            <!-- 4. Key Highlights Repeater -->
+            <!-- 3. Key Highlights Repeater -->
             <div class="bg-white p-4 rounded-4 shadow-sm border mb-4">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h5 class="fw-bold mb-0 text-primary"><i class="bi bi-star me-1"></i> 4. Key Highlights / USPs</h5>
+                    <h5 class="fw-bold mb-0 text-primary"><i class="bi bi-star me-1"></i> 3. Key Highlights / USPs</h5>
                     <button type="button" class="btn btn-sm btn-outline-primary fw-bold" id="addHighlightBtn">+ Add Highlight</button>
                 </div>
                 <div id="highlightsContainer">
                     @if(!empty($college->highlights) && count($college->highlights) > 0)
                     @foreach($college->highlights as $hl)
                     <div class="input-group mb-2 highlight-row">
-                        <span class="input-group-text bg-light"><i class="bi bi-check2"></i></span>
+                        <span class="input-group-text bg-light">⭐</span>
                         <input type="text" name="highlights[]" value="{{ $hl }}" class="form-control form-control-sm" placeholder="Enter highlight...">
                         <button type="button" class="btn btn-outline-danger btn-sm remove-highlight-btn"><i class="bi bi-x"></i></button>
                     </div>
                     @endforeach
                     @else
                     <div class="input-group mb-2 highlight-row">
-                        <span class="input-group-text bg-light"><i class="bi bi-check2"></i></span>
+                        <span class="input-group-text bg-light">⭐</span>
                         <input type="text" name="highlights[]" class="form-control form-control-sm" placeholder="e.g. 100% Placement Assistance">
                         <button type="button" class="btn btn-outline-danger btn-sm remove-highlight-btn"><i class="bi bi-x"></i></button>
                     </div>
@@ -291,17 +255,17 @@
                 </div>
             </div>
 
-            <!-- 5. Dynamic FAQs Repeater -->
+            <!-- 4. Dynamic FAQs Repeater -->
             <div class="bg-white p-4 rounded-4 shadow-sm border mb-4">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h5 class="fw-bold mb-0 text-primary"><i class="bi bi-question-circle me-1"></i> 5. FAQs</h5>
+                    <h5 class="fw-bold mb-0 text-primary"><i class="bi bi-question-circle me-1"></i> 4. FAQs</h5>
                     <button type="button" class="btn btn-sm btn-outline-warning text-dark fw-bold" id="addFaqBtn">+ Add FAQ</button>
                 </div>
                 <div id="faqsContainer">
                     @if(!empty($college->faqs) && count($college->faqs) > 0)
                     @foreach($college->faqs as $f)
                     <div class="p-3 border rounded-3 bg-light mb-2 faq-row">
-                        <input type="text" name="faq_questions[]" value="{{ $f['question'] ?? '' }}" class="form-control form-control-sm mb-2 fw-bold" placeholder="Question...">
+                        <input type="text" name="faq_questions[]" value="{{ $f['question'] ?? '' }}" class="form-control form-control-sm mb-2 fw-bold" placeholder="Question: e.g. Is this degree UGC approved?">
                         <textarea name="faq_answers[]" rows="2" class="form-control form-control-sm" placeholder="Answer...">{{ $f['answer'] ?? '' }}</textarea>
                         <button type="button" class="btn btn-sm text-danger mt-1 remove-faq-btn p-0"><small><i class="bi bi-trash"></i> Remove FAQ</small></button>
                     </div>
@@ -315,47 +279,13 @@
                     @endif
                 </div>
             </div>
-
         </div>
 
-        <!-- 👉 Right Column -->
+        <!-- Right Column: Location, Placements, Hostels & Actions -->
         <div class="col-lg-4">
-            
-            <!-- Ratings & Status -->
-            <div class="bg-white p-4 rounded-4 shadow-sm border mb-4">
-                <h5 class="fw-bold mb-3 text-primary"><i class="bi bi-sliders2 me-1"></i> Ratings & Status</h5>
-                
-                <div class="row g-2 mb-3">
-                    <div class="col-6">
-                        <label class="form-label small fw-bold">Star Rating (1 - 5)</label>
-                        <input type="number" step="0.1" min="1" max="5" name="rating" value="{{ old('rating', $college->rating) }}" class="form-control form-control-sm font-monospace">
-                    </div>
-                    <div class="col-6">
-                        <label class="form-label small fw-bold">Review Count</label>
-                        <input type="number" name="reviews_count" value="{{ old('reviews_count', $college->reviews_count) }}" class="form-control form-control-sm font-monospace">
-                    </div>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label small fw-bold">Accepted Entrance Exams</label>
-                    <input type="text" name="entrance_exams" value="{{ old('entrance_exams', $college->entrance_exams) }}" class="form-control form-control-sm" placeholder="e.g. CAT, MAT, JEE, CUET">
-                </div>
-
-                <div class="form-check form-switch mb-2">
-                    <input class="form-check-input" type="checkbox" name="is_featured" value="1" id="cbFeatured" {{ old('is_featured', $college->is_featured) ? 'checked' : '' }}>
-                    <label class="form-check-label fw-bold small text-dark" for="cbFeatured">⭐ Mark as Featured College</label>
-                </div>
-
-                <div class="form-check form-switch mb-1">
-                    <input class="form-check-input" type="checkbox" name="status" value="1" id="cbStatus" {{ old('status', $college->status) ? 'checked' : '' }}>
-                    <label class="form-check-label fw-bold small text-dark" for="cbStatus">Active (Published on Website)</label>
-                </div>
-            </div>
-
-            <!-- Location -->
+            <!-- Location (Dynamic State -> City) -->
             <div class="bg-white p-4 rounded-4 shadow-sm border mb-4">
                 <h5 class="fw-bold mb-3 text-primary"><i class="bi bi-geo-alt me-1"></i> Location</h5>
-                
                 <div class="mb-2">
                     <label class="form-label small fw-bold">State *</label>
                     <select name="state" id="stateSelect" class="form-select form-select-sm" required>
@@ -367,110 +297,65 @@
                         @endforeach
                     </select>
                 </div>
-
                 <div class="mb-2">
                     <label class="form-label small fw-bold">City *</label>
                     <select name="city" id="citySelect" class="form-select form-select-sm" required>
                         <option value="{{ $college->city }}">{{ $college->city }}</option>
                     </select>
                 </div>
-
                 <div class="mb-2">
-                    <label class="form-label small fw-bold">Full Address</label>
-                    <input type="text" name="address" value="{{ old('address', $college->address) }}" class="form-control form-control-sm">
+                    <label class="form-label small fw-bold">Established Year</label>
+                    <input type="text" name="established_year" value="{{ old('established_year', $college->established_year) }}" class="form-control form-control-sm" placeholder="e.g. 2004">
                 </div>
-
-                <div class="row g-2">
-                    <div class="col-6">
-                        <label class="form-label small fw-bold">Estd. Year</label>
-                        <input type="text" name="established_year" value="{{ old('established_year', $college->established_year) }}" class="form-control form-control-sm">
-                    </div>
-                    <div class="col-6">
-                        <label class="form-label small fw-bold">Campus Size</label>
-                        <input type="text" name="campus_size" value="{{ old('campus_size', $college->campus_size) }}" class="form-control form-control-sm">
-                    </div>
+                <div class="mb-2">
+                    <label class="form-label small fw-bold">Campus Size</label>
+                    <input type="text" name="campus_size" value="{{ old('campus_size', $college->campus_size) }}" class="form-control form-control-sm" placeholder="e.g. 50 Acres">
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small fw-bold">Approvals (Badges)</label>
+                    <input type="text" name="approvals" value="{{ old('approvals', $college->approvals) }}" class="form-control form-control-sm" placeholder="UGC, AICTE, NAAC A+">
                 </div>
             </div>
 
-            <!-- Placements -->
+            <!-- Placements & Hostels -->
             <div class="bg-white p-4 rounded-4 shadow-sm border mb-4">
-                <h5 class="fw-bold mb-3 text-primary"><i class="bi bi-briefcase me-1"></i> Placements</h5>
-                
-                <div class="row g-2 mb-2">
-                    <div class="col-6">
-                        <label class="form-label small fw-bold">Highest Package</label>
-                        <input type="text" name="highest_package" value="{{ old('highest_package', $college->highest_package) }}" class="form-control form-control-sm">
-                    </div>
-                    <div class="col-6">
-                        <label class="form-label small fw-bold">Average Package</label>
-                        <input type="text" name="average_package" value="{{ old('average_package', $college->average_package) }}" class="form-control form-control-sm">
-                    </div>
+                <h5 class="fw-bold mb-3 text-primary"><i class="bi bi-briefcase me-1"></i> Placements & Hostels</h5>
+                <div class="mb-2">
+                    <label class="form-label small fw-bold">Highest Package</label>
+                    <input type="text" name="highest_package" value="{{ old('highest_package', $college->highest_package) }}" class="form-control form-control-sm" placeholder="e.g. 18.0 LPA">
                 </div>
-
-                <div class="mb-1">
+                <div class="mb-2">
+                    <label class="form-label small fw-bold">Average Package</label>
+                    <input type="text" name="average_package" value="{{ old('average_package', $college->average_package) }}" class="form-control form-control-sm" placeholder="e.g. 5.5 LPA">
+                </div>
+                <div class="mb-3">
                     <label class="form-label small fw-bold">Top Recruiters</label>
-                    <input type="text" name="top_recruiters" value="{{ old('top_recruiters', $college->top_recruiters) }}" class="form-control form-control-sm">
+                    <input type="text" name="top_recruiters" value="{{ old('top_recruiters', $college->top_recruiters) }}" class="form-control form-control-sm" placeholder="TCS, Infosys, Wipro, Amazon">
                 </div>
-            </div>
-
-            <!-- Facilities & Amenities Checklist -->
-            <div class="bg-white p-4 rounded-4 shadow-sm border mb-4">
-                <h5 class="fw-bold mb-3 text-primary"><i class="bi bi-buildings me-1"></i> Facilities & Amenities</h5>
-                
-                <div class="row g-2 mb-3">
-                    <div class="col-6">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="has_boys_hostel" value="1" id="cbBoys" {{ old('has_boys_hostel', $college->has_boys_hostel) ? 'checked' : '' }}>
-                            <label class="form-check-label small" for="cbBoys">Boys Hostel</label>
-                        </div>
+                <div class="mb-3">
+                    <label class="form-label small fw-bold">Scholarship Info</label>
+                    <textarea name="scholarship_info" rows="2" class="form-control form-control-sm" placeholder="Merit scholarships...">{{ old('scholarship_info', $college->scholarship_info) }}</textarea>
+                </div>
+                <div id="hostelFacilitiesWrapper">
+                    <label class="form-label small fw-bold d-block">Hostel Facilities</label>
+                    <div class="form-check mb-1">
+                        <input class="form-check-input" type="checkbox" name="has_boys_hostel" value="1" id="cbBoys" {{ old('has_boys_hostel', $college->has_boys_hostel) ? 'checked' : '' }}>
+                        <label class="form-check-label small" for="cbBoys">Boys Hostel Available</label>
                     </div>
-                    <div class="col-6">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="has_girls_hostel" value="1" id="cbGirls" {{ old('has_girls_hostel', $college->has_girls_hostel) ? 'checked' : '' }}>
-                            <label class="form-check-label small" for="cbGirls">Girls Hostel</label>
-                        </div>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" name="has_girls_hostel" value="1" id="cbGirls" {{ old('has_girls_hostel', $college->has_girls_hostel) ? 'checked' : '' }}>
+                        <label class="form-check-label small" for="cbGirls">Girls Hostel Available</label>
                     </div>
                 </div>
-
-                <label class="form-label small fw-bold d-block text-muted">Additional Infrastructure:</label>
-                @php
-                    $facilityList = [
-                        'High-Speed Wi-Fi',
-                        'Central Digital Library',
-                        'Cafeteria & Food Court',
-                        'Sports Arena & Gym',
-                        'Air-Conditioned Classrooms',
-                        'Hi-Tech Research Labs',
-                        'Auditorium & Seminar Halls',
-                        'Medical / Health Center',
-                        'Transport & Bus Service',
-                        'ATM & Banking Facility',
-                    ];
-                    $savedFacilities = (array) ($college->facilities ?? []);
-                @endphp
-
-                <div class="row g-2">
-                    @foreach($facilityList as $fac)
-                    <div class="col-12">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="facilities[]" value="{{ $fac }}" id="fac_{{ $loop->index }}" {{ in_array($fac, $savedFacilities) ? 'checked' : '' }}>
-                            <label class="form-check-label small" for="fac_{{ $loop->index }}">{{ $fac }}</label>
-                        </div>
-                    </div>
-                    @endforeach
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-warning py-2 fw-bold shadow-sm">
+                        <i class="bi bi-check-circle me-1"></i> Update College Details
+                    </button>
+                    <a href="{{ route('admin.colleges.index') }}" class="btn btn-outline-secondary btn-sm">
+                        Cancel
+                    </a>
                 </div>
             </div>
-
-            <!-- Submit Button -->
-            <div class="d-grid gap-2">
-                <button type="submit" class="btn btn-warning py-3 fw-bold shadow-sm fs-6">
-                    <i class="bi bi-check-circle-fill me-1"></i> Update College Details
-                </button>
-                <a href="{{ route('admin.colleges.index') }}" class="btn btn-outline-secondary">
-                    Cancel
-                </a>
-            </div>
-
         </div>
     </div>
 </form>
@@ -483,10 +368,6 @@
 </script>
 
 @push('scripts')
-<!-- jQuery & Summernote Lite JS -->
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.js"></script>
-
 <script>
     const streamsData = JSON.parse(document.getElementById('streamsJsonEdit').textContent || '[]');
     const coursesData = JSON.parse(document.getElementById('coursesJsonEdit').textContent || '[]');
@@ -496,33 +377,46 @@
         const courseSelect = row.querySelector('.course-dropdown');
         const specSelect = row.querySelector('.specialization-dropdown');
 
+        // 1. Stream filter -> updates course dropdown
         streamSelect.addEventListener('change', function() {
             const streamId = this.value;
+            const currentCourseVal = courseSelect.value;
+
             let filteredCourses = coursesData;
             if (streamId) {
                 filteredCourses = coursesData.filter(c => c.stream_id == streamId);
             }
+
             courseSelect.innerHTML = '<option value="">-- Select Course --</option>';
             filteredCourses.forEach(c => {
-                courseSelect.innerHTML += `<option value="${c.id}" data-stream-id="${c.stream_id}">${c.name} (${c.level})</option>`;
+                const isSelected = (c.id == currentCourseVal) ? 'selected' : '';
+                courseSelect.innerHTML += `<option value="${c.id}" data-stream-id="${c.stream_id}" ${isSelected}>${c.name} (${c.level})</option>`;
             });
+
+            // Trigger change to refresh specializations
             courseSelect.dispatchEvent(new Event('change'));
         });
 
+        // 2. Course change -> populates specializations
         courseSelect.addEventListener('change', function() {
             const courseId = this.value;
             const currentSpecVal = specSelect.value || row.getAttribute('data-initial-specialization');
+
             if (!courseId) {
                 specSelect.innerHTML = '<option value="">General / Core</option>';
                 return;
             }
+
             const selectedCourse = coursesData.find(c => c.id == courseId);
             if (selectedCourse) {
+                // Sync stream if not selected
                 if (selectedCourse.stream_id && !streamSelect.value) {
                     streamSelect.value = selectedCourse.stream_id;
                 }
+
                 specSelect.innerHTML = '<option value="">General / Core</option>';
                 let foundMatch = false;
+
                 if (selectedCourse.specializations && selectedCourse.specializations.length > 0) {
                     selectedCourse.specializations.forEach(s => {
                         if (s.status) {
@@ -532,6 +426,8 @@
                         }
                     });
                 }
+
+                // If existing custom specialization is not in the list, preserve it as an option
                 if (currentSpecVal && !foundMatch && currentSpecVal !== 'General / Core') {
                     specSelect.innerHTML += `<option value="${currentSpecVal}" selected>${currentSpecVal}</option>`;
                 }
@@ -540,24 +436,10 @@
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-        // Initialize Summernote Rich Text Editor
-        $('.summernote').summernote({
-            tabsize: 2,
-            height: 180,
-            toolbar: [
-                ['style', ['style']],
-                ['font', ['bold', 'italic', 'underline', 'clear']],
-                ['color', ['color']],
-                ['para', ['ul', 'ol', 'paragraph']],
-                ['table', ['table']],
-                ['insert', ['link']],
-                ['view', ['fullscreen', 'codeview']]
-            ]
-        });
-
+        // Setup cascading for all rows on Edit load
         document.querySelectorAll('.course-card-row').forEach(row => setupCascadeRow(row));
 
-        // State -> City
+        // Dynamic State -> City loading on Edit page
         const stateSelect = document.getElementById('stateSelect');
         const citySelect = document.getElementById('citySelect');
         const currentCity = "{{ $college->city }}";
@@ -572,6 +454,9 @@
                         const isSelected = (selectedCity && selectedCity === c.name) ? 'selected' : '';
                         citySelect.innerHTML += `<option value="${c.name}" ${isSelected}>${c.name}</option>`;
                     });
+                })
+                .catch(() => {
+                    citySelect.innerHTML = '<option value="">Error loading cities</option>';
                 });
         }
 
@@ -579,9 +464,10 @@
             stateSelect.addEventListener('change', function() {
                 const selectedOption = this.options[this.selectedIndex];
                 const stateId = selectedOption ? selectedOption.getAttribute('data-id') : null;
-                citySelect.innerHTML = '<option value="">Loading...</option>';
+                citySelect.innerHTML = '<option value="">Loading cities...</option>';
                 loadCities(stateId);
             });
+
             const initialOpt = stateSelect.options[stateSelect.selectedIndex];
             if (initialOpt && initialOpt.getAttribute('data-id')) {
                 loadCities(initialOpt.getAttribute('data-id'), currentCity);
@@ -599,26 +485,29 @@
                 clone.removeAttribute('data-initial-specialization');
                 clone.querySelectorAll('input').forEach(i => i.value = '');
                 clone.querySelectorAll('select').forEach(s => s.selectedIndex = 0);
+
+                // Re-populate all courses into cloned select
                 const courseSelect = clone.querySelector('.course-dropdown');
                 courseSelect.innerHTML = '<option value="">-- Select Course --</option>';
                 coursesData.forEach(c => {
                     courseSelect.innerHTML += `<option value="${c.id}" data-stream-id="${c.stream_id}">${c.name} (${c.level})</option>`;
                 });
+
                 container.appendChild(clone);
                 setupCascadeRow(clone);
             }
         });
 
-        // Add Highlight & FAQ
+        // Add Highlight & FAQ listeners
         document.getElementById('addHighlightBtn')?.addEventListener('click', function() {
             const container = document.getElementById('highlightsContainer');
             const div = document.createElement('div');
             div.className = 'input-group mb-2 highlight-row';
             div.innerHTML = `
-                <span class="input-group-text bg-light"><i class="bi bi-check2"></i></span>
-                <input type="text" name="highlights[]" class="form-control form-control-sm" placeholder="Enter highlight...">
-                <button type="button" class="btn btn-outline-danger btn-sm remove-highlight-btn"><i class="bi bi-x"></i></button>
-            `;
+            <span class="input-group-text bg-light">⭐</span>
+            <input type="text" name="highlights[]" class="form-control form-control-sm" placeholder="Enter highlight...">
+            <button type="button" class="btn btn-outline-danger btn-sm remove-highlight-btn"><i class="bi bi-x"></i></button>
+        `;
             container.appendChild(div);
         });
 
@@ -627,13 +516,14 @@
             const div = document.createElement('div');
             div.className = 'p-3 border rounded-3 bg-light mb-2 faq-row';
             div.innerHTML = `
-                <input type="text" name="faq_questions[]" class="form-control form-control-sm mb-2 fw-bold" placeholder="Question...">
-                <textarea name="faq_answers[]" rows="2" class="form-control form-control-sm" placeholder="Answer..."></textarea>
-                <button type="button" class="btn btn-sm text-danger mt-1 remove-faq-btn p-0"><small><i class="bi bi-trash"></i> Remove FAQ</small></button>
-            `;
+            <input type="text" name="faq_questions[]" class="form-control form-control-sm mb-2 fw-bold" placeholder="Question...">
+            <textarea name="faq_answers[]" rows="2" class="form-control form-control-sm" placeholder="Answer..."></textarea>
+            <button type="button" class="btn btn-sm text-danger mt-1 remove-faq-btn p-0"><small><i class="bi bi-trash"></i> Remove FAQ</small></button>
+        `;
             container.appendChild(div);
         });
 
+        // Global removal listener
         document.addEventListener('click', function(e) {
             if (e.target.closest('.remove-course-btn')) {
                 const rows = document.querySelectorAll('.course-card-row');

@@ -1,8 +1,8 @@
-@extends('layouts.app')
 
-@section('title', 'About Us - GrowPec | Your Career Deserves the Right Choice')
 
-@push('styles')
+<?php $__env->startSection('title', 'About Us - GrowPec | Your Career Deserves the Right Choice'); ?>
+
+<?php $__env->startPush('styles'); ?>
 <style>
     :root {
         --gp-navy: #002B67;
@@ -760,13 +760,11 @@
         }
     }
 </style>
-@endpush
+<?php $__env->stopPush(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 
-{{-- =========================================================
-     1. ABOUT HERO
-     ========================================================= --}}
+
 <section class="about-hero">
     <div class="container">
         <div class="row align-items-center g-5">
@@ -790,7 +788,7 @@
                     </p>
 
                     <div class="about-hero-actions">
-                        <a href="{{ route('colleges.regular') }}" class="about-primary-btn">
+                        <a href="<?php echo e(route('colleges.regular')); ?>" class="about-primary-btn">
                             <i class="bi bi-search"></i>
                             Explore Colleges
                         </a>
@@ -849,9 +847,7 @@
     </div>
 </section>
 
-{{-- =========================================================
-     2. QUICK STATS / VALUE STRIP
-     ========================================================= --}}
+
 <section class="about-stats">
     <div class="container">
         <div class="row g-3">
@@ -898,9 +894,7 @@
     </div>
 </section>
 
-{{-- =========================================================
-     3. MISSION & VISION
-     ========================================================= --}}
+
 <section class="about-section">
     <div class="container">
         <div class="about-section-heading">
@@ -946,9 +940,7 @@
     </div>
 </section>
 
-{{-- =========================================================
-     4. HOW GROWPEC HELPS
-     ========================================================= --}}
+
 <section class="about-section about-section-light">
     <div class="container">
         <div class="about-section-heading">
@@ -997,9 +989,7 @@
     </div>
 </section>
 
-{{-- =========================================================
-     5. WHY TRUST GROWPEC
-     ========================================================= --}}
+
 <section class="about-section">
     <div class="container">
         <div class="about-trust-box">
@@ -1052,9 +1042,7 @@
     </div>
 </section>
 
-{{-- =========================================================
-     6. WHAT WE OFFER
-     ========================================================= --}}
+
 <section class="about-section about-section-light">
     <div class="container">
         <div class="about-section-heading">
@@ -1122,9 +1110,7 @@
     </div>
 </section>
 
-{{-- =========================================================
-     7. OUR PRINCIPLES
-     ========================================================= --}}
+
 <section class="about-section">
     <div class="container">
         <div class="row align-items-center g-5">
@@ -1184,9 +1170,7 @@
     </div>
 </section>
 
-{{-- =========================================================
-     8. FINAL CTA
-     ========================================================= --}}
+
 <section class="about-section pt-0">
     <div class="container">
         <div class="about-cta">
@@ -1197,7 +1181,7 @@
             </p>
 
             <div class="d-flex flex-wrap justify-content-center gap-2">
-                <a href="{{ route('colleges.regular') }}" class="btn">
+                <a href="<?php echo e(route('colleges.regular')); ?>" class="btn">
                     <i class="bi bi-search me-1"></i>
                     Explore Colleges
                 </a>
@@ -1221,4 +1205,6 @@
     </div>
 </section>
 
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\Laravel\GrowPec\resources\views/pages/about.blade.php ENDPATH**/ ?>
