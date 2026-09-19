@@ -7,7 +7,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class City extends Model
 {
-    protected $fillable = ['state_id', 'name', 'slug', 'is_popular', 'status'];
+    protected $fillable = [
+        'state_id',
+        'name',
+        'slug',
+        'image',
+        'is_popular',
+        'status'
+    ];
 
     public function state(): BelongsTo
     {

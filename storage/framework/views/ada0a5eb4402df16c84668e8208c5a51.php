@@ -1,11 +1,9 @@
-@extends('admin.layout')
-
-@section('title', 'Master System Settings - GrowPec Admin')
-@section('header', 'Master Platform Management')
+<?php $__env->startSection('title', 'Master System Settings - GrowPec Admin'); ?>
+<?php $__env->startSection('header', 'Master Platform Management'); ?>
 
 
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 <style>
     .gp-settings-page {
         --gp-navy: #002B67;
@@ -811,8 +809,8 @@
         <p>Manage website identity, contact details, theme, homepage features, advertisements and integrations from one responsive control panel.</p>
     </div>
 
-    <form action="{{ route('admin.settings.update') }}" method="POST" enctype="multipart/form-data">
-        @csrf
+    <form action="<?php echo e(route('admin.settings.update')); ?>" method="POST" enctype="multipart/form-data">
+        <?php echo csrf_field(); ?>
 
         <div class="gp-settings-layout">
             <aside class="gp-settings-sidebar">
@@ -854,17 +852,17 @@
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
                                 <label class="form-label small fw-bold">Website Name *</label>
-                                <input type="text" name="general___site_name" value="{{ $settings['general.site_name'] ?? 'GrowPEC' }}" class="form-control" required>
+                                <input type="text" name="general___site_name" value="<?php echo e($settings['general.site_name'] ?? 'GrowPEC'); ?>" class="form-control" required>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label small fw-bold">Website Tagline</label>
-                                <input type="text" name="general___site_tagline" value="{{ $settings['general.site_tagline'] ?? '' }}" class="form-control" placeholder="e.g. Your Career Deserves A Better College">
+                                <input type="text" name="general___site_tagline" value="<?php echo e($settings['general.site_tagline'] ?? ''); ?>" class="form-control" placeholder="e.g. Your Career Deserves A Better College">
                             </div>
                         </div>
 
                         <div class="mb-4">
                             <label class="form-label small fw-bold">SEO Meta Description</label>
-                            <textarea name="general___site_description" rows="2" class="form-control" placeholder="Brief summary of the portal for Google search results...">{{ $settings['general.site_description'] ?? '' }}</textarea>
+                            <textarea name="general___site_description" rows="2" class="form-control" placeholder="Brief summary of the portal for Google search results..."><?php echo e($settings['general.site_description'] ?? ''); ?></textarea>
                             <small class="text-muted">Appears in search engine snippets and meta tags.</small>
                         </div>
                         <h6 class="fw-bold text-dark mb-3 mt-4 pt-2 border-top">
@@ -881,7 +879,7 @@
                                     <div class="border rounded-3 p-2 text-center bg-white shadow-sm mb-2"
                                         style="height: 85px; display: flex; align-items: center; justify-content: center; overflow: hidden; background-image: radial-gradient(#E2E8F0 1px, transparent 1px); background-size: 10px 10px;">
                                         <img id="headerLogoLivePreview"
-                                            src="{{ asset($settings['general.logo'] ?? 'assets/growpec.png') }}"
+                                            src="<?php echo e(asset($settings['general.logo'] ?? 'assets/growpec.png')); ?>"
                                             alt="Header Logo"
                                             style="max-height: 55px; max-width: 100%; width: auto; height: auto; object-fit: contain; display: block; margin: 0 auto;">
                                     </div>
@@ -900,7 +898,7 @@
                                     <div class="border rounded-3 p-2 text-center shadow-sm mb-2"
                                         style="height: 85px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #001B45; border-color: #174B8F !important;">
                                         <img id="footerLogoLivePreview"
-                                            src="{{ asset($settings['general.footer_logo'] ?? $settings['general.logo'] ?? 'assets/growpec.png') }}"
+                                            src="<?php echo e(asset($settings['general.footer_logo'] ?? $settings['general.logo'] ?? 'assets/growpec.png')); ?>"
                                             alt="Footer Logo"
                                             style="max-height: 55px; max-width: 100%; width: auto; height: auto; object-fit: contain; display: block; margin: 0 auto;">
                                     </div>
@@ -920,10 +918,10 @@
                                         style="height: 85px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
                                         <div class="shadow-sm px-3 py-1 rounded-3 d-inline-flex align-items-center gap-2 border bg-light">
                                             <img id="faviconLivePreview"
-                                                src="{{ asset($settings['general.favicon'] ?? 'assets/growpec.png') }}"
+                                                src="<?php echo e(asset($settings['general.favicon'] ?? 'assets/growpec.png')); ?>"
                                                 style="height: 22px; width: 22px; object-fit: contain;"
                                                 alt="Favicon">
-                                            <span class="small fw-bold text-secondary">{{ $settings['general.site_name'] ?? 'GrowPEC' }}</span>
+                                            <span class="small fw-bold text-secondary"><?php echo e($settings['general.site_name'] ?? 'GrowPEC'); ?></span>
                                         </div>
                                     </div>
 
@@ -939,21 +937,21 @@
                         <div class="row g-3 mb-3">
                             <div class="col-md-4">
                                 <label class="form-label small fw-bold">Support Phone</label>
-                                <input type="text" name="general___support_phone" value="{{ $settings['general.support_phone'] ?? '+91 8858285271' }}" class="form-control">
+                                <input type="text" name="general___support_phone" value="<?php echo e($settings['general.support_phone'] ?? '+91 8858285271'); ?>" class="form-control">
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label small fw-bold">WhatsApp Helpline</label>
-                                <input type="text" name="general___whatsapp_number" value="{{ $settings['general.whatsapp_number'] ?? '918858285271' }}" class="form-control" placeholder="e.g. 918858285271">
+                                <input type="text" name="general___whatsapp_number" value="<?php echo e($settings['general.whatsapp_number'] ?? '918858285271'); ?>" class="form-control" placeholder="e.g. 918858285271">
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label small fw-bold">Support Email</label>
-                                <input type="email" name="general___support_email" value="{{ $settings['general.support_email'] ?? 'info@growpec.com' }}" class="form-control">
+                                <input type="email" name="general___support_email" value="<?php echo e($settings['general.support_email'] ?? 'info@growpec.com'); ?>" class="form-control">
                             </div>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label small fw-bold">Office Address</label>
-                            <textarea name="general___office_address" rows="2" class="form-control">{{ $settings['general.office_address'] ?? 'Varanasi, Uttar Pradesh, India' }}</textarea>
+                            <textarea name="general___office_address" rows="2" class="form-control"><?php echo e($settings['general.office_address'] ?? 'Varanasi, Uttar Pradesh, India'); ?></textarea>
                         </div>
                     </div>
                     <div class="tab-pane fade" id="tab-theme" role="tabpanel">
@@ -970,21 +968,21 @@
                                 <div
                                     id="previewTopbar"
                                     class="px-3 py-2 rounded-pill small fw-bold shadow-sm"
-                                    data-color="{{ $settings['theme.topbar_color'] ?? '#D9A400' }}">
+                                    data-color="<?php echo e($settings['theme.topbar_color'] ?? '#D9A400'); ?>">
                                     Top Notice Bar Phone Link
                                 </div>
                                 <button
                                     type="button"
                                     id="previewPrimaryBtn"
                                     class="btn btn-sm px-4 py-2 rounded-pill fw-bold shadow-sm"
-                                    data-color="{{ $settings['theme.primary_color'] ?? '#002B67' }}">
+                                    data-color="<?php echo e($settings['theme.primary_color'] ?? '#002B67'); ?>">
                                     Primary Button (Free Counselling)
                                 </button>
                                 <button
                                     type="button"
                                     id="previewAccentBtn"
                                     class="btn btn-sm px-4 py-2 rounded-pill fw-bold shadow-sm"
-                                    data-color="{{ $settings['theme.accent_gold'] ?? '#D9A400' }}">
+                                    data-color="<?php echo e($settings['theme.accent_gold'] ?? '#D9A400'); ?>">
                                     Accent Button (Apply Now)
                                 </button>
 
@@ -1064,8 +1062,8 @@
                                 <div class="p-3 bg-light rounded-3 border">
                                     <label class="form-label small fw-bold">Primary Brand Color</label>
                                     <div class="d-flex align-items-center gap-2">
-                                        <input type="color" id="primaryColorPicker" name="theme___primary_color" value="{{ $settings['theme.primary_color'] ?? '#002B67' }}" class="form-control form-control-color color-picker-box w-25">
-                                        <input type="text" id="primaryColorText" class="form-control form-control-sm font-monospace" value="{{ $settings['theme.primary_color'] ?? '#002B67' }}" readonly>
+                                        <input type="color" id="primaryColorPicker" name="theme___primary_color" value="<?php echo e($settings['theme.primary_color'] ?? '#002B67'); ?>" class="form-control form-control-color color-picker-box w-25">
+                                        <input type="text" id="primaryColorText" class="form-control form-control-sm font-monospace" value="<?php echo e($settings['theme.primary_color'] ?? '#002B67'); ?>" readonly>
                                     </div>
                                     <small class="text-muted d-block mt-1">Navbar, Footers & Main Headings</small>
                                 </div>
@@ -1074,8 +1072,8 @@
                                 <div class="p-3 bg-light rounded-3 border">
                                     <label class="form-label small fw-bold">Secondary Accent Color</label>
                                     <div class="d-flex align-items-center gap-2">
-                                        <input type="color" id="secondaryColorPicker" name="theme___secondary_purple" value="{{ $settings['theme.secondary_purple'] ?? '#174B8F' }}" class="form-control form-control-color color-picker-box w-25">
-                                        <input type="text" id="secondaryColorText" class="form-control form-control-sm font-monospace" value="{{ $settings['theme.secondary_purple'] ?? '#174B8F' }}" readonly>
+                                        <input type="color" id="secondaryColorPicker" name="theme___secondary_purple" value="<?php echo e($settings['theme.secondary_purple'] ?? '#174B8F'); ?>" class="form-control form-control-color color-picker-box w-25">
+                                        <input type="text" id="secondaryColorText" class="form-control form-control-sm font-monospace" value="<?php echo e($settings['theme.secondary_purple'] ?? '#174B8F'); ?>" readonly>
                                     </div>
                                     <small class="text-muted d-block mt-1">Subheadings, active tabs, hovers</small>
                                 </div>
@@ -1084,8 +1082,8 @@
                                 <div class="p-3 bg-light rounded-3 border">
                                     <label class="form-label small fw-bold">Accent / CTA Button Color</label>
                                     <div class="d-flex align-items-center gap-2">
-                                        <input type="color" id="accentColorPicker" name="theme___accent_gold" value="{{ $settings['theme.accent_gold'] ?? '#D9A400' }}" class="form-control form-control-color color-picker-box w-25">
-                                        <input type="text" id="accentColorText" class="form-control form-control-sm font-monospace" value="{{ $settings['theme.accent_gold'] ?? '#D9A400' }}" readonly>
+                                        <input type="color" id="accentColorPicker" name="theme___accent_gold" value="<?php echo e($settings['theme.accent_gold'] ?? '#D9A400'); ?>" class="form-control form-control-color color-picker-box w-25">
+                                        <input type="text" id="accentColorText" class="form-control form-control-sm font-monospace" value="<?php echo e($settings['theme.accent_gold'] ?? '#D9A400'); ?>" readonly>
                                     </div>
                                     <small class="text-muted d-block mt-1">Apply Now, View Details, Badges</small>
                                 </div>
@@ -1094,8 +1092,8 @@
                                 <div class="p-3 bg-light rounded-3 border">
                                     <label class="form-label small fw-bold">Top Notice Bar Color</label>
                                     <div class="d-flex align-items-center gap-2">
-                                        <input type="color" id="topbarColorPicker" name="theme___topbar_color" value="{{ $settings['theme.topbar_color'] ?? '#D9A400' }}" class="form-control form-control-color color-picker-box w-25">
-                                        <input type="text" id="topbarColorText" class="form-control form-control-sm font-monospace" value="{{ $settings['theme.topbar_color'] ?? '#D9A400' }}" readonly>
+                                        <input type="color" id="topbarColorPicker" name="theme___topbar_color" value="<?php echo e($settings['theme.topbar_color'] ?? '#D9A400'); ?>" class="form-control form-control-color color-picker-box w-25">
+                                        <input type="text" id="topbarColorText" class="form-control form-control-sm font-monospace" value="<?php echo e($settings['theme.topbar_color'] ?? '#D9A400'); ?>" readonly>
                                     </div>
                                     <small class="text-muted d-block mt-1">Top announcement strip</small>
                                 </div>
@@ -1104,8 +1102,8 @@
                                 <div class="p-3 bg-light rounded-3 border">
                                     <label class="form-label small fw-bold">Body Background Color</label>
                                     <div class="d-flex align-items-center gap-2">
-                                        <input type="color" id="bodyBgPicker" name="theme___body_bg" value="{{ $settings['theme.body_bg'] ?? '#F5F7FA' }}" class="form-control form-control-color color-picker-box w-25">
-                                        <input type="text" id="bodyBgText" class="form-control form-control-sm font-monospace" value="{{ $settings['theme.body_bg'] ?? '#F5F7FA' }}" readonly>
+                                        <input type="color" id="bodyBgPicker" name="theme___body_bg" value="<?php echo e($settings['theme.body_bg'] ?? '#F5F7FA'); ?>" class="form-control form-control-color color-picker-box w-25">
+                                        <input type="text" id="bodyBgText" class="form-control form-control-sm font-monospace" value="<?php echo e($settings['theme.body_bg'] ?? '#F5F7FA'); ?>" readonly>
                                     </div>
                                     <small class="text-muted d-block mt-1">Light canvas background</small>
                                 </div>
@@ -1124,7 +1122,7 @@
                                     <small class="text-muted">Controls whether the Online Universities section and filter options are active.</small>
                                 </div>
                                 <div class="form-check form-switch fs-5">
-                                    <input class="form-check-input" type="checkbox" name="features___enable_online_colleges" value="1" {{ ($settings['features.enable_online_colleges'] ?? '1') == '1' ? 'checked' : '' }}>
+                                    <input class="form-check-input" type="checkbox" name="features___enable_online_colleges" value="1" <?php echo e(($settings['features.enable_online_colleges'] ?? '1') == '1' ? 'checked' : ''); ?>>
                                 </div>
                             </div>
                             <div class="list-group-item d-flex justify-content-between align-items-center px-0 py-3">
@@ -1133,7 +1131,7 @@
                                     <small class="text-muted">Turn off to completely hide the scrolling university logos banner from the homepage.</small>
                                 </div>
                                 <div class="form-check form-switch fs-5">
-                                    <input class="form-check-input" type="checkbox" name="features___enable_partner_strip" value="1" {{ ($settings['features.enable_partner_strip'] ?? '1') == '1' ? 'checked' : '' }}>
+                                    <input class="form-check-input" type="checkbox" name="features___enable_partner_strip" value="1" <?php echo e(($settings['features.enable_partner_strip'] ?? '1') == '1' ? 'checked' : ''); ?>>
                                 </div>
                             </div>
                             <div class="list-group-item d-flex justify-content-between align-items-center px-0 py-3">
@@ -1142,7 +1140,7 @@
                                     <small class="text-muted">Displays sticky round WhatsApp button on the bottom-right of every user screen.</small>
                                 </div>
                                 <div class="form-check form-switch fs-5">
-                                    <input class="form-check-input" type="checkbox" name="features___enable_floating_whatsapp" value="1" {{ ($settings['features.enable_floating_whatsapp'] ?? '1') == '1' ? 'checked' : '' }}>
+                                    <input class="form-check-input" type="checkbox" name="features___enable_floating_whatsapp" value="1" <?php echo e(($settings['features.enable_floating_whatsapp'] ?? '1') == '1' ? 'checked' : ''); ?>>
                                 </div>
                             </div>
                             <div class="list-group-item d-flex justify-content-between align-items-center px-0 py-3">
@@ -1151,7 +1149,7 @@
                                     <small class="text-muted">Sends automated notification email to admin whenever a student submits an inquiry.</small>
                                 </div>
                                 <div class="form-check form-switch fs-5">
-                                    <input class="form-check-input" type="checkbox" name="features___enable_lead_email_alert" value="1" {{ ($settings['features.enable_lead_email_alert'] ?? '1') == '1' ? 'checked' : '' }}>
+                                    <input class="form-check-input" type="checkbox" name="features___enable_lead_email_alert" value="1" <?php echo e(($settings['features.enable_lead_email_alert'] ?? '1') == '1' ? 'checked' : ''); ?>>
                                 </div>
                             </div>
                             <div class="list-group-item d-flex justify-content-between align-items-center px-0 py-3">
@@ -1160,7 +1158,7 @@
                                     <small class="text-muted">Displays temporary maintenance page to public visitors while admin panel remains accessible.</small>
                                 </div>
                                 <div class="form-check form-switch fs-5">
-                                    <input class="form-check-input" type="checkbox" name="features___maintenance_mode" value="1" {{ ($settings['features.maintenance_mode'] ?? '0') == '1' ? 'checked' : '' }}>
+                                    <input class="form-check-input" type="checkbox" name="features___maintenance_mode" value="1" <?php echo e(($settings['features.maintenance_mode'] ?? '0') == '1' ? 'checked' : ''); ?>>
                                 </div>
                             </div>
                         </div>
@@ -1177,7 +1175,7 @@
                                     <small class="text-muted">Colleges feed ke beech mein (har 4 cards ke baad) scroll hone wala banner.</small>
                                 </div>
                                 <div class="form-check form-switch fs-5">
-                                    <input class="form-check-input" type="checkbox" name="ads___enable_listing_ad" value="1" {{ ($settings['ads.enable_listing_ad'] ?? '1') == '1' ? 'checked' : '' }}>
+                                    <input class="form-check-input" type="checkbox" name="ads___enable_listing_ad" value="1" <?php echo e(($settings['ads.enable_listing_ad'] ?? '1') == '1' ? 'checked' : ''); ?>>
                                 </div>
                             </div>
 
@@ -1189,14 +1187,14 @@
 
                                     <div class="mt-3">
                                         <label class="form-label small fw-bold">Click Action / Target Link (Optional)</label>
-                                        <input type="text" name="ads___listing_banner_link" value="{{ $settings['ads.listing_banner_link'] ?? '' }}" class="form-control form-control-sm" placeholder="e.g. tel:+918858285271 or https://wa.me/918858285271">
+                                        <input type="text" name="ads___listing_banner_link" value="<?php echo e($settings['ads.listing_banner_link'] ?? ''); ?>" class="form-control form-control-sm" placeholder="e.g. tel:+918858285271 or https://wa.me/918858285271">
                                     </div>
                                 </div>
                                 <div class="col-md-5">
                                     <label class="form-label small text-muted d-block fw-bold">Active Banner Preview</label>
                                     <div class="p-2 border rounded-3 bg-light text-center" style="max-height: 120px; overflow: hidden;">
                                         <img id="listingAdPreview"
-                                            src="{{ asset($settings['ads.listing_banner'] ?? 'assets/hero_b1.jpg') }}"
+                                            src="<?php echo e(asset($settings['ads.listing_banner'] ?? 'assets/hero_b1.jpg')); ?>"
                                             class="img-fluid rounded border shadow-sm w-100"
                                             style="max-height: 100px; object-fit: cover;"
                                             alt="Listing Ad">
@@ -1211,7 +1209,7 @@
                                     <small class="text-muted">Home page ke beech mein full-width attractive offer/promo image.</small>
                                 </div>
                                 <div class="form-check form-switch fs-5">
-                                    <input class="form-check-input" type="checkbox" name="ads___enable_home_ad" value="1" {{ ($settings['ads.enable_home_ad'] ?? '1') == '1' ? 'checked' : '' }}>
+                                    <input class="form-check-input" type="checkbox" name="ads___enable_home_ad" value="1" <?php echo e(($settings['ads.enable_home_ad'] ?? '1') == '1' ? 'checked' : ''); ?>>
                                 </div>
                             </div>
 
@@ -1223,14 +1221,14 @@
 
                                     <div class="mt-3">
                                         <label class="form-label small fw-bold">Click Action / Target Link (Optional)</label>
-                                        <input type="text" name="ads___home_banner_link" value="{{ $settings['ads.home_banner_link'] ?? '' }}" class="form-control form-control-sm" placeholder="e.g. tel:+918858285271 or https://wa.me/918858285271">
+                                        <input type="text" name="ads___home_banner_link" value="<?php echo e($settings['ads.home_banner_link'] ?? ''); ?>" class="form-control form-control-sm" placeholder="e.g. tel:+918858285271 or https://wa.me/918858285271">
                                     </div>
                                 </div>
                                 <div class="col-md-5">
                                     <label class="form-label small text-muted d-block fw-bold">Active Banner Preview</label>
                                     <div class="p-2 border rounded-3 bg-light text-center" style="max-height: 120px; overflow: hidden;">
                                         <img id="homeAdPreview"
-                                            src="{{ asset($settings['ads.home_banner'] ?? 'assets/hero_b2.jpg') }}"
+                                            src="<?php echo e(asset($settings['ads.home_banner'] ?? 'assets/hero_b2.jpg')); ?>"
                                             class="img-fluid rounded border shadow-sm w-100"
                                             style="max-height: 100px; object-fit: cover;"
                                             alt="Home Ad">
@@ -1249,14 +1247,14 @@
                                 <div class="col-md-4">
                                     <label class="form-label small fw-bold">Provider</label>
                                     <select name="api___sms_provider" class="form-select form-select-sm">
-                                        <option value="demo" {{ ($settings['api.sms_provider'] ?? 'demo') == 'demo' ? 'selected' : '' }}>Demo Mode (Fixed OTP: 1234)</option>
-                                        <option value="fast2sms" {{ ($settings['api.sms_provider'] ?? '') == 'fast2sms' ? 'selected' : '' }}>Fast2SMS (India)</option>
-                                        <option value="twilio" {{ ($settings['api.sms_provider'] ?? '') == 'twilio' ? 'selected' : '' }}>Twilio SMS</option>
+                                        <option value="demo" <?php echo e(($settings['api.sms_provider'] ?? 'demo') == 'demo' ? 'selected' : ''); ?>>Demo Mode (Fixed OTP: 1234)</option>
+                                        <option value="fast2sms" <?php echo e(($settings['api.sms_provider'] ?? '') == 'fast2sms' ? 'selected' : ''); ?>>Fast2SMS (India)</option>
+                                        <option value="twilio" <?php echo e(($settings['api.sms_provider'] ?? '') == 'twilio' ? 'selected' : ''); ?>>Twilio SMS</option>
                                     </select>
                                 </div>
                                 <div class="col-md-8">
                                     <label class="form-label small fw-bold">SMS API Key / Auth Token</label>
-                                    <input type="password" name="api___fast2sms_key" value="{{ $settings['api.fast2sms_key'] ?? '' }}" class="form-control form-control-sm" placeholder="Enter API auth key">
+                                    <input type="password" name="api___fast2sms_key" value="<?php echo e($settings['api.fast2sms_key'] ?? ''); ?>" class="form-control form-control-sm" placeholder="Enter API auth key">
                                 </div>
                             </div>
                         </div>
@@ -1265,11 +1263,11 @@
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <label class="form-label small fw-bold">Firebase Project ID</label>
-                                    <input type="text" name="api___fcm_project_id" value="{{ $settings['api.fcm_project_id'] ?? '' }}" class="form-control form-control-sm" placeholder="e.g. growpec-app">
+                                    <input type="text" name="api___fcm_project_id" value="<?php echo e($settings['api.fcm_project_id'] ?? ''); ?>" class="form-control form-control-sm" placeholder="e.g. growpec-app">
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label small fw-bold">Firebase Server Key</label>
-                                    <input type="password" name="api___fcm_server_key" value="{{ $settings['api.fcm_server_key'] ?? '' }}" class="form-control form-control-sm" placeholder="Enter FCM Server Key">
+                                    <input type="password" name="api___fcm_server_key" value="<?php echo e($settings['api.fcm_server_key'] ?? ''); ?>" class="form-control form-control-sm" placeholder="Enter FCM Server Key">
                                 </div>
                             </div>
                         </div>
@@ -1278,7 +1276,7 @@
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <label class="form-label small fw-bold">Measurement ID (GA4)</label>
-                                    <input type="text" name="api___google_analytics_id" value="{{ $settings['api.google_analytics_id'] ?? '' }}" class="form-control form-control-sm" placeholder="G-XXXXXXXXXX">
+                                    <input type="text" name="api___google_analytics_id" value="<?php echo e($settings['api.google_analytics_id'] ?? ''); ?>" class="form-control form-control-sm" placeholder="G-XXXXXXXXXX">
                                 </div>
                             </div>
                         </div>
@@ -1291,7 +1289,7 @@
 </form>
 </div>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
 <script>
     function getContrastYIQ(hexcolor) {
 
@@ -1689,5 +1687,6 @@
         }
     });
 </script>
-@endpush
-@endsection
+<?php $__env->stopPush(); ?>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('admin.layout', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\GrowPec Version Controll\growpec\resources\views/admin/settings/index.blade.php ENDPATH**/ ?>

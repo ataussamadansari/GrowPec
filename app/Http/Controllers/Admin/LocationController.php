@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\State;
 use App\Models\City;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class LocationController extends Controller
 {
@@ -93,6 +94,7 @@ class LocationController extends Controller
             'state_id'   => 'required|exists:states,id',
             'name'       => 'required|string|max:100',
             'is_popular' => 'nullable|boolean',
+            'image'      => 'nullable|image|mimes:jpeg,png,jpg,webp|max:4096',
         ]);
 
         $cityName = trim($validated['name']);
@@ -103,11 +105,24 @@ class LocationController extends Controller
             return back()->with('error', 'City "' . $cityName . '" already exists in the selected state.');
         }
 
+        $isPopular = $request->boolean('is_popular');
+
+        if ($isPopular && !$request->hasFile('image')) {
+            return back()->withInput()->withErrors([
+                'image' => 'City image is required when the city is marked as popular.'
+            ]);
+        }
+
+        $imagePath = $request->hasFile('image')
+            ? $request->file('image')->store('cities', 'public')
+            : null;
+
         City::create([
             'state_id'   => $validated['state_id'],
             'name'       => $cityName,
             'slug'       => $slug,
-            'is_popular' => $request->has('is_popular'),
+            'image'      => $imagePath,
+            'is_popular' => $isPopular,
             'status'     => true,
         ]);
 
@@ -123,6 +138,7 @@ class LocationController extends Controller
             'name'       => 'required|string|max:100',
             'is_popular' => 'nullable|boolean',
             'status'     => 'nullable|boolean',
+            'image'      => 'nullable|image|mimes:jpeg,png,jpg,webp|max:4096',
         ]);
 
         $cityName = trim($validated['name']);
@@ -137,12 +153,30 @@ class LocationController extends Controller
             return back()->with('error', 'City "' . $cityName . '" already exists in that state.');
         }
 
+        $isPopular = $request->boolean('is_popular');
+
+        if ($isPopular && !$city->image && !$request->hasFile('image')) {
+            return back()->withInput()->withErrors([
+                'image' => 'City image is required when the city is marked as popular.'
+            ]);
+        }
+
+        $imagePath = $city->image;
+
+        if ($request->hasFile('image')) {
+            if ($city->image && Storage::disk('public')->exists($city->image)) {
+                Storage::disk('public')->delete($city->image);
+            }
+            $imagePath = $request->file('image')->store('cities', 'public');
+        }
+
         $city->update([
             'state_id'   => $validated['state_id'],
             'name'       => $cityName,
             'slug'       => Str::slug($cityName),
-            'is_popular' => $request->has('is_popular'),
-            'status'     => $request->has('status'),
+            'image'      => $imagePath,
+            'is_popular' => $isPopular,
+            'status'     => $request->boolean('status'),
         ]);
 
         return back()->with('success', 'City updated successfully!');
@@ -151,6 +185,11 @@ class LocationController extends Controller
     public function destroyCity($id)
     {
         $city = City::findOrFail($id);
+
+        if ($city->image && Storage::disk('public')->exists($city->image)) {
+            Storage::disk('public')->delete($city->image);
+        }
+
         $city->delete();
 
         return back()->with('success', 'City deleted successfully.');

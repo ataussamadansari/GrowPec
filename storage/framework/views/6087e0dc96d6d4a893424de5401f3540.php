@@ -566,4 +566,4 @@
     <?php echo $__env->yieldPushContent('scripts'); ?>
 </body>
 
-</html><?php /**PATH D:\Laravel\GrowPec\resources\views/admin/layout.blade.php ENDPATH**/ ?>
+</html><?php /**PATH D:\GrowPec Version Controll\growpec\resources\views/admin/layout.blade.php ENDPATH**/ ?>

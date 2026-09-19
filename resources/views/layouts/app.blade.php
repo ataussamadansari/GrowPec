@@ -91,9 +91,9 @@
         .gp-navbar {
             position: sticky;
             top: 0;
-            background: rgba(255,255,255,.97);
-            border-bottom: 1px solid rgba(46,30,107,.07);
-            box-shadow: 0 5px 25px rgba(25,17,70,.07);
+            background: rgba(255, 255, 255, .97);
+            border-bottom: 1px solid rgba(46, 30, 107, .07);
+            box-shadow: 0 5px 25px rgba(25, 17, 70, .07);
             padding: 10px 0;
             backdrop-filter: blur(14px);
             -webkit-backdrop-filter: blur(14px);
@@ -189,7 +189,7 @@
             border-color: var(--primary-purple);
             color: #fff;
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(46,30,107,.18);
+            box-shadow: 0 8px 20px rgba(46, 30, 107, .18);
         }
 
         .gp-call-icon {
@@ -200,7 +200,7 @@
             align-items: center;
             justify-content: center;
             border-radius: 8px;
-            background: rgba(245,166,35,.16);
+            background: rgba(245, 166, 35, .16);
             color: var(--accent-gold);
             font-size: .72rem;
         }
@@ -225,7 +225,7 @@
         }
 
         .gp-call-btn:hover .gp-call-content small {
-            color: rgba(255,255,255,.65);
+            color: rgba(255, 255, 255, .65);
         }
 
         .gp-call-btn:hover .gp-call-content strong {
@@ -240,7 +240,7 @@
 
         .gp-call-btn:hover .gp-call-arrow {
             color: var(--accent-gold);
-            transform: translate(2px,-2px);
+            transform: translate(2px, -2px);
         }
 
         .gp-navbar-toggler {
@@ -542,7 +542,7 @@
             font-size: 0.82rem;
         }
 
-        .gp-footer-contact > div {
+        .gp-footer-contact>div {
             display: flex;
             align-items: center;
             gap: 10px;
@@ -711,13 +711,13 @@
             font-size: 0.78rem;
         }
 
-        .gp-footer-call > i {
+        .gp-footer-call>i {
             color: #777186;
             font-size: 0.78rem;
             transition: transform 0.2s ease;
         }
 
-        .gp-footer-call:hover > i {
+        .gp-footer-call:hover>i {
             color: var(--accent-gold);
             transform: translate(2px, -2px);
         }
@@ -871,7 +871,7 @@
             }
         }
 
-    
+
         /* =========================================================
            GROWPEC LOGO COLOR SYSTEM
            Matched to the supplied GrowPEC logo:
@@ -986,8 +986,7 @@
         .gp-footer-verified i {
             color: #008A43 !important;
         }
-
-</style>
+    </style>
     @stack('styles')
 </head>
 
@@ -1003,9 +1002,9 @@
                         Need Admission Guidance?
                     </span>
 
-                    <a href="tel:+918858285271" class="gp-topbar-phone">
+                    <a href="tel:{{ $siteSettings['general.support_phone'] ?? '' }}" class="gp-topbar-phone">
                         <i class="bi bi-telephone-fill"></i>
-                        +91 8858285271
+                        {{ $siteSettings['general.support_phone'] ?? '' }}
                     </a>
 
                     <span class="gp-topbar-divider">|</span>
@@ -1025,8 +1024,7 @@
                     <img
                         src="{{ asset('assets/growpec.png') }}"
                         alt="GrowPEC Logo"
-                        class="gp-header-logo"
-                    >
+                        class="gp-header-logo">
                 </a>
 
                 <button
@@ -1036,8 +1034,7 @@
                     data-bs-target="#navbarContent"
                     aria-controls="navbarContent"
                     aria-expanded="false"
-                    aria-label="Toggle navigation"
-                >
+                    aria-label="Toggle navigation">
                     <span></span>
                     <span></span>
                     <span></span>
@@ -1050,8 +1047,7 @@
                         <li class="nav-item">
                             <a
                                 class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}"
-                                href="{{ route('home') }}"
-                            >
+                                href="{{ route('home') }}">
                                 <i class="bi bi-house-door"></i>
                                 <span>Home</span>
                             </a>
@@ -1060,8 +1056,7 @@
                         <li class="nav-item">
                             <a
                                 class="nav-link {{ request()->routeIs('colleges.regular') ? 'active' : '' }}"
-                                href="{{ route('colleges.regular') }}"
-                            >
+                                href="{{ route('colleges.regular') }}">
                                 <i class="bi bi-building"></i>
                                 <span>Regular Colleges</span>
                             </a>
@@ -1070,8 +1065,7 @@
                         <li class="nav-item">
                             <a
                                 class="nav-link {{ request()->routeIs('colleges.online') ? 'active' : '' }}"
-                                href="{{ route('colleges.online') }}"
-                            >
+                                href="{{ route('colleges.online') }}">
                                 <i class="bi bi-laptop"></i>
                                 <span>Online Colleges</span>
                             </a>
@@ -1080,7 +1074,7 @@
                     </ul>
 
                     <div class="gp-header-action">
-                        <a href="tel:+918858285271" class="gp-call-btn">
+                        <a href="tel:{{ $siteSettings['general.support_phone'] ?? '' }}" class="gp-call-btn">
                             <span class="gp-call-icon">
                                 <i class="bi bi-telephone-fill"></i>
                             </span>
@@ -1140,8 +1134,7 @@
                         <img
                             src="{{ asset('assets/growpec.png') }}"
                             alt="GrowPEC Logo"
-                            class="gp-footer-logo"
-                        >
+                            class="gp-footer-logo">
                     </a>
 
                     <p class="gp-footer-description">
@@ -1155,21 +1148,27 @@
                             <span class="gp-contact-icon">
                                 <i class="bi bi-geo-alt"></i>
                             </span>
-                            <span>Varanasi, Uttar Pradesh, India</span>
+                            <span>
+                                {{ $siteSettings['general.office_address'] ?? '' }}
+                            </span>
                         </div>
 
                         <div>
                             <span class="gp-contact-icon">
                                 <i class="bi bi-telephone"></i>
                             </span>
-                            <a href="tel:+918858285271">+91 8858285271</a>
+                            <a href="tel:{{ $siteSettings['general.support_phone'] ?? '' }}">
+                                {{ $siteSettings['general.support_phone'] ?? '' }}
+                            </a>
                         </div>
 
                         <div>
                             <span class="gp-contact-icon">
                                 <i class="bi bi-envelope"></i>
                             </span>
-                            <a href="mailto:info@growpec.com">info@growpec.com</a>
+                            <a href="mailto:{{ $siteSettings['general.support_email'] ?? '' }}">
+                                {{ $siteSettings['general.support_email'] ?? '' }}
+                            </a>
                         </div>
                     </div>
 
@@ -1264,14 +1263,16 @@
                         Talk to our admission experts for personalized guidance.
                     </p>
 
-                    <a href="tel:+918858285271" class="gp-footer-call">
+                    <a href="tel:{{ $siteSettings['general.support_phone'] ?? '' }}" class="gp-footer-call">
                         <span class="gp-footer-call-icon">
                             <i class="bi bi-telephone-fill"></i>
                         </span>
 
                         <span>
                             <small>Talk to an Expert</small>
-                            <strong>+91 8858285271</strong>
+                            <strong>
+                                {{ $siteSettings['general.support_phone'] ?? '' }}
+                            </strong>
                         </span>
 
                         <i class="bi bi-arrow-up-right"></i>
@@ -1305,51 +1306,312 @@
          GROWPEC - FREE CONSULTANCY MODAL
     ========================================================== -->
     <style>
-        .gp-consultancy-modal .modal-dialog{max-width:680px}
-        .gp-consultancy-modal .modal-content{border:0;border-radius:24px;overflow:hidden;box-shadow:0 25px 80px rgba(0,27,69,.22)}
-        .gp-consultancy-header{position:relative;padding:30px 32px 26px;background:linear-gradient(135deg,#001B45 0%,#002B67 68%,#006B35 140%);color:#fff}
-        .gp-consultancy-header:after{content:"";position:absolute;width:180px;height:180px;right:-80px;top:-90px;border-radius:50%;background:rgba(255,255,255,.07)}
-        .gp-consultancy-badge{display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border-radius:50px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.15);color:#fff;font-size:12px;font-weight:700;letter-spacing:.3px;margin-bottom:13px}
-        .gp-consultancy-badge i{color:#D9A400}
-        .gp-consultancy-title{margin:0 45px 7px 0;font-size:28px;line-height:1.2;font-weight:800;color:#fff}
-        .gp-consultancy-subtitle{margin:0;max-width:520px;color:rgba(255,255,255,.82);font-size:14px;line-height:1.6}
-        .gp-consultancy-close{position:absolute;top:20px;right:20px;z-index:5;width:38px;height:38px;border:0;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.12);color:#fff;font-size:18px;cursor:pointer;transition:.2s ease}
-        .gp-consultancy-close:hover{background:rgba(255,255,255,.22);transform:rotate(90deg)}
-        .gp-consultancy-body{padding:30px 32px 32px;background:#fff}
-        .gp-consultancy-benefits{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:25px}
-        .gp-consultancy-benefit{padding:13px 10px;border:1px solid #edf0f4;border-radius:12px;background:#f8fafc;text-align:center}
-        .gp-consultancy-benefit i{display:block;margin-bottom:5px;color:#008A43;font-size:18px}
-        .gp-consultancy-benefit strong{display:block;color:#001B45;font-size:11px;line-height:1.3}
-        .gp-form-label{display:block;margin-bottom:7px;color:#001B45;font-size:13px;font-weight:700}
-        .gp-form-label span{color:#008A43}
-        .gp-input-wrap{position:relative}
-        .gp-input-wrap>i{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:#008A43;font-size:16px;pointer-events:none}
-        .gp-form-control{width:100%;height:48px;padding:0 15px;border:1px solid #dfe5ec;border-radius:11px;background:#fff;color:#1c2633;font-size:14px;outline:none;transition:.2s ease}
-        .gp-input-wrap .gp-form-control{padding-left:43px}
-        .gp-form-control::placeholder{color:#9aa5b1}
-        .gp-form-control:focus{border-color:#008A43;box-shadow:0 0 0 4px rgba(0,138,67,.08)}
-        .gp-consultancy-submit{width:100%;min-height:52px;border:0;border-radius:12px;display:flex;align-items:center;justify-content:center;gap:9px;background:linear-gradient(135deg,#006B35,#008A43);color:#fff;font-size:15px;font-weight:800;cursor:pointer;box-shadow:0 10px 25px rgba(0,107,53,.18);transition:.25s ease}
-        .gp-consultancy-submit:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(0,107,53,.25)}
-        .gp-consultancy-submit:disabled{opacity:.7;cursor:not-allowed;transform:none}
-        .gp-consultancy-trust{margin-top:17px;display:flex;align-items:center;justify-content:center;gap:7px;color:#7b8794;font-size:12px;text-align:center}
-        .gp-consult-success{text-align:center;padding:12px 4px 4px}
-        .gp-success-icon{width:64px;height:64px;margin:0 auto 14px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#e9f8ef;color:#008A43;font-size:32px}
-        .gp-consult-success h3{margin:0 0 8px;color:#002B67;font-size:24px;font-weight:800}
-        .gp-consult-success p{margin:0 auto 20px;max-width:380px;color:#667085;line-height:1.6;font-size:14px}
-        .gp-success-close{border:0;border-radius:10px;padding:10px 28px;background:#008A43;color:#fff;font-weight:700;cursor:pointer}
-        .gp-consultancy-trust i{color:#008A43}
-        @media(max-width:575.98px){
-            .gp-consultancy-modal .modal-dialog{margin:10px}
-            .gp-consultancy-modal .modal-content{border-radius:20px}
-            .gp-consultancy-header{padding:24px 20px 22px}
-            .gp-consultancy-title{font-size:23px;margin-right:35px}
-            .gp-consultancy-subtitle{font-size:13px}
-            .gp-consultancy-body{padding:22px 20px 24px}
-            .gp-consultancy-benefits{gap:7px}
-            .gp-consultancy-benefit{padding:10px 5px}
-            .gp-consultancy-benefit i{font-size:16px}
-            .gp-consultancy-benefit strong{font-size:10px}
-            .gp-form-control{height:46px}
+        .gp-consultancy-modal .modal-dialog {
+            max-width: 680px
+        }
+
+        .gp-consultancy-modal .modal-content {
+            border: 0;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 25px 80px rgba(0, 27, 69, .22)
+        }
+
+        .gp-consultancy-header {
+            position: relative;
+            padding: 30px 32px 26px;
+            background: linear-gradient(135deg, #001B45 0%, #002B67 68%, #006B35 140%);
+            color: #fff
+        }
+
+        .gp-consultancy-header:after {
+            content: "";
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            right: -80px;
+            top: -90px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .07)
+        }
+
+        .gp-consultancy-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 7px 12px;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, .12);
+            border: 1px solid rgba(255, 255, 255, .15);
+            color: #fff;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: .3px;
+            margin-bottom: 13px
+        }
+
+        .gp-consultancy-badge i {
+            color: #D9A400
+        }
+
+        .gp-consultancy-title {
+            margin: 0 45px 7px 0;
+            font-size: 28px;
+            line-height: 1.2;
+            font-weight: 800;
+            color: #fff
+        }
+
+        .gp-consultancy-subtitle {
+            margin: 0;
+            max-width: 520px;
+            color: rgba(255, 255, 255, .82);
+            font-size: 14px;
+            line-height: 1.6
+        }
+
+        .gp-consultancy-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 5;
+            width: 38px;
+            height: 38px;
+            border: 0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, .12);
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+            transition: .2s ease
+        }
+
+        .gp-consultancy-close:hover {
+            background: rgba(255, 255, 255, .22);
+            transform: rotate(90deg)
+        }
+
+        .gp-consultancy-body {
+            padding: 30px 32px 32px;
+            background: #fff
+        }
+
+        .gp-consultancy-benefits {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 25px
+        }
+
+        .gp-consultancy-benefit {
+            padding: 13px 10px;
+            border: 1px solid #edf0f4;
+            border-radius: 12px;
+            background: #f8fafc;
+            text-align: center
+        }
+
+        .gp-consultancy-benefit i {
+            display: block;
+            margin-bottom: 5px;
+            color: #008A43;
+            font-size: 18px
+        }
+
+        .gp-consultancy-benefit strong {
+            display: block;
+            color: #001B45;
+            font-size: 11px;
+            line-height: 1.3
+        }
+
+        .gp-form-label {
+            display: block;
+            margin-bottom: 7px;
+            color: #001B45;
+            font-size: 13px;
+            font-weight: 700
+        }
+
+        .gp-form-label span {
+            color: #008A43
+        }
+
+        .gp-input-wrap {
+            position: relative
+        }
+
+        .gp-input-wrap>i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #008A43;
+            font-size: 16px;
+            pointer-events: none
+        }
+
+        .gp-form-control {
+            width: 100%;
+            height: 48px;
+            padding: 0 15px;
+            border: 1px solid #dfe5ec;
+            border-radius: 11px;
+            background: #fff;
+            color: #1c2633;
+            font-size: 14px;
+            outline: none;
+            transition: .2s ease
+        }
+
+        .gp-input-wrap .gp-form-control {
+            padding-left: 43px
+        }
+
+        .gp-form-control::placeholder {
+            color: #9aa5b1
+        }
+
+        .gp-form-control:focus {
+            border-color: #008A43;
+            box-shadow: 0 0 0 4px rgba(0, 138, 67, .08)
+        }
+
+        .gp-consultancy-submit {
+            width: 100%;
+            min-height: 52px;
+            border: 0;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            background: linear-gradient(135deg, #006B35, #008A43);
+            color: #fff;
+            font-size: 15px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(0, 107, 53, .18);
+            transition: .25s ease
+        }
+
+        .gp-consultancy-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 30px rgba(0, 107, 53, .25)
+        }
+
+        .gp-consultancy-submit:disabled {
+            opacity: .7;
+            cursor: not-allowed;
+            transform: none
+        }
+
+        .gp-consultancy-trust {
+            margin-top: 17px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            color: #7b8794;
+            font-size: 12px;
+            text-align: center
+        }
+
+        .gp-consult-success {
+            text-align: center;
+            padding: 12px 4px 4px
+        }
+
+        .gp-success-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 14px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #e9f8ef;
+            color: #008A43;
+            font-size: 32px
+        }
+
+        .gp-consult-success h3 {
+            margin: 0 0 8px;
+            color: #002B67;
+            font-size: 24px;
+            font-weight: 800
+        }
+
+        .gp-consult-success p {
+            margin: 0 auto 20px;
+            max-width: 380px;
+            color: #667085;
+            line-height: 1.6;
+            font-size: 14px
+        }
+
+        .gp-success-close {
+            border: 0;
+            border-radius: 10px;
+            padding: 10px 28px;
+            background: #008A43;
+            color: #fff;
+            font-weight: 700;
+            cursor: pointer
+        }
+
+        .gp-consultancy-trust i {
+            color: #008A43
+        }
+
+        @media(max-width:575.98px) {
+            .gp-consultancy-modal .modal-dialog {
+                margin: 10px
+            }
+
+            .gp-consultancy-modal .modal-content {
+                border-radius: 20px
+            }
+
+            .gp-consultancy-header {
+                padding: 24px 20px 22px
+            }
+
+            .gp-consultancy-title {
+                font-size: 23px;
+                margin-right: 35px
+            }
+
+            .gp-consultancy-subtitle {
+                font-size: 13px
+            }
+
+            .gp-consultancy-body {
+                padding: 22px 20px 24px
+            }
+
+            .gp-consultancy-benefits {
+                gap: 7px
+            }
+
+            .gp-consultancy-benefit {
+                padding: 10px 5px
+            }
+
+            .gp-consultancy-benefit i {
+                font-size: 16px
+            }
+
+            .gp-consultancy-benefit strong {
+                font-size: 10px
+            }
+
+            .gp-form-control {
+                height: 46px
+            }
         }
     </style>
 
@@ -1407,8 +1669,8 @@
                                 <div class="gp-input-wrap">
                                     <i class="bi bi-person"></i>
                                     <input type="text" name="name" id="gpConsultName"
-                                           class="gp-form-control" placeholder="Enter your name"
-                                           autocomplete="name" required>
+                                        class="gp-form-control" placeholder="Enter your name"
+                                        autocomplete="name" required>
                                 </div>
                             </div>
 
@@ -1419,8 +1681,8 @@
                                 <div class="gp-input-wrap">
                                     <i class="bi bi-telephone"></i>
                                     <input type="tel" name="phone" id="gpConsultPhone"
-                                           class="gp-form-control" placeholder="Enter mobile number"
-                                           autocomplete="tel" inputmode="numeric" maxlength="10" required>
+                                        class="gp-form-control" placeholder="Enter mobile number"
+                                        autocomplete="tel" inputmode="numeric" maxlength="10" required>
                                 </div>
                             </div>
 
@@ -1429,8 +1691,8 @@
                                 <div class="gp-input-wrap">
                                     <i class="bi bi-envelope"></i>
                                     <input type="email" name="email" id="gpConsultEmail"
-                                           class="gp-form-control" placeholder="Enter email address"
-                                           autocomplete="email">
+                                        class="gp-form-control" placeholder="Enter email address"
+                                        autocomplete="email">
                                 </div>
                             </div>
 
@@ -1439,8 +1701,8 @@
                                 <div class="gp-input-wrap">
                                     <i class="bi bi-geo-alt"></i>
                                     <input type="text" name="city" id="gpConsultCity"
-                                           class="gp-form-control" placeholder="Your city"
-                                           autocomplete="address-level2">
+                                        class="gp-form-control" placeholder="Your city"
+                                        autocomplete="address-level2">
                                 </div>
                             </div>
 
@@ -1463,7 +1725,7 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const form = document.getElementById('gpConsultancyForm');
             const phoneInput = document.getElementById('gpConsultPhone');
             const submitButton = document.getElementById('gpConsultSubmit');
@@ -1471,12 +1733,12 @@
             if (!form) return;
 
             if (phoneInput) {
-                phoneInput.addEventListener('input', function () {
+                phoneInput.addEventListener('input', function() {
                     this.value = this.value.replace(/\D/g, '').slice(0, 10);
                 });
             }
 
-            form.addEventListener('submit', async function (event) {
+            form.addEventListener('submit', async function(event) {
                 event.preventDefault();
 
                 if (phoneInput && !/^[6-9]\d{9}$/.test(phoneInput.value)) {
@@ -1545,7 +1807,7 @@
             const modal = document.getElementById('counselingModal');
 
             if (modal) {
-                modal.addEventListener('hidden.bs.modal', function () {
+                modal.addEventListener('hidden.bs.modal', function() {
                     form.reset();
 
                     if (submitButton) {

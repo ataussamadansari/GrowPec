@@ -375,7 +375,7 @@
 
     .form-control-pill:focus {
         border-color: #005C32 !important;
-        box-shadow: 0 0 0 3px rgba(0,92,50,.12) !important;
+        box-shadow: 0 0 0 3px rgba(0, 92, 50, .12) !important;
     }
 
     .quick-nav-link:hover {
@@ -407,12 +407,12 @@
     }
 
     .college-banner-container {
-        box-shadow: 0 8px 25px rgba(0,43,103,.10) !important;
+        box-shadow: 0 8px 25px rgba(0, 43, 103, .10) !important;
     }
 
     .admission-support-card {
         border-color: #E2EAF0 !important;
-        box-shadow: 0 10px 35px rgba(0,43,103,.07) !important;
+        box-shadow: 0 10px 35px rgba(0, 43, 103, .07) !important;
     }
 
     .highlight-pill {
@@ -447,7 +447,6 @@
     .text-danger {
         color: #D14B4B !important;
     }
-
 </style>
 @endpush
 
@@ -504,7 +503,7 @@
 
                 <!-- Action Buttons -->
                 <div class="d-flex flex-wrap gap-2">
-                    <a href="tel:8858285271" class="btn-apply-purple">
+                    <a href="tel:{{ $siteSettings['general.support_phone'] ?? '' }}" class="btn-apply-purple">
                         <i class="bi bi-telephone-forward me-1"></i> Get in Touch
                     </a>
                     @if($college->brochure_pdf)
@@ -512,7 +511,7 @@
                         <i class="bi bi-download me-1"></i> Download Brochure
                     </a>
                     @endif
-                    <a href="https://wa.me/918858285271?text=Hello,%20I%20am%20interested%20in%20{{ urlencode($college->name) }} {{ urlencode($college->city) }} Admission, Please guide with official Fees and Scholarship options." target="_blank" class="btn-whatsapp-green">
+                    <a href="https://wa.me/{{ $siteSettings['general.whatsapp_number'] ?? '' }}?text=Hello,%20I%20am%20interested%20in%20{{ urlencode($college->name) }} {{ urlencode($college->city) }} Admission, Please guide with official Fees and Scholarship options." target="_blank" class="btn-whatsapp-green">
                         <i class="bi bi-whatsapp me-1"></i> WhatsApp Query
                     </a>
                 </div>
@@ -610,7 +609,7 @@
             <div class="quick-nav-sidebar">
                 <small class="text-muted fw-bold d-block mb-2 px-2 text-uppercase" style="letter-spacing: 0.5px; font-size: 0.72rem;">QUICK JUMP</small>
                 @foreach($quickNav as $index => $nav)
-                <a href="#{{ $nav['id'] }}" class="quick-nav-link {{ $index === 0 ? 'active' : '' }}" data-target="{{ $nav['id'] }}">
+                <a href="#" class="quick-nav-link {{ $index === 0 ? 'active' : '' }}" data-target="{{ $nav['id'] }}">
                     <i class="bi {{ $nav['icon'] }}"></i>
                     <span>{{ $nav['title'] }}</span>
                 </a>
@@ -929,8 +928,31 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // 🎯 Dynamic ScrollSpy for Left Quick Navigation
+        // Quick Jump scrolls without changing the URL/hash and without
+        // creating browser history entries.
         const navLinks = document.querySelectorAll('.quick-nav-link');
-        const sections = Array.from(navLinks).map(link => document.getElementById(link.getAttribute('data-target'))).filter(Boolean);
+        const sections = Array.from(navLinks)
+            .map(link => document.getElementById(link.getAttribute('data-target')))
+            .filter(Boolean);
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                const targetId = this.getAttribute('data-target');
+                const target = document.getElementById(targetId);
+
+                if (!target) return;
+
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+
+                // Keep the current page URL unchanged.
+                // No hash is added and no history entry is created.
+            });
+        });
 
         window.addEventListener('scroll', () => {
             let currentSectionId = '';
