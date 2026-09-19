@@ -3,6 +3,17 @@
 @section('header', 'Add New College')
 
 @section('content')
+
+@if ($errors->any())
+<div class="alert alert-danger mb-3" role="alert">
+    <strong>College save nahi hua.</strong>
+    <ul class="mb-0 mt-2">
+        @foreach ($errors->all() as $error)
+        <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
+@endif
 <style>
     :root {
         --gp-navy: #002B67;
@@ -580,7 +591,7 @@
                     <div class="gc-card-body">
                         <div class="gc-field">
                             <label class="gc-label">College Name <span class="gc-required">*</span></label>
-                            <input type="text" name="name" class="gc-control" placeholder="e.g. Amity University / Ganpat University Online" required>
+                            <input type="text" name="name" value="{{ old('name') }}" class="gc-control" placeholder="e.g. Amity University / Ganpat University Online" required>
                         </div>
 
                         <div class="gc-grid-2">
@@ -605,7 +616,7 @@
 
                         <div class="gc-field">
                             <label class="gc-label">Affiliated University</label>
-                            <input type="text" name="university_name" class="gc-control" placeholder="e.g. UGC Recognized / AKTU Affiliated">
+                            <input type="text" name="university_name" value="{{ old('university_name') }}" class="gc-control" placeholder="e.g. UGC Recognized / AKTU Affiliated">
                         </div>
 
                         <div class="gc-grid-2">
@@ -617,11 +628,11 @@
 
                         <div class="gc-field">
                             <label class="gc-label">About / Overview Narrative</label>
-                            <textarea name="overview" rows="3" class="gc-control" placeholder="Write university background, vision, faculty..."></textarea>
+                            <textarea name="overview" rows="3" class="gc-control" placeholder="Write university background, vision, faculty...">{{ old('overview') }}</textarea>
                         </div>
                         <div class="gc-field">
                             <label class="gc-label">Admission Process Steps</label>
-                            <textarea name="admission_process" rows="3" class="gc-control" placeholder="Step 1: Application, Step 2: Verification..."></textarea>
+                            <textarea name="admission_process" rows="3" class="gc-control" placeholder="Step 1: Application, Step 2: Verification...">{{ old('admission_process') }}</textarea>
                         </div>
                     </div>
                 </section>
@@ -756,7 +767,7 @@
                         <div class="gc-field"><label class="gc-label">State <span class="gc-required">*</span></label>
                             <select name="state" id="stateSelect" class="gc-control" required>
                                 <option value="">Select State</option>
-                                @foreach($states as $st)<option value="{{ $st->name }}" data-id="{{ $st->id }}">{{ $st->name }}</option>@endforeach
+                                @foreach($states as $st)<option value="{{ $st->name }}" data-id="{{ $st->id }}" {{ old('state') == $st->name ? 'selected' : '' }}>{{ $st->name }}</option>@endforeach
                             </select>
                         </div>
                         <div class="gc-field"><label class="gc-label">City <span class="gc-required">*</span></label>
@@ -764,9 +775,9 @@
                                 <option value="">Choose State First</option>
                             </select>
                         </div>
-                        <div class="gc-field"><label class="gc-label">Established Year</label><input type="text" name="established_year" class="gc-control" placeholder="e.g. 2004"></div>
-                        <div class="gc-field"><label class="gc-label">Campus Size</label><input type="text" name="campus_size" class="gc-control" placeholder="e.g. 50 Acres"></div>
-                        <div class="gc-field"><label class="gc-label">Approvals (Badges)</label><input type="text" name="approvals" class="gc-control" placeholder="UGC, AICTE, NAAC A+"></div>
+                        <div class="gc-field"><label class="gc-label">Established Year</label><input type="text" name="established_year" value="{{ old('established_year') }}" class="gc-control" placeholder="e.g. 2004"></div>
+                        <div class="gc-field"><label class="gc-label">Campus Size</label><input type="text" name="campus_size" value="{{ old('campus_size') }}" class="gc-control" placeholder="e.g. 50 Acres"></div>
+                        <div class="gc-field"><label class="gc-label">Approvals (Badges)</label><input type="text" name="approvals" value="{{ old('approvals') }}" class="gc-control" placeholder="UGC, AICTE, NAAC A+"></div>
                     </div>
                 </section>
 
@@ -780,14 +791,33 @@
                         </div>
                     </div>
                     <div class="gc-card-body">
-                        <div class="gc-field"><label class="gc-label">Highest Package</label><input type="text" name="highest_package" class="gc-control" placeholder="e.g. 18.0 LPA"></div>
-                        <div class="gc-field"><label class="gc-label">Average Package</label><input type="text" name="average_package" class="gc-control" placeholder="e.g. 5.5 LPA"></div>
-                        <div class="gc-field"><label class="gc-label">Top Recruiters</label><input type="text" name="top_recruiters" class="gc-control" placeholder="TCS, Infosys, Wipro, Amazon"></div>
-                        <div class="gc-field"><label class="gc-label">Scholarships Info</label><textarea name="scholarship_info" rows="2" class="gc-control" placeholder="Merit scholarships up to 25% waiver..."></textarea></div>
+                        <div class="gc-field"><label class="gc-label">Highest Package</label><input type="text" name="highest_package" value="{{ old('highest_package') }}" class="gc-control" placeholder="e.g. 18.0 LPA"></div>
+                        <div class="gc-field"><label class="gc-label">Average Package</label><input type="text" name="average_package" value="{{ old('average_package') }}" class="gc-control" placeholder="e.g. 5.5 LPA"></div>
+                        <div class="gc-field"><label class="gc-label">Top Recruiters</label><input type="text" name="top_recruiters" value="{{ old('top_recruiters') }}" class="gc-control" placeholder="TCS, Infosys, Wipro, Amazon"></div>
+                        <div class="gc-field"><label class="gc-label">Scholarships Info</label><textarea name="scholarship_info" rows="2" class="gc-control" placeholder="Merit scholarships up to 25% waiver...">{{ old('scholarship_info') }}</textarea></div>
                         <div class="gc-field">
                             <label class="gc-label">Hostel Facilities</label>
-                            <div class="form-check gc-check"><input class="form-check-input" type="checkbox" name="has_boys_hostel" value="1" id="cbBoys"><label class="form-check-label" for="cbBoys">Boys Hostel Available</label></div>
-                            <div class="form-check gc-check"><input class="form-check-input" type="checkbox" name="has_girls_hostel" value="1" id="cbGirls"><label class="form-check-label" for="cbGirls">Girls Hostel Available</label></div>
+                            <div class="form-check gc-check"><input class="form-check-input" type="checkbox" name="has_boys_hostel" value="1" id="cbBoys" {{ old('has_boys_hostel') ? 'checked' : '' }}><label class="form-check-label" for="cbBoys">Boys Hostel Available</label></div>
+                            <div class="form-check gc-check"><input class="form-check-input" type="checkbox" name="has_girls_hostel" value="1" id="cbGirls" {{ old('has_girls_hostel') ? 'checked' : '' }}><label class="form-check-label" for="cbGirls">Girls Hostel Available</label></div>
+                        </div>
+                        <div class="gc-field">
+                            <label class="gc-label">College Status</label>
+
+                            {{-- Always send a status value: 0 when unchecked, 1 when checked --}}
+                            <input type="hidden" name="status" value="0">
+
+                            <div class="form-check gc-check">
+                                <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    name="status"
+                                    value="1"
+                                    id="collegeStatus"
+                                    {{ old('status', '1') == '1' ? 'checked' : '' }}>
+                                <label class="form-check-label" for="collegeStatus">
+                                    Publish College
+                                </label>
+                            </div>
                         </div>
                         <button type="submit" class="gc-save-btn"><i class="bi bi-check2-circle"></i> Save & Publish College</button>
                         <div class="gc-mini-note"><i class="bi bi-shield-check"></i><span>Review all academic and location details before publishing the college profile.</span></div>
@@ -873,6 +903,11 @@
         const stateSelect = document.getElementById('stateSelect');
         const citySelect = document.getElementById('citySelect');
 
+        // Restore city list after a validation error.
+        if (stateSelect?.value) {
+            stateSelect.dispatchEvent(new Event('change'));
+        }
+
         stateSelect?.addEventListener('change', function() {
             const selectedOption = this.options[this.selectedIndex];
             const stateId = selectedOption?.getAttribute('data-id');
@@ -898,6 +933,17 @@
                 .catch(() => {
                     citySelect.innerHTML = '<option value="">Unable to load cities</option>';
                 });
+        });
+
+        // Prevent accidental double submission and show browser validation normally.
+        const collegeForm = document.querySelector('form[action="{{ route("admin.colleges.store") }}"]');
+        collegeForm?.addEventListener('submit', function() {
+            const submitBtn = this.querySelector('button[type="submit"]');
+            if (submitBtn && !this.checkValidity()) return;
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Saving...';
+            }
         });
 
         document.getElementById('addCourseRowBtn')?.addEventListener('click', function() {

@@ -1073,6 +1073,23 @@ textarea.ge-control { resize:vertical; }
                         <label class="form-check-label small" for="cbGirls">Girls Hostel Available</label>
                     </div>
                 </div>
+                <div class="mb-3">
+    <label class="form-label small fw-bold d-block">College Status</label>
+
+    <div class="form-check">
+        <input
+            class="form-check-input"
+            type="checkbox"
+            name="status"
+            value="1"
+            id="collegeStatus"
+            {{ old('status', $college->status) ? 'checked' : '' }}
+        >
+        <label class="form-check-label small" for="collegeStatus">
+            Publish College
+        </label>
+    </div>
+</div>
                 <div class="d-grid gap-2">
                     <button type="submit" class="btn btn-warning py-2 fw-bold shadow-sm">
                         <i class="bi bi-check-circle me-1"></i> Update College Details
