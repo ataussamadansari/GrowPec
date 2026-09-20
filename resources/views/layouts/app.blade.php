@@ -109,11 +109,19 @@
 
         .gp-header-logo {
             display: block;
+            width: 230px;
+            height: 78px;
+            max-width: none;
+            object-fit: contain;
+        }
+
+        /* .gp-header-logo {
+            display: block;
             width: auto;
             height: 46px;
             max-width: 210px;
             object-fit: contain;
-        }
+        } */
 
         .gp-nav {
             align-items: center;
@@ -269,9 +277,15 @@
             }
 
             .gp-header-logo {
+                width: 210px;
+                height: 72px;
+                max-width: none;
+            }
+
+            /* .gp-header-logo {
                 height: 42px;
                 max-width: 175px;
-            }
+            } */
 
             .gp-nav .nav-link {
                 font-size: .77rem;
@@ -297,8 +311,9 @@
             }
 
             .gp-header-logo {
-                height: 39px;
-                max-width: 165px;
+                width: 195px;
+                height: 64px;
+                max-width: none;
             }
 
             .gp-navbar .navbar-collapse {
@@ -357,12 +372,18 @@
             }
 
             .gp-navbar {
-                padding: 8px 0;
+                padding: 0;
+            }
+
+            .gp-brand {
+                margin: 0;
+                padding: 0;
             }
 
             .gp-header-logo {
-                height: 36px;
-                max-width: 150px;
+                width: 185px;
+                height: 58px;
+                max-width: none;
             }
 
             .gp-navbar-toggler {
@@ -379,8 +400,9 @@
         /* Small Mobile */
         @media (max-width: 380px) {
             .gp-header-logo {
-                height: 33px;
-                max-width: 140px;
+                width: 175px;
+                height: 55px;
+                max-width: none;
             }
 
             .gp-topbar-inner {
@@ -1022,7 +1044,7 @@
 
                 <a class="navbar-brand gp-brand" href="{{ route('home') }}">
                     <img
-                        src="{{ asset('assets/growpec.png') }}"
+                        src="{{ asset('assets/logo.svg') }}"
                         alt="GrowPEC Logo"
                         class="gp-header-logo">
                 </a>
