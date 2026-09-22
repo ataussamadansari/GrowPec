@@ -531,7 +531,7 @@
         }
 
         .gp-footer-logo {
-            height: 52px;
+            height: 102px;
             max-width: 215px;
             object-fit: contain;
             background: #fff;

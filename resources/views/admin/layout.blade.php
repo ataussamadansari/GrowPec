@@ -434,11 +434,11 @@
                     <span>Partner Universities</span>
                 </a>
 
-                <a class="sidebar-link {{ request()->routeIs('admin.partners.*') ? 'active' : '' }}" aria-current="{{ request()->routeIs('admin.partners.*') ? 'page' : 'false' }}"
+                <!-- <a class="sidebar-link {{ request()->routeIs('admin.banners.*') ? 'active' : '' }}" aria-current="{{ request()->routeIs('admin.banners.*') ? 'page' : 'false' }}"
                     href="{{ route('admin.banners.index') }}">
                     <i class="bi bi-award-fill"></i>
                     <span>Hero Banner</span>
-                </a>
+                </a> -->
 
                 <a class="sidebar-link {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}" aria-current="{{ request()->routeIs('admin.settings.*') ? 'page' : 'false' }}"
                     href="{{ route('admin.settings.index') }}">

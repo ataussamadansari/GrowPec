@@ -1065,6 +1065,7 @@
                     </div>
 
                     <label class="gp-check">
+                        <input type="hidden" name="status" value="0">
                         <input type="checkbox"
                             name="status"
                             value="1"
@@ -1130,6 +1131,7 @@
                     </div>
 
                     <label class="gp-check">
+                        <input type="hidden" name="is_popular" value="0">
                         <input type="checkbox"
                             name="is_popular"
                             value="1"
@@ -1194,6 +1196,7 @@
 
                     <div class="d-grid gap-2">
                         <label class="gp-check">
+                            <input type="hidden" name="is_popular" value="0">
                             <input type="checkbox"
                                 name="is_popular"
                                 value="1"
@@ -1202,6 +1205,7 @@
                         </label>
 
                         <label class="gp-check">
+                            <input type="hidden" name="status" value="0">
                             <input type="checkbox"
                                 name="status"
                                 value="1"
@@ -1235,7 +1239,7 @@
                 const status = this.dataset.status === '1';
 
                 document.getElementById('editStateForm').action =
-                    `/admin/locations/states/${id}`;
+                    "{{ url('/admin/locations/states') }}/" + id;
 
                 document.getElementById('editStateName').value = name;
                 document.getElementById('editStateStatus').checked = status;
@@ -1291,7 +1295,7 @@
                 const status = this.dataset.status === '1';
 
                 document.getElementById('editCityForm').action =
-                    `/admin/locations/cities/${id}`;
+                    "{{ url('/admin/locations/cities') }}/" + id;
 
                 document.getElementById('editCityName').value = name;
                 document.getElementById('editCityStateId').value = stateId;
