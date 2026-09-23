@@ -774,6 +774,178 @@
     .listing-header .breadcrumb-item a.text-warning {
         color: #D9A400 !important;
     }
+
+    /* =========================================================
+       FINAL TABLET UI FIX
+       768px–991px:
+       - Keep filter sidebar + results side-by-side
+       - Filter: ~30%
+       - Results: ~70%
+       - College cards remain horizontal
+       - Compact spacing so content does not overflow
+       Mobile <=767px keeps the existing drawer/card layout.
+       ========================================================= */
+
+    @media (min-width: 768px) and (max-width: 991.98px) {
+
+        .listing-header {
+            padding: 32px 0 28px;
+        }
+
+        .listing-header h2 {
+            font-size: 1.85rem;
+        }
+
+        .listing-header p {
+            font-size: .82rem !important;
+        }
+
+        /* Main listing layout */
+        .container.py-4 > .row.g-4 {
+            --bs-gutter-x: 18px;
+            --bs-gutter-y: 0;
+            align-items: flex-start;
+        }
+
+        .container.py-4 > .row.g-4 > .col-lg-3 {
+            flex: 0 0 30%;
+            width: 30%;
+            max-width: 30%;
+        }
+
+        .container.py-4 > .row.g-4 > .col-lg-9 {
+            flex: 0 0 70%;
+            width: 70%;
+            max-width: 70%;
+        }
+
+        /* Tablet filter */
+        .filter-sidebar {
+            position: sticky;
+            top: 80px;
+            max-height: calc(100vh - 100px);
+            overflow-y: auto;
+            padding: 14px;
+            border-radius: 16px;
+        }
+
+        .filter-title {
+            font-size: .78rem;
+        }
+
+        .filter-inner-search {
+            font-size: .68rem;
+            padding: 5px 8px;
+        }
+
+        .form-check {
+            padding: 3px 0 3px 1.45em;
+        }
+
+        .form-check-label {
+            font-size: .69rem;
+            line-height: 1.3;
+        }
+
+        .filter-options {
+            max-height: 125px;
+        }
+
+        /* Tablet college card */
+        .college-horizontal-card {
+            margin-bottom: 14px;
+            border-radius: 18px;
+        }
+
+        .college-horizontal-card > .row {
+            align-items: center;
+        }
+
+        .college-horizontal-card .col-md-4 {
+            width: 38%;
+            flex: 0 0 38%;
+            max-width: 38%;
+            padding: 10px !important;
+        }
+
+        .college-horizontal-card .col-md-8 {
+            width: 62%;
+            flex: 0 0 62%;
+            max-width: 62%;
+            padding: 12px 12px 12px 4px !important;
+        }
+
+        .college-thumb-img {
+            width: 100%;
+            height: 150px;
+            border-radius: 13px;
+        }
+
+        .college-card-title {
+            font-size: .92rem;
+            line-height: 1.25;
+            margin-bottom: 7px !important;
+        }
+
+        .college-horizontal-card .d-flex.gap-3 {
+            gap: 5px !important;
+            font-size: .68rem !important;
+            line-height: 1.3;
+            margin-bottom: 8px !important;
+        }
+
+        .badge-pill-item {
+            padding: 5px 8px;
+            font-size: .62rem;
+        }
+
+        .college-horizontal-card .d-flex.justify-content-md-end {
+            gap: 6px !important;
+            margin-top: 8px;
+        }
+
+        .btn-view-details,
+        .btn-free-counselling {
+            min-height: 36px;
+            padding: 7px 10px !important;
+            font-size: .66rem !important;
+            white-space: nowrap;
+        }
+
+        /* Prevent long names / metadata from breaking the card */
+        .college-card-title,
+        .college-card-title a {
+            overflow-wrap: anywhere;
+        }
+    }
+
+    /* Wider tablets / small laptops: slightly more breathing room */
+    @media (min-width: 900px) and (max-width: 991.98px) {
+        .container.py-4 > .row.g-4 {
+            --bs-gutter-x: 22px;
+        }
+
+        .container.py-4 > .row.g-4 > .col-lg-3 {
+            flex-basis: 29%;
+            width: 29%;
+            max-width: 29%;
+        }
+
+        .container.py-4 > .row.g-4 > .col-lg-9 {
+            flex-basis: 71%;
+            width: 71%;
+            max-width: 71%;
+        }
+
+        .college-thumb-img {
+            height: 160px;
+        }
+
+        .college-card-title {
+            font-size: 1rem;
+        }
+    }
+
 </style>
 @endpush
 

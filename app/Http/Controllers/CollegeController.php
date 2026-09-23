@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\City;
 use App\Models\College;
 use App\Models\Course;
-use App\Models\Stream;
 use App\Models\State;
-use App\Models\City;
+use App\Models\Stream;
+use App\Models\SystemSetting;
 use Illuminate\Http\Request;
 
 class CollegeController extends Controller
 {
     /**
-     * 1. Regular Campus Colleges Listing with Filters
+     * Regular campus colleges listing with filters.
      */
     public function regularColleges(Request $request)
     {
@@ -20,7 +21,7 @@ class CollegeController extends Controller
     }
 
     /**
-     * 2. Online & Distance Universities Listing with Filters
+     * Online & distance universities listing with filters.
      */
     public function onlineColleges(Request $request)
     {
@@ -28,20 +29,46 @@ class CollegeController extends Controller
     }
 
     /**
-     * 3. College Detail Page (Fixed show method)
+     * College detail page — loads all child relations needed for the UI.
      */
-    public function show($slug)
+    public function show(string $slug)
     {
         $college = College::where('slug', $slug)
             ->where('status', true)
-            ->with(['collegeCourses.course.stream'])
+            ->with([
+                // Academic
+                'collegeCourses.course.stream',
+                'collegeCourses.specialization',
+                'collegeCourses.specializationFees.specialization',
+
+                // Content
+                'collegeHighlights',
+                'accreditations',
+                'admissionSections',
+                'scholarships',
+                'placementStats',
+                'recruiters',
+                'careerOutcomes',
+                'collegeFacilities',
+                'loanOptions',
+                'collegeFaqs',
+                'gallery',
+                'alumni',
+                'reviews',
+            ])
             ->firstOrFail();
 
-        // Dynamic Left Sticky Navigation Builder based on available sections
-        $quickNav = [];
-        $quickNav[] = ['id' => 'sec-overview', 'title' => 'Overview', 'icon' => 'bi-info-circle'];
+        $siteSettings = SystemSetting::getAllCached();
 
-        if (!empty($college->highlights) && count($college->highlights) > 0) {
+        // ---------------------------------------------------------------
+        // Dynamic left sticky nav — only include sections that have data
+        // ---------------------------------------------------------------
+        $quickNav = [];
+
+        $quickNav[] = ['id' => 'sec-overview',    'title' => 'Overview',         'icon' => 'bi-info-circle'];
+        $quickNav[] = ['id' => 'sec-quickfacts',  'title' => 'Quick Facts',      'icon' => 'bi-table'];
+
+        if ($college->collegeHighlights->count() > 0) {
             $quickNav[] = ['id' => 'sec-highlights', 'title' => 'Key Highlights', 'icon' => 'bi-star'];
         }
 
@@ -49,54 +76,63 @@ class CollegeController extends Controller
             $quickNav[] = ['id' => 'sec-courses', 'title' => 'Courses & Fees', 'icon' => 'bi-mortarboard'];
         }
 
-        if (!empty($college->admission_process)) {
-            $quickNav[] = ['id' => 'sec-admission', 'title' => 'Admission Process', 'icon' => 'bi-card-checklist'];
+        if ($college->admissionSections->count() > 0 || ! empty($college->admission_process)) {
+            $quickNav[] = ['id' => 'sec-admission', 'title' => 'Admission', 'icon' => 'bi-card-checklist'];
         }
 
-        if (!empty($college->highest_package) || !empty($college->average_package) || !empty($college->top_recruiters)) {
+        if ($college->accreditations->count() > 0 || ! empty($college->approvals)) {
+            $quickNav[] = ['id' => 'sec-accreditations', 'title' => 'Approvals', 'icon' => 'bi-shield-check'];
+        }
+
+        if ($college->placementStats->count() > 0 || ! empty($college->highest_package) || ! empty($college->average_package)) {
             $quickNav[] = ['id' => 'sec-placements', 'title' => 'Placements', 'icon' => 'bi-briefcase'];
         }
 
-        if (!empty($college->scholarship_info)) {
+        if ($college->scholarships->count() > 0 || ! empty($college->scholarship_info)) {
             $quickNav[] = ['id' => 'sec-scholarships', 'title' => 'Scholarships', 'icon' => 'bi-award'];
         }
 
-        if (!empty($college->sample_certificate_image)) {
+        if ($college->certificate_url) {
             $quickNav[] = ['id' => 'sec-certificate', 'title' => 'Sample Degree', 'icon' => 'bi-patch-check'];
         }
 
-        if ($college->college_mode !== 'online' && ($college->has_boys_hostel || $college->has_girls_hostel || !empty($college->campus_size))) {
+        if ($college->isRegular() && ($college->collegeFacilities->count() > 0 || $college->has_boys_hostel || $college->has_girls_hostel || ! empty($college->campus_size))) {
             $quickNav[] = ['id' => 'sec-facilities', 'title' => 'Facilities', 'icon' => 'bi-buildings'];
         }
 
-        if (!empty($college->faqs) && count($college->faqs) > 0) {
+        if ($college->collegeFaqs->count() > 0) {
             $quickNav[] = ['id' => 'sec-faqs', 'title' => 'FAQs', 'icon' => 'bi-question-circle'];
         }
 
+        // Related colleges from same state
         $relatedColleges = College::where('id', '!=', $college->id)
-            ->where('state', $college->state)
             ->where('status', true)
+            ->where('college_mode', $college->college_mode)
+            ->where('state', $college->state)
+            ->select(['id', 'name', 'slug', 'logo', 'banner_image', 'city', 'state', 'rating', 'college_type'])
             ->take(3)
             ->get();
 
-        return view('colleges.show', compact('college', 'quickNav', 'relatedColleges'));
+        return view('colleges.show', compact('college', 'quickNav', 'relatedColleges', 'siteSettings'));
     }
 
     /**
-     * 4. Common Filter & Query Engine
+     * Shared filter & query engine for both listing pages.
      */
-    private function getFilteredColleges(Request $request, string $mode, string $view, string $pageTitle)
-    {
+    private function getFilteredColleges(
+        Request $request,
+        string $mode,
+        string $view,
+        string $pageTitle
+    ) {
         $query = College::query()
             ->where('status', true)
-            ->where(function ($q) use ($mode) {
-                $q->where('college_mode', $mode)->orWhere('college_mode', 'both');
-            })
+            ->where('college_mode', $mode)            // strict: no 'both' anymore
             ->with(['courses.stream', 'collegeCourses.course']);
 
-        // 1. Text Search
+        // 1. Text search
         if ($request->filled('search')) {
-            $searchTerm = '%' . $request->search . '%';
+            $searchTerm = '%'.$request->search.'%';
             $query->where(function ($q) use ($searchTerm) {
                 $q->where('name', 'LIKE', $searchTerm)
                     ->orWhere('city', 'LIKE', $searchTerm)
@@ -105,44 +141,36 @@ class CollegeController extends Controller
             });
         }
 
-        // 2. Levels (UG, PG, Diploma, PhD, Certificate)
+        // 2. Course levels (UG, PG, Diploma, PhD, Certificate)
         if ($request->filled('levels')) {
             $levels = (array) $request->levels;
-            $query->whereHas('courses', function ($q) use ($levels) {
-                $q->whereIn('level', $levels);
-            });
+            $query->whereHas('courses', fn ($q) => $q->whereIn('level', $levels));
         }
 
         // 3. Streams
         if ($request->filled('streams')) {
             $streams = (array) $request->streams;
-            $query->whereHas('courses.stream', function ($q) use ($streams) {
-                $q->whereIn('slug', $streams)->orWhereIn('id', $streams);
-            });
+            $query->whereHas('courses.stream', fn ($q) => $q->whereIn('slug', $streams)->orWhereIn('id', $streams)
+            );
         }
 
-        // 4. Specific Courses
+        // 4. Specific courses
         if ($request->filled('courses')) {
             $courses = (array) $request->courses;
-            $query->whereHas('courses', function ($q) use ($courses) {
-                $q->whereIn('slug', $courses)->orWhereIn('courses.id', $courses);
-            });
+            $query->whereHas('courses', fn ($q) => $q->whereIn('slug', $courses)->orWhereIn('courses.id', $courses)
+            );
         }
 
-        // 5. Degree Types
+        // 5. Degree types
         if ($request->filled('degree_types')) {
             $degreeTypes = (array) $request->degree_types;
-            $query->whereHas('courses', function ($q) use ($degreeTypes) {
-                $q->whereIn('degree_type', $degreeTypes);
-            });
+            $query->whereHas('courses', fn ($q) => $q->whereIn('degree_type', $degreeTypes));
         }
 
-        // 6. Course Durations
+        // 6. Durations
         if ($request->filled('durations')) {
             $durations = (array) $request->durations;
-            $query->whereHas('courses', function ($q) use ($durations) {
-                $q->whereIn('duration', $durations);
-            });
+            $query->whereHas('courses', fn ($q) => $q->whereIn('duration', $durations));
         }
 
         // 7. States
@@ -155,12 +183,12 @@ class CollegeController extends Controller
             $query->whereIn('city', (array) $request->cities);
         }
 
-        // 9. College Ownership / Type
+        // 9. College type (Govt / Private / Deemed / Autonomous)
         if ($request->filled('types')) {
             $query->whereIn('college_type', (array) $request->types);
         }
 
-        // 10. Hostel Facilities
+        // 10. Hostel availability (regular only)
         if ($request->boolean('boys_hostel')) {
             $query->where('has_boys_hostel', true);
         }
@@ -168,43 +196,40 @@ class CollegeController extends Controller
             $query->where('has_girls_hostel', true);
         }
 
-        // 11. Fees Ranges
+        // 11. Fee ranges
         if ($request->filled('fee_ranges')) {
             $ranges = (array) $request->fee_ranges;
             $query->whereHas('collegeCourses', function ($q) use ($ranges) {
-                $q->where(function ($subQ) use ($ranges) {
+                $q->where(function ($sub) use ($ranges) {
                     foreach ($ranges as $range) {
-                        if ($range === 'under_1l') {
-                            $subQ->orWhere('fee_amount', '<', 100000);
-                        } elseif ($range === '1l_to_2l') {
-                            $subQ->orWhereBetween('fee_amount', [100000, 200000]);
-                        } elseif ($range === '2l_to_3l') {
-                            $subQ->orWhereBetween('fee_amount', [200000, 300000]);
-                        } elseif ($range === '3l_to_5l') {
-                            $subQ->orWhereBetween('fee_amount', [300000, 500000]);
-                        } elseif ($range === '5l_to_10l') {
-                            $subQ->orWhereBetween('fee_amount', [500000, 1000000]);
-                        } elseif ($range === 'above_10l') {
-                            $subQ->orWhere('fee_amount', '>', 1000000);
-                        }
+                        match ($range) {
+                            'under_1l' => $sub->orWhere('fee_amount', '<', 100000),
+                            '1l_to_2l' => $sub->orWhereBetween('fee_amount', [100000, 200000]),
+                            '2l_to_3l' => $sub->orWhereBetween('fee_amount', [200000, 300000]),
+                            '3l_to_5l' => $sub->orWhereBetween('fee_amount', [300000, 500000]),
+                            '5l_to_10l' => $sub->orWhereBetween('fee_amount', [500000, 1000000]),
+                            'above_10l' => $sub->orWhere('fee_amount', '>', 1000000),
+                            default => null,
+                        };
                     }
                 });
             });
         }
 
-        $colleges = $query->orderBy('is_featured', 'desc')
-            ->orderBy('rating', 'desc')
+        $colleges = $query
+            ->orderByDesc('is_featured')
+            ->orderByDesc('rating')
             ->paginate(12)
             ->withQueryString();
 
-        // Dynamic Filter Data
-        $allStreams   = Stream::withCount('courses')->orderBy('name')->get();
-        $allCourses   = Course::with('stream')->orderBy('name')->get();
-        $allStates    = State::where('status', true)->orderBy('name')->pluck('name');
+        // Filter sidebar data
+        $allStreams = Stream::withCount('courses')->orderBy('name')->get();
+        $allCourses = Course::with('stream')->orderBy('name')->get();
+        $allStates = State::where('status', true)->orderBy('name')->pluck('name');
         if ($allStates->isEmpty()) {
             $allStates = College::where('status', true)->distinct()->pluck('state')->filter();
         }
-        $allCities    = City::where('status', true)->orderBy('name')->pluck('name');
+        $allCities = City::where('status', true)->orderBy('name')->pluck('name');
         if ($allCities->isEmpty()) {
             $allCities = College::where('status', true)->distinct()->pluck('city')->filter();
         }

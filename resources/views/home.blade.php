@@ -2743,7 +2743,8 @@
     }
 
     /* Online colleges: same visual carousel language */
-    .online-section .college-grid {
+    .online-section .college-grid,
+    .online-section .top-colleges-scroll {
         display: flex;
         flex-wrap: nowrap;
         gap: 26px;
@@ -4109,6 +4110,96 @@
         background: var(--gp-gold);
         color: #17200f;
     }
+
+
+    /* =========================================================
+       FINAL COLLEGE LIST RESPONSIVE OVERRIDE
+       Requirement:
+       - Mobile: 1 card visible
+       - Tablet / 1024px laptop: 3 cards visible
+       - 1440px+ / 4K: 4 cards visible
+       - Always ONE horizontal row
+       - No wrapping into a second row
+       ========================================================= */
+
+    .college-grid-section .top-colleges-scroll,
+    .online-section .top-colleges-scroll {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        align-items: stretch;
+        gap: 20px !important;
+
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 4px 2px 18px !important;
+
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        scroll-snap-type: x mandatory !important;
+        -webkit-overflow-scrolling: touch;
+
+        scrollbar-width: none;
+    }
+
+    .college-grid-section .top-colleges-scroll::-webkit-scrollbar,
+    .online-section .top-colleges-scroll::-webkit-scrollbar {
+        display: none;
+    }
+
+    .college-grid-section .top-college-item,
+    .online-section .top-college-item {
+        flex: 0 0 calc(25% - 15px) !important;
+        width: calc(25% - 15px) !important;
+        min-width: 0 !important;
+        max-width: none !important;
+        scroll-snap-align: start;
+    }
+
+    .college-grid-section .top-colleges-scroll .college-card,
+    .online-section .top-colleges-scroll .college-card {
+        width: 100% !important;
+        min-width: 0 !important;
+        height: 100% !important;
+    }
+
+    /* 1024px and tablet/laptop range: exactly 3 visible cards */
+    @media (max-width: 1199.98px) and (min-width: 768px) {
+        .college-grid-section .top-colleges-scroll,
+        .online-section .top-colleges-scroll {
+            gap: 18px !important;
+        }
+
+        .college-grid-section .top-college-item,
+        .online-section .top-college-item {
+            flex-basis: calc((100% - 36px) / 3) !important;
+            width: calc((100% - 36px) / 3) !important;
+        }
+    }
+
+    /* Mobile: exactly 1 visible card */
+    @media (max-width: 767.98px) {
+        .college-grid-section .top-colleges-scroll,
+        .online-section .top-colleges-scroll {
+            gap: 14px !important;
+            padding: 4px 2px 17px !important;
+        }
+
+        .college-grid-section .top-college-item,
+        .online-section .top-college-item {
+            flex: 0 0 100% !important;
+            width: 100% !important;
+        }
+    }
+
+    /* Keep the cards visually stable on narrow phones */
+    @media (max-width: 420px) {
+        .college-grid-section .top-college-item,
+        .online-section .top-college-item {
+            flex-basis: 100% !important;
+            width: 100% !important;
+        }
+    }
+
 </style>
 @endpush
 
@@ -4320,7 +4411,7 @@
 
         {{-- Show only 10 colleges on homepage; horizontal scroll on all devices --}}
         <div class="top-colleges-scroll">
-            @forelse($regularColleges->take(4) as $college)
+            @forelse($regularColleges->take(8) as $college)
             <div class="top-college-item">
                 <a href="{{ route('college.show', $college->slug) }}" class="college-card">
                     <div class="college-image-wrapper">
@@ -4383,12 +4474,15 @@
                 <span class="badge bg-success-subtle text-success fw-bold mb-1">UGC-DEB Approved</span>
                 <h3 class="section-title mb-0">Top Online Universities</h3>
                 <div class="cities-heading-line mt-2"></div>
+                <span class="top-college-scroll-hint mt-2">
+                    <i class="bi bi-arrow-left-right"></i> Swipe to explore
+                </span>
             </div>
         </div>
 
-        <div class="row g-4 college-grid">
-            @forelse($onlineColleges->take(4) as $college)
-            <div class="col-xl-3 col-lg-4 col-md-6">
+        <div class="top-colleges-scroll">
+            @forelse($onlineColleges->take(8) as $college)
+            <div class="top-college-item">
                 <a href="{{ route('college.show', $college->slug) }}" class="college-card">
                     <div class="college-image-wrapper">
                         <img src="{{ $college->banner_url }}" class="college-card-img" alt="{{ $college->name }}" loading="lazy">

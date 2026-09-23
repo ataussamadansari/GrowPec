@@ -97,7 +97,7 @@
 
     .college-toolbar-form {
         display: grid;
-        grid-template-columns: minmax(250px, 1fr) auto auto;
+        grid-template-columns: minmax(220px, 1fr) 160px auto auto auto;
         gap: 9px;
         align-items: center;
     }
@@ -536,60 +536,19 @@
     }
 
     @media (max-width: 767.98px) {
-        .college-hero {
-            padding: 19px 17px;
-            border-radius: 15px;
-        }
-
-        .college-hero h2 {
-            font-size: 1.2rem;
-        }
-
-        .college-hero p {
-            font-size: .73rem;
-        }
-
-        .college-toolbar {
-            padding: 13px;
-        }
-
-        .college-toolbar-form {
-            grid-template-columns: 1fr;
-            gap: 8px;
-        }
-
-        .college-search-wrap {
-            grid-column: auto;
-        }
-
-        .college-btn {
-            width: 100%;
-        }
-
-        .college-list-head {
-            padding: 13px;
-            align-items: flex-start;
-            flex-direction: column;
-        }
-
-        .college-table {
-            min-width: 1020px;
-        }
-
+        .college-hero          { padding: 19px 17px; border-radius: 15px; }
+        .college-hero h2       { font-size: 1.2rem; }
+        .college-hero p        { font-size: .73rem; }
+        .college-toolbar       { padding: 13px; }
+        .college-toolbar-form  { grid-template-columns: 1fr; gap: 8px; }
+        .college-search-wrap   { grid-column: auto; }
+        .college-btn           { width: 100%; }
+        .college-list-head     { padding: 13px; align-items: flex-start; flex-direction: column; }
+        .college-table         { min-width: 1020px; }
         .college-table thead th,
-        .college-table tbody td {
-            padding-left: 13px;
-            padding-right: 13px;
-        }
-
-        .college-pagination {
-            padding: 12px 8px;
-            overflow-x: auto;
-        }
-
-        .college-pagination nav {
-            min-width: max-content;
-        }
+        .college-table tbody td { padding-left: 13px; padding-right: 13px; }
+        .college-pagination    { padding: 12px 8px; overflow-x: auto; }
+        .college-pagination nav { min-width: max-content; }
     }
 </style>
 
@@ -620,7 +579,6 @@
 
                     <div class="college-search-wrap">
                         <i class="bi bi-search college-search-icon"></i>
-
                         <input
                             type="text"
                             name="search"
@@ -631,33 +589,51 @@
                         >
                     </div>
 
+                    {{-- Mode filter select --}}
+                    <select name="mode" class="form-select college-btn"
+                            style="height:42px;border:1px solid #D8E0EA;border-radius:10px;font-size:.74rem;font-weight:800;color:var(--gp-text);background:#fff;padding:0 12px;"
+                            onchange="this.form.submit()">
+                        <option value="" {{ request('mode') === null || request('mode') === '' ? 'selected' : '' }}>All Modes</option>
+                        <option value="regular" {{ request('mode') === 'regular' ? 'selected' : '' }}>Regular</option>
+                        <option value="online"  {{ request('mode') === 'online'  ? 'selected' : '' }}>Online</option>
+                    </select>
+
                     <button type="submit" class="btn college-btn college-search-btn">
                         <i class="bi bi-search"></i>
                         <span>Search</span>
                     </button>
 
-                    @if(request('search'))
+                    @if(request('search') || request('mode'))
                         <a href="{{ route('admin.colleges.index') }}" class="btn college-btn college-clear-btn">
                             <i class="bi bi-x-lg"></i>
                             <span>Clear</span>
                         </a>
-                    @else
-                        <a href="{{ route('admin.colleges.create') }}" class="btn college-btn college-add-btn">
-                            <i class="bi bi-plus-circle-fill"></i>
-                            <span>Add New College</span>
-                        </a>
                     @endif
+
+                    <a href="{{ route('admin.colleges.create') }}" class="btn college-btn college-add-btn">
+                        <i class="bi bi-plus-circle-fill"></i>
+                        <span>Add New</span>
+                    </a>
 
                 </div>
 
-                @if(request('search'))
+                {{-- Active filter chips --}}
+                @if(request('search') || request('mode'))
                     <div class="college-filter-row">
-                        <span class="college-filter-label">Active Search:</span>
-
-                        <span class="college-filter-chip">
-                            <i class="bi bi-search"></i>
-                            {{ request('search') }}
-                        </span>
+                        <span class="college-filter-label">Active Filters:</span>
+                        @if(request('search'))
+                            <span class="college-filter-chip">
+                                <i class="bi bi-search"></i>
+                                {{ request('search') }}
+                            </span>
+                        @endif
+                        @if(request('mode'))
+                            <span class="college-filter-chip"
+                                  style="{{ request('mode') === 'online' ? 'background:#EAF8F0;color:#005C32;border-color:#CBEBD9;' : 'background:#EEF4FB;color:#174B8F;border-color:#D8E6F7;' }}">
+                                <i class="bi bi-{{ request('mode') === 'online' ? 'globe2' : 'building' }}"></i>
+                                {{ ucfirst(request('mode')) }}
+                            </span>
+                        @endif
                     </div>
                 @endif
 
@@ -731,6 +707,13 @@
                                     <span class="college-badge college-mode-regular">
                                         <i class="bi bi-building"></i>
                                         Regular
+                                    </span>
+                                @endif
+                                @if($col->is_featured)
+                                    <span class="college-badge mt-1"
+                                          style="background:#FFF8E1;color:#7A5800;border:1px solid #F5DFA0;display:block;width:fit-content;">
+                                        <i class="bi bi-star-fill"></i>
+                                        Featured
                                     </span>
                                 @endif
                             </td>
