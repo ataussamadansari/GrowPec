@@ -13,7 +13,7 @@ class StreamManagerController extends Controller
     {
         $query = Stream::withCount('courses');
         if ($request->filled('search')) {
-            $query->where('name', 'LIKE', '%' . $request->search . '%');
+            $query->where('name', 'LIKE', '%'.$request->search.'%');
         }
         $streams = $query->latest()->paginate(15)->withQueryString();
 
@@ -41,6 +41,7 @@ class StreamManagerController extends Controller
     public function edit($id)
     {
         $stream = Stream::findOrFail($id);
+
         return view('admin.streams.edit', compact('stream'));
     }
 
@@ -48,7 +49,7 @@ class StreamManagerController extends Controller
     {
         $stream = Stream::findOrFail($id);
         $validated = $request->validate([
-            'name' => 'required|string|max:100|unique:streams,name,' . $id,
+            'name' => 'required|string|max:100|unique:streams,name,'.$id,
             'icon' => 'nullable|string|max:50',
         ]);
 

@@ -14,7 +14,7 @@ class SpecializationManagerController extends Controller
     {
         $query = Specialization::with('course.stream');
         if ($request->filled('search')) {
-            $query->where('name', 'LIKE', '%' . $request->search . '%');
+            $query->where('name', 'LIKE', '%'.$request->search.'%');
         }
         if ($request->filled('course_id')) {
             $query->where('course_id', $request->course_id);
@@ -29,6 +29,7 @@ class SpecializationManagerController extends Controller
     public function create()
     {
         $courses = Course::with('stream')->orderBy('name')->get();
+
         return view('admin.specializations.create', compact('courses'));
     }
 
@@ -36,7 +37,7 @@ class SpecializationManagerController extends Controller
     {
         $validated = $request->validate([
             'course_id' => 'required|exists:courses,id',
-            'name'      => 'required|string|max:150',
+            'name' => 'required|string|max:150',
         ]);
 
         $validated['slug'] = Str::slug($request->name);
@@ -64,8 +65,8 @@ class SpecializationManagerController extends Controller
         $specialization = Specialization::findOrFail($id);
         $validated = $request->validate([
             'course_id' => 'required|exists:courses,id',
-            'name'      => 'required|string|max:150',
-            'status'    => 'nullable|boolean',
+            'name' => 'required|string|max:150',
+            'status' => 'nullable|boolean',
         ]);
 
         $validated['slug'] = Str::slug($request->name);

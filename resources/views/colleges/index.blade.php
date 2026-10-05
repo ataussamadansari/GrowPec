@@ -5,7 +5,7 @@
 @push('styles')
 <style>
     .listing-header {
-        background: linear-gradient(135deg, #1E1346 0%, #2E1E6B 100%);
+        background: linear-gradient(135deg, #001B45 0%, #002B67 100%);
         color: #ffffff;
         padding: 35px 0;
     }
@@ -101,7 +101,7 @@
     }
 
     .college-horizontal-card:hover {
-        border-color: #2E1E6B;
+        border-color: #002B67;
         box-shadow: 0 12px 30px rgba(46, 30, 107, 0.08);
         transform: translateY(-2px);
     }
@@ -120,12 +120,12 @@
     }
 
     .college-card-title a {
-        color: #2E1E6B;
+        color: #002B67;
         transition: color 0.2s;
     }
 
     .college-card-title a:hover {
-        color: #4A2E9E;
+        color: #006B35;
     }
 
     .badge-pill-item {
@@ -141,7 +141,7 @@
     }
 
     .btn-view-details {
-        background: #F5A623 !important;
+        background: #D9A400 !important;
         color: #17120a !important;
         font-weight: 700 !important;
         border-radius: 30px !important;
@@ -155,13 +155,13 @@
     }
 
     .btn-view-details:hover {
-        background: #E09612 !important;
+        background: #B78300 !important;
         color: #17120a !important;
         transform: translateY(-1px);
     }
 
     .btn-free-counselling {
-        background: #2E1E6B !important;
+        background: #002B67 !important;
         color: #ffffff !important;
         font-weight: 700 !important;
         border-radius: 30px !important;
@@ -174,7 +174,7 @@
     }
 
     .btn-free-counselling:hover {
-        background: #1E1346 !important;
+        background: #001B45 !important;
         color: #ffffff !important;
         transform: translateY(-1px);
         box-shadow: 0 6px 15px rgba(46, 30, 107, 0.25);
@@ -191,6 +191,761 @@
             justify-content: center;
         }
     }
+
+    /* =========================================================
+   GROWPEC — COLLEGE LISTING PREMIUM RESPONSIVE REDESIGN
+   Desktop / Laptop / Tablet / Mobile
+   Mobile filters -> toggle panel
+   ========================================================= */
+
+    .listing-header {
+        position: relative;
+        overflow: hidden;
+        padding: 42px 0 38px;
+        background:
+            radial-gradient(circle at 90% 10%, rgba(245, 166, 35, .16), transparent 24%),
+            linear-gradient(135deg, #001B45 0%, #2e1e6b 58%, #005C32 100%);
+    }
+
+    .listing-header::after {
+        content: "";
+        position: absolute;
+        width: 330px;
+        height: 330px;
+        right: -150px;
+        bottom: -210px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, .055);
+    }
+
+    .listing-header .container {
+        position: relative;
+        z-index: 2;
+    }
+
+    .listing-header .breadcrumb {
+        opacity: .9;
+    }
+
+    .listing-header h2 {
+        font-size: clamp(1.65rem, 3vw, 2.45rem);
+        letter-spacing: -.035em;
+    }
+
+    .filter-sidebar {
+        border: 1px solid #DCE7EF;
+        border-radius: 20px;
+        padding: 19px;
+        box-shadow: 0 10px 30px rgba(38, 28, 65, .07) !important;
+        background: rgba(255, 255, 255, .98);
+    }
+
+    .filter-title {
+        color: #2e1e6b;
+        font-weight: 800;
+    }
+
+    .filter-group {
+        padding-bottom: 16px;
+        margin-bottom: 16px;
+        border-bottom-color: #E7EEF2;
+    }
+
+    .filter-inner-search {
+        border-radius: 10px;
+        background: #F7FAFB;
+        border-color: #DCE7EF;
+    }
+
+    .filter-options {
+        scrollbar-width: thin;
+    }
+
+    .form-check {
+        padding: 4px 0 4px 1.65em;
+    }
+
+    .form-check-input {
+        margin-top: .2em;
+    }
+
+    .form-check-label {
+        font-size: .82rem;
+    }
+
+    .form-check-input:checked {
+        background-color: #4b2e83;
+        border-color: #4b2e83;
+    }
+
+    /* Results */
+    .college-horizontal-card {
+        position: relative;
+        margin-bottom: 18px;
+        border: 1px solid #E1E8EE;
+        border-radius: 22px;
+        background: #fff;
+        box-shadow: 0 7px 24px rgba(35, 25, 58, .055);
+        transition: transform .28s ease, box-shadow .28s ease, border-color .28s ease;
+    }
+
+    .college-horizontal-card:hover {
+        transform: translateY(-4px);
+        border-color: rgba(75, 46, 131, .16);
+        box-shadow: 0 16px 34px rgba(35, 25, 58, .11);
+    }
+
+    .college-thumb-img {
+        height: 180px;
+        border-radius: 16px;
+        object-fit: cover;
+        transition: transform .45s ease;
+    }
+
+    .college-horizontal-card:hover .college-thumb-img {
+        transform: scale(1.025);
+    }
+
+    .college-card-title {
+        margin-bottom: 9px !important;
+        font-size: clamp(1.05rem, 2vw, 1.32rem);
+        line-height: 1.3;
+        letter-spacing: -.015em;
+    }
+
+    .college-card-title a {
+        color: #2e1e6b;
+    }
+
+    .badge-pill-item {
+        border: 1px solid #DCE7EF;
+        border-radius: 999px;
+        padding: 6px 12px;
+        background: #F7FAFB;
+        color: #4b4654;
+        font-size: .76rem;
+    }
+
+    .btn-view-details,
+    .btn-free-counselling {
+        min-height: 42px;
+        padding: 9px 20px !important;
+        font-size: .82rem !important;
+    }
+
+    /* Desktop/mobile filter controls */
+    .mobile-filter-toggle,
+    .mobile-results-summary {
+        display: none;
+    }
+
+    /* Tablet */
+    @media (max-width: 991.98px) {
+        .listing-header {
+            padding: 34px 0 30px;
+        }
+
+        .filter-sidebar {
+            position: static;
+            max-height: none;
+        }
+
+        .college-thumb-img {
+            height: 190px;
+        }
+
+        .college-card-title {
+            font-size: 1.08rem;
+        }
+    }
+
+    /* Mobile */
+    @media (max-width: 767.98px) {
+        .listing-header {
+            padding: 27px 0 25px;
+        }
+
+        .listing-header h2 {
+            font-size: 1.55rem;
+        }
+
+        .listing-header p {
+            font-size: .76rem !important;
+        }
+
+        .listing-header .breadcrumb {
+            font-size: .72rem;
+        }
+
+        .mobile-filter-toggle {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 48px;
+            margin-bottom: 10px;
+            padding: 0 15px;
+            border: 1px solid #DCE7EF;
+            border-radius: 14px;
+            background: #fff;
+            color: #2e1e6b;
+            font-size: .86rem;
+            font-weight: 800;
+            box-shadow: 0 5px 18px rgba(38, 28, 65, .06);
+        }
+
+        .mobile-filter-count {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 21px;
+            height: 21px;
+            margin-left: 5px;
+            padding: 0 6px;
+            border-radius: 999px;
+            background: #D9A400;
+            color: #10200F;
+            font-size: .66rem;
+            vertical-align: middle;
+        }
+
+        .filter-toggle-icon {
+            transition: transform .25s ease;
+        }
+
+        .mobile-filter-toggle.is-open .filter-toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        .mobile-filter-panel {
+            display: none;
+        }
+
+        .mobile-filter-panel.is-open {
+            display: block;
+        }
+
+        .filter-sidebar {
+            max-height: none;
+            overflow: visible;
+            padding: 15px;
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(38, 28, 65, .08) !important;
+        }
+
+        .filter-sidebar .filter-group {
+            padding-bottom: 13px;
+            margin-bottom: 13px;
+        }
+
+        .filter-options {
+            max-height: 130px;
+        }
+
+        .filter-sidebar .btn-purple {
+            min-height: 44px;
+            border-radius: 999px;
+        }
+
+        .mobile-results-summary {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 13px;
+            padding: 11px 13px;
+            border: 1px solid #E1E8EE;
+            border-radius: 14px;
+            background: #F7FAFB;
+        }
+
+        .mobile-results-summary strong {
+            display: block;
+            color: #2e1e6b;
+            font-size: .92rem;
+            line-height: 1.1;
+        }
+
+        .mobile-results-summary span {
+            color: #777080;
+            font-size: .68rem;
+        }
+
+        .college-horizontal-card {
+            margin-bottom: 15px;
+            border-radius: 18px;
+        }
+
+        .college-horizontal-card>.row {
+            display: block;
+        }
+
+        .college-horizontal-card .col-md-4,
+        .college-horizontal-card .col-md-8 {
+            width: 100%;
+        }
+
+        .college-horizontal-card .col-md-4 {
+            padding: 10px 10px 0 !important;
+        }
+
+        .college-thumb-img {
+            width: 100%;
+            height: 165px;
+            border-radius: 14px;
+        }
+
+        .college-horizontal-card .col-md-8 {
+            padding: 14px 14px 15px !important;
+        }
+
+        .college-card-title {
+            font-size: 1rem;
+            line-height: 1.35;
+            margin-bottom: 8px !important;
+        }
+
+        .college-horizontal-card .d-flex.gap-3 {
+            gap: 7px !important;
+            font-size: .69rem !important;
+            line-height: 1.35;
+            margin-bottom: 10px !important;
+        }
+
+        .badge-pill-item {
+            padding: 5px 9px;
+            font-size: .66rem;
+        }
+
+        .college-horizontal-card .d-flex.justify-content-md-end {
+            display: grid !important;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px !important;
+            margin-top: 4px;
+        }
+
+        .btn-view-details,
+        .btn-free-counselling {
+            width: 100%;
+            min-height: 40px;
+            justify-content: center;
+            padding: 8px 9px !important;
+            font-size: .72rem !important;
+        }
+
+        .pagination {
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 3px;
+        }
+    }
+
+    /* Very small phones */
+    @media (max-width: 400px) {
+        .college-thumb-img {
+            height: 145px;
+        }
+
+        .college-horizontal-card .d-flex.justify-content-md-end {
+            grid-template-columns: 1fr;
+        }
+
+        .btn-view-details,
+        .btn-free-counselling {
+            min-height: 42px;
+        }
+    }
+
+
+    /* =========================================================
+   MOBILE FILTER — RIGHT SIDE DRAWER + BOTTOM CENTER BUTTON
+   ========================================================= */
+    .mobile-bottom-filter,
+    .mobile-filter-overlay {
+        display: none;
+    }
+
+    @media (max-width: 767.98px) {
+        .mobile-filter-toggle {
+            display: none !important;
+        }
+
+        .mobile-filter-panel {
+            position: fixed !important;
+            top: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            width: min(88vw, 380px) !important;
+            height: 100dvh !important;
+            z-index: 1060 !important;
+            display: block !important;
+            background: #fff !important;
+            overflow-y: auto !important;
+            overscroll-behavior: contain;
+            transform: translateX(105%);
+            visibility: hidden;
+            box-shadow: -14px 0 38px rgba(25, 18, 48, .22);
+            transition: transform .32s cubic-bezier(.22, .75, .25, 1), visibility .32s ease;
+        }
+
+        .mobile-filter-panel.is-open {
+            transform: translateX(0);
+            visibility: visible;
+        }
+
+        .mobile-filter-panel .filter-sidebar {
+            min-height: 100%;
+            margin: 0 !important;
+            padding: 22px 18px 105px !important;
+            border: 0 !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+        }
+
+        .mobile-filter-panel .filter-sidebar>.d-flex {
+            position: sticky;
+            top: -22px;
+            z-index: 5;
+            margin: -22px -18px 18px !important;
+            padding: 17px 18px !important;
+            background: rgba(255, 255, 255, .96);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #eee9f4 !important;
+        }
+
+        .mobile-filter-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1050;
+            display: block;
+            background: rgba(20, 14, 38, .48);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity .28s ease, visibility .28s ease;
+        }
+
+        .mobile-filter-overlay.is-open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-bottom-filter {
+            position: fixed;
+            left: 50%;
+            bottom: max(18px, env(safe-area-inset-bottom));
+            transform: translateX(-50%);
+            z-index: 1040;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            min-width: 132px;
+            height: 48px;
+            padding: 0 18px;
+            border: 0;
+            border-radius: 999px;
+            background: linear-gradient(135deg, #002B67, #008A43);
+            color: #fff;
+            font-size: .82rem;
+            font-weight: 800;
+            box-shadow: 0 10px 25px rgba(46, 30, 107, .28);
+            cursor: pointer;
+        }
+
+        .mobile-bottom-filter:active {
+            transform: translateX(-50%) scale(.97);
+        }
+
+        .mobile-bottom-filter i {
+            font-size: 1rem;
+        }
+
+        .mobile-bottom-filter .mobile-filter-count {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 21px;
+            height: 21px;
+            padding: 0 6px;
+            border-radius: 999px;
+            background: #D9A400;
+            color: #10200F;
+            font-size: .65rem;
+            font-weight: 900;
+        }
+
+        body.filter-drawer-open {
+            overflow: hidden;
+        }
+
+        .mobile-results-summary {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
+    }
+
+    @media (max-width: 380px) {
+        .mobile-filter-panel {
+            width: 92vw !important;
+        }
+
+        .mobile-bottom-filter {
+            min-width: 124px;
+            height: 46px;
+        }
+    }
+
+
+    /* =========================================================
+   GROWPEC LOGO COLOR MATCH
+   Navy + Green + Gold
+   ========================================================= */
+    :root {
+        --primary-purple: #002B67;
+        --primary-dark: #001B45;
+        --accent-gold: #D9A400;
+        --accent-gold-hover: #B78300;
+
+        --growpec-navy: #002B67;
+        --growpec-navy-dark: #001B45;
+        --growpec-green: #008A43;
+        --growpec-green-dark: #006B35;
+        --growpec-gold: #D9A400;
+        --growpec-gold-dark: #B78300;
+    }
+
+    .listing-header {
+        background:
+            radial-gradient(circle at 90% 10%, rgba(217, 164, 0, .18), transparent 24%),
+            linear-gradient(135deg, #001B45 0%, #002B67 58%, #005C32 100%) !important;
+    }
+
+    .filter-title,
+    .college-card-title a,
+    .mobile-filter-toggle,
+    .mobile-results-summary strong {
+        color: #002B67 !important;
+    }
+
+    .form-check-input:checked {
+        background-color: #008A43 !important;
+        border-color: #008A43 !important;
+    }
+
+    .btn-view-details {
+        background: #D9A400 !important;
+        color: #10200F !important;
+    }
+
+    .btn-view-details:hover {
+        background: #B78300 !important;
+        color: #10200F !important;
+    }
+
+    .btn-free-counselling {
+        background: #002B67 !important;
+    }
+
+    .btn-free-counselling:hover {
+        background: #001B45 !important;
+        box-shadow: 0 6px 15px rgba(0, 43, 103, .25) !important;
+    }
+
+    .mobile-bottom-filter {
+        background: linear-gradient(135deg, #002B67, #008A43) !important;
+        box-shadow: 0 10px 25px rgba(0, 43, 103, .28) !important;
+    }
+
+    .mobile-filter-count {
+        background: #D9A400 !important;
+        color: #10200F !important;
+    }
+
+    .college-horizontal-card:hover {
+        border-color: rgba(0, 138, 67, .22) !important;
+        box-shadow: 0 16px 34px rgba(0, 43, 103, .11) !important;
+    }
+
+    .college-card-title a:hover {
+        color: #006B35 !important;
+    }
+
+    .listing-header .breadcrumb-item a.text-warning {
+        color: #D9A400 !important;
+    }
+
+    /* =========================================================
+       FINAL TABLET UI FIX
+       768px–991px:
+       - Keep filter sidebar + results side-by-side
+       - Filter: ~30%
+       - Results: ~70%
+       - College cards remain horizontal
+       - Compact spacing so content does not overflow
+       Mobile <=767px keeps the existing drawer/card layout.
+       ========================================================= */
+
+    @media (min-width: 768px) and (max-width: 991.98px) {
+
+        .listing-header {
+            padding: 32px 0 28px;
+        }
+
+        .listing-header h2 {
+            font-size: 1.85rem;
+        }
+
+        .listing-header p {
+            font-size: .82rem !important;
+        }
+
+        /* Main listing layout */
+        .container.py-4 > .row.g-4 {
+            --bs-gutter-x: 18px;
+            --bs-gutter-y: 0;
+            align-items: flex-start;
+        }
+
+        .container.py-4 > .row.g-4 > .col-lg-3 {
+            flex: 0 0 30%;
+            width: 30%;
+            max-width: 30%;
+        }
+
+        .container.py-4 > .row.g-4 > .col-lg-9 {
+            flex: 0 0 70%;
+            width: 70%;
+            max-width: 70%;
+        }
+
+        /* Tablet filter */
+        .filter-sidebar {
+            position: sticky;
+            top: 80px;
+            max-height: calc(100vh - 100px);
+            overflow-y: auto;
+            padding: 14px;
+            border-radius: 16px;
+        }
+
+        .filter-title {
+            font-size: .78rem;
+        }
+
+        .filter-inner-search {
+            font-size: .68rem;
+            padding: 5px 8px;
+        }
+
+        .form-check {
+            padding: 3px 0 3px 1.45em;
+        }
+
+        .form-check-label {
+            font-size: .69rem;
+            line-height: 1.3;
+        }
+
+        .filter-options {
+            max-height: 125px;
+        }
+
+        /* Tablet college card */
+        .college-horizontal-card {
+            margin-bottom: 14px;
+            border-radius: 18px;
+        }
+
+        .college-horizontal-card > .row {
+            align-items: center;
+        }
+
+        .college-horizontal-card .col-md-4 {
+            width: 38%;
+            flex: 0 0 38%;
+            max-width: 38%;
+            padding: 10px !important;
+        }
+
+        .college-horizontal-card .col-md-8 {
+            width: 62%;
+            flex: 0 0 62%;
+            max-width: 62%;
+            padding: 12px 12px 12px 4px !important;
+        }
+
+        .college-thumb-img {
+            width: 100%;
+            height: 150px;
+            border-radius: 13px;
+        }
+
+        .college-card-title {
+            font-size: .92rem;
+            line-height: 1.25;
+            margin-bottom: 7px !important;
+        }
+
+        .college-horizontal-card .d-flex.gap-3 {
+            gap: 5px !important;
+            font-size: .68rem !important;
+            line-height: 1.3;
+            margin-bottom: 8px !important;
+        }
+
+        .badge-pill-item {
+            padding: 5px 8px;
+            font-size: .62rem;
+        }
+
+        .college-horizontal-card .d-flex.justify-content-md-end {
+            gap: 6px !important;
+            margin-top: 8px;
+        }
+
+        .btn-view-details,
+        .btn-free-counselling {
+            min-height: 36px;
+            padding: 7px 10px !important;
+            font-size: .66rem !important;
+            white-space: nowrap;
+        }
+
+        /* Prevent long names / metadata from breaking the card */
+        .college-card-title,
+        .college-card-title a {
+            overflow-wrap: anywhere;
+        }
+    }
+
+    /* Wider tablets / small laptops: slightly more breathing room */
+    @media (min-width: 900px) and (max-width: 991.98px) {
+        .container.py-4 > .row.g-4 {
+            --bs-gutter-x: 22px;
+        }
+
+        .container.py-4 > .row.g-4 > .col-lg-3 {
+            flex-basis: 29%;
+            width: 29%;
+            max-width: 29%;
+        }
+
+        .container.py-4 > .row.g-4 > .col-lg-9 {
+            flex-basis: 71%;
+            width: 71%;
+            max-width: 71%;
+        }
+
+        .college-thumb-img {
+            height: 160px;
+        }
+
+        .college-card-title {
+            font-size: 1rem;
+        }
+    }
+
 </style>
 @endpush
 
@@ -216,174 +971,175 @@
         <!-- Left Filter Sidebar -->
         <div class="col-lg-3">
             <form action="{{ url()->current() }}" method="GET" id="filterForm">
-                <div class="filter-sidebar shadow-sm">
-                    <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
-                        <h6 class="fw-bold mb-0 text-dark"><i class="bi bi-funnel-fill text-warning me-1"></i> Filter By</h6>
-                        <a href="{{ url()->current() }}" class="text-danger small fw-bold text-decoration-none">Reset All</a>
-                    </div>
-
-                    <!-- Search Input -->
-                    <div class="mb-3">
-                        <div class="input-group input-group-sm">
-                            <span class="input-group-text bg-light border-end-0"><i class="bi bi-search text-muted"></i></span>
-                            <input type="text" name="search" value="{{ request('search') }}" class="form-control border-start-0" placeholder="Search college, city...">
+                <div id="mobileFilterPanel" class="mobile-filter-panel">
+                    <div class="filter-sidebar shadow-sm">
+                        <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+                            <h6 class="fw-bold mb-0 text-dark"><i class="bi bi-funnel-fill text-warning me-1"></i> Filter By</h6>
+                            <a href="{{ url()->current() }}" class="text-danger small fw-bold text-decoration-none">Reset All</a>
                         </div>
-                    </div>
 
-                    <!-- 1. Degree Level -->
-                    <div class="filter-group">
-                        <div class="filter-title">1. Education Level</div>
-                        <div class="filter-options">
-                            @foreach(['UG' => 'Undergraduate (UG)', 'PG' => 'Postgraduate (PG)', 'Diploma' => 'Diploma', 'PhD' => 'Ph.D. / Doctorate', 'Certificate' => 'Certificate'] as $val => $label)
+                        <!-- Search Input -->
+                        <div class="mb-3">
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text bg-light border-end-0"><i class="bi bi-search text-muted"></i></span>
+                                <input type="text" name="search" value="{{ request('search') }}" class="form-control border-start-0" placeholder="Search college, city...">
+                            </div>
+                        </div>
+
+                        <!-- 1. Degree Level -->
+                        <div class="filter-group">
+                            <div class="filter-title">1. Education Level</div>
+                            <div class="filter-options">
+                                @foreach(['UG' => 'Undergraduate (UG)', 'PG' => 'Postgraduate (PG)', 'Diploma' => 'Diploma', 'PhD' => 'Ph.D. / Doctorate', 'Certificate' => 'Certificate'] as $val => $label)
+                                <div class="form-check mb-1">
+                                    <input class="form-check-input filter-checkbox" type="checkbox" name="levels[]" value="{{ $val }}" id="level_{{ $val }}" {{ in_array($val, (array)request('levels')) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="level_{{ $val }}">{{ $label }}</label>
+                                </div>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <!-- 2. Academic Stream -->
+                        <div class="filter-group">
+                            <div class="filter-title">2. Stream</div>
+                            <input type="text" class="form-control form-control-sm filter-inner-search" placeholder="Search stream..." data-target="#streamFilterOptions">
+                            <div class="filter-options" id="streamFilterOptions">
+                                @foreach($allStreams as $st)
+                                <div class="form-check mb-1 filter-item-row">
+                                    <input class="form-check-input filter-checkbox" type="checkbox" name="streams[]" value="{{ $st->slug }}" id="stream_{{ $st->id }}" {{ in_array($st->slug, (array)request('streams')) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="stream_{{ $st->id }}">{{ $st->name }}</label>
+                                </div>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <!-- 3. Course -->
+                        <div class="filter-group">
+                            <div class="filter-title">3. Course / Program</div>
+                            <input type="text" class="form-control form-control-sm filter-inner-search" placeholder="Search course (e.g. BCA, MBA)..." data-target="#courseFilterOptions">
+                            <div class="filter-options" id="courseFilterOptions">
+                                @foreach($allCourses as $c)
+                                <div class="form-check mb-1 filter-item-row">
+                                    <input class="form-check-input filter-checkbox" type="checkbox" name="courses[]" value="{{ $c->slug }}" id="course_{{ $c->id }}" {{ in_array($c->slug, (array)request('courses')) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="course_{{ $c->id }}">{{ $c->name }} <small class="text-muted">({{ $c->level }})</small></label>
+                                </div>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <!-- 4. Degree Type -->
+                        <div class="filter-group">
+                            <div class="filter-title">4. Degree Type</div>
+                            <div class="filter-options">
+                                @foreach(['Degree' => 'Degree Program', 'Diploma' => 'Diploma Program', 'Certificate' => 'Certificate Program'] as $dtVal => $dtLabel)
+                                <div class="form-check mb-1">
+                                    <input class="form-check-input filter-checkbox" type="checkbox" name="degree_types[]" value="{{ $dtVal }}" id="dt_{{ $dtVal }}" {{ in_array($dtVal, (array)request('degree_types')) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="dt_{{ $dtVal }}">{{ $dtLabel }}</label>
+                                </div>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <!-- 5. Course Duration -->
+                        @if($allDurations->count() > 0)
+                        <div class="filter-group">
+                            <div class="filter-title">5. Course Duration</div>
+                            <div class="filter-options">
+                                @foreach($allDurations as $dur)
+                                <div class="form-check mb-1">
+                                    <input class="form-check-input filter-checkbox" type="checkbox" name="durations[]" value="{{ $dur }}" id="dur_{{ $loop->index }}" {{ in_array($dur, (array)request('durations')) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="dur_{{ $loop->index }}">{{ $dur }}</label>
+                                </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        @endif
+
+                        <!-- 6. State -->
+                        <div class="filter-group">
+                            <div class="filter-title">6. State</div>
+                            <input type="text" class="form-control form-control-sm filter-inner-search" placeholder="Search state..." data-target="#stateFilterOptions">
+                            <div class="filter-options" id="stateFilterOptions">
+                                @foreach($allStates as $state)
+                                <div class="form-check mb-1 filter-item-row">
+                                    <input class="form-check-input filter-checkbox" type="checkbox" name="states[]" value="{{ $state }}" id="state_{{ $loop->index }}" {{ in_array($state, (array)request('states')) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="state_{{ $loop->index }}">{{ $state }}</label>
+                                </div>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <!-- 7. City -->
+                        <div class="filter-group">
+                            <div class="filter-title">7. City</div>
+                            <input type="text" class="form-control form-control-sm filter-inner-search" placeholder="Search city..." data-target="#cityFilterOptions">
+                            <div class="filter-options" id="cityFilterOptions">
+                                @foreach($allCities as $city)
+                                <div class="form-check mb-1 filter-item-row">
+                                    <input class="form-check-input filter-checkbox" type="checkbox" name="cities[]" value="{{ $city }}" id="city_{{ $loop->index }}" {{ in_array($city, (array)request('cities')) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="city_{{ $loop->index }}">{{ $city }}</label>
+                                </div>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <!-- 8. College Type -->
+                        <div class="filter-group">
+                            <div class="filter-title">8. College Ownership</div>
+                            <div class="filter-options">
+                                @foreach(['Govt' => 'Government University', 'Private' => 'Private University', 'Deemed' => 'Deemed University', 'Autonomous' => 'Autonomous Institute'] as $tVal => $tLabel)
+                                <div class="form-check mb-1">
+                                    <input class="form-check-input filter-checkbox" type="checkbox" name="types[]" value="{{ $tVal }}" id="type_{{ $tVal }}" {{ in_array($tVal, (array)request('types')) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="type_{{ $tVal }}">{{ $tLabel }}</label>
+                                </div>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <!-- 9. Fee Range -->
+                        <div class="filter-group">
+                            <div class="filter-title">9. Annual Fee Range</div>
+                            <div class="filter-options">
+                                @php
+                                $feeOptions = [
+                                'under_1l' => 'Less than ₹1 Lac',
+                                '1l_to_2l' => '₹1 Lac - ₹2 Lac',
+                                '2l_to_3l' => '₹2 Lac - ₹3 Lac',
+                                '3l_to_5l' => '₹3 Lac - ₹5 Lac',
+                                '5l_to_10l' => '₹5 Lac - ₹10 Lac',
+                                'above_10l' => 'Greater than ₹10+ Lac',
+                                ];
+                                @endphp
+                                @foreach($feeOptions as $fVal => $fLabel)
+                                <div class="form-check mb-1">
+                                    <input class="form-check-input filter-checkbox" type="checkbox" name="fee_ranges[]" value="{{ $fVal }}" id="fee_{{ $fVal }}" {{ in_array($fVal, (array)request('fee_ranges')) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="fee_{{ $fVal }}">{{ $fLabel }}</label>
+                                </div>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <!-- 10. Hostel Facilities -->
+                        <div class="filter-group">
+                            <div class="filter-title">10. Hostel Facilities</div>
                             <div class="form-check mb-1">
-                                <input class="form-check-input filter-checkbox" type="checkbox" name="levels[]" value="{{ $val }}" id="level_{{ $val }}" {{ in_array($val, (array)request('levels')) ? 'checked' : '' }}>
-                                <label class="form-check-label" for="level_{{ $val }}">{{ $label }}</label>
+                                <input class="form-check-input filter-checkbox" type="checkbox" name="boys_hostel" value="1" id="boys_hostel" {{ request('boys_hostel') ? 'checked' : '' }}>
+                                <label class="form-check-label" for="boys_hostel"><i class="bi bi-house text-primary me-1"></i> Boys Hostel</label>
                             </div>
-                            @endforeach
-                        </div>
-                    </div>
-
-                    <!-- 2. Academic Stream -->
-                    <div class="filter-group">
-                        <div class="filter-title">2. Stream</div>
-                        <input type="text" class="form-control form-control-sm filter-inner-search" placeholder="Search stream..." data-target="#streamFilterOptions">
-                        <div class="filter-options" id="streamFilterOptions">
-                            @foreach($allStreams as $st)
-                            <div class="form-check mb-1 filter-item-row">
-                                <input class="form-check-input filter-checkbox" type="checkbox" name="streams[]" value="{{ $st->slug }}" id="stream_{{ $st->id }}" {{ in_array($st->slug, (array)request('streams')) ? 'checked' : '' }}>
-                                <label class="form-check-label" for="stream_{{ $st->id }}">{{ $st->name }}</label>
+                            <div class="form-check">
+                                <input class="form-check-input filter-checkbox" type="checkbox" name="girls_hostel" value="1" id="girls_hostel" {{ request('girls_hostel') ? 'checked' : '' }}>
+                                <label class="form-check-label" for="girls_hostel"><i class="bi bi-house-heart text-danger me-1"></i> Girls Hostel</label>
                             </div>
-                            @endforeach
                         </div>
-                    </div>
 
-                    <!-- 3. Course -->
-                    <div class="filter-group">
-                        <div class="filter-title">3. Course / Program</div>
-                        <input type="text" class="form-control form-control-sm filter-inner-search" placeholder="Search course (e.g. BCA, MBA)..." data-target="#courseFilterOptions">
-                        <div class="filter-options" id="courseFilterOptions">
-                            @foreach($allCourses as $c)
-                            <div class="form-check mb-1 filter-item-row">
-                                <input class="form-check-input filter-checkbox" type="checkbox" name="courses[]" value="{{ $c->slug }}" id="course_{{ $c->id }}" {{ in_array($c->slug, (array)request('courses')) ? 'checked' : '' }}>
-                                <label class="form-check-label" for="course_{{ $c->id }}">{{ $c->name }} <small class="text-muted">({{ $c->level }})</small></label>
-                            </div>
-                            @endforeach
-                        </div>
+                        <button type="submit" class="btn btn-purple btn-sm w-100 mt-3 fw-bold">Apply Filters</button>
                     </div>
-
-                    <!-- 4. Degree Type -->
-                    <div class="filter-group">
-                        <div class="filter-title">4. Degree Type</div>
-                        <div class="filter-options">
-                            @foreach(['Degree' => 'Degree Program', 'Diploma' => 'Diploma Program', 'Certificate' => 'Certificate Program'] as $dtVal => $dtLabel)
-                            <div class="form-check mb-1">
-                                <input class="form-check-input filter-checkbox" type="checkbox" name="degree_types[]" value="{{ $dtVal }}" id="dt_{{ $dtVal }}" {{ in_array($dtVal, (array)request('degree_types')) ? 'checked' : '' }}>
-                                <label class="form-check-label" for="dt_{{ $dtVal }}">{{ $dtLabel }}</label>
-                            </div>
-                            @endforeach
-                        </div>
-                    </div>
-
-                    <!-- 5. Course Duration -->
-                    @if($allDurations->count() > 0)
-                    <div class="filter-group">
-                        <div class="filter-title">5. Course Duration</div>
-                        <div class="filter-options">
-                            @foreach($allDurations as $dur)
-                            <div class="form-check mb-1">
-                                <input class="form-check-input filter-checkbox" type="checkbox" name="durations[]" value="{{ $dur }}" id="dur_{{ $loop->index }}" {{ in_array($dur, (array)request('durations')) ? 'checked' : '' }}>
-                                <label class="form-check-label" for="dur_{{ $loop->index }}">{{ $dur }}</label>
-                            </div>
-                            @endforeach
-                        </div>
-                    </div>
-                    @endif
-
-                    <!-- 6. State -->
-                    <div class="filter-group">
-                        <div class="filter-title">6. State</div>
-                        <input type="text" class="form-control form-control-sm filter-inner-search" placeholder="Search state..." data-target="#stateFilterOptions">
-                        <div class="filter-options" id="stateFilterOptions">
-                            @foreach($allStates as $state)
-                            <div class="form-check mb-1 filter-item-row">
-                                <input class="form-check-input filter-checkbox" type="checkbox" name="states[]" value="{{ $state }}" id="state_{{ $loop->index }}" {{ in_array($state, (array)request('states')) ? 'checked' : '' }}>
-                                <label class="form-check-label" for="state_{{ $loop->index }}">{{ $state }}</label>
-                            </div>
-                            @endforeach
-                        </div>
-                    </div>
-
-                    <!-- 7. City -->
-                    <div class="filter-group">
-                        <div class="filter-title">7. City</div>
-                        <input type="text" class="form-control form-control-sm filter-inner-search" placeholder="Search city..." data-target="#cityFilterOptions">
-                        <div class="filter-options" id="cityFilterOptions">
-                            @foreach($allCities as $city)
-                            <div class="form-check mb-1 filter-item-row">
-                                <input class="form-check-input filter-checkbox" type="checkbox" name="cities[]" value="{{ $city }}" id="city_{{ $loop->index }}" {{ in_array($city, (array)request('cities')) ? 'checked' : '' }}>
-                                <label class="form-check-label" for="city_{{ $loop->index }}">{{ $city }}</label>
-                            </div>
-                            @endforeach
-                        </div>
-                    </div>
-
-                    <!-- 8. College Type -->
-                    <div class="filter-group">
-                        <div class="filter-title">8. College Ownership</div>
-                        <div class="filter-options">
-                            @foreach(['Govt' => 'Government University', 'Private' => 'Private University', 'Deemed' => 'Deemed University', 'Autonomous' => 'Autonomous Institute'] as $tVal => $tLabel)
-                            <div class="form-check mb-1">
-                                <input class="form-check-input filter-checkbox" type="checkbox" name="types[]" value="{{ $tVal }}" id="type_{{ $tVal }}" {{ in_array($tVal, (array)request('types')) ? 'checked' : '' }}>
-                                <label class="form-check-label" for="type_{{ $tVal }}">{{ $tLabel }}</label>
-                            </div>
-                            @endforeach
-                        </div>
-                    </div>
-
-                    <!-- 9. Fee Range -->
-                    <div class="filter-group">
-                        <div class="filter-title">9. Annual Fee Range</div>
-                        <div class="filter-options">
-                            @php
-                            $feeOptions = [
-                            'under_1l' => 'Less than ₹1 Lac',
-                            '1l_to_2l' => '₹1 Lac - ₹2 Lac',
-                            '2l_to_3l' => '₹2 Lac - ₹3 Lac',
-                            '3l_to_5l' => '₹3 Lac - ₹5 Lac',
-                            '5l_to_10l' => '₹5 Lac - ₹10 Lac',
-                            'above_10l' => 'Greater than ₹10+ Lac',
-                            ];
-                            @endphp
-                            @foreach($feeOptions as $fVal => $fLabel)
-                            <div class="form-check mb-1">
-                                <input class="form-check-input filter-checkbox" type="checkbox" name="fee_ranges[]" value="{{ $fVal }}" id="fee_{{ $fVal }}" {{ in_array($fVal, (array)request('fee_ranges')) ? 'checked' : '' }}>
-                                <label class="form-check-label" for="fee_{{ $fVal }}">{{ $fLabel }}</label>
-                            </div>
-                            @endforeach
-                        </div>
-                    </div>
-
-                    <!-- 10. Hostel Facilities -->
-                    <div class="filter-group">
-                        <div class="filter-title">10. Hostel Facilities</div>
-                        <div class="form-check mb-1">
-                            <input class="form-check-input filter-checkbox" type="checkbox" name="boys_hostel" value="1" id="boys_hostel" {{ request('boys_hostel') ? 'checked' : '' }}>
-                            <label class="form-check-label" for="boys_hostel"><i class="bi bi-house text-primary me-1"></i> Boys Hostel</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input filter-checkbox" type="checkbox" name="girls_hostel" value="1" id="girls_hostel" {{ request('girls_hostel') ? 'checked' : '' }}>
-                            <label class="form-check-label" for="girls_hostel"><i class="bi bi-house-heart text-danger me-1"></i> Girls Hostel</label>
-                        </div>
-                    </div>
-
-                    <button type="submit" class="btn btn-purple btn-sm w-100 mt-3 fw-bold">Apply Filters</button>
                 </div>
             </form>
         </div>
 
         <!-- Right Results Listing -->
         <div class="col-lg-9">
-
             <!-- Active Filter Badges Counter -->
             @php
             $activeCount = count(array_filter([
@@ -448,7 +1204,7 @@
                             <a href="{{ route('college.show', $college->slug) }}" class="btn btn-view-details">
                                 <i class="bi bi-eye me-1"></i> View Details
                             </a>
-                            <a href="tel:8858285271" class="btn btn-free-counselling">
+                            <a href="tel:{{ $siteSettings['general.support_phone'] ?? '' }}" class="btn btn-free-counselling">
                                 <i class="bi bi-telephone-plus me-1"></i> Free Counseling
                             </a>
                         </div>
@@ -474,8 +1230,54 @@
     </div>
 </div>
 
+<!-- Mobile Filter Drawer -->
+<button type="button"
+    class="mobile-bottom-filter"
+    id="mobileFilterToggle"
+    aria-expanded="false"
+    aria-controls="mobileFilterPanel">
+    <i class="bi bi-sliders2-vertical"></i>
+    <span>Filters</span>
+    @if($activeCount ?? 0)
+    <b class="mobile-filter-count">{{ $activeCount }}</b>
+    @endif
+</button>
+
+<div class="mobile-filter-overlay" id="mobileFilterOverlay"></div>
+
 @push('scripts')
 <script>
+    // Mobile filter side drawer
+    const mobileFilterToggle = document.getElementById('mobileFilterToggle');
+    const mobileFilterPanel = document.getElementById('mobileFilterPanel');
+    const mobileFilterOverlay = document.getElementById('mobileFilterOverlay');
+
+    function toggleMobileFilters(forceOpen = null) {
+        if (!mobileFilterToggle || !mobileFilterPanel) return;
+
+        const shouldOpen = forceOpen === null ?
+            !mobileFilterPanel.classList.contains('is-open') :
+            forceOpen;
+
+        mobileFilterPanel.classList.toggle('is-open', shouldOpen);
+        mobileFilterOverlay?.classList.toggle('is-open', shouldOpen);
+        document.body.classList.toggle('filter-drawer-open', shouldOpen);
+
+        mobileFilterToggle.setAttribute(
+            'aria-expanded',
+            shouldOpen ? 'true' : 'false'
+        );
+    }
+
+    mobileFilterToggle?.addEventListener('click', () => toggleMobileFilters());
+    mobileFilterOverlay?.addEventListener('click', () => toggleMobileFilters(false));
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') toggleMobileFilters(false);
+    });
+
+
+
     // 1. Auto-submit filter on any checkbox change
     document.querySelectorAll('.filter-checkbox').forEach(input => {
         input.addEventListener('change', () => {

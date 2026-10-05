@@ -6,21 +6,15 @@ use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        /*
-         * IMPORTANT:
-         * Do not use User::factory() here.
-         * Production Docker image installs --no-dev,
-         * so Faker may not be available.
-         */
-
         $this->call([
-            StateCitySeeder::class,
-            CollegePortalSeeder::class,
+            AdminSeeder::class,                      // 1. Admin users
+            StateCitySeeder::class,                  // 2. States & Cities
+            SystemSettingSeeder::class,              // 3. Site settings & Contact info
+            PartnerSeeder::class,                    // 4. Partner logos
+            StreamCourseSpecializationSeeder::class, // 5. Streams, Courses & Specializations
+            RegularCollegeSeeder::class,             // 6. Regular Campus Colleges & Universities
         ]);
     }
 }

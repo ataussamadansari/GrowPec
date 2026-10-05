@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\State;
 use App\Models\City;
+use App\Models\State;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class LocationController extends Controller
@@ -21,7 +22,7 @@ class LocationController extends Controller
 
         // Search by city name
         if ($request->filled('search')) {
-            $cityQuery->where('name', 'LIKE', '%' . $request->search . '%');
+            $cityQuery->where('name', 'LIKE', '%'.$request->search.'%');
         }
 
         // Filter by specific state
@@ -29,9 +30,15 @@ class LocationController extends Controller
             $cityQuery->where('state_id', $request->state_id);
         }
 
+        if ($request->filled('is_popular')) {
+            $cityQuery->where('is_popular', $request->boolean('is_popular'));
+        }
+
         $cities = $cityQuery->latest()->paginate(15)->withQueryString();
 
-        return view('admin.locations.index', compact('states', 'cities'));
+        $popularCityCount = City::where('is_popular', true)->count();
+
+        return view('admin.locations.index', compact('states', 'cities', 'popularCityCount'));
     }
 
     // ==========================================
@@ -45,12 +52,12 @@ class LocationController extends Controller
         ]);
 
         State::create([
-            'name'   => trim($validated['name']),
-            'slug'   => Str::slug($validated['name']),
+            'name' => trim($validated['name']),
+            'slug' => Str::slug($validated['name']),
             'status' => true,
         ]);
 
-        return back()->with('success', 'State "' . $validated['name'] . '" added successfully!');
+        return back()->with('success', 'State "'.$validated['name'].'" added successfully!');
     }
 
     public function updateState(Request $request, $id)
@@ -58,13 +65,13 @@ class LocationController extends Controller
         $state = State::findOrFail($id);
 
         $validated = $request->validate([
-            'name'   => 'required|string|max:100|unique:states,name,' . $id,
+            'name' => 'required|string|max:100|unique:states,name,'.$id,
             'status' => 'nullable|boolean',
         ]);
 
         $state->update([
-            'name'   => trim($validated['name']),
-            'slug'   => Str::slug($validated['name']),
+            'name' => trim($validated['name']),
+            'slug' => Str::slug($validated['name']),
             'status' => $request->has('status'),
         ]);
 
@@ -76,10 +83,11 @@ class LocationController extends Controller
         $state = State::findOrFail($id);
 
         if ($state->cities()->count() > 0) {
-            return back()->with('error', 'Cannot delete state "' . $state->name . '" because it has associated cities. Please remove its cities first.');
+            return back()->with('error', 'Cannot delete state "'.$state->name.'" because it has associated cities. Please remove its cities first.');
         }
 
         $state->delete();
+
         return back()->with('success', 'State deleted successfully.');
     }
 
@@ -90,28 +98,48 @@ class LocationController extends Controller
     public function storeCity(Request $request)
     {
         $validated = $request->validate([
-            'state_id'   => 'required|exists:states,id',
-            'name'       => 'required|string|max:100',
+            'state_id' => 'required|exists:states,id',
+            'name' => 'required|string|max:100',
             'is_popular' => 'nullable|boolean',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:4096',
         ]);
 
         $cityName = trim($validated['name']);
-        $slug     = Str::slug($cityName);
+        $slug = Str::slug($cityName);
 
         // Prevent duplicate city in same state
         if (City::where('state_id', $validated['state_id'])->where('name', $cityName)->exists()) {
-            return back()->with('error', 'City "' . $cityName . '" already exists in the selected state.');
+            return back()->with('error', 'City "'.$cityName.'" already exists in the selected state.');
         }
 
+        $isPopular = $request->boolean('is_popular');
+
+        if ($isPopular && City::where('is_popular', true)->count() >= 10) {
+            return back()->withInput()->withErrors([
+                'is_popular' => 'You can select a maximum of 10 popular cities.',
+            ]);
+        }
+
+        if ($isPopular && ! $request->hasFile('image')) {
+            return back()->withInput()->withErrors([
+                'image' => 'City image is required when the city is marked as popular.',
+            ]);
+        }
+
+        $imagePath = $request->hasFile('image')
+            ? $request->file('image')->store('cities', 'public')
+            : null;
+
         City::create([
-            'state_id'   => $validated['state_id'],
-            'name'       => $cityName,
-            'slug'       => $slug,
-            'is_popular' => $request->has('is_popular'),
-            'status'     => true,
+            'state_id' => $validated['state_id'],
+            'name' => $cityName,
+            'slug' => $slug,
+            'image' => $imagePath,
+            'is_popular' => $isPopular,
+            'status' => true,
         ]);
 
-        return back()->with('success', 'City "' . $cityName . '" added successfully!');
+        return back()->with('success', 'City "'.$cityName.'" added successfully!');
     }
 
     public function updateCity(Request $request, $id)
@@ -119,10 +147,11 @@ class LocationController extends Controller
         $city = City::findOrFail($id);
 
         $validated = $request->validate([
-            'state_id'   => 'required|exists:states,id',
-            'name'       => 'required|string|max:100',
+            'state_id' => 'required|exists:states,id',
+            'name' => 'required|string|max:100',
             'is_popular' => 'nullable|boolean',
-            'status'     => 'nullable|boolean',
+            'status' => 'nullable|boolean',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:4096',
         ]);
 
         $cityName = trim($validated['name']);
@@ -134,15 +163,39 @@ class LocationController extends Controller
             ->exists();
 
         if ($duplicate) {
-            return back()->with('error', 'City "' . $cityName . '" already exists in that state.');
+            return back()->with('error', 'City "'.$cityName.'" already exists in that state.');
+        }
+
+        $isPopular = $request->boolean('is_popular');
+
+        if ($isPopular && ! $city->is_popular && City::where('is_popular', true)->count() >= 10) {
+            return back()->withInput()->withErrors([
+                'is_popular' => 'You can select a maximum of 10 popular cities.',
+            ]);
+        }
+
+        if ($isPopular && ! $city->image && ! $request->hasFile('image')) {
+            return back()->withInput()->withErrors([
+                'image' => 'City image is required when the city is marked as popular.',
+            ]);
+        }
+
+        $imagePath = $city->image;
+
+        if ($request->hasFile('image')) {
+            if ($city->image && Storage::disk('public')->exists($city->image)) {
+                Storage::disk('public')->delete($city->image);
+            }
+            $imagePath = $request->file('image')->store('cities', 'public');
         }
 
         $city->update([
-            'state_id'   => $validated['state_id'],
-            'name'       => $cityName,
-            'slug'       => Str::slug($cityName),
-            'is_popular' => $request->has('is_popular'),
-            'status'     => $request->has('status'),
+            'state_id' => $validated['state_id'],
+            'name' => $cityName,
+            'slug' => Str::slug($cityName),
+            'image' => $imagePath,
+            'is_popular' => $isPopular,
+            'status' => $request->boolean('status'),
         ]);
 
         return back()->with('success', 'City updated successfully!');
@@ -151,6 +204,11 @@ class LocationController extends Controller
     public function destroyCity($id)
     {
         $city = City::findOrFail($id);
+
+        if ($city->image && Storage::disk('public')->exists($city->image)) {
+            Storage::disk('public')->delete($city->image);
+        }
+
         $city->delete();
 
         return back()->with('success', 'City deleted successfully.');

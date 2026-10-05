@@ -12,6 +12,7 @@ class BannerManagerController extends Controller
     public function index()
     {
         $banners = Banner::orderBy('sort_order', 'asc')->latest()->paginate(10);
+
         return view('admin.banners.index', compact('banners'));
     }
 
@@ -23,13 +24,13 @@ class BannerManagerController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'image'      => 'required|image|mimes:jpeg,png,jpg,webp|max:4096',
-            'title'      => 'nullable|string|max:150',
+            'image' => 'required|image|mimes:jpeg,png,jpg,webp|max:4096',
+            'title' => 'nullable|string|max:150',
             'sort_order' => 'nullable|integer',
         ]);
 
         $validated['sort_order'] = $request->input('sort_order', 0);
-        $validated['status']     = $request->has('status');
+        $validated['status'] = $request->has('status');
 
         if ($request->hasFile('image')) {
             $validated['image'] = $request->file('image')->store('banners', 'public');
@@ -48,13 +49,13 @@ class BannerManagerController extends Controller
     public function update(Request $request, Banner $banner)
     {
         $validated = $request->validate([
-            'image'      => 'nullable|image|mimes:jpeg,png,jpg,webp|max:4096',
-            'title'      => 'nullable|string|max:150',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:4096',
+            'title' => 'nullable|string|max:150',
             'sort_order' => 'nullable|integer',
         ]);
 
         $validated['sort_order'] = $request->input('sort_order', 0);
-        $validated['status']     = $request->has('status');
+        $validated['status'] = $request->has('status');
 
         if ($request->hasFile('image')) {
             if ($banner->image && Storage::disk('public')->exists($banner->image)) {

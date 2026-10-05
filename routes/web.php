@@ -1,106 +1,104 @@
 <?php
 
+use App\Http\Controllers\Admin\BannerManagerController as AdminBanner;
+use App\Http\Controllers\Admin\CenterLoginManagerController as AdminCenterLogin;
+// Public Website Controllers
+use App\Http\Controllers\Admin\CollegeManagerController as AdminCollege;
+use App\Http\Controllers\Admin\CourseManagerController as AdminCourse;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
+use App\Http\Controllers\Admin\LeadershipMessageController as AdminLeadershipMessage;
+use App\Http\Controllers\Admin\LeadManagerController as AdminLead;
+// Admin Panel Controllers
+use App\Http\Controllers\Admin\LocationController as AdminLocation;
+use App\Http\Controllers\Admin\MasterSettingController as AdminSettings;
+use App\Http\Controllers\Admin\PartnerManagerController as AdminPartner;
+use App\Http\Controllers\Admin\SpecializationManagerController as AdminSpecialization;
+use App\Http\Controllers\Admin\StreamManagerController as AdminStream;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CollegeController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LeadController;
+use App\Http\Controllers\LeadershipMessagePageController;
+use App\Http\Middleware\AdminMiddleware;
+// Middlewares
+use App\Http\Middleware\CheckMaintenanceMode;
+use App\Models\City;
+// Models for Public JSON APIs
+use App\Models\College;
+use App\Models\Specialization;
 use Illuminate\Support\Facades\Route;
 
-// Public Website Controllers
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\CollegeController;
-use App\Http\Controllers\LeadController;
-
-// Admin Panel Controllers
-use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
-use App\Http\Controllers\Admin\CollegeManagerController as AdminCollege;
-use App\Http\Controllers\Admin\LeadManagerController as AdminLead;
-use App\Http\Controllers\Admin\CourseManagerController as AdminCourse;
-use App\Http\Controllers\Admin\LocationController as AdminLocation;
-use App\Http\Controllers\Admin\StreamManagerController as AdminStream;
-use App\Http\Controllers\Admin\SpecializationManagerController as AdminSpecialization;
-use App\Http\Controllers\Admin\BannerManagerController as AdminBanner;
-use App\Http\Controllers\StudentProfileController;
-
-// Middleware
-use App\Http\Middleware\AdminMiddleware;
-
-// Models for Public APIs
-use App\Models\College;
-use App\Models\City;
-use App\Models\Specialization;
-
-use App\Http\Controllers\AuthController;
-
 /*
 |--------------------------------------------------------------------------
-| Authentication Routes (Login & Logout)
+| Authentication Routes (Always accessible so Admin is never locked out)
 |--------------------------------------------------------------------------
 */
-
-// Guest & Logout Routes
 Route::middleware(['web', 'guest'])->group(function () {
-    Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-    Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
+    Route::get('/admin/login', [AuthController::class, 'showLoginForm'])->name('login');
+    Route::post('/admin/login', [AuthController::class, 'login'])->name('login.submit');
 });
 
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware(['web', 'auth']);
+Route::post('/admin/logout', [AuthController::class, 'logout'])->name('logout')->middleware(['web', 'auth']);
 
 /*
 |--------------------------------------------------------------------------
-| Public Website Routes
+| Public Website Routes (Wrapped with CheckMaintenanceMode)
 |--------------------------------------------------------------------------
 */
+Route::middleware(['web', CheckMaintenanceMode::class])->group(function () {
 
-Route::post('/api/auth/send-otp', [AuthController::class, 'sendOtp'])->name('api.auth.sendOtp');
-Route::post('/api/auth/verify-otp', [AuthController::class, 'verifyOtp'])->name('api.auth.verifyOtp');
+    // Home Page
+    Route::get('/', [HomeController::class, 'index'])->name('home');
 
-// Home Page
-Route::get('/', [HomeController::class, 'index'])->name('home');
+    // Colleges Listing & Details
+    Route::get('/colleges', [CollegeController::class, 'regularColleges'])->name('colleges.regular');
+    Route::get('/online-colleges', [CollegeController::class, 'onlineColleges'])->name('colleges.online');
+    Route::get('/college/{slug}', [CollegeController::class, 'show'])->name('college.show');
 
-// Protected Student Profile Route
-Route::middleware(['web', 'auth'])->group(function () {
-    Route::get('/profile', [StudentProfileController::class, 'index'])->name('student.profile');
-    Route::post('/profile', [StudentProfileController::class, 'update'])->name('student.profile.update');
-});
+    // Static Pages
+    Route::get('/leadership-message/{leadershipMessage}', [LeadershipMessagePageController::class, 'show'])
+        ->name('leadership-messages.show');
+    Route::get('/about-us', [LeadershipMessagePageController::class, 'about'])->name('about');
+    Route::view('/contact-us', 'pages.contact')->name('contact');
 
-// Colleges Listing & Details
-Route::get('/colleges', [CollegeController::class, 'regularColleges'])->name('colleges.regular');
-Route::get('/online-colleges', [CollegeController::class, 'onlineColleges'])->name('colleges.online');
-Route::get('/college/{slug}', [CollegeController::class, 'show'])->name('college.show');
+    // Lead Capture API
+    Route::post('/lead/submit', [LeadController::class, 'store'])->name('lead.submit');
 
-// Static Pages
-Route::view('/about-us', 'pages.about')->name('about');
-Route::view('/contact-us', 'pages.contact')->name('contact');
+    // Live Search & Cascading Dropdowns
+    Route::get('/api/live-search', [HomeController::class, 'liveSearch'])->name('api.liveSearch');
 
-// Lead Capture API
-Route::post('/lead/submit', [LeadController::class, 'store'])->name('lead.submit');
+    Route::get('/api/states/{state_id}/cities', function ($state_id) {
+        return City::where('state_id', $state_id)
+            ->where('status', true)
+            ->orderBy('name')
+            ->get();
+    })->name('api.states.cities');
 
-// Public Search & Cascading Dropdown APIs
-Route::get('/api/live-search', [HomeController::class, 'liveSearch'])->name('api.liveSearch');
+    Route::get('/api/courses/{course_id}/specializations', function ($course_id) {
+        return Specialization::where('course_id', $course_id)
+            ->where('status', true)
+            ->orderBy('name')
+            ->get();
+    })->name('api.courses.specializations');
 
-Route::get('/api/states/{state_id}/cities', function ($state_id) {
-    return City::where('state_id', $state_id)
-        ->where('status', true)
-        ->orderBy('name')
-        ->get();
-})->name('api.states.cities');
+    // XML Sitemap
+    Route::get('/sitemap.xml', function () {
+        $colleges = College::where('status', true)->get();
+        $content = view('sitemap', compact('colleges'));
 
-Route::get('/api/courses/{course_id}/specializations', function ($course_id) {
-    return Specialization::where('course_id', $course_id)
-        ->where('status', true)
-        ->orderBy('name')
-        ->get();
-})->name('api.courses.specializations');
+        return response($content, 200)->header('Content-Type', 'text/xml');
+    });
 
-// XML Sitemap
-Route::get('/sitemap.xml', function () {
-    $colleges = College::where('status', true)->get();
-    $content  = view('sitemap', compact('colleges'));
-    return response($content, 200)->header('Content-Type', 'text/xml');
+    // 404 Error Page Preview
+    Route::get('/404', function () {
+        abort(404);
+    })->name('error.404');
 });
 
 /*
 |--------------------------------------------------------------------------
-| Admin Panel Routes (Protected by auth & AdminMiddleware)
+| Admin Panel Routes (Protected by Auth & AdminMiddleware)
 |--------------------------------------------------------------------------
-| Requires authenticated user with role: 'super_admin' or 'sub_admin'
 */
 Route::prefix('admin')
     ->name('admin.')
@@ -110,15 +108,30 @@ Route::prefix('admin')
         // Dashboard
         Route::get('/dashboard', [AdminDashboard::class, 'index'])->name('dashboard');
 
+        // Banners Manager
         Route::resource('banners', AdminBanner::class);
 
-        // Academic Resources (Streams, Courses, Specializations, Colleges)
+        // Partner Universities Marquee Strip
+        Route::resource('partners', AdminPartner::class);
+
+        // Director & CEO Messages
+        Route::resource('leadership-messages', AdminLeadershipMessage::class)->except(['show']);
+
+        // Center Logins
+        Route::resource('center-logins', AdminCenterLogin::class)->except(['show']);
+        Route::post('/center-logins/{center_login}/toggle-status', [AdminCenterLogin::class, 'toggleStatus'])->name('center-logins.toggleStatus');
+
+        // Master Settings
+        Route::get('/settings', [AdminSettings::class, 'index'])->name('settings.index');
+        Route::post('/settings', [AdminSettings::class, 'update'])->name('settings.update');
+
+        // Academic Resources
         Route::resource('streams', AdminStream::class);
         Route::resource('courses', AdminCourse::class);
         Route::resource('specializations', AdminSpecialization::class);
         Route::resource('colleges', AdminCollege::class);
 
-        // States & Cities Management
+        // Locations
         Route::get('/locations', [AdminLocation::class, 'index'])->name('locations.index');
         Route::post('/locations/states', [AdminLocation::class, 'storeState'])->name('locations.state.store');
         Route::put('/locations/states/{id}', [AdminLocation::class, 'updateState'])->name('locations.state.update');
