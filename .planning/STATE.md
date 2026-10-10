@@ -4,7 +4,7 @@
 **Current Milestone:** v1.1 — Public Guest College Review System (Without Login)  
 **Last Updated:** 2026-10-11  
 **Current Phase:** Phase 8 (Admin Moderation Suite & Pest Testing)  
-**Milestone Status:** Phase 7 Completed — Ready for Phase 8  
+**Milestone Status:** Phase 8 Planned — Ready for Execution  
 
 ---
 
@@ -15,20 +15,18 @@
 | **Phase 5** | Schema Migration & Eloquent Models (`college_reviews` guest fields & scopes) | Completed | Verified with 4 Pest tests |
 | **Phase 6** | Public Submission Controller & Security (Throttling, honeypot, store endpoint) | Completed | Verified with 6 Pest tests |
 | **Phase 7** | Public Frontend UI (Ratings summary, approved reviews list & star form) | Completed | Verified with 5 Pest tests |
-| **Phase 8** | Admin Moderation Suite & Pest Testing (Moderation panel & feature tests) | Ready to plan/execute | Next (Final phase of v1.1) |
+| **Phase 8** | Admin Moderation Suite & Pest Testing (Moderation panel & feature tests) | Planned | Ready to execute (Final phase of v1.1) |
 
 ---
 
 ## Active Context & Decisions
 - **Phase 5 Complete:** Schema and models enhanced (`email`, `ip_address`, `status` string, scopes, relations).
 - **Phase 6 Complete:** Form request, controller, route (`throttle:5,60`), honeypot, and Pest feature tests (100% green).
-- **Phase 7 Complete:**
-  - [CollegeController.php](file:///d:/GrowPec/GrowPec/app/Http/Controllers/CollegeController.php) eager loads `'approvedReviews'` and includes `'sec-reviews'` in left sticky `$quickNav`.
-  - [show.blade.php](file:///d:/GrowPec/GrowPec/resources/views/colleges/show.blade.php) includes ratings summary, star distribution meter, verified review cards, friendly empty state, and interactive 5-star review form with honeypot protection.
-  - Feature tests in [CollegeReviewViewTest.php](file:///d:/GrowPec/GrowPec/tests/Feature/CollegeReviewViewTest.php) passing 100% (5 tests, 27 assertions).
-  - Formatted with Laravel Pint.
+- **Phase 7 Complete:** Public detail page reviews section, rating summary, star form, and view feature tests (100% green).
+- **Phase 8 Plan:** Defined in [.planning/phases/08-admin-moderation-suite-and-pest-testing/PLAN.md](file:///d:/GrowPec/GrowPec/.planning/phases/08-admin-moderation-suite-and-pest-testing/PLAN.md).
+- **Target Components:** `ReviewManagerController`, admin routes `admin.reviews.*`, `admin/reviews/index.blade.php`, sidebar link in `admin/layout.blade.php`, and `tests/Feature/CollegeReviewModerationTest.php`.
 
 ---
 
 ## Next Steps
-Run `/gsd-plan-phase 8` to plan the final phase: Admin Moderation Panel (Approve, Reject, Delete pending reviews) and end-to-end moderation feature tests.
+Run `/gsd-execute-phase 8` to execute the Phase 8 admin moderation suite and feature tests.
