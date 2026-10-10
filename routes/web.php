@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\SpecializationManagerController as AdminSpecializ
 use App\Http\Controllers\Admin\StreamManagerController as AdminStream;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CollegeController;
+use App\Http\Controllers\CollegeReviewController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LeadController;
 use App\Http\Controllers\LeadershipMessagePageController;
@@ -54,6 +55,9 @@ Route::middleware(['web', CheckMaintenanceMode::class])->group(function () {
     Route::get('/colleges', [CollegeController::class, 'regularColleges'])->name('colleges.regular');
     Route::get('/online-colleges', [CollegeController::class, 'onlineColleges'])->name('colleges.online');
     Route::get('/college/{slug}', [CollegeController::class, 'show'])->name('college.show');
+    Route::post('/college/{slug}/reviews', [CollegeReviewController::class, 'store'])
+        ->name('college.reviews.store')
+        ->middleware('throttle:5,60');
 
     // Static Pages
     Route::get('/leadership-message/{leadershipMessage}', [LeadershipMessagePageController::class, 'show'])
