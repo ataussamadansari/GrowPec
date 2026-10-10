@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
             PartnerSeeder::class,                    // 4. Partner logos
             StreamCourseSpecializationSeeder::class, // 5. Streams, Courses & Specializations
             RegularCollegeSeeder::class,             // 6. Regular Campus Colleges & Universities
+            DistanceOnlineCollegeSeeder::class,      // 7. Distance & Online Universities
         ]);
     }
 }
