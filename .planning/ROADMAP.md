@@ -1,6 +1,6 @@
 # Project Roadmap: GrowPec Education Portal
 
-**Current Milestone:** v1.2 — Filament Admin Panel v3 Migration  
+**Current Milestone:** v1.2 — Filament Admin Panel v5 Migration  
 **Updated:** 2026-10-11  
 **Mode:** Agile / Structured  
 
@@ -11,7 +11,7 @@
 ```
 ┌────────────────────────────────────────────────────────┐
 │ Phase 9: Filament Installation, Auth & Panel Foundation│
-│ (composer require, AdminPanelProvider, FilamentUser)   │
+│ (composer require ^5.0, AdminPanelProvider, FilamentUser)│
 └───────────────────────────┬────────────────────────────┘
                             │
                             ▼
@@ -44,11 +44,10 @@
 ## Detailed Phase Breakdown
 
 ### Phase 9: Filament Installation, Auth & Panel Foundation
-- **Goal:** Install Filament v3 into Laravel 12, configure `AdminPanelProvider` under `/admin`, implement `FilamentUser` access policies, and establish the base admin panel foundation.
+- **Goal:** Install Filament v5 into Laravel 12, configure `AdminPanelProvider` under `/admin`, implement `FilamentUser` access policies, and establish the base admin panel foundation.
 - **Tasks:**
-  - Install `filament/filament:"^3.2"` via Composer.
-  - Run `php artisan filament:install --panels`.
-  - Configure `AdminPanelProvider` (`/admin` path, brand name, primary colors, navigation groups).
+  - Install `filament/filament:"^5.0"` via Composer.
+  - Scaffold and configure `AdminPanelProvider` (`/admin` path, brand name, primary colors, navigation groups).
   - Implement `FilamentUser` on `App\Models\User` with `canAccessPanel(Panel $panel): bool` checking `role` in `['super_admin', 'sub_admin']`.
   - Feature tests in Pest verifying panel authentication, role access control, and student/guest rejection.
 - **Success Criteria:** Admin users can log in to `/admin` and see the Filament dashboard; unauthenticated users and students are denied access.

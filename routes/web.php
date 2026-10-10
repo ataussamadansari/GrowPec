@@ -35,12 +35,9 @@ use Illuminate\Support\Facades\Route;
 | Authentication Routes (Always accessible so Admin is never locked out)
 |--------------------------------------------------------------------------
 */
-Route::middleware(['web', 'guest'])->group(function () {
-    Route::get('/admin/login', [AuthController::class, 'showLoginForm'])->name('login');
-    Route::post('/admin/login', [AuthController::class, 'login'])->name('login.submit');
-});
+Route::redirect('/login', '/admin/login')->name('login');
 
-Route::post('/admin/logout', [AuthController::class, 'logout'])->name('logout')->middleware(['web', 'auth']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware(['web', 'auth']);
 
 /*
 |--------------------------------------------------------------------------

@@ -1,6 +1,6 @@
-# Requirements: Milestone v1.2 — Filament Admin Panel v3 Migration
+# Requirements: Milestone v1.2 — Filament Admin Panel v5 Migration
 
-**Milestone:** v1.2 — Filament Admin Panel v3 Migration  
+**Milestone:** v1.2 — Filament Admin Panel v5 Migration  
 **Status:** Approved  
 **Version:** 1.2  
 **Date:** 2026-10-11  
@@ -10,12 +10,12 @@
 ## 1. Functional Requirements
 
 ### FR-1: Filament Installation, Authentication & Panel Foundation
-- **FR-1.1:** Require `filament/filament:"^3.2"` via Composer and initialize panels using `php artisan filament:install --panels`.
+- **FR-1.1:** Require `filament/filament:"^5.0"` via Composer and ensure assets are published via `php artisan filament:upgrade`.
 - **FR-1.2:** Configure `AdminPanelProvider` (`app/Providers/Filament/AdminPanelProvider.php`):
   - Path: `/admin`
   - Colors: Brand primary palette (GrowPec Navy `#002B67`, Emerald Green `#008A43`, Gold `#D9A400`).
   - Brand name: "GrowPec Administration".
-  - Login route & authentication guard: standard web auth guard.
+  - Login route & authentication: Native Filament v5 login page (`->login()`).
   - Discover resources, pages, and widgets automatically.
 - **FR-1.3:** Update `App\Models\User`:
   - Implement `Filament\Models\Contracts\FilamentUser`.
