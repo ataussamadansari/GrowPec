@@ -207,7 +207,20 @@ class College extends Model
     public function reviews(): HasMany
     {
         return $this->hasMany(CollegeReview::class)
-            ->where('status', true)
+            ->orderByDesc('created_at');
+    }
+
+    public function approvedReviews(): HasMany
+    {
+        return $this->hasMany(CollegeReview::class)
+            ->where('status', 'approved')
+            ->orderByDesc('created_at');
+    }
+
+    public function pendingReviews(): HasMany
+    {
+        return $this->hasMany(CollegeReview::class)
+            ->where('status', 'pending')
             ->orderByDesc('created_at');
     }
 
@@ -216,6 +229,18 @@ class College extends Model
     | Accessors
     |--------------------------------------------------------------------------
     */
+
+    public function getAverageRatingAttribute(): float
+    {
+        $avg = $this->approvedReviews()->avg('rating');
+
+        return $avg !== null ? (float) round((float) $avg, 1) : (float) ($this->rating ?? 0.0);
+    }
+
+    public function getApprovedReviewsCountAttribute(): int
+    {
+        return $this->approvedReviews()->count();
+    }
 
     public function getBannerUrlAttribute(): string
     {
