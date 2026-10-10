@@ -58,6 +58,7 @@
   - Create `StateResource` and `CityResource` with search, state relationship binding, and status toggles.
   - Create `StreamResource`, `CourseResource`, and `SpecializationResource` with auto-slug generation, hierarchical relationships, and duration/eligibility inputs.
   - Author Pest tests verifying CRUD actions for academic and geographic resources.
+- **Status:** Completed (20 tests passed, 66 assertions)
 - **Success Criteria:** Administrators can manage states, cities, streams, courses, and specializations via clean Filament forms and tables.
 
 ### Phase 11: Marketing, CRM & Review Moderation Resources

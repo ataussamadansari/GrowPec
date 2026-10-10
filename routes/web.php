@@ -127,10 +127,12 @@ Route::prefix('admin')
         Route::get('/settings', [AdminSettings::class, 'index'])->name('settings.index');
         Route::post('/settings', [AdminSettings::class, 'update'])->name('settings.update');
 
-        // Academic Resources
-        Route::resource('streams', AdminStream::class);
-        Route::resource('courses', AdminCourse::class);
-        Route::resource('specializations', AdminSpecialization::class);
+        // Academic Resources (Migrated to Filament v5 in Phase 10; legacy routes available at legacy/ until Phase 13)
+        Route::prefix('legacy')->group(function () {
+            Route::resource('streams', AdminStream::class);
+            Route::resource('courses', AdminCourse::class);
+            Route::resource('specializations', AdminSpecialization::class);
+        });
         Route::resource('colleges', AdminCollege::class);
 
         // Locations
