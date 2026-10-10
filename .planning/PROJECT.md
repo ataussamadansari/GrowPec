@@ -1,54 +1,38 @@
-# Project: GrowPec Distance & Online University Catalog
+# Project: GrowPec Education Portal
 
-**Initialized:** 2026-10-10  
-**Mode:** Agile / Fast  
+**Current Milestone:** v1.1 — Public Guest College Review System (Without Login)  
+**Updated:** 2026-10-10  
 **Framework:** Laravel 12 on PHP 8.2+  
 **Database:** MySQL (growpec_db)  
 
 ---
 
-## 1. Executive Summary
-GrowPec is an education portal empowering students across India to discover, compare, and enroll in top regular and distance/online colleges. This project cycle focuses on completing and auditing the **Distance & Online Universities Catalog** for 11 premier institutions:
-1. IIMT University Online, Meerut
-2. Bennett University Online, Greater Noida
-3. Teerthanker Mahaveer University Online (TMU), Moradabad
-4. SGT University Online, Gurugram
-5. Swami Vivekanand Subharti University Online & Distance, Meerut
-6. Mangalayatan University Online, Aligarh
-7. Chaudhary Charan Singh University Online & Distance (CCSU), Meerut
-8. Amity University Online, Noida
-9. Lovely Professional University Online (LPU), Phagwara
-10. Chandigarh University Online (CU), Mohali
-11. Shobhit University CDOE, Meerut
+## 1. Project Overview & Milestone v1.1 Context
+GrowPec is an education portal empowering students across India to discover, compare, and enroll in top regular and distance/online colleges. 
+
+In **Milestone v1.1**, GrowPec is introducing a **Public Guest Review System**. Previously, college reviews could only be created manually via backend seeding/admin. This milestone allows genuine visitors, current students, and alumni to submit ratings and feedback for any college directly on the public details page without requiring account registration, while preventing spam through honeypots and rate limiting, and ensuring quality through admin moderation.
 
 ---
 
-## 2. Core Objectives & Non-Negotiables
-- **100% Authentic Course & Fee Data:** Every seeded program must reflect real, authentic fee breakdowns (per semester, per year, total fee, exam fee), eligibility criteria, duration, and approved specializations.
-- **Accreditation Integrity:** Verified UGC-DEB, AICTE, NAAC, NIRF, and AIU accreditations.
-- **Data Completeness:** Comprehensive aggregate records including FAQs, alumni profiles, placement statistics, scholarships, and learning management system (LMS) highlights.
-- **Flawless UI Integration:** Clean display on public discovery routes (`/online-colleges` and `/college/{slug}`) without rendering glitches, double-escaping issues (e.g. `&amp;`), or broken filters.
+## 2. Milestone v1.1 Core Objectives
+- **Frictionless Submission:** Visitors and students can submit honest college reviews without logging in.
+- **Robust Anti-Spam & Security:** Invisible honeypot field, client IP logging, and strict rate throttling (e.g. max 5 reviews/hour/IP).
+- **Quality Moderation:** All incoming guest reviews enter a `pending` status by default and require administrator approval before appearing publicly.
+- **Authentic Presentation:** Public college profile pages (`/college/{slug}`) display verified/approved reviews alongside calculated average ratings and rating breakdowns.
+- **Admin Management:** Dedicated moderation interface in the Admin Panel to review, approve, reject, or delete submissions.
 
 ---
 
-## 3. Technology Stack Summary
-- **Backend:** Laravel 12 (`laravel/framework: ^12.0`, PHP 8.2+)
-- **ORM & DB:** Eloquent ORM with MySQL
-- **Frontend:** Vite 7, Blade templates, Bootstrap 5.3.3 + Bootstrap Icons
-- **Testing:** Pest 3.8 / PHPUnit 11
+## 3. Technology Stack & Architecture
+- **Backend:** Laravel 12, PHP 8.2+
+- **Security:** Laravel `ThrottleRequests` rate limiting, custom honeypot validation
+- **Database:** MySQL with Eloquent (`CollegeReview` model & relations)
+- **Frontend:** Blade templates, Bootstrap 5.3.3, SVG/Icon star rating widget
+- **Testing:** Pest 3.8 / PHPUnit 11 feature tests with `RefreshDatabase`
 - **Code Standards:** Laravel Pint (`vendor/bin/pint --format agent`)
 
 ---
 
-## 4. Current State & Baseline
-- 19 colleges are presently seeded in `colleges` (8 regular campus institutions, 11 online universities).
-- `DistanceOnlineCollegeSeeder.php` contains the initial definitions for all 11 target universities.
-- Detailed course fee matrices, specializations, and tab content need validation and enrichment against live university offerings.
-
----
-
-## 5. Success Metrics
-- [ ] All 11 distance/online universities have verified courses, fees, and specializations seeded.
-- [ ] College detail pages (`/college/{slug}`) render all tabs (About, Courses & Fees, Placements, Approvals, FAQs) with zero errors.
-- [ ] Filtering on `/online-colleges` operates smoothly across streams, degrees, and states.
-- [ ] Pest test suite validates online college listing and detail route accessibility.
+## 4. Milestone History
+- **v1.0 — Architecture Mapping & Distance/Online Catalog Planning:** Initialized codebase map (7 core documents) and foundational distance/online university definitions.
+- **v1.1 — Public Guest College Review System (Active):** Unauthenticated guest reviews with rate limiting, honeypots, public display, and admin moderation workflow.

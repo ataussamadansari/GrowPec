@@ -1,80 +1,104 @@
-# Requirements: Distance & Online University Catalog
+# Requirements: Milestone v1.1 — Public Guest College Review System
 
-**Project:** GrowPec Distance & Online University Catalog  
+**Milestone:** v1.1 — Public Guest College Review System (Without Login)  
 **Status:** Approved  
-**Version:** 1.0  
+**Version:** 1.1  
 **Date:** 2026-10-10  
 
 ---
 
 ## 1. Functional Requirements
 
-### FR-1: Seed Data Audit & Authentic Enrichment
-- **FR-1.1:** Audit existing data for the 11 target universities in `DistanceOnlineCollegeSeeder.php` (IIMT, Bennett, TMU, SGT, Subharti, Mangalayatan, CCSU, Amity, LPU, Chandigarh University, Shobhit).
-- **FR-1.2:** Ensure authentic details for every university: established year, official website, campus/digital headquarters, address, approvals, NAAC grade, NIRF rankings, and placement statistics.
+### FR-1: Database Schema & Eloquent Relationships
+- **FR-1.1:** Extend or migrate `college_reviews` schema to include:
+  - `college_id`: Foreign key pointing to `colleges.id` (cascade on delete).
+  - `user_id`: Nullable foreign key for backward compatibility with registered users.
+  - `reviewer_name`: String (required, max 100).
+  - `email`: String (required, valid email address format).
+  - `course`: String (nullable, course attended/enrolled).
+  - `rating`: Unsigned tiny integer (required, strictly 1 to 5).
+  - `review`: Text (required, minimum 15 characters, maximum 1500 characters).
+  - `ip_address`: String (nullable, storing submitter's IP for spam analysis).
+  - `status`: String/Enum (`pending`, `approved`, `rejected`) defaulting to `pending`.
+  - `is_verified`: Boolean defaulting to `false`.
+  - `timestamps`: Standard `created_at` and `updated_at`.
+- **FR-1.2:** Update `CollegeReview` model:
+  - Fillable properties: `college_id`, `reviewer_name`, `email`, `course`, `rating`, `review`, `ip_address`, `status`, `is_verified`.
+  - Casts: `rating` => integer, `is_verified` => boolean.
+  - Scopes:
+    - `scopeApproved($query)`: Filters where `status === 'approved'`.
+    - `scopePending($query)`: Filters where `status === 'pending'`.
+    - `scopeRejected($query)`: Filters where `status === 'rejected'`.
+- **FR-1.3:** Update `College` model:
+  - `reviews()`: HasMany relationship to `CollegeReview`.
+  - `approvedReviews()`: HasMany relationship returning only approved reviews.
+  - Helper / Attribute: `averageRating()` calculating dynamically from approved reviews with fallback to college base rating.
 
-### FR-2: Academic Course, Fee & Specialization Matrix
-- **FR-2.1:** Seed 100% authentic course offerings for each university (e.g. Online MBA, MCA, BCA, BBA, B.Com, M.Com, BA, MA, M.Sc).
-- **FR-2.2:** Populate accurate fee structures in `college_course_fees`:
-  - Per-semester fee
-  - Per-year fee
-  - Total course fee
-  - One-time registration / admission fee
-  - Exam fee per semester
-- **FR-2.3:** Map approved specializations under each course (e.g., MBA in Marketing, Finance, HR, IT, Analytics, Healthcare).
+### FR-2: Public Controller, Routing & Anti-Spam
+- **FR-2.1:** Public Route:
+  - `POST /college/{slug}/reviews` (named `college.reviews.store`) handled by `App\Http\Controllers\CollegeReviewController@store`.
+- **FR-2.2:** Form Request Validation (`StoreCollegeReviewRequest`):
+  - `reviewer_name`: `required|string|min:2|max:100`
+  - `email`: `required|email|max:150`
+  - `course`: `nullable|string|max:120`
+  - `rating`: `required|integer|min:1|max:5`
+  - `review`: `required|string|min:15|max:1500`
+  - Honeypot check: `website_hp` must be empty / absent.
+- **FR-2.3:** Anti-Spam & Rate Limiting:
+  - Honeypot: An invisible input field `website_hp` hidden via CSS. If filled, the request is silently treated as spam or rejected with a 422 error.
+  - Rate Limiting: Middleware throttling applied (e.g. `throttle:5,60` — max 5 submissions per 60 minutes per IP).
+  - IP Capture: Capture client IP via `$request->ip()` and save in `college_reviews.ip_address`.
+- **FR-2.4:** Response Handling:
+  - Store record with `status = 'pending'`.
+  - Flash success message: *"Thank you! Your review has been submitted and is awaiting administrator moderation."*
+  - Support both standard redirect back with session flash and AJAX JSON response (`{ success: true, message: '...' }`).
 
-### FR-3: Accreditation, Compliance & Approvals
-- **FR-3.1:** Verify UGC-DEB (Distance Education Bureau) approval status for all distance/online offerings.
-- **FR-3.2:** Record official regulatory affiliations (AICTE, AIU, NAAC grade with cycle, NIRF ranking where applicable).
+### FR-3: Public Frontend UI (College Detail Page)
+- **FR-3.1:** Display Reviews Section on `/college/{slug}`:
+  - Aggregate rating summary card (overall score out of 5.0, total approved reviews count, and star rating bar distribution).
+  - List of approved reviews showing reviewer name, course/degree (if provided), star rating, date, and review body.
+  - Empty state when no reviews exist yet (*"Be the first student to review this institution!"*).
+- **FR-3.2:** "Write a Review" Form:
+  - Clean card or modal layout with:
+    - Interactive 5-star rating selector with hover/click effects.
+    - Full Name input.
+    - Email address input (with helper note: *"Your email will remain private"*).
+    - Course / Branch input (optional).
+    - Detailed feedback textarea with character counter.
+    - Honeypot field (hidden from view).
+    - Submit button with loading state.
+  - Client-side and server-side validation error handling.
 
-### FR-4: Public Online Colleges Directory (`/online-colleges`)
-- **FR-4.1:** Display curated distance and online institutions filtered strictly by `college_mode = 'online'` or `is_online = true`.
-- **FR-4.2:** Provide functional multi-faceted filters:
-  - Stream (Management, IT, Commerce, Humanities, Science)
-  - Degree (Undergraduate, Postgraduate, Diploma, Certificate)
-  - State / City location
-  - Fee range slider
-  - Accreditation filter (NAAC A++, UGC-DEB)
-- **FR-4.3:** Ensure badge and ribbon indicators ("UGC-DEB Approved", "NAAC A+", "Online & Distance") render cleanly without HTML entity double-escaping.
-
-### FR-5: College Profile & Detail Page Experience (`/college/{slug}`)
-- **FR-5.1:** Render all overview cards: Key Highlights, Approvals & Accreditations, Admission Process, Scholarship Info, and LMS features.
-- **FR-5.2:** Render interactive tab navigation:
-  - "Overview": About, Quick Facts, Virtual Tour/Campus gallery.
-  - "Courses & Fees": Full list of online degrees with expandable syllabus and semester fee breakdown.
-  - "Placements": Top recruitment partners, average CTC, and career outcomes.
-  - "Reviews & FAQs": Student reviews and verified answers to frequently asked questions.
-
-### FR-6: Lead Capture & Inquiry Workflow
-- **FR-6.1:** Connect "Apply Now" and "Download Brochure" modal CTAs directly to `LeadController@store`.
-- **FR-6.2:** Associate leads with the specific college and online course being viewed.
+### FR-4: Admin Moderation Panel
+- **FR-4.1:** Admin Controller: `App\Http\Controllers\Admin\ReviewManagerController`.
+- **FR-4.2:** Admin Routes (`routes/web.php` under `admin.`):
+  - `GET /admin/reviews` (`admin.reviews.index`)
+  - `POST /admin/reviews/{id}/approve` (`admin.reviews.approve`)
+  - `POST /admin/reviews/{id}/reject` (`admin.reviews.reject`)
+  - `DELETE /admin/reviews/{id}` (`admin.reviews.destroy`)
+- **FR-4.3:** Admin Moderation View (`resources/views/admin/reviews/index.blade.php`):
+  - Filter tabs: Pending (with badge counter), Approved, Rejected, All.
+  - Data table showing College Name, Reviewer, Email, Course, Rating, Review excerpt, IP address, Submission Date, and Action buttons.
+  - One-click "Approve" (turns status to `approved`), "Reject" (turns status to `rejected`), and "Delete".
+  - Flash notifications on status changes.
 
 ---
 
 ## 2. Non-Functional Requirements
 
-### NFR-1: Data Integrity & Transactions
-- All seed operations must run within database transactions (`DB::transaction`) to prevent partial or corrupted catalog state.
-- Foreign key relations must be validated against `courses` and `specializations` taxonomy before insertion.
+### NFR-1: Security & Anti-Abuse
+- HTML text sanitization on review text (strip dangerous tags to prevent XSS).
+- Strict throttling and honeypot field to resist automated spam bots.
 
-### NFR-2: Test Automation & Regression Safety
-- Automated Pest tests must cover the `/online-colleges` directory and individual `/college/{slug}` profile routes.
-- Verify that seeding is idempotent and can re-run without throwing duplicate slug errors.
+### NFR-2: Test Automation
+- Pest feature tests in `tests/Feature/CollegeReviewTest.php`:
+  - Guests can submit valid review and status is set to `pending`.
+  - Submissions with invalid rating (>5 or <1) fail validation.
+  - Honeypot bot submissions are rejected.
+  - Rate limiting blocks excessive submissions from the same IP.
+  - Unapproved/pending reviews do NOT appear on the public college page.
+  - Approved reviews display on the public page and affect rating calculation.
+  - Admin can approve and reject reviews.
 
-### NFR-3: Code Quality & Style
-- All PHP code must adhere strictly to Laravel 12 conventions and pass Laravel Pint formatting (`vendor/bin/pint --format agent`).
-
----
-
-## 3. Requirement Traceability Matrix
-
-| Requirement | Target Component | Verification Method |
-|---|---|---|
-| FR-1 (Seeder Audit) | `database/seeders/DistanceOnlineCollegeSeeder.php` | Artisan `db:seed` execution & DB verification |
-| FR-2 (Courses & Fees) | `college_courses`, `college_course_fees` | Database query & UI Courses tab check |
-| FR-3 (Approvals) | `colleges.approvals`, `college_accreditations` | UI Badges & Accreditation inspection |
-| FR-4 (Online Directory) | `app/Http/Controllers/CollegeController.php`, `colleges/index.blade.php` | Browser navigation to `/online-colleges` |
-| FR-5 (Profile Experience) | `resources/views/colleges/show.blade.php` | Visual and functional inspection of `/college/{slug}` |
-| FR-6 (Lead Capture) | `LeadController@store`, inquiry modal | Pest Feature test & form submission |
-| NFR-2 (Test Automation) | `tests/Feature/OnlineCollegesTest.php` | Pest test execution (`php artisan test`) |
-| NFR-3 (Code Quality) | Entire codebase | `vendor/bin/pint --format agent` |
+### NFR-3: Code Quality
+- Strict PSR-12 and Laravel 12 formatting passing `vendor/bin/pint --format agent`.
