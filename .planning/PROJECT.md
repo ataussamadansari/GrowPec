@@ -1,38 +1,48 @@
 # Project: GrowPec Education Portal
 
-**Current Milestone:** v1.1 — Public Guest College Review System (Without Login)  
-**Updated:** 2026-10-10  
+**Current Milestone:** v1.2 — Filament Admin Panel v3 Migration  
+**Updated:** 2026-10-11  
 **Framework:** Laravel 12 on PHP 8.2+  
+**Admin Tool:** Filament Admin Panel v3 (`filament/filament:"^3.2"`)  
 **Database:** MySQL (growpec_db)  
 
 ---
 
-## 1. Project Overview & Milestone v1.1 Context
-GrowPec is an education portal empowering students across India to discover, compare, and enroll in top regular and distance/online colleges. 
+## 1. Project Overview & Milestone v1.2 Context
+GrowPec is an education portal empowering students across India to discover, compare, and enroll in top regular and distance/online colleges.
 
-In **Milestone v1.1**, GrowPec is introducing a **Public Guest Review System**. Previously, college reviews could only be created manually via backend seeding/admin. This milestone allows genuine visitors, current students, and alumni to submit ratings and feedback for any college directly on the public details page without requiring account registration, while preventing spam through honeypots and rate limiting, and ensuring quality through admin moderation.
+In **Milestone v1.2**, GrowPec is migrating its legacy custom Blade admin panel to **Filament Admin Panel v3**. The platform has grown to 33 Eloquent models, with `College` functioning as an 18-relation aggregate root, alongside Leads/CRM, Academics, Geography, and College Reviews. 
+
+Migrating to Filament v3 provides:
+- A standardized, reactive UI built on Livewire 3 and Tailwind CSS.
+- First-class RelationManagers for managing complex child entities (CollegeCourses, Accreditations, Placement Stats, Documents, etc.).
+- Integrated filtering, search, sorting, and bulk actions across all administrative data tables.
+- Inline row actions (e.g. 1-click Approve/Reject buttons for student reviews).
+- Role-based authorization via `FilamentUser` contracts and unified access control.
+- An extensible dashboard with real-time metric widgets.
 
 ---
 
-## 2. Milestone v1.1 Core Objectives
-- **Frictionless Submission:** Visitors and students can submit honest college reviews without logging in.
-- **Robust Anti-Spam & Security:** Invisible honeypot field, client IP logging, and strict rate throttling (e.g. max 5 reviews/hour/IP).
-- **Quality Moderation:** All incoming guest reviews enter a `pending` status by default and require administrator approval before appearing publicly.
-- **Authentic Presentation:** Public college profile pages (`/college/{slug}`) display verified/approved reviews alongside calculated average ratings and rating breakdowns.
-- **Admin Management:** Dedicated moderation interface in the Admin Panel to review, approve, reject, or delete submissions.
+## 2. Milestone v1.2 Core Objectives
+- **Filament Foundation & Auth:** Install Filament v3, configure `AdminPanelProvider` on path `/admin`, and enforce `FilamentUser` access policies based on user roles (`super_admin`, `sub_admin`).
+- **Academic & Geographic Masters:** Implement Filament Resources for `State`, `City`, `Stream`, `Course`, and `Specialization` with schema validation, auto-slug, and reactive dropdown lookups.
+- **Marketing, CRM & Review Moderation:** Implement `LeadResource` (with activity logs and status badges), `CollegeReviewResource` (with 1-click Approve/Reject table actions and status tabs), `BannerResource`, `PartnerResource`, `LeadershipMessageResource`, `CenterLoginResource`, and `MasterSettingResource`.
+- **College Aggregate Root & Relation Managers:** Build `CollegeResource` with multi-tab layout and dedicated RelationManagers for courses & fees, accreditations, facilities, placement stats, FAQs, galleries, scholarships, and documents.
+- **Dashboard & Legacy Cutover:** Provide overview stat widgets and safely deprecate/redirect legacy custom admin routes to Filament panel routes.
 
 ---
 
 ## 3. Technology Stack & Architecture
 - **Backend:** Laravel 12, PHP 8.2+
-- **Security:** Laravel `ThrottleRequests` rate limiting, custom honeypot validation
-- **Database:** MySQL with Eloquent (`CollegeReview` model & relations)
-- **Frontend:** Blade templates, Bootstrap 5.3.3, SVG/Icon star rating widget
-- **Testing:** Pest 3.8 / PHPUnit 11 feature tests with `RefreshDatabase`
+- **Admin Panel:** Filament v3 (`filament/filament:"^3.2"`)
+- **Database:** MySQL with Eloquent (33 domain models)
+- **Frontend / Public:** Blade templates, Bootstrap 5.3.3
+- **Testing:** Pest 3.8 / PHPUnit 11 with `RefreshDatabase`
 - **Code Standards:** Laravel Pint (`vendor/bin/pint --format agent`)
 
 ---
 
 ## 4. Milestone History
-- **v1.0 — Architecture Mapping & Distance/Online Catalog Planning:** Initialized codebase map (7 core documents) and foundational distance/online university definitions.
-- **v1.1 — Public Guest College Review System (Active):** Unauthenticated guest reviews with rate limiting, honeypots, public display, and admin moderation workflow.
+- **v1.0 — Architecture Mapping & Foundational Setup:** Codebase mapping and architecture foundation.
+- **v1.1 — Public Guest College Review System:** Unauthenticated visitor review submission, honeypot & throttling, public showcase, and moderation suite.
+- **v1.2 — Filament Admin Panel v3 Migration (Active):** Complete replacement of custom Blade admin controllers with Filament v3 Resources, RelationManagers, and Dashboard widgets.
