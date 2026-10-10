@@ -2247,6 +2247,141 @@
             z-index: 2000 !important;
         }
     }
+
+    /* ═══════════════════════════════════════════════════════════════════
+       14. STUDENT REVIEWS SECTION STYLING
+    ═══════════════════════════════════════════════════════════════════ */
+    .c-reviews-summary-card {
+        background: #F8FAFC;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        padding: 24px;
+        margin-bottom: 24px;
+    }
+
+    .c-rating-score-box {
+        text-align: center;
+        padding-right: 24px;
+        border-right: 1px solid var(--border);
+    }
+    @media (max-width: 767px) {
+        .c-rating-score-box {
+            padding-right: 0;
+            padding-bottom: 20px;
+            border-right: none;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 20px;
+        }
+    }
+
+    .c-rating-big-num {
+        font-size: 3rem;
+        font-weight: 800;
+        color: var(--navy);
+        line-height: 1;
+        letter-spacing: -0.03em;
+    }
+
+    .c-rating-meter-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 6px;
+        font-size: 0.8rem;
+        color: var(--muted);
+    }
+
+    .c-rating-meter-bar {
+        flex: 1;
+        height: 8px;
+        background: #E2E8F0;
+        border-radius: 999px;
+        overflow: hidden;
+    }
+
+    .c-rating-meter-fill {
+        height: 100%;
+        background: #F59E0B;
+        border-radius: 999px;
+    }
+
+    .c-review-card {
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        padding: 20px;
+        margin-bottom: 14px;
+        transition: transform .15s ease, box-shadow .15s ease;
+    }
+    .c-review-card:hover {
+        box-shadow: var(--shadow-sm);
+    }
+
+    .c-review-avatar {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--navy) 0%, #2563EB 100%);
+        color: #fff;
+        font-weight: 700;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .c-review-form-card {
+        background: #fff;
+        border: 1.5px solid #CBD5E1;
+        border-radius: var(--radius-md);
+        padding: 24px;
+        margin-top: 24px;
+        box-shadow: var(--shadow-sm);
+    }
+
+    /* Interactive Star Rating Widget */
+    .star-rating-widget {
+        display: inline-flex;
+        flex-direction: row-reverse;
+        align-items: center;
+        gap: 6px;
+    }
+    .star-rating-widget input {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+    }
+    .star-rating-widget label {
+        font-size: 1.85rem;
+        color: #CBD5E1;
+        cursor: pointer;
+        transition: color .15s ease, transform .15s ease;
+        line-height: 1;
+    }
+    .star-rating-widget label:hover,
+    .star-rating-widget label:hover ~ label,
+    .star-rating-widget input:checked ~ label {
+        color: #F59E0B;
+        transform: scale(1.08);
+    }
+    .c-rating-hint {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #F59E0B;
+        margin-left: 12px;
+    }
+
+    .c-honeypot-field {
+        position: absolute !important;
+        left: -9999px !important;
+        width: 1px !important;
+        height: 1px !important;
+        overflow: hidden !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+    }
 </style>
 @endpush
 
@@ -3224,6 +3359,262 @@
             </div>
             @endif
 
+            {{-- ══ 12.1. STUDENT REVIEWS & RATINGS ════════════════════ --}}
+            <div class="c-block" id="sec-reviews">
+                <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+                    <div>
+                        <h2 class="c-block__title mb-1">
+                            <i class="bi bi-star-half" style="color:var(--gold);"></i>
+                            Student Reviews & Ratings
+                        </h2>
+                        <p class="text-muted small mb-0">Genuine ratings and campus experiences shared by students and visitors</p>
+                    </div>
+                    <a href="#reviewFormCard" class="btn btn-outline-primary rounded-pill px-3 py-2 fw-semibold" style="font-size:.82rem;">
+                        <i class="bi bi-pencil-square me-1"></i> Write a Review
+                    </a>
+                </div>
+
+                {{-- Success Flash Alert --}}
+                @if(session('review_success'))
+                <div class="alert alert-success d-flex align-items-center gap-2 p-3 mb-4 rounded-3 border-0 shadow-sm" role="alert">
+                    <i class="bi bi-check-circle-fill text-success fs-5"></i>
+                    <div>
+                        <strong>Success!</strong> {{ session('review_success') }}
+                    </div>
+                </div>
+                @endif
+
+                {{-- Errors Alert --}}
+                @if($errors->has('reviewer_name') || $errors->has('email') || $errors->has('rating') || $errors->has('review') || $errors->has('website_hp'))
+                <div class="alert alert-danger p-3 mb-4 rounded-3 border-0 shadow-sm">
+                    <div class="fw-semibold mb-1"><i class="bi bi-exclamation-triangle-fill me-1"></i> Please check the form errors:</div>
+                    <ul class="mb-0 small ps-3">
+                        @foreach(['reviewer_name', 'email', 'rating', 'review', 'website_hp'] as $f)
+                            @error($f)
+                                <li>{{ $message }}</li>
+                            @enderror
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
+
+                @php
+                    $approvedList = $college->approvedReviews;
+                    $totalApproved = $approvedList->count();
+                    $avgScore = $totalApproved > 0 ? round($approvedList->avg('rating'), 1) : round($college->rating ?: 4.5, 1);
+                    $starCounts = [
+                        5 => $approvedList->where('rating', 5)->count(),
+                        4 => $approvedList->where('rating', 4)->count(),
+                        3 => $approvedList->where('rating', 3)->count(),
+                        2 => $approvedList->where('rating', 2)->count(),
+                        1 => $approvedList->where('rating', 1)->count(),
+                    ];
+                @endphp
+
+                {{-- Aggregate Metrics Card --}}
+                <div class="c-reviews-summary-card">
+                    <div class="row align-items-center">
+                        <div class="col-md-4">
+                            <div class="c-rating-score-box">
+                                <div class="c-rating-big-num">{{ number_format($avgScore, 1) }}</div>
+                                <div class="text-warning mb-1" style="font-size:1.15rem;">
+                                    @for($i = 1; $i <= 5; $i++)
+                                        @if($i <= floor($avgScore))
+                                            <i class="bi bi-star-fill"></i>
+                                        @elseif($i - 0.5 <= $avgScore)
+                                            <i class="bi bi-star-half"></i>
+                                        @else
+                                            <i class="bi bi-star text-muted" style="opacity:.4;"></i>
+                                        @endif
+                                    @endfor
+                                </div>
+                                <div class="text-muted small">
+                                    Based on <strong>{{ $totalApproved }}</strong> {{ Str::plural('approved review', $totalApproved) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="px-md-2">
+                                @foreach([5, 4, 3, 2, 1] as $star)
+                                    @php
+                                        $cnt = $starCounts[$star];
+                                        $pct = $totalApproved > 0 ? round(($cnt / $totalApproved) * 100) : 0;
+                                    @endphp
+                                    <div class="c-rating-meter-row">
+                                        <span style="min-width:42px;">{{ $star }} <i class="bi bi-star-fill text-warning"></i></span>
+                                        <div class="c-rating-meter-bar">
+                                            <div class="c-rating-meter-fill" style="width: {{ $pct }}%;"></div>
+                                        </div>
+                                        <span style="min-width:28px;text-align:right;">{{ $cnt }}</span>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        <div class="col-md-3 text-center text-md-end mt-3 mt-md-0">
+                            <a href="#reviewFormCard" class="btn btn-warning text-dark fw-bold rounded-pill px-4 py-2 w-100" style="font-size:.85rem;background:#F59E0B;border-color:#F59E0B;">
+                                <i class="bi bi-pencil-fill me-1"></i> Rate This College
+                            </a>
+                            <div class="text-muted mt-2" style="font-size:.72rem;">No login required</div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Approved Reviews List --}}
+                <div class="c-reviews-feed mb-4">
+                    @forelse($approvedList as $review)
+                    <div class="c-review-card">
+                        <div class="d-flex align-items-start gap-3">
+                            <div class="c-review-avatar">
+                                {{ strtoupper(substr($review->reviewer_name, 0, 1)) }}
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-1">
+                                    <div>
+                                        <h4 class="h6 mb-0 fw-bold text-dark d-inline-block">{{ $review->reviewer_name }}</h4>
+                                        @if($review->course)
+                                        <span class="badge bg-light text-secondary border ms-1" style="font-size:.7rem;font-weight:500;">
+                                            <i class="bi bi-mortarboard me-1"></i>{{ $review->course }}
+                                        </span>
+                                        @endif
+                                        <span class="badge bg-success-subtle text-success border border-success-subtle ms-1" style="font-size:.68rem;">
+                                            <i class="bi bi-shield-check me-1"></i>Verified Review
+                                        </span>
+                                    </div>
+                                    <span class="text-muted" style="font-size:.75rem;">
+                                        {{ $review->created_at ? $review->created_at->diffForHumans() : 'Recently' }}
+                                    </span>
+                                </div>
+                                <div class="text-warning mb-2" style="font-size:.85rem;">
+                                    @for($s = 1; $s <= 5; $s++)
+                                        <i class="bi {{ $s <= $review->rating ? 'bi-star-fill' : 'bi-star text-muted' }}" style="{{ $s > $review->rating ? 'opacity:.3;' : '' }}"></i>
+                                    @endfor
+                                    <span class="text-dark fw-semibold ms-1" style="font-size:.8rem;">{{ $review->rating }}.0</span>
+                                </div>
+                                <p class="text-secondary mb-0" style="font-size:.86rem;line-height:1.65;">
+                                    {{ $review->review }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    @empty
+                    <div class="text-center py-5 px-3 bg-light rounded-3 border border-dashed mb-3">
+                        <i class="bi bi-chat-heart text-muted" style="font-size:2.4rem;opacity:.6;"></i>
+                        <h5 class="fw-bold mt-3 mb-1 text-dark" style="font-size:1rem;">Be the First to Review</h5>
+                        <p class="text-muted small mb-3" style="max-width:440px;margin:0 auto;">
+                            No visitor reviews yet for {{ $college->name }}. Share your honest insights about academics, faculty, placements, or admission support!
+                        </p>
+                        <a href="#reviewFormCard" class="btn btn-sm btn-outline-primary rounded-pill px-4">
+                            <i class="bi bi-star me-1"></i> Write the First Review
+                        </a>
+                    </div>
+                    @endforelse
+                </div>
+
+                {{-- Write a Review Form Card --}}
+                <div class="c-review-form-card" id="reviewFormCard">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <div class="rounded-circle bg-warning-subtle text-warning d-flex align-items-center justify-content-center" style="width:36px;height:36px;">
+                            <i class="bi bi-pencil-fill"></i>
+                        </div>
+                        <div>
+                            <h3 class="h5 fw-bold mb-0 text-dark">Share Your Experience</h3>
+                            <div class="text-muted small">Help prospective students make informed admission decisions (No login required)</div>
+                        </div>
+                    </div>
+
+                    <form action="{{ route('college.reviews.store', $college->slug) }}" method="POST" id="collegeReviewForm">
+                        @csrf
+
+                        {{-- Invisible Honeypot Anti-Spam Field --}}
+                        <input type="text" name="website_hp" value="" class="c-honeypot-field" tabindex="-1" autocomplete="off">
+
+                        {{-- Interactive Star Rating --}}
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold small text-dark d-block mb-1">
+                                Overall Rating <span class="text-danger">*</span>
+                            </label>
+                            <div class="d-flex align-items-center">
+                                <div class="star-rating-widget" id="starRatingWidget">
+                                    <input type="radio" id="star5" name="rating" value="5" {{ old('rating') == 5 ? 'checked' : '' }} required>
+                                    <label for="star5" title="5 stars"><i class="bi bi-star-fill"></i></label>
+                                    <input type="radio" id="star4" name="rating" value="4" {{ old('rating') == 4 ? 'checked' : '' }}>
+                                    <label for="star4" title="4 stars"><i class="bi bi-star-fill"></i></label>
+                                    <input type="radio" id="star3" name="rating" value="3" {{ old('rating') == 3 ? 'checked' : '' }}>
+                                    <label for="star3" title="3 stars"><i class="bi bi-star-fill"></i></label>
+                                    <input type="radio" id="star2" name="rating" value="2" {{ old('rating') == 2 ? 'checked' : '' }}>
+                                    <label for="star2" title="2 stars"><i class="bi bi-star-fill"></i></label>
+                                    <input type="radio" id="star1" name="rating" value="1" {{ old('rating') == 1 ? 'checked' : '' }}>
+                                    <label for="star1" title="1 star"><i class="bi bi-star-fill"></i></label>
+                                </div>
+                                <span class="c-rating-hint" id="ratingHintText">Select star rating</span>
+                            </div>
+                            @error('rating')
+                            <div class="text-danger small mt-1">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold small text-dark">
+                                    Full Name <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" name="reviewer_name" class="form-control form-control-sm @error('reviewer_name') is-invalid @enderror"
+                                    value="{{ old('reviewer_name') }}" placeholder="e.g. Rahul Sharma" required minlength="2" maxlength="100">
+                                @error('reviewer_name')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold small text-dark">
+                                    Email Address <span class="text-danger">*</span>
+                                </label>
+                                <input type="email" name="email" class="form-control form-control-sm @error('email') is-invalid @enderror"
+                                    value="{{ old('email') }}" placeholder="e.g. rahul@example.com" required maxlength="150">
+                                <div class="form-text" style="font-size:.72rem;">Kept private, never published publicly</div>
+                                @error('email')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold small text-dark">
+                                    Course / Degree <span class="text-muted fw-normal">(Optional)</span>
+                                </label>
+                                <input type="text" name="course" class="form-control form-control-sm @error('course') is-invalid @enderror"
+                                    value="{{ old('course') }}" placeholder="e.g. MBA, B.Tech, Online MCA" maxlength="120">
+                                @error('course')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold small text-dark">
+                                Detailed Feedback & Review <span class="text-danger">*</span>
+                            </label>
+                            <textarea name="review" rows="4" class="form-control form-control-sm @error('review') is-invalid @enderror"
+                                placeholder="Describe faculty support, infrastructure, course curriculum, placements, LMS experience, or admission guidance..."
+                                required minlength="15" maxlength="1500">{{ old('review') }}</textarea>
+                            <div class="d-flex justify-content-between form-text" style="font-size:.72rem;">
+                                <span>Minimum 15 characters, maximum 1500 characters.</span>
+                            </div>
+                            @error('review')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 pt-2">
+                            <div class="d-flex align-items-center gap-2 text-muted" style="font-size:.74rem;">
+                                <i class="bi bi-shield-lock-fill text-primary fs-6"></i>
+                                <span>Reviews are moderated by administrators prior to public display to ensure authenticity.</span>
+                            </div>
+                            <button type="submit" class="btn btn-primary rounded-pill px-4 py-2 fw-semibold" id="submitReviewBtn" style="font-size:.85rem;">
+                                <i class="bi bi-send-fill me-1"></i> Submit Review
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
             {{-- ══ 13. RELATED COLLEGES ═══════════════════════════════ --}}
             @if($relatedColleges->count() > 0)
             <div class="c-block">
@@ -3465,6 +3856,30 @@
                         btn.innerHTML = '<i class="bi bi-send-fill me-1"></i> Get Free Counselling';
                         msg.innerHTML = `<div class="alert alert-danger py-2 small text-center rounded-pill mb-3">Something went wrong. Please try again.</div>`;
                     });
+            });
+        }
+
+        /* ── Interactive Star Rating Picker ───────────────────────────── */
+        const ratingWidget = document.getElementById('starRatingWidget');
+        const ratingHint = document.getElementById('ratingHintText');
+        if (ratingWidget && ratingHint) {
+            const hints = {
+                1: '1 Star — Poor',
+                2: '2 Stars — Fair',
+                3: '3 Stars — Good',
+                4: '4 Stars — Very Good',
+                5: '5 Stars — Excellent'
+            };
+            const radios = ratingWidget.querySelectorAll('input[type="radio"]');
+            radios.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    ratingHint.textContent = hints[this.value] || ('Selected ' + this.value + ' Stars');
+                    ratingHint.style.color = '#B45309';
+                });
+                if (radio.checked) {
+                    ratingHint.textContent = hints[radio.value] || '';
+                    ratingHint.style.color = '#B45309';
+                }
             });
         }
     });

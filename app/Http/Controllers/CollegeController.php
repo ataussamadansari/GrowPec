@@ -54,7 +54,7 @@ class CollegeController extends Controller
                 'collegeFaqs',
                 'gallery',
                 'alumni',
-                'reviews',
+                'approvedReviews',
             ])
             ->firstOrFail();
 
@@ -103,6 +103,9 @@ class CollegeController extends Controller
         if ($college->collegeFaqs->count() > 0) {
             $quickNav[] = ['id' => 'sec-faqs', 'title' => 'FAQs', 'icon' => 'bi-question-circle'];
         }
+
+        // Student Reviews (Always available so visitors can read & write reviews)
+        $quickNav[] = ['id' => 'sec-reviews', 'title' => 'Reviews', 'icon' => 'bi-star-half'];
 
         // Related colleges from same state
         $relatedColleges = College::where('id', '!=', $college->id)
