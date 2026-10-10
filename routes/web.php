@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\LeadManagerController as AdminLead;
 use App\Http\Controllers\Admin\LocationController as AdminLocation;
 use App\Http\Controllers\Admin\MasterSettingController as AdminSettings;
 use App\Http\Controllers\Admin\PartnerManagerController as AdminPartner;
+use App\Http\Controllers\Admin\ReviewManagerController as AdminReview;
 use App\Http\Controllers\Admin\SpecializationManagerController as AdminSpecialization;
 use App\Http\Controllers\Admin\StreamManagerController as AdminStream;
 use App\Http\Controllers\AuthController;
@@ -149,4 +150,10 @@ Route::prefix('admin')
         Route::get('/leads', [AdminLead::class, 'index'])->name('leads.index');
         Route::post('/leads/{id}/status', [AdminLead::class, 'updateStatus'])->name('leads.updateStatus');
         Route::get('/leads/export/csv', [AdminLead::class, 'exportCsv'])->name('leads.export');
+
+        // College Reviews Moderation
+        Route::get('/reviews', [AdminReview::class, 'index'])->name('reviews.index');
+        Route::post('/reviews/{review}/approve', [AdminReview::class, 'approve'])->name('reviews.approve');
+        Route::post('/reviews/{review}/reject', [AdminReview::class, 'reject'])->name('reviews.reject');
+        Route::delete('/reviews/{review}', [AdminReview::class, 'destroy'])->name('reviews.destroy');
     });

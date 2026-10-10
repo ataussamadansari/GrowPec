@@ -436,6 +436,18 @@
                     <span>Partner Universities</span>
                 </a>
 
+                <a class="sidebar-link {{ request()->routeIs('admin.reviews.*') ? 'active' : '' }}" aria-current="{{ request()->routeIs('admin.reviews.*') ? 'page' : 'false' }}"
+                    href="{{ route('admin.reviews.index') }}">
+                    <i class="bi bi-star-half"></i>
+                    <span>College Reviews</span>
+                    @php
+                        $pendingReviewsCount = \App\Models\CollegeReview::pending()->count();
+                    @endphp
+                    @if($pendingReviewsCount > 0)
+                        <span class="badge rounded-pill bg-warning text-dark ms-auto fw-bold" style="font-size: .65rem; padding: 3px 7px;">{{ $pendingReviewsCount }}</span>
+                    @endif
+                </a>
+
                 <a class="sidebar-link {{ request()->routeIs('admin.leadership-messages.*') ? 'active' : '' }}" aria-current="{{ request()->routeIs('admin.leadership-messages.*') ? 'page' : 'false' }}"
                     href="{{ route('admin.leadership-messages.index') }}">
                     <i class="bi bi-chat-quote-fill"></i>
