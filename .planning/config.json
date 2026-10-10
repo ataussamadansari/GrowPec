@@ -1,0 +1,11 @@
+{
+  "mode": "agile",
+  "workflow": {
+    "research": false,
+    "plan_check": true,
+    "test_verification": true
+  },
+  "branch": "main",
+  "project_name": "GrowPec Distance & Online University Catalog",
+  "created_at": "2026-10-10"
+}
