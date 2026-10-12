@@ -70,8 +70,9 @@
     - Status tabs / filters (`pending`, `approved`, `rejected`).
     - Quick 1-click **Approve** and **Reject** row action buttons.
     - Permanent delete action with confirmation modal.
-  - Create marketing resources: `BannerResource`, `PartnerResource`, `LeadershipMessageResource`, `CenterLoginResource`, and `MasterSettingResource` (or custom settings page).
-  - Author Pest tests verifying review moderation actions and lead management in Filament.
+  - Create marketing resources: `BannerResource`, `PartnerResource`, `LeadershipMessageResource`, `CenterLoginResource`, and `ManageSettings` page.
+  - Author Pest tests verifying review moderation actions, lead management, marketing CRUD, and settings in Filament.
+- **Status:** Completed (23 tests passed, 79 assertions; full suite 90 passed, 390 assertions)
 - **Success Criteria:** Administrators can moderate reviews with 1 click directly in the table, manage student leads, and update site banners and settings.
 
 ### Phase 12: College Aggregate Resource & Relation Managers

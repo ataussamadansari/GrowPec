@@ -110,32 +110,39 @@ Route::prefix('admin')
         // Dashboard
         Route::get('/dashboard', [AdminDashboard::class, 'index'])->name('dashboard');
 
-        // Banners Manager
-        Route::resource('banners', AdminBanner::class);
-
-        // Partner Universities Marquee Strip
-        Route::resource('partners', AdminPartner::class);
-
-        // Director & CEO Messages
-        Route::resource('leadership-messages', AdminLeadershipMessage::class)->except(['show']);
-
-        // Center Logins
-        Route::resource('center-logins', AdminCenterLogin::class)->except(['show']);
-        Route::post('/center-logins/{center_login}/toggle-status', [AdminCenterLogin::class, 'toggleStatus'])->name('center-logins.toggleStatus');
-
-        // Master Settings
-        Route::get('/settings', [AdminSettings::class, 'index'])->name('settings.index');
-        Route::post('/settings', [AdminSettings::class, 'update'])->name('settings.update');
-
-        // Academic Resources (Migrated to Filament v5 in Phase 10; legacy routes available at legacy/ until Phase 13)
+        // Legacy Admin Routes (Retained under legacy/ prefix until Phase 13 cutover)
         Route::prefix('legacy')->group(function () {
+            // Banners Manager
+            Route::resource('banners', AdminBanner::class);
+
+            // Partner Universities Marquee Strip
+            Route::resource('partners', AdminPartner::class);
+
+            // Director & CEO Messages
+            Route::resource('leadership-messages', AdminLeadershipMessage::class)->except(['show']);
+
+            // Center Logins
+            Route::resource('center-logins', AdminCenterLogin::class)->except(['show']);
+            Route::post('/center-logins/{center_login}/toggle-status', [AdminCenterLogin::class, 'toggleStatus'])->name('center-logins.toggleStatus');
+
+            // Academic Resources
             Route::resource('streams', AdminStream::class);
             Route::resource('courses', AdminCourse::class);
             Route::resource('specializations', AdminSpecialization::class);
+
+            // Leads CRM
+            Route::get('/leads', [AdminLead::class, 'index'])->name('leads.index');
+            Route::post('/leads/{id}/status', [AdminLead::class, 'updateStatus'])->name('leads.updateStatus');
+            Route::get('/leads/export/csv', [AdminLead::class, 'exportCsv'])->name('leads.export');
         });
+
+        // Master Settings (Retained until Phase 13)
+        Route::get('/settings', [AdminSettings::class, 'index'])->name('settings.index');
+        Route::post('/settings', [AdminSettings::class, 'update'])->name('settings.update');
+
         Route::resource('colleges', AdminCollege::class);
 
-        // Locations
+        // Locations (Retained for legacy Blade panel until Phase 13)
         Route::get('/locations', [AdminLocation::class, 'index'])->name('locations.index');
         Route::post('/locations/states', [AdminLocation::class, 'storeState'])->name('locations.state.store');
         Route::put('/locations/states/{id}', [AdminLocation::class, 'updateState'])->name('locations.state.update');
@@ -144,11 +151,6 @@ Route::prefix('admin')
         Route::post('/locations/cities', [AdminLocation::class, 'storeCity'])->name('locations.city.store');
         Route::put('/locations/cities/{id}', [AdminLocation::class, 'updateCity'])->name('locations.city.update');
         Route::delete('/locations/cities/{id}', [AdminLocation::class, 'destroyCity'])->name('locations.city.destroy');
-
-        // Leads CRM
-        Route::get('/leads', [AdminLead::class, 'index'])->name('leads.index');
-        Route::post('/leads/{id}/status', [AdminLead::class, 'updateStatus'])->name('leads.updateStatus');
-        Route::get('/leads/export/csv', [AdminLead::class, 'exportCsv'])->name('leads.export');
 
         // College Reviews Moderation
         Route::get('/reviews', [AdminReview::class, 'index'])->name('reviews.index');
