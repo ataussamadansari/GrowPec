@@ -90,6 +90,7 @@
     - `ScholarshipsRelationManager` & `DocumentsRelationManager`.
   - Table view with logo thumbnails, mode badges, status toggles, rating, and filtering by mode/state.
   - Author Pest tests verifying College resource and relation managers.
+- **Status:** Completed (15 tests passed, 75 assertions; full suite 105 passed, 465 assertions)
 - **Success Criteria:** Full lifecycle management of colleges and their 18 related entities in Filament.
 
 ### Phase 13: Dashboard Widgets, Legacy Cutover & Tests

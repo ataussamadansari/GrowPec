@@ -134,13 +134,14 @@ Route::prefix('admin')
             Route::get('/leads', [AdminLead::class, 'index'])->name('leads.index');
             Route::post('/leads/{id}/status', [AdminLead::class, 'updateStatus'])->name('leads.updateStatus');
             Route::get('/leads/export/csv', [AdminLead::class, 'exportCsv'])->name('leads.export');
+
+            // Colleges (Retained until Phase 13 cutover)
+            Route::resource('colleges', AdminCollege::class);
         });
 
         // Master Settings (Retained until Phase 13)
         Route::get('/settings', [AdminSettings::class, 'index'])->name('settings.index');
         Route::post('/settings', [AdminSettings::class, 'update'])->name('settings.update');
-
-        Route::resource('colleges', AdminCollege::class);
 
         // Locations (Retained for legacy Blade panel until Phase 13)
         Route::get('/locations', [AdminLocation::class, 'index'])->name('locations.index');
