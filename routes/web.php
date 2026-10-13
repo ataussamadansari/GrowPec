@@ -5,7 +5,6 @@ use App\Http\Controllers\Admin\CenterLoginManagerController as AdminCenterLogin;
 // Public Website Controllers
 use App\Http\Controllers\Admin\CollegeManagerController as AdminCollege;
 use App\Http\Controllers\Admin\CourseManagerController as AdminCourse;
-use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
 use App\Http\Controllers\Admin\LeadershipMessageController as AdminLeadershipMessage;
 use App\Http\Controllers\Admin\LeadManagerController as AdminLead;
 // Admin Panel Controllers
@@ -107,8 +106,8 @@ Route::prefix('admin')
     ->middleware(['web', 'auth', AdminMiddleware::class])
     ->group(function () {
 
-        // Dashboard
-        Route::get('/dashboard', [AdminDashboard::class, 'index'])->name('dashboard');
+        // Dashboard (Cutover to modern Filament Admin Panel at /admin)
+        Route::get('/dashboard', fn () => redirect('/admin'))->name('dashboard');
 
         // Legacy Admin Routes (Retained under legacy/ prefix until Phase 13 cutover)
         Route::prefix('legacy')->group(function () {
