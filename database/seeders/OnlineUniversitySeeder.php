@@ -231,10 +231,10 @@ class OnlineUniversitySeeder extends Seeder
     private function cleanExistingChildData(int $collegeId): void
     {
         $tables = [
-            'college_course_specializations', 'college_course_fees', 'college_courses',
+            'college_courses',
             'college_highlights', 'college_accreditations', 'college_admission_sections',
             'college_scholarships', 'college_placement_stats', 'college_recruiters',
-            'college_career_outcomes', 'college_facilities', 'college_learning_experiences',
+            'college_career_outcomes', 'college_facilities',
             'college_loan_options', 'college_faqs', 'college_quick_facts',
         ];
 
@@ -242,14 +242,7 @@ class OnlineUniversitySeeder extends Seeder
             if (! Schema::hasTable($table)) {
                 continue;
             }
-            if ($table === 'college_course_specializations' || $table === 'college_course_fees') {
-                $ccIds = DB::table('college_courses')->where('college_id', $collegeId)->pluck('id');
-                if ($ccIds->isNotEmpty()) {
-                    DB::table($table)->whereIn('college_course_id', $ccIds)->delete();
-                }
-            } else {
-                DB::table($table)->where('college_id', $collegeId)->delete();
-            }
+            DB::table($table)->where('college_id', $collegeId)->delete();
         }
     }
 
@@ -1666,8 +1659,6 @@ class OnlineUniversitySeeder extends Seeder
     private function insertCourses(int $collegeId, array $courses): void
     {
         $now = now();
-        $hasCcsTable = Schema::hasTable('college_course_specializations');
-        $hasCcfTable = Schema::hasTable('college_course_fees');
 
         foreach ($courses as $i => $c) {
             $courseId = $this->courseIds[$c['slug']] ?? null;
@@ -1714,38 +1705,7 @@ class OnlineUniversitySeeder extends Seeder
                 ]);
             }
 
-            $ccId = DB::table('college_courses')->insertGetId($ccPayload);
-
-            if ($hasCcsTable && $specId) {
-                DB::table('college_course_specializations')->insert([
-                    'college_course_id' => $ccId,
-                    'specialization_id' => $specId,
-                    'fee_amount' => $c['fee'],
-                    'fee_type' => $c['type'],
-                    'eligibility' => $c['eligibility'],
-                    'seats' => null,
-                    'entrance_exam' => 'Direct Admission / Merit Based',
-                    'sort_order' => $i,
-                    'status' => true,
-                    'created_at' => $now,
-                    'updated_at' => $now,
-                ]);
-            }
-
-            if ($hasCcfTable) {
-                DB::table('college_course_fees')->insert([
-                    'college_course_id' => $ccId,
-                    'fee_type' => $c['type'],
-                    'label' => 'Annual Tuition Fee',
-                    'amount' => $c['fee'],
-                    'academic_session' => '2025-26',
-                    'description' => 'Includes Online Examination & LMS Access',
-                    'sort_order' => 0,
-                    'status' => true,
-                    'created_at' => $now,
-                    'updated_at' => $now,
-                ]);
-            }
+            DB::table('college_courses')->insertGetId($ccPayload);
         }
     }
 

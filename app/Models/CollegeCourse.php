@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class CollegeCourse extends Model
 {
@@ -52,22 +51,6 @@ class CollegeCourse extends Model
     public function specialization(): BelongsTo
     {
         return $this->belongsTo(Specialization::class);
-    }
-
-    /**
-     * Per-specialization fee rows for this college course.
-     */
-    public function specializationFees(): HasMany
-    {
-        return $this->hasMany(CollegeCourseSpecialization::class)->orderBy('sort_order');
-    }
-
-    /**
-     * Detailed fee breakdown rows (per_year / per_semester / total_course).
-     */
-    public function fees(): HasMany
-    {
-        return $this->hasMany(CollegeCourseFee::class)->orderBy('sort_order');
     }
 
     /*

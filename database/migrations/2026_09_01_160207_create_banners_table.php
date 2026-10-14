@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::dropIfExists('banners');
-        
+
         Schema::create('banners', function (Blueprint $table) {
             $table->id();
             $table->string('title')->nullable(); // Optional banner label

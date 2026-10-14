@@ -174,11 +174,6 @@ class College extends Model
         return $this->hasMany(CollegeFacility::class)->orderBy('sort_order');
     }
 
-    public function learningExperiences(): HasMany
-    {
-        return $this->hasMany(CollegeLearningExperience::class)->orderBy('sort_order');
-    }
-
     public function loanOptions(): HasMany
     {
         return $this->hasMany(CollegeLoanOption::class)->orderBy('sort_order');

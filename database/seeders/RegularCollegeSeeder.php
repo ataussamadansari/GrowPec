@@ -3313,8 +3313,6 @@ class RegularCollegeSeeder extends Seeder
     private function cleanCollegeChildData(int $collegeId): void
     {
         $tables = [
-            'college_course_specializations',
-            'college_course_fees',
             'college_courses',
             'college_highlights',
             'college_accreditations',
@@ -3333,14 +3331,7 @@ class RegularCollegeSeeder extends Seeder
                 continue;
             }
 
-            if ($table === 'college_course_specializations' || $table === 'college_course_fees') {
-                $ccIds = DB::table('college_courses')->where('college_id', $collegeId)->pluck('id');
-                if ($ccIds->isNotEmpty()) {
-                    DB::table($table)->whereIn('college_course_id', $ccIds)->delete();
-                }
-            } else {
-                DB::table($table)->where('college_id', $collegeId)->delete();
-            }
+            DB::table($table)->where('college_id', $collegeId)->delete();
         }
     }
 
@@ -3382,64 +3373,6 @@ class RegularCollegeSeeder extends Seeder
             ];
 
             $ccId = (int) DB::table('college_courses')->insertGetId($ccData);
-
-            // Fee Records (Semester 1 & Semester 2 breakdown)
-            if (Schema::hasTable('college_course_fees')) {
-                $semFee = $c['sem_fee'] ?? ($c['fee'] / 2);
-
-                DB::table('college_course_fees')->insert([
-                    [
-                        'college_course_id' => $ccId,
-                        'fee_type' => 'Semester Tuition Fee',
-                        'label' => '1st Semester Tuition Fee',
-                        'amount' => $semFee,
-                        'academic_session' => '2025-2026',
-                        'description' => 'Semester 1 tuition fee payable at admission registration.',
-                        'sort_order' => 1,
-                        'status' => true,
-                        'created_at' => $now,
-                        'updated_at' => $now,
-                    ],
-                    [
-                        'college_course_id' => $ccId,
-                        'fee_type' => 'Semester Tuition Fee',
-                        'label' => '2nd Semester Tuition Fee',
-                        'amount' => $semFee,
-                        'academic_session' => '2025-2026',
-                        'description' => 'Semester 2 academic tuition fee.',
-                        'sort_order' => 2,
-                        'status' => true,
-                        'created_at' => $now,
-                        'updated_at' => $now,
-                    ],
-                    [
-                        'college_course_id' => $ccId,
-                        'fee_type' => 'Annual Tuition Fee',
-                        'label' => 'Total Annual Tuition Fee',
-                        'amount' => $c['fee'],
-                        'academic_session' => '2025-2026',
-                        'description' => 'Combined academic session annual tuition fee.',
-                        'sort_order' => 3,
-                        'status' => true,
-                        'created_at' => $now,
-                        'updated_at' => $now,
-                    ],
-                ]);
-            }
-
-            // Map specialization
-            if ($specId && Schema::hasTable('college_course_specializations')) {
-                DB::table('college_course_specializations')->insert([
-                    'college_course_id' => $ccId,
-                    'specialization_id' => $specId,
-                    'fee_amount' => $c['fee'],
-                    'fee_type' => $c['type'] ?? 'per_year',
-                    'eligibility' => $c['eligibility'],
-                    'status' => true,
-                    'created_at' => $now,
-                    'updated_at' => $now,
-                ]);
-            }
         }
     }
 

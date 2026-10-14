@@ -34,8 +34,6 @@ class StreamCourseSpecializationSeeder extends Seeder
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
         $tables = [
-            'college_course_specializations',
-            'college_course_fees',
             'college_courses',
             'college_highlights',
             'college_facilities',
@@ -51,8 +49,6 @@ class StreamCourseSpecializationSeeder extends Seeder
             'college_accreditations',
             'college_admission_sections',
             'college_career_outcomes',
-            'college_comparisons',
-            'college_learning_experiences',
             'college_loan_options',
             'colleges',
             'specializations',

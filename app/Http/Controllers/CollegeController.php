@@ -39,7 +39,6 @@ class CollegeController extends Controller
                 // Academic
                 'collegeCourses.course.stream',
                 'collegeCourses.specialization',
-                'collegeCourses.specializationFees.specialization',
 
                 // Content
                 'collegeHighlights',

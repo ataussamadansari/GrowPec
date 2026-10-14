@@ -808,34 +808,6 @@ class CollegeSeeder extends Seeder
                 'updated_at' => $now,
             ]);
 
-            if ($specId) {
-                DB::table('college_course_specializations')->insert([
-                    'college_course_id' => $ccId,
-                    'specialization_id' => $specId,
-                    'fee_amount' => $c['fee'],
-                    'fee_type' => $c['type'],
-                    'eligibility' => $c['eligibility'],
-                    'seats' => $c['seats'] ?? null,
-                    'entrance_exam' => $c['entrance'] ?? null,
-                    'sort_order' => $i,
-                    'status' => true,
-                    'created_at' => $now,
-                    'updated_at' => $now,
-                ]);
-            }
-
-            DB::table('college_course_fees')->insert([
-                'college_course_id' => $ccId,
-                'fee_type' => $c['type'],
-                'label' => 'Tuition Fee',
-                'amount' => $c['fee'],
-                'academic_session' => $c['session'] ?? '2025-26',
-                'description' => null,
-                'sort_order' => 0,
-                'status' => true,
-                'created_at' => $now,
-                'updated_at' => $now,
-            ]);
         }
     }
 

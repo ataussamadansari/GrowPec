@@ -2799,33 +2799,15 @@
                 $baseCourse = $courseEntries->first();
                 $courseModel = $baseCourse->course;
 
-                $programRows = collect();
-
-                foreach ($courseEntries as $entry) {
-                $specFees = $entry->specializationFees->where('status', true);
-
-                if ($specFees->count() > 0) {
-                foreach ($specFees as $sf) {
-                $programRows->push([
-                'specialization' => $sf->specialization?->name ?? $entry->specialization ?? 'General / Core',
-                'duration' => $entry->duration ?? $courseModel?->duration ?? 'N/A',
-                'eligibility' => $sf->eligibility ?? $entry->eligibility ?? '10+2 or Equivalent',
-                'fee_amount' => $sf->fee_amount,
-                'fee_type' => $sf->fee_type,
-                ]);
-                }
-                } else {
-                $programRows->push([
-                'specialization' => $entry->specialization?->name ?? $entry->specialization ?? 'General / Core',
-                'duration' => $entry->duration ?? $courseModel?->duration ?? 'N/A',
-                'eligibility' => $entry->eligibility ?? '10+2 or Equivalent',
-                'fee_amount' => $entry->fee_amount,
-                'fee_type' => $entry->fee_type,
-                ]);
-                }
-                }
-
-                $programRows = $programRows
+                $programRows = $courseEntries->map(function ($entry) use ($courseModel) {
+                    return [
+                        'specialization' => $entry->specialization?->name ?? $entry->specialization ?? 'General / Core',
+                        'duration' => $entry->duration ?? $courseModel?->duration ?? 'N/A',
+                        'eligibility' => $entry->eligibility ?? '10+2 or Equivalent',
+                        'fee_amount' => $entry->fee_amount,
+                        'fee_type' => $entry->fee_type,
+                    ];
+                })
                 ->filter(fn($row) => !empty($row['specialization']))
                 ->values();
 

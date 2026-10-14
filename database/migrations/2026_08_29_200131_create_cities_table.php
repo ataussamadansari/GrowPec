@@ -16,7 +16,7 @@ return new class extends Migration
             $table->boolean('is_popular')->default(false);
             $table->boolean('status')->default(true);
             $table->timestamps();
-            
+
             $table->unique(['state_id', 'name']);
         });
     }

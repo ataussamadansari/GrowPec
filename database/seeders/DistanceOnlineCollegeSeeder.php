@@ -7375,8 +7375,6 @@ All distance and online degrees awarded by Shobhit University carry complete sta
     private function cleanCollegeChildData(int $collegeId): void
     {
         $tables = [
-            'college_course_specializations',
-            'college_course_fees',
             'college_courses',
             'college_highlights',
             'college_accreditations',
@@ -7395,14 +7393,7 @@ All distance and online degrees awarded by Shobhit University carry complete sta
                 continue;
             }
 
-            if ($table === 'college_course_specializations' || $table === 'college_course_fees') {
-                $ccIds = DB::table('college_courses')->where('college_id', $collegeId)->pluck('id');
-                if ($ccIds->isNotEmpty()) {
-                    DB::table($table)->whereIn('college_course_id', $ccIds)->delete();
-                }
-            } else {
-                DB::table($table)->where('college_id', $collegeId)->delete();
-            }
+            DB::table($table)->where('college_id', $collegeId)->delete();
         }
     }
 
@@ -7445,64 +7436,6 @@ All distance and online degrees awarded by Shobhit University carry complete sta
             ];
 
             $ccId = (int) DB::table('college_courses')->insertGetId($ccData);
-
-            // Fee Records (Semester 1 & Semester 2 breakdown)
-            if (Schema::hasTable('college_course_fees')) {
-                $semFee = $c['sem_fee'] ?? ($c['fee'] / 2);
-
-                DB::table('college_course_fees')->insert([
-                    [
-                        'college_course_id' => $ccId,
-                        'fee_type' => 'Semester Tuition Fee',
-                        'label' => 'Semester 1 Tuition Fee',
-                        'amount' => $semFee,
-                        'academic_session' => '2025-2026',
-                        'description' => 'Semester 1 fee payable at registration.',
-                        'sort_order' => 1,
-                        'status' => true,
-                        'created_at' => $now,
-                        'updated_at' => $now,
-                    ],
-                    [
-                        'college_course_id' => $ccId,
-                        'fee_type' => 'Semester Tuition Fee',
-                        'label' => 'Semester 2 Tuition Fee',
-                        'amount' => $semFee,
-                        'academic_session' => '2025-2026',
-                        'description' => 'Semester 2 tuition fee.',
-                        'sort_order' => 2,
-                        'status' => true,
-                        'created_at' => $now,
-                        'updated_at' => $now,
-                    ],
-                    [
-                        'college_course_id' => $ccId,
-                        'fee_type' => 'Annual Tuition Fee',
-                        'label' => 'Total Annual Tuition Fee',
-                        'amount' => $c['fee'],
-                        'academic_session' => '2025-2026',
-                        'description' => 'Annual composite tuition fee including LMS & study material access.',
-                        'sort_order' => 3,
-                        'status' => true,
-                        'created_at' => $now,
-                        'updated_at' => $now,
-                    ],
-                ]);
-            }
-
-            // Map specialization
-            if (Schema::hasTable('college_course_specializations') && $specId) {
-                DB::table('college_course_specializations')->insert([
-                    'college_course_id' => $ccId,
-                    'specialization_id' => $specId,
-                    'fee_amount' => $c['fee'],
-                    'fee_type' => $c['type'] ?? 'per_year',
-                    'eligibility' => $c['eligibility'],
-                    'status' => true,
-                    'created_at' => $now,
-                    'updated_at' => $now,
-                ]);
-            }
         }
     }
 
