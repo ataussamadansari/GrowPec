@@ -1,6 +1,6 @@
 # Project: GrowPec Education Portal
 
-**Current State:** Shipped v1.2 — Filament Admin Panel v5 Migration  
+**Current State:** Active Milestone v1.3 — Architecture Cleanup & Schema Normalization  
 **Updated:** 2026-10-14  
 **Framework:** Laravel 12 on PHP 8.2+  
 **Admin Tool:** Filament Admin Panel v5 (`filament/filament:"^5.0"`)  
@@ -21,11 +21,21 @@ As of **Milestone v1.2**, the entire administrative back-office has been moderni
 
 ---
 
-## 2. Next Milestone Goals (v1.3 Candidate Topics)
-- **Advanced Lead Routing & Counselor Analytics:** Round-robin lead assignment, counselor performance metrics, and automated email/SMS alerts.
-- **Enhanced Search & Filter Optimization:** Algorithmic ranking, tuition fee sliders, and location-based nearby college matching.
-- **SEO & Performance Optimization:** Dynamic schema.org structured data, WebP asset conversion, and full page caching.
-- **Retirement of Legacy Admin Controllers:** Clean removal of archived `admin/legacy/` controllers and views.
+## 2. Active Milestone Goals: v1.3 Architecture Cleanup & Schema Normalization
+- **Phase 14: Controllers & Routes Cleanup:**
+  - Delete unused prototype `v0_CollegeController.php` and orphaned `StudentProfileController.php`.
+  - Remove legacy admin route block (`admin/legacy/*`, `admin/locations/*`, `admin/settings/*`, `admin/reviews/*`) from `routes/web.php`.
+  - Safely retire deprecated custom Blade admin controllers (`app/Http/Controllers/Admin/*`) and templates (`resources/views/admin/`).
+  - Modernize legacy test suites (`CenterLoginTest`, `ContactSettingsTest`, `CollegeReviewModerationTest`) to ensure continuous 100% test pass rate without relying on deleted routes.
+- **Phase 15: Model & Schema Normalization:**
+  - Drop redundant tables via migration: `college_comparisons`, `college_course_fees`, `college_course_specializations`, `college_learning_experiences`.
+  - Delete orphaned models (`CollegeComparison`, `CollegeCourseFee`, `CollegeCourseSpecialization`, `CollegeLearningExperience`).
+  - Consolidate highlights/learning experiences in `College.php` and streamline `CollegeCourse.php` & public views to read directly from `college_courses`.
+  - Delete duplicate alumni migration `2026_09_15_202122_repair_college_alumni_table.php` and sanitize seeders.
+- **Phase 16: End-to-End Verification, Code Hygiene & Documentation:**
+  - Full test suite execution (`php artisan test --compact`) ensuring 0 regressions.
+  - Laravel Pint code styling compliance (`vendor/bin/pint --format agent`).
+  - Milestone audit report and archival readiness.
 
 ---
 

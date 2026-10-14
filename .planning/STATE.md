@@ -1,31 +1,32 @@
 # Project State & Memory
 
 **Project:** GrowPec Education Portal  
-**Current Milestone:** Pending Initialization (Milestone v1.2 Archived)  
+**Current Milestone:** v1.3 — Architecture Cleanup & Schema Normalization  
 **Last Updated:** 2026-10-14  
-**Current Phase:** Ready for Milestone v1.3 Definition  
-**Milestone Status:** v1.2 Archived Successfully (116 passed tests, 510 assertions, 100% green, Pint clean)  
+**Current Phase:** Phase 14 (Controllers & Routes Cleanup)  
+**Milestone Status:** Initialized & Planned  
 
 ---
 
-## Active Milestone
-*No active milestone. Run `/gsd-new-milestone` to plan and initialize the next milestone (Milestone v1.3).*
+## Milestone v1.3 Phase Progress Tracker
+
+| Phase | Description | Status | Target |
+|---|---|---|---|
+| **Phase 14** | Controllers & Routes Cleanup (`v0_CollegeController`, `StudentProfile`, `admin/legacy/*`, test updates) | Planned | Dead controllers removed, legacy routes decommissioned |
+| **Phase 15** | Model & Schema Normalization (Drop redundant tables/models, consolidate highlights, fix migrations) | Pending | Clean DB schema, redundant entities removed |
+| **Phase 16** | Verification, Pint Hygiene & Milestone Audit (100% green tests, Pint compliance, milestone audit) | Pending | End-to-end verified with 0 regressions |
 
 ---
 
-## Archived Milestones
-- **v1.0 (Archived):** Project initialization, architecture mapping (`.planning/codebase/`), and catalog foundation.
-- **v1.1 (Archived):** Public guest college review system (Phases 5-8) with honeypot anti-spam, rate throttling, public show integration, admin moderation, and 100% passing Pest tests.
-- **v1.2 (Archived):** Filament Admin Panel v5 Migration (Phases 9-13): 11 Resources, 8 RelationManagers, 3 Dashboard Widgets, and complete cutover (116 passed tests, 510 assertions). See [v1.2 Roadmap Archive](.planning/milestones/v1.2-ROADMAP.md), [v1.2 Requirements Archive](.planning/milestones/v1.2-REQUIREMENTS.md), and [v1.2 Milestone Audit](.planning/v1.2-MILESTONE-AUDIT.md).
-
----
-
-## Suite Health
-- **Total Passing Tests:** 116 passed (510 assertions).
-- **Code Standards:** Clean Laravel Pint formatting.
-- **Regressions:** Zero.
+## Active Context & Decisions
+- **Milestone v1.2 Shipped & Archived:** Complete modernization of the administrative back-office to Filament Admin Panel v5 with 11 resources, 8 relation managers, and 3 dashboard widgets (116 passed tests, 510 assertions).
+- **Milestone v1.3 Initialized:** Focused on technical debt reduction, schema normalization, and codebase decluttering:
+  - Phase 14 will remove dead controller prototypes (`v0_CollegeController`, `StudentProfileController`), decommission `admin/legacy/*` routes and custom Blade admin controllers, and modernize older test files.
+  - Phase 15 will drop 4 redundant tables (`college_comparisons`, `college_course_fees`, `college_course_specializations`, `college_learning_experiences`), delete 4 orphaned models, eliminate duplicate migration `2026_09_15_202122_repair_college_alumni_table.php`, and streamline public course fee queries.
+  - Phase 16 will verify full test suite health, enforce Pint formatting, and complete the milestone audit.
+- **Suite Health:** 116 total passing tests (510 assertions). Clean Pint formatting.
 
 ---
 
 ## Next Steps
-Run `/gsd-new-milestone` to initiate the next milestone cycle.
+Run `/gsd-plan-phase 14` to generate the detailed execution plan for Controllers & Routes Cleanup.
