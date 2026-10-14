@@ -1,34 +1,16 @@
 <?php
 
 use App\Models\CenterLogin;
-use App\Models\User;
 
-test('guest cannot access admin center logins', function () {
-    $response = $this->get(route('admin.center-logins.index'));
-
-    $response->assertRedirect(route('login'));
-});
-
-test('admin can access center logins index page', function () {
-    $admin = User::factory()->create(['role' => 'super_admin']);
-
-    $response = $this->actingAs($admin)->get(route('admin.center-logins.index'));
-
-    $response->assertStatus(200);
-    $response->assertSee('Center Logins Manager');
-});
-
-test('admin can create a center login', function () {
-    $admin = User::factory()->create(['role' => 'super_admin']);
-
-    $response = $this->actingAs($admin)->post(route('admin.center-logins.store'), [
+test('center login can be created and persisted in database', function () {
+    $login = CenterLogin::create([
         'title' => 'Bangalore Center Portal',
         'url' => 'https://bangalore.growpec.com/login',
         'index' => 1,
-        'is_active' => '1',
+        'is_active' => true,
     ]);
 
-    $response->assertRedirect(route('admin.center-logins.index'));
+    expect($login->exists)->toBeTrue();
     $this->assertDatabaseHas('center_logins', [
         'title' => 'Bangalore Center Portal',
         'url' => 'https://bangalore.growpec.com/login',
@@ -37,21 +19,19 @@ test('admin can create a center login', function () {
     ]);
 });
 
-test('admin can update a center login', function () {
-    $admin = User::factory()->create(['role' => 'super_admin']);
+test('center login can be updated', function () {
     $login = CenterLogin::factory()->create([
         'title' => 'Old Title',
         'url' => 'https://old.com',
     ]);
 
-    $response = $this->actingAs($admin)->put(route('admin.center-logins.update', $login), [
+    $login->update([
         'title' => 'Updated Title',
         'url' => 'https://updated.com/login',
         'index' => 5,
-        'is_active' => '1',
+        'is_active' => true,
     ]);
 
-    $response->assertRedirect(route('admin.center-logins.index'));
     $this->assertDatabaseHas('center_logins', [
         'id' => $login->id,
         'title' => 'Updated Title',
@@ -60,27 +40,37 @@ test('admin can update a center login', function () {
     ]);
 });
 
-test('admin can delete a center login', function () {
-    $admin = User::factory()->create(['role' => 'super_admin']);
+test('center login can be deleted', function () {
     $login = CenterLogin::factory()->create();
 
-    $response = $this->actingAs($admin)->delete(route('admin.center-logins.destroy', $login));
+    $login->delete();
 
-    $response->assertRedirect();
     $this->assertDatabaseMissing('center_logins', [
         'id' => $login->id,
     ]);
 });
 
-test('admin can toggle active status of center login', function () {
-    $admin = User::factory()->create(['role' => 'super_admin']);
-    $login = CenterLogin::factory()->create(['is_active' => true]);
+test('center login active scope filters and orders correctly', function () {
+    CenterLogin::query()->delete();
 
-    $this->actingAs($admin)->post(route('admin.center-logins.toggleStatus', $login));
-    expect($login->fresh()->is_active)->toBeFalse();
+    $second = CenterLogin::factory()->create(['is_active' => true, 'index' => 2]);
+    $first = CenterLogin::factory()->create(['is_active' => true, 'index' => 1]);
+    $inactive = CenterLogin::factory()->create(['is_active' => false, 'index' => 0]);
 
-    $this->actingAs($admin)->post(route('admin.center-logins.toggleStatus', $login));
-    expect($login->fresh()->is_active)->toBeTrue();
+    $activeLogins = CenterLogin::active()->get();
+
+    expect($activeLogins->pluck('id')->all())->toEqual([$first->id, $second->id]);
+    expect($activeLogins->pluck('id')->contains($inactive->id))->toBeFalse();
+});
+
+test('center login caching and cache clearing work properly', function () {
+    CenterLogin::clearCache();
+
+    $login = CenterLogin::factory()->create(['is_active' => true, 'index' => 1]);
+    $cached = CenterLogin::getAllCached();
+    expect($cached->pluck('id')->contains($login->id))->toBeTrue();
+
+    CenterLogin::clearCache();
 });
 
 test('active center login is displayed on website header and footer', function () {

@@ -39,7 +39,7 @@
   - Remove legacy admin route block (`admin/legacy/*`, `admin/locations/*`, `admin/settings/*`, `admin/reviews/*`) from `routes/web.php`.
   - Deprecate/retire obsolete custom Blade admin controllers (`app/Http/Controllers/Admin/*`) and templates (`resources/views/admin/`).
   - Refactor or modernize legacy test files (`CenterLoginTest.php`, `ContactSettingsTest.php`, `CollegeReviewModerationTest.php`) so assertions run against current models and Filament panel resources.
-- **Status:** Planned
+- **Status:** Completed
 - **Success Criteria:** No dead controllers remain; `routes/web.php` contains only active routes; all tests pass without relying on legacy admin routes.
 
 ### Phase 15: Model & Schema Normalization

@@ -2,7 +2,6 @@
 
 use App\Models\College;
 use App\Models\CollegeReview;
-use App\Models\User;
 
 function makeModerationCollege(array $attributes = []): College
 {
@@ -17,7 +16,7 @@ function makeModerationCollege(array $attributes = []): College
     ], $attributes));
 }
 
-test('guest and non-admin student users cannot access admin review moderation suite', function () {
+test('college review defaults to pending status with correct helper checks', function () {
     $college = makeModerationCollege();
     $review = CollegeReview::create([
         'college_id' => $college->id,
@@ -25,39 +24,18 @@ test('guest and non-admin student users cannot access admin review moderation su
         'email' => 'guest@example.com',
         'rating' => 4,
         'review' => 'Great campus facilities and faculty.',
-        'status' => 'pending',
     ]);
 
-    // 1. Unauthenticated Guest
-    $this->get(route('admin.reviews.index'))
-        ->assertRedirect(route('login'));
-
-    $this->post(route('admin.reviews.approve', $review))
-        ->assertRedirect(route('login'));
-
-    $this->post(route('admin.reviews.reject', $review))
-        ->assertRedirect(route('login'));
-
-    $this->delete(route('admin.reviews.destroy', $review))
-        ->assertRedirect(route('login'));
-
-    // 2. Student Role User
-    $student = User::factory()->create(['role' => 'student']);
-
-    $this->actingAs($student)->get(route('admin.reviews.index'))
-        ->assertRedirect(route('login'))
-        ->assertSessionHas('error', 'Unauthorized access.');
-
-    $this->actingAs($student)->post(route('admin.reviews.approve', $review))
-        ->assertRedirect(route('login'))
-        ->assertSessionHas('error', 'Unauthorized access.');
+    expect($review->status)->toBe('pending')
+        ->and($review->isPending())->toBeTrue()
+        ->and($review->isApproved())->toBeFalse()
+        ->and($review->isRejected())->toBeFalse();
 });
 
-test('admin can access reviews index and view review counters and pending reviews by default', function () {
-    $admin = User::factory()->create(['role' => 'super_admin']);
+test('college review status scopes filter records accurately', function () {
     $college = makeModerationCollege();
 
-    CollegeReview::create([
+    $pending = CollegeReview::create([
         'college_id' => $college->id,
         'reviewer_name' => 'Pending Reviewer',
         'email' => 'pending@example.com',
@@ -67,7 +45,7 @@ test('admin can access reviews index and view review counters and pending review
         'status' => 'pending',
     ]);
 
-    CollegeReview::create([
+    $approved = CollegeReview::create([
         'college_id' => $college->id,
         'reviewer_name' => 'Approved Reviewer',
         'email' => 'approved@example.com',
@@ -77,7 +55,7 @@ test('admin can access reviews index and view review counters and pending review
         'status' => 'approved',
     ]);
 
-    CollegeReview::create([
+    $rejected = CollegeReview::create([
         'college_id' => $college->id,
         'reviewer_name' => 'Rejected Reviewer',
         'email' => 'rejected@example.com',
@@ -86,147 +64,52 @@ test('admin can access reviews index and view review counters and pending review
         'status' => 'rejected',
     ]);
 
-    $response = $this->actingAs($admin)->get(route('admin.reviews.index'));
+    $pendingIds = CollegeReview::pending()->pluck('id');
+    $approvedIds = CollegeReview::approved()->pluck('id');
+    $rejectedIds = CollegeReview::rejected()->pluck('id');
 
-    $response->assertStatus(200);
-    $response->assertSee('College Reviews Moderation');
-    $response->assertSee('Pending Reviewer');
-    // Approved & Rejected should not be in the default 'pending' tab list
-    $response->assertDontSee('Approved Reviewer');
-    $response->assertDontSee('Rejected Reviewer');
+    expect($pendingIds)->toContain($pending->id)
+        ->and($pendingIds)->not->toContain($approved->id)
+        ->and($pendingIds)->not->toContain($rejected->id);
 
-    // Counts should be passed to the view
-    $response->assertViewHas('pendingCount', 1);
-    $response->assertViewHas('approvedCount', 1);
-    $response->assertViewHas('rejectedCount', 1);
-    $response->assertViewHas('allCount', 3);
+    expect($approvedIds)->toContain($approved->id)
+        ->and($approvedIds)->not->toContain($pending->id)
+        ->and($approvedIds)->not->toContain($rejected->id);
+
+    expect($rejectedIds)->toContain($rejected->id)
+        ->and($rejectedIds)->not->toContain($pending->id)
+        ->and($rejectedIds)->not->toContain($approved->id);
 });
 
-test('admin can filter reviews by status tab', function () {
-    $admin = User::factory()->create(['role' => 'super_admin']);
+test('college review transitions across status values with verification', function () {
     $college = makeModerationCollege();
 
-    CollegeReview::create([
+    $review = CollegeReview::create([
         'college_id' => $college->id,
-        'reviewer_name' => 'Student Alfa',
-        'email' => 'alfa@example.com',
+        'reviewer_name' => 'Transition Student',
+        'email' => 'transition@example.com',
+        'course' => 'MCA',
         'rating' => 5,
-        'review' => 'Alpha pending review text.',
+        'review' => 'Transitioning status check.',
         'status' => 'pending',
     ]);
 
-    CollegeReview::create([
-        'college_id' => $college->id,
-        'reviewer_name' => 'Student Beta',
-        'email' => 'beta@example.com',
-        'rating' => 4,
-        'review' => 'Beta approved review text.',
-        'status' => 'approved',
-    ]);
+    // Transition to approved
+    $review->update(['status' => 'approved', 'is_verified' => true]);
+    expect($review->fresh()->isApproved())->toBeTrue()
+        ->and($review->fresh()->is_verified)->toBeTrue();
 
-    CollegeReview::create([
-        'college_id' => $college->id,
-        'reviewer_name' => 'Student Gamma',
-        'email' => 'gamma@example.com',
-        'rating' => 2,
-        'review' => 'Gamma rejected review text.',
-        'status' => 'rejected',
-    ]);
+    // Transition to rejected
+    $review->update(['status' => 'rejected']);
+    expect($review->fresh()->isRejected())->toBeTrue()
+        ->and($review->fresh()->isApproved())->toBeFalse();
 
-    // Check Approved tab
-    $approvedResponse = $this->actingAs($admin)->get(route('admin.reviews.index', ['status' => 'approved']));
-    $approvedResponse->assertStatus(200);
-    $approvedResponse->assertSee('Student Beta');
-    $approvedResponse->assertDontSee('Student Alfa');
-    $approvedResponse->assertDontSee('Student Gamma');
-
-    // Check Rejected tab
-    $rejectedResponse = $this->actingAs($admin)->get(route('admin.reviews.index', ['status' => 'rejected']));
-    $rejectedResponse->assertStatus(200);
-    $rejectedResponse->assertSee('Student Gamma');
-    $rejectedResponse->assertDontSee('Student Alfa');
-    $rejectedResponse->assertDontSee('Student Beta');
-
-    // Check All tab
-    $allResponse = $this->actingAs($admin)->get(route('admin.reviews.index', ['status' => 'all']));
-    $allResponse->assertStatus(200);
-    $allResponse->assertSee('Student Alfa');
-    $allResponse->assertSee('Student Beta');
-    $allResponse->assertSee('Student Gamma');
+    // Transition back to pending
+    $review->update(['status' => 'pending']);
+    expect($review->fresh()->isPending())->toBeTrue();
 });
 
-test('admin can search reviews by keyword across name, email, course, review text, and college', function () {
-    $admin = User::factory()->create(['role' => 'super_admin']);
-    $college = makeModerationCollege(['name' => 'Zenith University']);
-
-    CollegeReview::create([
-        'college_id' => $college->id,
-        'reviewer_name' => 'UniqueNameXYZ',
-        'email' => 'xyz@zenith.edu',
-        'course' => 'Biomedical Science',
-        'rating' => 5,
-        'review' => 'Groundbreaking laboratory facilities.',
-        'status' => 'pending',
-    ]);
-
-    CollegeReview::create([
-        'college_id' => $college->id,
-        'reviewer_name' => 'Regular Person',
-        'email' => 'person@regular.com',
-        'course' => 'Civil Engineering',
-        'rating' => 3,
-        'review' => 'Average campus infrastructure.',
-        'status' => 'pending',
-    ]);
-
-    // Search by reviewer name
-    $searchResponse = $this->actingAs($admin)->get(route('admin.reviews.index', ['status' => 'all', 'search' => 'UniqueNameXYZ']));
-    $searchResponse->assertStatus(200);
-    $searchResponse->assertSee('UniqueNameXYZ');
-    $searchResponse->assertDontSee('Regular Person');
-
-    // Search by course
-    $courseResponse = $this->actingAs($admin)->get(route('admin.reviews.index', ['status' => 'all', 'search' => 'Biomedical']));
-    $courseResponse->assertStatus(200);
-    $courseResponse->assertSee('UniqueNameXYZ');
-    $courseResponse->assertDontSee('Regular Person');
-});
-
-test('admin can filter reviews by college id', function () {
-    $admin = User::factory()->create(['role' => 'super_admin']);
-    $collegeA = makeModerationCollege(['name' => 'College Alpha']);
-    $collegeB = makeModerationCollege(['name' => 'College Beta']);
-
-    CollegeReview::create([
-        'college_id' => $collegeA->id,
-        'reviewer_name' => 'Alpha Reviewer',
-        'email' => 'alpha@test.com',
-        'rating' => 5,
-        'review' => 'Great experience at College Alpha.',
-        'status' => 'pending',
-    ]);
-
-    CollegeReview::create([
-        'college_id' => $collegeB->id,
-        'reviewer_name' => 'Beta Reviewer',
-        'email' => 'beta@test.com',
-        'rating' => 4,
-        'review' => 'Great experience at College Beta.',
-        'status' => 'pending',
-    ]);
-
-    $response = $this->actingAs($admin)->get(route('admin.reviews.index', [
-        'status' => 'all',
-        'college_id' => $collegeA->id,
-    ]));
-
-    $response->assertStatus(200);
-    $response->assertSee('Alpha Reviewer');
-    $response->assertDontSee('Beta Reviewer');
-});
-
-test('admin can approve a pending review and make it immediately visible on the public college page', function () {
-    $admin = User::factory()->create(['role' => 'super_admin']);
+test('approving a review makes it immediately visible on public college page', function () {
     $college = makeModerationCollege(['name' => 'Pinnacle Institute of Technology']);
 
     $review = CollegeReview::create([
@@ -244,9 +127,10 @@ test('admin can approve a pending review and make it immediately visible on the 
     $publicBefore->assertDontSee('Rohan Varma');
 
     // Approve the review
-    $response = $this->actingAs($admin)->post(route('admin.reviews.approve', $review));
-    $response->assertRedirect();
-    $response->assertSessionHas('success');
+    $review->update([
+        'status' => 'approved',
+        'is_verified' => true,
+    ]);
 
     // Database assertions
     $this->assertDatabaseHas('college_reviews', [
@@ -261,8 +145,7 @@ test('admin can approve a pending review and make it immediately visible on the 
     $publicAfter->assertSee('Phenomenal robotics labs');
 });
 
-test('admin can reject an approved review and remove it from the public college page', function () {
-    $admin = User::factory()->create(['role' => 'super_admin']);
+test('rejecting an approved review removes it from the public college page', function () {
     $college = makeModerationCollege(['name' => 'Sterling Commerce College']);
 
     $review = CollegeReview::create([
@@ -280,9 +163,7 @@ test('admin can reject an approved review and remove it from the public college 
         ->assertSee('Sneha Kapoor');
 
     // Reject the review
-    $response = $this->actingAs($admin)->post(route('admin.reviews.reject', $review));
-    $response->assertRedirect();
-    $response->assertSessionHas('success');
+    $review->update(['status' => 'rejected']);
 
     // Database assertion
     $this->assertDatabaseHas('college_reviews', [
@@ -295,8 +176,7 @@ test('admin can reject an approved review and remove it from the public college 
         ->assertDontSee('Sneha Kapoor');
 });
 
-test('admin can permanently delete a review', function () {
-    $admin = User::factory()->create(['role' => 'super_admin']);
+test('review can be permanently deleted', function () {
     $college = makeModerationCollege();
 
     $review = CollegeReview::create([
@@ -308,9 +188,7 @@ test('admin can permanently delete a review', function () {
         'status' => 'rejected',
     ]);
 
-    $response = $this->actingAs($admin)->delete(route('admin.reviews.destroy', $review));
-    $response->assertRedirect();
-    $response->assertSessionHas('success');
+    $review->delete();
 
     $this->assertDatabaseMissing('college_reviews', [
         'id' => $review->id,

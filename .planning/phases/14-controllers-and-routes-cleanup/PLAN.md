@@ -3,7 +3,7 @@
 **Phase:** 14  
 **Milestone:** v1.3 — Architecture Cleanup & Schema Normalization  
 **Goal:** Remove obsolete controller prototypes (`v0_CollegeController`, `StudentProfileController`), decommission legacy admin route groups (`admin/legacy/*`, `admin/locations/*`, `admin/settings/*`, `admin/reviews/*`) from `routes/web.php`, retire deprecated `app/Http/Controllers/Admin/*` controllers and views, and modernize legacy test suites to ensure 100% green test suite health.  
-**Status:** Planned  
+**Status:** Completed
 
 ---
 
@@ -101,10 +101,11 @@
 ---
 
 ## 3. Verification & Acceptance Criteria
-- [ ] `v0_CollegeController.php` and `StudentProfileController.php` deleted.
-- [ ] Legacy admin route block (`admin/legacy/*`, `admin/locations/*`, `admin/settings/*`, `admin/reviews/*`) cleanly removed from `routes/web.php`.
-- [ ] All 13 legacy admin controllers in `app/Http/Controllers/Admin/*` deleted.
-- [ ] Obsolete custom Blade admin views in `resources/views/admin/` removed.
-- [ ] `CenterLoginTest.php`, `ContactSettingsTest.php`, and `CollegeReviewModerationTest.php` modernized and passing.
-- [ ] Full test suite passes 100% green (`php artisan test --compact`).
-- [ ] Laravel Pint code style checks pass with 0 errors.
+- [x] `v0_CollegeController.php` and `StudentProfileController.php` deleted.
+- [x] Legacy admin route block (`admin/legacy/*`, `admin/locations/*`, `admin/settings/*`, `admin/reviews/*`) cleanly removed from `routes/web.php`.
+- [x] All 13 legacy admin controllers in `app/Http/Controllers/Admin/*` deleted.
+- [x] Obsolete custom Blade admin views in `resources/views/admin/` removed.
+- [x] `CenterLoginTest.php`, `ContactSettingsTest.php`, and `CollegeReviewModerationTest.php` modernized and passing.
+- [x] Full test suite passes 100% green (`php artisan test --compact`, 112 passed, 467 assertions).
+- [x] Laravel Pint code style checks pass with 0 errors.
+

@@ -1,19 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\BannerManagerController as AdminBanner;
-use App\Http\Controllers\Admin\CenterLoginManagerController as AdminCenterLogin;
 // Public Website Controllers
-use App\Http\Controllers\Admin\CollegeManagerController as AdminCollege;
-use App\Http\Controllers\Admin\CourseManagerController as AdminCourse;
-use App\Http\Controllers\Admin\LeadershipMessageController as AdminLeadershipMessage;
-use App\Http\Controllers\Admin\LeadManagerController as AdminLead;
-// Admin Panel Controllers
-use App\Http\Controllers\Admin\LocationController as AdminLocation;
-use App\Http\Controllers\Admin\MasterSettingController as AdminSettings;
-use App\Http\Controllers\Admin\PartnerManagerController as AdminPartner;
-use App\Http\Controllers\Admin\ReviewManagerController as AdminReview;
-use App\Http\Controllers\Admin\SpecializationManagerController as AdminSpecialization;
-use App\Http\Controllers\Admin\StreamManagerController as AdminStream;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CollegeController;
 use App\Http\Controllers\CollegeReviewController;
@@ -98,63 +85,13 @@ Route::middleware(['web', CheckMaintenanceMode::class])->group(function () {
 
 /*
 |--------------------------------------------------------------------------
-| Admin Panel Routes (Protected by Auth & AdminMiddleware)
+| Admin Panel Redirect Routes (Protected by Auth & AdminMiddleware)
 |--------------------------------------------------------------------------
 */
 Route::prefix('admin')
     ->name('admin.')
     ->middleware(['web', 'auth', AdminMiddleware::class])
     ->group(function () {
-
-        // Dashboard (Cutover to modern Filament Admin Panel at /admin)
+        // Dashboard Redirect to modern Filament Admin Panel at /admin
         Route::get('/dashboard', fn () => redirect('/admin'))->name('dashboard');
-
-        // Legacy Admin Routes (Retained under legacy/ prefix until Phase 13 cutover)
-        Route::prefix('legacy')->group(function () {
-            // Banners Manager
-            Route::resource('banners', AdminBanner::class);
-
-            // Partner Universities Marquee Strip
-            Route::resource('partners', AdminPartner::class);
-
-            // Director & CEO Messages
-            Route::resource('leadership-messages', AdminLeadershipMessage::class)->except(['show']);
-
-            // Center Logins
-            Route::resource('center-logins', AdminCenterLogin::class)->except(['show']);
-            Route::post('/center-logins/{center_login}/toggle-status', [AdminCenterLogin::class, 'toggleStatus'])->name('center-logins.toggleStatus');
-
-            // Academic Resources
-            Route::resource('streams', AdminStream::class);
-            Route::resource('courses', AdminCourse::class);
-            Route::resource('specializations', AdminSpecialization::class);
-
-            // Leads CRM
-            Route::get('/leads', [AdminLead::class, 'index'])->name('leads.index');
-            Route::post('/leads/{id}/status', [AdminLead::class, 'updateStatus'])->name('leads.updateStatus');
-            Route::get('/leads/export/csv', [AdminLead::class, 'exportCsv'])->name('leads.export');
-
-            // Colleges (Retained until Phase 13 cutover)
-            Route::resource('colleges', AdminCollege::class);
-        });
-
-        // Master Settings (Retained until Phase 13)
-        Route::get('/settings', [AdminSettings::class, 'index'])->name('settings.index');
-        Route::post('/settings', [AdminSettings::class, 'update'])->name('settings.update');
-
-        // Locations (Retained for legacy Blade panel until Phase 13)
-        Route::get('/locations', [AdminLocation::class, 'index'])->name('locations.index');
-        Route::post('/locations/states', [AdminLocation::class, 'storeState'])->name('locations.state.store');
-        Route::put('/locations/states/{id}', [AdminLocation::class, 'updateState'])->name('locations.state.update');
-        Route::delete('/locations/states/{id}', [AdminLocation::class, 'destroyState'])->name('locations.state.destroy');
-
-        Route::post('/locations/cities', [AdminLocation::class, 'storeCity'])->name('locations.city.store');
-        Route::put('/locations/cities/{id}', [AdminLocation::class, 'updateCity'])->name('locations.city.update');
-        Route::delete('/locations/cities/{id}', [AdminLocation::class, 'destroyCity'])->name('locations.city.destroy');
-
-        // College Reviews Moderation
-        Route::get('/reviews', [AdminReview::class, 'index'])->name('reviews.index');
-        Route::post('/reviews/{review}/approve', [AdminReview::class, 'approve'])->name('reviews.approve');
-        Route::post('/reviews/{review}/reject', [AdminReview::class, 'reject'])->name('reviews.reject');
-        Route::delete('/reviews/{review}', [AdminReview::class, 'destroy'])->name('reviews.destroy');
     });
