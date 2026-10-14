@@ -29,4 +29,4 @@
 ---
 
 ## Next Steps
-Run `/gsd-plan-phase 14` to generate the detailed execution plan for Controllers & Routes Cleanup.
+Run `/gsd-execute-phase 14` to execute Controllers & Routes Cleanup.
