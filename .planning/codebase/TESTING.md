@@ -11,15 +11,26 @@
 
 ```
 tests/
-├── Feature/                    # Integration & HTTP endpoint tests
-│   ├── CenterLoginTest.php     # Feature tests for partner center portal logins
-│   ├── ContactSettingsTest.php # Tests for system settings and contact configuration
-│   ├── ExampleTest.php         # Basic smoke test
-│   └── NotFoundPageTest.php    # Tests 404 response handling and view rendering
-├── Unit/                       # Isolated class and helper unit tests
-│   └── ExampleTest.php         # Basic PHPUnit unit test
-├── Pest.php                    # Global Pest configuration, custom expectations, helpers
-└── TestCase.php                # Base test case extending Orchestra/Laravel TestCase
+├── Feature/
+│   ├── CenterLoginTest.php                  # Partner center portal logins & role gating
+│   ├── CollegeDetailPageTest.php           # College public profile & show page tests
+│   ├── CollegeReviewModelTest.php          # Review model calculations & average rating tests
+│   ├── CollegeReviewModerationTest.php     # Admin review moderation & approval flows
+│   ├── CollegeReviewSubmissionTest.php     # Public guest review submissions, honeypot & throttling
+│   ├── CollegeReviewViewTest.php           # Review UI views and ratings breakdown rendering
+│   ├── ContactSettingsTest.php             # System settings and contact configurations
+│   ├── ExampleTest.php                     # Smoke test
+│   ├── FilamentAcademicGeographicTest.php  # Filament Streams, Courses, States, Cities resources
+│   ├── FilamentAdminAuthTest.php           # Super admin authentication and panel access gating
+│   ├── FilamentCollegeResourceTest.php     # Filament College CRUD & RelationManagers
+│   ├── FilamentDashboardWidgetsTest.php    # Stats overview and analytics charts in Filament
+│   ├── FilamentMarketingReviewCrmTest.php  # Filament Leads, Reviews, Banners, Partners, Settings
+│   ├── NotFoundPageTest.php                # 404 response handling and view rendering
+│   └── RegularCollegesCatalogTest.php      # 15 Regular colleges seeder verification & HTTP 200 checks
+├── Unit/                                   # Isolated helper tests
+│   └── ExampleTest.php
+├── Pest.php                                # Global Pest configuration, custom expectations, helpers
+└── TestCase.php                            # Base test case extending Laravel TestCase
 ```
 
 ## Database Handling in Tests

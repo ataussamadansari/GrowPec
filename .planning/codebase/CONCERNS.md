@@ -5,19 +5,17 @@
 ## Overview
 This document records identified technical debt, potential architectural risks, and areas identified for optimization within the GrowPec codebase.
 
-## 1. Schema & Migration Inconsistencies
+## 1. Schema & Migration Inconsistencies (Resolved)
+- **Status:** Resolved in Milestone v1.3 & v1.4.
+- **Actions Taken:** 
+  - Redundant tables (`college_loan_options`, `college_career_outcomes`, `college_gallery`, `college_documents`) safely dropped.
+  - Foreign key checks normalized cross-database using `Schema::disableForeignKeyConstraints()` and `Schema::enableForeignKeyConstraints()`.
 
-### Missing `college_quick_facts` Table Migration
-- **Observation:** `CollegeSeeder.php` attempts to seed `college_quick_facts`, but wraps execution in `if (Schema::hasTable('college_quick_facts'))`.
-- **Impact:** No migration file creates the `college_quick_facts` table. Any features depending on quick facts will silently skip inserting or querying unless the table is added via a proper migration.
-- **Recommendation:** Create a dedicated migration for `college_quick_facts` or retire unused references in the seeder.
-
-## 2. Legacy & Dead Code
-
-### Prototype Controller `v0_CollegeController.php`
-- **Observation:** `app/Http/Controllers/v0_CollegeController.php` remains in the controllers directory.
-- **Impact:** Unused code adds clutter and confusion during code searches and maintenance.
-- **Recommendation:** Archive or delete `v0_CollegeController.php` once verified that all necessary logic exists in `CollegeController.php`.
+## 2. Legacy & Dead Code (Resolved)
+- **Status:** Resolved in Milestone v1.2 & v1.3.
+- **Actions Taken:**
+  - Prototype controller `v0_CollegeController.php` deleted.
+  - 14 obsolete Blade admin controllers superseded by native Filament v5 Resources and RelationManagers.
 
 ## 3. Monolithic View Templates & UI Assets
 

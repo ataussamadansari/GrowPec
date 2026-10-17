@@ -8,8 +8,9 @@ GrowPec is an education portal and admissions discovery web application providin
 ## Core Runtime & Framework
 - **Runtime:** PHP 8.2+ (`^8.2`)
 - **Backend Framework:** Laravel 12 (`laravel/framework: ^12.0`)
-- **Architecture Style:** Monolithic Model-View-Controller (MVC) with Blade templating
-- **Application Structure:** Streamlined Laravel 12 structure with single configuration pipeline in `bootstrap/app.php`
+- **Admin Panel Framework:** Filament v5 (`filament/filament: 5.0`) & Livewire v4 (`livewire/livewire: ^4.4`)
+- **Architecture Style:** Monolithic Model-View-Controller (MVC) with Blade public templates and Filament v5 reactive admin dashboard
+- **Application Structure:** Streamlined Laravel 12 structure with single configuration pipeline in `bootstrap/app.php` and declarative panel providers in `app/Providers/Filament/`
 
 ## Development & Ecosystem Tooling
 - **Interactive Shell:** Laravel Tinker (`laravel/tinker: ^2.10.1`)
