@@ -1312,6 +1312,14 @@
                         </li>
 
                         <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('colleges.compare') ? 'active' : '' }}"
+                                href="{{ route('colleges.compare') }}">
+                                <i class="bi bi-intersect me-1 text-warning"></i>
+                                <span>Compare</span>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('contact') ? 'active' : '' }}"
                                 href="{{ route('contact') }}">
                                 <span>Contact Us</span>
@@ -1526,6 +1534,11 @@
                         <li>
                             <a href="{{ route('colleges.online') }}">
                                 <i class="bi bi-chevron-right"></i> Online Colleges
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('colleges.compare') }}">
+                                <i class="bi bi-chevron-right"></i> Compare Colleges
                             </a>
                         </li>
                         <li>

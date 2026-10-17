@@ -2,6 +2,7 @@
 
 // Public Website Controllers
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CollegeComparisonController;
 use App\Http\Controllers\CollegeController;
 use App\Http\Controllers\CollegeReviewController;
 use App\Http\Controllers\HomeController;
@@ -35,9 +36,10 @@ Route::middleware(['web', CheckMaintenanceMode::class])->group(function () {
     // Home Page
     Route::get('/', [HomeController::class, 'index'])->name('home');
 
-    // Colleges Listing & Details
+    // Colleges Listing, Comparison & Details
     Route::get('/colleges', [CollegeController::class, 'regularColleges'])->name('colleges.regular');
     Route::get('/online-colleges', [CollegeController::class, 'onlineColleges'])->name('colleges.online');
+    Route::get('/compare', [CollegeComparisonController::class, 'index'])->name('colleges.compare');
     Route::get('/college/{slug}', [CollegeController::class, 'show'])->name('college.show');
     Route::post('/college/{slug}/reviews', [CollegeReviewController::class, 'store'])
         ->name('college.reviews.store')
