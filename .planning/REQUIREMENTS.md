@@ -1,134 +1,103 @@
-# Milestone v1.4 Requirements: Regular College Catalog Expansion (Colleges 9–15)
+# Milestone v1.5 Requirements: College Comparison & Advanced Search Filters
 
-**Milestone:** v1.4 — Regular College Catalog Expansion  
+**Milestone:** v1.5 — College Comparison & Advanced Search Filters  
 **Status:** In Planning  
-**Created:** 2026-10-17  
+**Created:** 2026-10-18  
 
 ---
 
 ## 1. Overview & Objective
-GrowPec currently features 8 fully-detailed regular colleges in `database/seeders/RegularCollegeSeeder.php`:
-1. Graphic Era (Deemed to be University), Dehradun
-2. IIMT University, Meerut
-3. Bennett University, Greater Noida
-4. Metro College of Health Sciences & Research, Greater Noida
-5. Dr. K.N. Modi University / Institute of Engineering & Technology, Modinagar
-6. Galgotias University, Greater Noida
-7. Teerthanker Mahaveer University (TMU), Moradabad
-8. Amrapali University, Haldwani
+GrowPec has a rich, verified catalog of 30 premier institutions (15 regular on-campus universities and 15 distance/online universities) featuring over 720 courses, comprehensive fee structures, placement statistics, and facilities.
 
-The objective of Milestone v1.4 is to seed the remaining 7 institutions (Colleges 9–15) with 100% authentic, real-world data (degrees, specializations, verified annual/semester fees, real placement CTC metrics, authentic recruiter logos/lists, campus facilities, verified approvals, scholarships, and step-by-step admissions guide), execute database seeding, and verify end-to-end functionality via an automated Pest test suite.
+The objective of Milestone v1.5 is to:
+1. Provide a public **Side-by-Side College Comparison Tool (`/compare`)** that allows prospective students to benchmark 2 to 4 colleges across accreditations, fees, placements, ratings, amenities, and courses.
+2. Provide **Advanced Multi-Dimensional Search & Filtering** on regular and online listings (`/colleges` and `/online-colleges`) covering streams, specific degrees, states, cities, fee brackets, and ratings.
+3. Verify all features with comprehensive automated Pest feature tests.
 
 ---
 
-## 2. Functional Requirements: College Definitions
+## 2. Functional Requirements
 
-### REQ-REG-09: Maharishi University of Information Technology (MUIT), Noida
-- **Entity Identity:** `Maharishi University of Information Technology`, Noida, Uttar Pradesh (UP State Private University Act 31 of 2001, amended 2013).
-- **Approvals & Accreditations:** UGC (2f), AICTE, BCI, PCI.
-- **Academic Programs & Real Fees:**
-  - B.Tech CSE (AI & Data Science): 4 Years, ~₹1,40,000/yr.
-  - B.Tech CSE (Cyber Security): 4 Years, ~₹1,40,000/yr.
-  - BCA / MCA: 3 Years / 2 Years.
-  - BBA / MBA (Dual Specialization in Marketing, Finance, HR): ~₹1,20,000/yr.
-  - LL.B (3 Yrs) & B.A. LL.B (Hons, 5 Yrs): BCI-approved law curriculum.
-  - B.Pharm (4 Yrs) & D.Pharm (2 Yrs): PCI-approved pharmaceutical programs.
-- **Relational Data:** Highlights, Placement Stats (Highest ₹15 LPA, Avg ₹4.2 LPA), Top Recruiters (TCS, Infosys, Tech Mahindra, HCL, Genpact), Facilities (Transcendental Meditation & Yoga Center, High-Tech Labs), FAQs, Scholarships, Admission Guide.
+### REQ-CMP-01: Public College Comparison Route & Controller
+- **Route:** `GET /compare` (`CollegeController@compare` or dedicated `CollegeComparisonController@index`).
+- **Query Parameter:** `colleges` accepting a comma-separated list of college slugs or IDs (e.g. `colleges=galgotias-university,bennett-university,iimt-university`).
+- **College Eager Loading:** Eager loads in a single optimized query:
+  - `state`, `city`
+  - `courses.course.stream`
+  - `highlights`
+  - `facilities`
+  - `placementStats`
+  - `recruiters`
+  - `scholarships`
+  - `admissionSections`
+  - `approvedReviews`
+- **Slot Capacity:** Supports comparing between 2 and 4 colleges simultaneously.
+- **Empty / Incomplete State:** If fewer than 2 colleges are provided, renders a comparison launchpad with college selectors and popular comparison shortcuts (e.g. "Galgotias vs Bennett", "Graphic Era vs COER").
 
-### REQ-REG-10: Future University, Bareilly
-- **Entity Identity:** `Future University` (established from Future Institute of Engineering & Technology / Future Group of Institutions), Bareilly, Uttar Pradesh.
-- **Approvals & Accreditations:** UGC, AICTE, PCI, BCI, INC.
-- **Academic Programs & Real Fees:**
-  - B.Tech Computer Science & Engineering: 4 Years, ~₹1,15,000/yr.
-  - B.Tech AI & Data Science: 4 Years, ~₹1,15,000/yr.
-  - Polytechnic Diploma in Mechanical/Civil Engineering: 3 Years, ~₹45,000/yr.
-  - MBA / BBA: 2 Years / 3 Years.
-  - B.Pharm (4 Yrs) & D.Pharm (2 Yrs).
-  - B.Sc Nursing & GNM.
-- **Relational Data:** Highlights, Placement Stats (Highest ₹18 LPA, Avg ₹3.8 LPA), Top Recruiters (Infosys, Wipro, TCS, Axis Bank, Policybazaar, BYJU'S), Facilities, FAQs, Scholarships, Admission Guide.
+### REQ-CMP-02: Side-by-Side Comparison Matrix View (`resources/views/colleges/compare.blade.php`)
+- **Comparison Table Layout:** Responsive table layout with sticky college header cards and side-by-side metric rows:
+  - **Card Header:** College logo, full name, short name, location (city, state), type (Private/Deemed), established year, and remove button.
+  - **Accreditations & Approvals:** UGC, AICTE, NAAC grade badges, NIRF rank.
+  - **Ratings & Reviews:** Dynamic average star rating, total approved review count.
+  - **Tuition & Fees:** Minimum and maximum annual fee range across programs.
+  - **Placements:** Highest package, average package, top recruiters list with logos.
+  - **Courses & Programs:** Key degrees offered grouped by stream.
+  - **Campus & Facilities:** Infrastructure tags (Wi-Fi, Hostel, Sports, Hospital, Labs).
+  - **Scholarships:** Available concessions and eligibility summaries.
+  - **Lead Conversion CTAs:** Prominent "Apply / Enquire Now" button per college triggering the lead inquiry modal with `college_id` pre-populated.
 
-### REQ-REG-11: Haridwar University, Roorkee / Haridwar
-- **Entity Identity:** `Haridwar University` (formerly Roorkee College of Engineering - RCE), Bajuheri, Roorkee-Haridwar Canal Road, Uttarakhand.
-- **Approvals & Accreditations:** UGC, AICTE, PCI, UBTER.
-- **Academic Programs & Real Fees:**
-  - B.Tech CSE (AI & ML, Cloud Computing): 4 Years, ~₹1,35,000/yr.
-  - B.Tech Mechanical / Civil / Electrical Engineering: 4 Years, ~₹95,000/yr.
-  - Polytechnic Diploma in Engineering: 3 Years, ~₹50,000/yr.
-  - BCA / MCA: 3 Years / 2 Years.
-  - MBA / BBA: 2 Years / 3 Years.
-  - B.Sc (Hons) Agriculture: 4 Years, ICAR-aligned curriculum.
-  - B.Pharm & D.Pharm.
-- **Relational Data:** Highlights, Placement Stats (Highest ₹85 LPA International / ₹24 LPA Domestic, Avg ₹4.8 LPA), Top Recruiters (Microsoft, Amazon, Infosys, IBM, Capgemini, Tata Motors), Facilities, FAQs, Uttarakhand Domicile & Merit Scholarships, Admission Guide.
+### REQ-CMP-03: Dynamic College Switcher & Search in Matrix
+- In each comparison slot header:
+  - "Change College" dropdown or modal with live autocomplete search across all 30 published colleges.
+  - "Add Another College" slot when fewer than 4 colleges are compared.
+  - "Remove" action updating the URL and reloading or dynamically updating the comparison view.
 
-### REQ-REG-12: COER University, Roorkee
-- **Entity Identity:** `COER University` (founded in 1998 as College of Engineering Roorkee by Seth Roshan Lal Jain Trust; elevated to University in 2021), Vardhman Puram, Roorkee, Uttarakhand.
-- **Approvals & Accreditations:** UGC, AICTE, PCI, BCI.
-- **Academic Programs & Real Fees:**
-  - B.Tech Computer Science & Engineering: 4 Years, ~₹1,60,000/yr.
-  - B.Tech AI & ML / Data Science / Cyber Security: 4 Years, ~₹1,60,000/yr.
-  - B.Tech Mechanical / Civil / Electrical: 4 Years, ~₹1,10,000/yr.
-  - BCA / MCA: 3 Years / 2 Years.
-  - MBA / BBA / B.Com: 2 Years / 3 Years.
-  - B.Pharm & D.Pharm.
-  - B.Sc Nursing & GNM.
-  - B.A. LL.B (5 Yrs) & LL.B (3 Yrs).
-- **Relational Data:** Highlights (75+ acre heritage green campus, High Performance Computing labs), Placement Stats (Highest ₹44 LPA, Avg ₹5.5 LPA), Top Recruiters (Google, Amazon, Microsoft, Infosys, Cognizant, Wipro, Morgan Stanley), Facilities, FAQs, Scholarships, Admission Guide.
+### REQ-CMP-04: Comparison Tray & "Add to Compare" Quick Actions
+- Add an "Add to Compare" button/checkbox on:
+  - College cards in `resources/views/colleges/index.blade.php`.
+  - College profile hero in `resources/views/colleges/show.blade.php`.
+- Client-side floating dock / comparison bar appearing when colleges are selected, showing selected college icons and a "Compare (N)" button linking to `/compare?colleges=...`.
 
-### REQ-REG-13: HRIT Group of Institutions, Ghaziabad
-- **Entity Identity:** `HRIT Group of Institutions` (Harish Chandra Ram Kali Charitable Trust, est. 2005), 7th Km Milestone, Delhi-Meerut Road, Morta, Ghaziabad, Uttar Pradesh.
-- **Approvals & Accreditations:** UGC, AICTE, PCI, BCI, INC, affiliated with AKTU & CCSU.
-- **Academic Programs & Real Fees:**
-  - B.Tech CSE: 4 Years, ~₹1,05,000/yr.
-  - B.Tech AI & Data Science: 4 Years, ~₹1,05,000/yr.
-  - B.Tech Mechanical / ECE / Civil: 4 Years, ~₹85,000/yr.
-  - Polytechnic Diploma in Engineering: 3 Years, ~₹45,000/yr.
-  - BCA / MCA / BBA / MBA: Standard affiliated fee slabs.
-  - B.Pharm (4 Yrs) & D.Pharm (2 Yrs): NBA-accredited pharmacy division.
-  - BHMCT (Hotel Management): 4 Years.
-- **Relational Data:** Highlights, Placement Stats (Highest ₹15 LPA, Avg ₹4.0 LPA), Top Recruiters (Infosys, TCS, Wipro, Tech Mahindra, Samsung, Lupin, Sun Pharma), Facilities, FAQs, Scholarships, Admission Guide.
+### REQ-FLT-01: Multi-Faceted Filter Controls in Listings (`colleges/index.blade.php`)
+- **Stream Filter:** Filter colleges by academic stream (Engineering, Management, Computer Applications, Medical/Healthcare, etc.).
+- **Degree / Course Filter:** Filter by specific degree programs (B.Tech, MBA, BCA, MCA, B.Pharm, etc.).
+- **Location Filter:** State dropdown with cascading City dropdown.
+- **Fee Range Brackets:**
+  - Under ₹1,00,000 / year
+  - ₹1,00,000 – ₹3,00,000 / year
+  - ₹3,00,000 – ₹5,00,000 / year
+  - Above ₹5,00,000 / year
+- **Sorting Options:**
+  - `rating_desc` (Highest Rated First)
+  - `fees_asc` (Lowest Annual Fee First)
+  - `fees_desc` (Highest Annual Fee First)
+  - `name_asc` (A to Z)
+  - `popular` (Default featured)
+- **Active Filter Chips:** Visual tags above results showing applied filters with 1-click removal and a "Clear All Filters" button.
 
-### REQ-REG-14: SRM Institute of Science and Technology (NCR Campus), Modinagar, Ghaziabad
-- **Entity Identity:** `SRM Institute of Science and Technology` (Delhi-NCR Campus), Delhi-Meerut Road, Modinagar, Ghaziabad, Uttar Pradesh (Deemed to be University under Section 3 of UGC Act).
-- **Approvals & Accreditations:** UGC, AICTE, NAAC A++ (Highest Grade), NBA, MHRD Category 1.
-- **Academic Programs & Real Fees:**
-  - B.Tech Computer Science & Engineering: 4 Years, ~₹3,00,000/yr.
-  - B.Tech CSE with AI & ML / Data Science / Cloud Computing: 4 Years, ~₹3,00,000/yr.
-  - B.Tech ECE / Mechanical: 4 Years, ~₹1,75,000/yr.
-  - BCA / MCA: 3 Years / 2 Years.
-  - MBA (Dual Specialization): 2 Years, ~₹2,25,000/yr.
-  - BBA: 3 Years, ~₹1,15,000/yr.
-  - B.Pharm & M.Pharm.
-  - Hotel Management & Catering Technology: 3 Years.
-- **Relational Data:** Highlights (NAAC A++, 25-acre lush NCR campus, centralized placements with main Kattankulathur campus), Placement Stats (Highest ₹50 LPA domestic / ₹1.02 Crore international, Avg ₹7.7 LPA), Top Recruiters (Amazon, Microsoft, Adobe, Cisco, Google, TCS Digital, Cognizant, Optum), Facilities, FAQs, Founder's & Merit Scholarships, Admission Guide.
+### REQ-FLT-02: Controller Query Handling & Pagination
+- Refactor `CollegeController@regularColleges` and `CollegeController@onlineColleges` with clean, composable Eloquent query scopes.
+- Ensure pagination preserves active query strings (`$colleges->appends(request()->query())`).
+- Include accurate live result count indicator ("Showing 12 Colleges matching your criteria").
 
-### REQ-REG-15: Noida International University (NIU), Greater Noida
-- **Entity Identity:** `Noida International University`, Yamuna Expressway, Greater Noida, Uttar Pradesh (UP State Private University Act).
-- **Approvals & Accreditations:** UGC (2f), AICTE, BCI, PCI, INC, Council of Architecture (CoA), National Medical Commission (NMC).
-- **Academic Programs & Real Fees:**
-  - B.Tech CSE (AI & ML, Data Science): 4 Years, ~₹1,50,000/yr.
-  - B.Tech Mechanical / Civil / Electrical: 4 Years, ~₹1,10,000/yr.
-  - BCA / MCA: 3 Years / 2 Years.
-  - BBA / MBA: 3 Years / 2 Years.
-  - MBBS: 5.5 Years (affiliated with 750+ bed NIIMS Super-Specialty Hospital).
-  - B.Sc Nursing & GNM.
-  - B.Pharm & D.Pharm.
-  - B.A. LL.B / BBA LL.B (5 Yrs) & LL.M (1 Yr).
-  - B.Arch (5 Yrs, CoA-approved).
-- **Relational Data:** Highlights (75-acre campus on Yamuna Expressway, NIIMS hospital, 30+ foreign university collaborations), Placement Stats (Highest ₹32 LPA, Avg ₹5.2 LPA), Top Recruiters (Amazon, TCS, Infosys, Cognizant, Apollo Hospitals, Max Healthcare, HDFC Bank), Facilities, FAQs, Chancellor's Scholarships, Admission Guide.
+### REQ-TST-01: Automated Pest Feature Testing Suite
+- Create `tests/Feature/CollegeComparisonTest.php`:
+  - Test `/compare` with 2 valid colleges returns HTTP 200 and renders comparison matrix.
+  - Test `/compare` with 3 and 4 colleges.
+  - Test empty `/compare` renders launcher with selection prompt.
+  - Test invalid slug handling.
+  - Test lead modal trigger attributes on comparison page.
+- Create `tests/Feature/AdvancedCollegeSearchFilterTest.php`:
+  - Test filtering regular colleges by stream returns expected records.
+  - Test filtering by course, state, city, and fee range.
+  - Test sorting parameters (`rating_desc`, `fees_asc`, `name_asc`).
+  - Test pagination links retain filter query parameters.
+- Achieve 100% green test suite (135+ passing tests) with 0 regressions.
 
 ---
 
-## 3. Structural & Execution Requirements
-
-### REQ-SEED-01: Idempotent Seeder Architecture
-- `RegularCollegeSeeder` must execute without duplicate key violations or constraint failures.
-- State and City foreign keys must resolve accurately (using existing records or creating missing cities/states dynamically).
-- All 15 colleges must be included in `collegeList()` and processed by `seedSingleCollege()`.
-
-### REQ-TEST-01: Comprehensive Pest Test Suite
-- Create feature test `tests/Feature/RegularCollegesComprehensiveSeederTest.php` asserting:
-  1. `RegularCollegeSeeder` seeds exactly 15 colleges into `colleges` table.
-  2. All 15 colleges possess at least 6+ active course offerings with valid fees and eligibility.
-  3. Relational child records exist for all 15 colleges (highlights, facilities, FAQs, placement stats, recruiters, scholarships, admission sections).
-  4. Public profile route `/college/{slug}` returns HTTP 200 for all 15 colleges.
-- Existing 118 tests in the suite continue to pass with 0 regressions.
+## 3. Non-Functional Requirements (NFR)
+- **NFR-1 (Performance):** Comparison view must load in < 250ms by avoiding N+1 queries through comprehensive eager-loading.
+- **NFR-2 (Responsive Design):** The comparison table must be seamlessly scrollable on mobile devices with sticky headers.
+- **NFR-3 (Code Quality):** All PHP code formatted strictly with Laravel Pint (`vendor/bin/pint --format agent`).
+- **NFR-4 (Zero Regressions):** All 127 existing tests must continue to pass without error.

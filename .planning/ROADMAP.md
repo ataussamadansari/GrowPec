@@ -1,35 +1,35 @@
 # Project Roadmap: GrowPec Education Portal
 
-**Current Milestone:** v1.4 — Regular College Catalog Expansion (Colleges 9–15)  
-**Updated:** 2026-10-17  
+**Current Milestone:** v1.5 — College Comparison & Advanced Search Filters  
+**Updated:** 2026-10-18  
 **Mode:** Agile / Structured  
 
 ---
 
-## Milestone v1.4 Phases Overview
+## Milestone v1.5 Phases Overview
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│ Phase 17: Research & Implement Colleges 9–11                    │
-│ (MUIT Noida, Future University Bareilly, Haridwar University)   │
+│ Phase 21: College Comparison Engine & Public Matrix View        │
+│ (Route /compare, CollegeComparisonController, eager-loaded rows)│
 └────────────────────────────────┬────────────────────────────────┘
                                  │
                                  ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│ Phase 18: Research & Implement Colleges 12–13                   │
-│ (COER University Roorkee, HRIT Group of Institutions Ghaziabad) │
+│ Phase 22: Comparison Dock & "Add to Compare" Actions            │
+│ (Floating comparison tray, card/profile compare buttons)        │
 └────────────────────────────────┬────────────────────────────────┘
                                  │
                                  ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│ Phase 19: Research & Implement Colleges 14–15                   │
-│ (SRM IST NCR Modinagar, Noida International University NIU)     │
+│ Phase 23: Advanced Multi-Dimensional Search & Filtering         │
+│ (Streams, degrees, locations, fee brackets, sorting & tags)     │
 └────────────────────────────────┬────────────────────────────────┘
                                  │
                                  ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│ Phase 20: Seeding Verification, Pint Hygiene & Full Test Suite  │
-│ (Seeder execution, 15-college Pest test suite, zero regressions)│
+│ Phase 24: Comprehensive Pest Feature Tests, Pint & Verification │
+│ (CollegeComparisonTest, FilterTest, 100% green tests, Pint)     │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -37,46 +37,64 @@
 
 ## Detailed Phase Breakdown
 
-### Phase 17: Research & Implement Colleges 9–11
-- **Goal:** Author 100% authentic, verified institution payloads in `RegularCollegeSeeder.php` for:
-  - 9. **Maharishi University of Information Technology (MUIT), Noida**
-  - 10. **Future University, Bareilly**
-  - 11. **Haridwar University, Roorkee / Haridwar**
+### Phase 21: College Comparison Engine & Public Matrix View
+- **Goal:** Implement the backend comparison query engine and public responsive comparison view (`/compare`).
 - **Tasks:**
-  - Define full institutional profiles: name, short name, slug, campus, approvals, NAAC/NIRF credentials, real fees, placements, recruiters, facilities, FAQs, scholarships, admission guides.
-  - Wire methods `maharishiUniversityNoida()`, `futureUniversityBareilly()`, and `haridwarUniversity()` into `collegeList()`.
-- **Status:** Completed
-- **Success Criteria:** Methods return complete arrays adhering to `seedSingleCollege` format without missing keys.
+  - Register route `GET /compare` in `routes/web.php`.
+  - Create or extend `CollegeComparisonController@index` to parse `?colleges=slug1,slug2,slug3` (2 to 4 colleges).
+  - Eager load `courses.course.stream`, `highlights`, `facilities`, `placementStats`, `recruiters`, `scholarships`, `admissionSections`, `approvedReviews`, `state`, `city`.
+  - Build `resources/views/colleges/compare.blade.php`:
+    - Responsive comparison table with sticky headers.
+    - Side-by-side metric comparison rows: Overview, Accreditations, Ratings & Reviews, Fee Range, Placements, Top Recruiters, Key Courses, Facilities, and Scholarships.
+    - "Apply / Enquire Now" button for each college triggering the lead modal with pre-populated college ID.
+    - Launcher state with popular comparison shortcuts when < 2 colleges are requested.
+- **Success Criteria:** `GET /compare?colleges=galgotias-university,bennett-university` renders a clean, fully populated comparison table.
 
-### Phase 18: Research & Implement Colleges 12–13
-- **Goal:** Author 100% authentic, verified institution payloads in `RegularCollegeSeeder.php` for:
-  - 12. **COER University, Roorkee**
-  - 13. **HRIT Group of Institutions, Ghaziabad**
+### Phase 22: Comparison Dock & "Add to Compare" Actions
+- **Goal:** Enable users to pick and manage colleges for comparison from any listing or profile page.
 - **Tasks:**
-  - Define full institutional profiles: verified B.Tech/Management/Pharmacy/Law fees, placement records, recruiters, facilities, FAQs, scholarships, admission guides.
-  - Wire methods `coerUniversityRoorkee()` and `hritGhaziabad()` into `collegeList()`.
-- **Status:** Completed
-- **Success Criteria:** Both colleges structured with rich relational child data and connected into `collegeList()`.
+  - Add "Add to Compare" quick toggle buttons to:
+    - College cards in `resources/views/colleges/index.blade.php`.
+    - Hero and header actions in `resources/views/colleges/show.blade.php`.
+  - Implement a lightweight floating comparison tray/dock at the bottom of the viewport:
+    - Displays selected college logos and names (up to 4 colleges).
+    - "Compare Now" button navigating directly to `/compare?colleges=...`.
+    - "Clear" button and individual remove tags.
+    - Local storage persistence so selections survive navigation across pages.
+  - Implement the "Change College" / "Add College" modal switcher inside the `/compare` matrix.
+- **Success Criteria:** Users can click "Add to Compare" on multiple college cards, see the comparison dock update, and click "Compare Now" to view the side-by-side table.
 
-### Phase 19: Research & Implement Colleges 14–15
-- **Goal:** Author 100% authentic, verified institution payloads in `RegularCollegeSeeder.php` for:
-  - 14. **SRM Institute of Science and Technology (SRM IST - Delhi-NCR Campus), Modinagar, Ghaziabad**
-  - 15. **Noida International University (NIU), Greater Noida**
+### Phase 23: Advanced Multi-Dimensional Search & Filtering
+- **Goal:** Upgrade public college listings with powerful multi-dimensional filters, active filter chips, and smooth sorting.
 - **Tasks:**
-  - Define full institutional profiles: verified programs (including MBBS/NIIMS hospital for NIU, NAAC A++ for SRM), verified fee structures, placement records, recruiters, facilities, FAQs, scholarships, admission guides.
-  - Wire methods `srmGhaziabad()` and `noidaInternationalUniversity()` into `collegeList()`.
-- **Status:** Completed
-- **Success Criteria:** All 15 colleges defined in `RegularCollegeSeeder.php`.
+  - Update `CollegeController@regularColleges` and `CollegeController@onlineColleges` query builders:
+    - Support filtering by `stream` / `stream_id`.
+    - Support filtering by `course` / `course_id`.
+    - Support filtering by `state_id` and `city_id`.
+    - Support filtering by fee brackets (e.g. `<100000`, `100000-300000`, etc.).
+    - Support sorting parameters: `rating_desc`, `fees_asc`, `fees_desc`, `name_asc`.
+  - Update `resources/views/colleges/index.blade.php`:
+    - Clean faceted filter sidebar with accordions.
+    - Active filter tags/chips bar with 1-click removal ("Clear all", "B.Tech ×").
+    - Results counter ("Showing X colleges matching your criteria").
+    - Preserve query parameters across pagination links (`$colleges->appends(request()->query())`).
+- **Success Criteria:** Filtering by stream, degree, state, or fee returns the correct subset of colleges, with active chips displayed and pagination links retaining filters.
 
-### Phase 20: Seeding Verification, Pint Hygiene & Full Test Suite
-- **Goal:** Execute database seeding, write comprehensive automated Pest tests covering all 15 colleges, format code with Pint, and verify 0 regressions.
+### Phase 24: Comprehensive Pest Feature Tests, Pint & Verification
+- **Goal:** Author exhaustive automated test suites covering comparison and filtering workflows, ensure strict code standards, and verify zero regressions.
 - **Tasks:**
-  - Run `php artisan db:seed --class=RegularCollegeSeeder` and verify all 15 colleges and child tables populate cleanly without errors.
-  - Create feature test `tests/Feature/RegularCollegesCatalogTest.php` testing seeder idempotency, 15 colleges count, course relationships, and HTTP 200 responses on public show routes.
-  - Run `vendor/bin/pint --format agent` to maintain strict code hygiene.
-  - Run `php artisan test --compact` to confirm 100% green suite (127 tests passed).
-- **Status:** Completed
-- **Success Criteria:** All 15 colleges seeded and tested, 100% green test suite, zero regressions.
+  - Create `tests/Feature/CollegeComparisonTest.php`:
+    - Asserts `/compare` with 2, 3, and 4 colleges returns HTTP 200.
+    - Asserts eager loaded data and metric rows are present.
+    - Asserts empty state and invalid slug handling.
+  - Create `tests/Feature/AdvancedCollegeSearchFilterTest.php`:
+    - Asserts filtering regular colleges by stream/degree.
+    - Asserts filtering by state, city, and fee range.
+    - Asserts sorting options (`rating_desc`, `fees_asc`, `name_asc`).
+    - Asserts query retention across pagination.
+  - Format modified PHP files using `vendor/bin/pint --format agent`.
+  - Run full test suite with `php artisan test --compact` to achieve 100% green tests (135+ tests).
+- **Success Criteria:** Full test suite passes without any failures or regressions.
 
 ---
 
@@ -85,3 +103,4 @@
 - **Milestone v1.1 (Archived):** Public guest college review system with honeypot anti-spam, rate throttling, public show integration, admin moderation, and 100% passing Pest tests.
 - **Milestone v1.2 (Archived):** Filament Admin Panel v5 Migration — Replaced custom Blade admin controllers with Filament v5 Resources, RelationManagers, and Dashboard widgets (116 tests passing).
 - **Milestone v1.3 (Archived):** Architecture Cleanup & Schema Normalization — Dropped 4 redundant tables, pruned obsolete models, simplified relationships, and verified 118 green tests.
+- **Milestone v1.4 (Archived):** Regular College Catalog Expansion — Researched and seeded 15 authentic regular on-campus universities with 720+ courses, 180+ highlights, and verified 127 green tests.
