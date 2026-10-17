@@ -31,7 +31,7 @@ class StreamCourseSpecializationSeeder extends Seeder
      */
     private function truncateTables(): void
     {
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        Schema::disableForeignKeyConstraints();
 
         $tables = [
             'college_courses',
@@ -62,7 +62,7 @@ class StreamCourseSpecializationSeeder extends Seeder
             }
         }
 
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        Schema::enableForeignKeyConstraints();
     }
 
     /**

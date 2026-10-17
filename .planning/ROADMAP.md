@@ -45,7 +45,7 @@
 - **Tasks:**
   - Define full institutional profiles: name, short name, slug, campus, approvals, NAAC/NIRF credentials, real fees, placements, recruiters, facilities, FAQs, scholarships, admission guides.
   - Wire methods `maharishiUniversityNoida()`, `futureUniversityBareilly()`, and `haridwarUniversity()` into `collegeList()`.
-- **Status:** Planned
+- **Status:** Completed
 - **Success Criteria:** Methods return complete arrays adhering to `seedSingleCollege` format without missing keys.
 
 ### Phase 18: Research & Implement Colleges 12–13
@@ -55,7 +55,7 @@
 - **Tasks:**
   - Define full institutional profiles: verified B.Tech/Management/Pharmacy/Law fees, placement records, recruiters, facilities, FAQs, scholarships, admission guides.
   - Wire methods `coerUniversityRoorkee()` and `hritGhaziabad()` into `collegeList()`.
-- **Status:** Planned
+- **Status:** Completed
 - **Success Criteria:** Both colleges structured with rich relational child data and connected into `collegeList()`.
 
 ### Phase 19: Research & Implement Colleges 14–15
@@ -64,18 +64,18 @@
   - 15. **Noida International University (NIU), Greater Noida**
 - **Tasks:**
   - Define full institutional profiles: verified programs (including MBBS/NIIMS hospital for NIU, NAAC A++ for SRM), verified fee structures, placement records, recruiters, facilities, FAQs, scholarships, admission guides.
-  - Wire methods `srmIstNcrGhaziabad()` and `noidaInternationalUniversity()` into `collegeList()`.
-- **Status:** Planned
+  - Wire methods `srmGhaziabad()` and `noidaInternationalUniversity()` into `collegeList()`.
+- **Status:** Completed
 - **Success Criteria:** All 15 colleges defined in `RegularCollegeSeeder.php`.
 
 ### Phase 20: Seeding Verification, Pint Hygiene & Full Test Suite
 - **Goal:** Execute database seeding, write comprehensive automated Pest tests covering all 15 colleges, format code with Pint, and verify 0 regressions.
 - **Tasks:**
   - Run `php artisan db:seed --class=RegularCollegeSeeder` and verify all 15 colleges and child tables populate cleanly without errors.
-  - Create feature test `tests/Feature/RegularCollegesComprehensiveSeederTest.php` testing seeder idempotency, 15 colleges count, course relationships, and HTTP 200 responses on public show routes.
+  - Create feature test `tests/Feature/RegularCollegesCatalogTest.php` testing seeder idempotency, 15 colleges count, course relationships, and HTTP 200 responses on public show routes.
   - Run `vendor/bin/pint --format agent` to maintain strict code hygiene.
-  - Run `php artisan test --compact` to confirm 100% green suite.
-- **Status:** Planned
+  - Run `php artisan test --compact` to confirm 100% green suite (127 tests passed).
+- **Status:** Completed
 - **Success Criteria:** All 15 colleges seeded and tested, 100% green test suite, zero regressions.
 
 ---
