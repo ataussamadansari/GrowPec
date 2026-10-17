@@ -2006,6 +2006,175 @@
                 height: 46px
             }
         }
+
+        /* =========================================================
+           GrowPEC Floating Comparison Dock
+           ========================================================= */
+        .gp-compare-dock {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 1040;
+            transform: translateY(120%);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+        }
+
+        .gp-compare-dock.is-visible {
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .gp-compare-dock-card {
+            background: #ffffff;
+            border-radius: 20px 20px 0 0;
+            border: 1px solid #E2E8F0;
+            border-bottom: none;
+            border-top: 4px solid #002B67;
+            box-shadow: 0 -8px 30px rgba(0, 43, 103, 0.16);
+            padding: 14px 20px 16px;
+        }
+
+        .gp-compare-dock-badge {
+            width: 28px;
+            height: 28px;
+            background: #EEF4F8;
+            color: #002B67;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+        }
+
+        .gp-compare-dock-title {
+            font-size: 0.95rem;
+            color: #002B67;
+            letter-spacing: -0.2px;
+        }
+
+        .gp-compare-slots-wrapper {
+            overflow-x: auto;
+            padding-bottom: 2px;
+        }
+
+        .gp-compare-slot {
+            flex: 1 1 0;
+            min-width: 140px;
+            max-width: 220px;
+            background: #F8FAFC;
+            border: 1px solid #E2E8F0;
+            border-radius: 12px;
+            padding: 8px 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        .gp-compare-slot:hover {
+            border-color: #CBD5E1;
+        }
+
+        .gp-compare-slot-empty {
+            border: 1px dashed #CBD5E1;
+            background: #FAFAFA;
+            color: #94A3B8;
+            font-size: 0.78rem;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .gp-compare-slot-logo {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+            border-radius: 6px;
+            background: #ffffff;
+            border: 1px solid #E2E8F0;
+            padding: 2px;
+            flex-shrink: 0;
+        }
+
+        .gp-compare-slot-name {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #1E293B;
+            line-height: 1.2;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        .gp-compare-slot-remove {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            width: 20px;
+            height: 20px;
+            background: #EF4444;
+            color: #ffffff;
+            border-radius: 50%;
+            border: 2px solid #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+            transition: transform 0.15s ease;
+        }
+
+        .gp-compare-slot-remove:hover {
+            transform: scale(1.15);
+        }
+
+        .gp-compare-cta {
+            background: linear-gradient(135deg, #D9A400 0%, #B8860B 100%);
+            border: none;
+            color: #001B45;
+            font-weight: 800;
+            padding: 10px 16px;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+        }
+
+        .gp-compare-cta:hover {
+            background: linear-gradient(135deg, #ECC94B 0%, #D9A400 100%);
+            transform: translateY(-1px);
+            color: #001B45;
+        }
+
+        .btn-add-compare.is-active {
+            background-color: #002B67 !important;
+            color: #ffffff !important;
+            border-color: #002B67 !important;
+        }
+
+        .btn-add-compare.is-active i {
+            color: #D9A400 !important;
+        }
+
+        @media (max-width: 767.98px) {
+            .gp-compare-dock-card {
+                padding: 10px 12px 14px;
+                border-radius: 16px 16px 0 0;
+            }
+            .gp-compare-slot {
+                min-width: 120px;
+                padding: 6px 8px;
+            }
+            .gp-compare-slot-logo {
+                width: 26px;
+                height: 26px;
+            }
+            .gp-compare-slot-name {
+                font-size: 0.72rem;
+            }
+        }
     </style>
 
     <div class="modal fade gp-consultancy-modal" id="counselingModal" tabindex="-1"
@@ -2275,6 +2444,259 @@
                         `;
                     }
                 });
+            }
+        });
+    </script>
+
+    <!-- =========================================================
+         GrowPEC Floating Comparison Dock
+         ========================================================= -->
+    <div id="gpCompareDock" class="gp-compare-dock" aria-live="polite">
+        <div class="container-xl">
+            <div class="gp-compare-dock-card">
+                <div class="gp-compare-dock-header d-flex justify-content-between align-items-center mb-2">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="gp-compare-dock-badge">
+                            <i class="bi bi-arrow-left-right"></i>
+                        </span>
+                        <span class="gp-compare-dock-title fw-bold">Compare Colleges</span>
+                        <span id="gpCompareCountBadge" class="badge rounded-pill bg-light text-primary border">0 / 4</span>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                        <button type="button" class="btn btn-link btn-sm text-secondary text-decoration-none p-0 gp-compare-clear-btn" onclick="clearAllCompareColleges()">
+                            <i class="bi bi-trash3 me-1"></i>Clear All
+                        </button>
+                        <button type="button" class="btn-close gp-compare-close-btn" aria-label="Minimize comparison dock" onclick="minimizeCompareDock()"></button>
+                    </div>
+                </div>
+
+                <div class="row align-items-center g-2 g-md-3">
+                    <!-- 4 College Slots -->
+                    <div class="col-12 col-md-8 col-lg-9">
+                        <div class="gp-compare-slots-wrapper d-flex gap-2" id="gpCompareSlots">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Compare CTA -->
+                    <div class="col-12 col-md-4 col-lg-3 text-end">
+                        <button type="button" id="gpCompareSubmitBtn" class="btn btn-warning w-100 fw-bold shadow-sm gp-compare-cta" onclick="launchComparison()">
+                            <i class="bi bi-lightning-charge-fill me-1"></i>Compare Now (<span id="gpCompareSubmitCount">0</span>)
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Comparison Dock Engine Script -->
+    <script>
+        const GP_COMPARE = {
+            STORAGE_KEY: 'growpec_compare_colleges',
+            MAX_ITEMS: 4,
+
+            get() {
+                try {
+                    const raw = localStorage.getItem(this.STORAGE_KEY);
+                    return raw ? JSON.parse(raw) : [];
+                } catch (e) {
+                    console.error('Error reading compare storage', e);
+                    return [];
+                }
+            },
+
+            save(list) {
+                try {
+                    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(list));
+                } catch (e) {
+                    console.error('Error saving compare storage', e);
+                }
+                this.render();
+                this.syncButtons();
+            },
+
+            toggle(college) {
+                let list = this.get();
+                const index = list.findIndex(item => item.slug === college.slug);
+
+                if (index > -1) {
+                    list.splice(index, 1);
+                    this.save(list);
+                    this.showToast('Removed ' + college.name + ' from comparison.');
+                } else {
+                    if (list.length >= this.MAX_ITEMS) {
+                        alert('You can compare a maximum of ' + this.MAX_ITEMS + ' colleges at a time. Please remove a college from the comparison dock first.');
+                        return;
+                    }
+                    list.push({
+                        id: college.id,
+                        slug: college.slug,
+                        name: college.name,
+                        logo: college.logo || ''
+                    });
+                    this.save(list);
+                    this.showToast('Added ' + college.name + ' to comparison.');
+                }
+            },
+
+            remove(slug) {
+                let list = this.get();
+                const filtered = list.filter(item => item.slug !== slug);
+                this.save(filtered);
+            },
+
+            clear() {
+                this.save([]);
+            },
+
+            launch() {
+                const list = this.get();
+                if (list.length < 2) {
+                    alert('Please select at least 2 colleges to compare side-by-side.');
+                    return;
+                }
+                const slugs = list.map(item => encodeURIComponent(item.slug)).join(',');
+                window.location.href = "{{ route('colleges.compare') }}?colleges=" + slugs;
+            },
+
+            render() {
+                const dock = document.getElementById('gpCompareDock');
+                const slotsContainer = document.getElementById('gpCompareSlots');
+                const countBadge = document.getElementById('gpCompareCountBadge');
+                const submitCount = document.getElementById('gpCompareSubmitCount');
+                const submitBtn = document.getElementById('gpCompareSubmitBtn');
+
+                if (!dock || !slotsContainer) return;
+
+                const list = this.get();
+                const count = list.length;
+
+                if (count > 0) {
+                    dock.classList.add('is-visible');
+                } else {
+                    dock.classList.remove('is-visible');
+                }
+
+                if (countBadge) countBadge.textContent = count + ' / ' + this.MAX_ITEMS;
+                if (submitCount) submitCount.textContent = count;
+
+                if (submitBtn) {
+                    if (count < 2) {
+                        submitBtn.classList.remove('btn-warning');
+                        submitBtn.classList.add('btn-secondary');
+                    } else {
+                        submitBtn.classList.remove('btn-secondary');
+                        submitBtn.classList.add('btn-warning');
+                    }
+                }
+
+                let html = '';
+                for (let i = 0; i < this.MAX_ITEMS; i++) {
+                    if (i < count) {
+                        const item = list[i];
+                        const logoSrc = item.logo ? item.logo : 'https://placehold.co/60x60?text=' + encodeURIComponent(item.name.substring(0, 2));
+                        html += `
+                            <div class="gp-compare-slot" title="${escapeHtml(item.name)}">
+                                <button type="button" class="gp-compare-slot-remove" onclick="GP_COMPARE.remove('${escapeHtml(item.slug)}')">&times;</button>
+                                <img src="${escapeHtml(logoSrc)}" class="gp-compare-slot-logo" alt="${escapeHtml(item.name)}">
+                                <span class="gp-compare-slot-name">${escapeHtml(item.name)}</span>
+                            </div>
+                        `;
+                    } else {
+                        html += `
+                            <div class="gp-compare-slot gp-compare-slot-empty">
+                                <i class="bi bi-plus-circle me-1"></i>
+                                <span>Slot ${i + 1} Open</span>
+                            </div>
+                        `;
+                    }
+                }
+                slotsContainer.innerHTML = html;
+            },
+
+            syncButtons() {
+                const list = this.get();
+                const activeSlugs = new Set(list.map(item => item.slug));
+
+                document.querySelectorAll('.btn-add-compare').forEach(btn => {
+                    const slug = btn.getAttribute('data-college-slug');
+                    const textSpan = btn.querySelector('.compare-btn-text');
+                    const icon = btn.querySelector('i');
+
+                    if (activeSlugs.has(slug)) {
+                        btn.classList.add('is-active');
+                        if (textSpan) textSpan.textContent = btn.hasAttribute('data-full-label') ? 'In Compare' : 'Added';
+                        if (icon) {
+                            icon.className = 'bi bi-check2-circle me-1';
+                        }
+                    } else {
+                        btn.classList.remove('is-active');
+                        if (textSpan) textSpan.textContent = btn.hasAttribute('data-full-label') ? 'Add to Compare' : 'Compare';
+                        if (icon) {
+                            icon.className = 'bi bi-arrow-left-right me-1';
+                        }
+                    }
+                });
+            },
+
+            showToast(msg) {
+                let toastEl = document.getElementById('gpCompareToast');
+                if (!toastEl) {
+                    toastEl = document.createElement('div');
+                    toastEl.id = 'gpCompareToast';
+                    toastEl.style.cssText = 'position:fixed;top:20px;right:20px;z-index:1090;background:#002B67;color:#fff;padding:10px 18px;border-radius:10px;font-size:0.85rem;box-shadow:0 4px 15px rgba(0,0,0,0.2);transition:opacity 0.3s;opacity:0;pointer-events:none;';
+                    document.body.appendChild(toastEl);
+                }
+                toastEl.textContent = msg;
+                toastEl.style.opacity = '1';
+                clearTimeout(this._toastTimer);
+                this._toastTimer = setTimeout(() => {
+                    toastEl.style.opacity = '0';
+                }, 2200);
+            }
+        };
+
+        function toggleCollegeComparison(el) {
+            const data = {
+                id: el.getAttribute('data-college-id'),
+                slug: el.getAttribute('data-college-slug'),
+                name: el.getAttribute('data-college-name'),
+                logo: el.getAttribute('data-college-logo') || ''
+            };
+            GP_COMPARE.toggle(data);
+        }
+
+        function clearAllCompareColleges() {
+            GP_COMPARE.clear();
+        }
+
+        function minimizeCompareDock() {
+            const dock = document.getElementById('gpCompareDock');
+            if (dock) dock.classList.remove('is-visible');
+        }
+
+        function launchComparison() {
+            GP_COMPARE.launch();
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/&/g, '&amp;')
+                      .replace(/</g, '&lt;')
+                      .replace(/>/g, '&gt;')
+                      .replace(/"/g, '&quot;')
+                      .replace(/'/g, '&#039;');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            GP_COMPARE.render();
+            GP_COMPARE.syncButtons();
+        });
+
+        window.addEventListener('storage', function(e) {
+            if (e.key === GP_COMPARE.STORAGE_KEY) {
+                GP_COMPARE.render();
+                GP_COMPARE.syncButtons();
             }
         });
     </script>

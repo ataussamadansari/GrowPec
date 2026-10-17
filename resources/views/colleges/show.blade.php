@@ -2524,6 +2524,17 @@
                         <i class="bi bi-whatsapp"></i>
                         WhatsApp
                     </a>
+                    <button type="button" 
+                        class="c-btn c-btn--outline btn-add-compare"
+                        data-college-id="{{ $college->id }}"
+                        data-college-slug="{{ $college->slug }}"
+                        data-college-name="{{ $college->short_name ?: $college->name }}"
+                        data-college-logo="{{ $college->logo ? (str_starts_with($college->logo, 'http') ? $college->logo : asset('storage/' . $college->logo)) : '' }}"
+                        data-full-label="true"
+                        onclick="toggleCollegeComparison(this)">
+                        <i class="bi bi-arrow-left-right me-1"></i>
+                        <span class="compare-btn-text">Add to Compare</span>
+                    </button>
                 </div>
 
             </div>

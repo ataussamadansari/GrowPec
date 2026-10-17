@@ -268,7 +268,7 @@
 <div class="container py-4 py-lg-5">
 
     <!-- Interactive College Selector Bar -->
-    <div class="launcher-card mb-4">
+    <div class="launcher-card mb-4" id="compareSelectorBar">
         <form method="GET" action="{{ route('colleges.compare') }}" id="compareForm" class="row g-3 align-items-end">
             <div class="col-12 mb-1">
                 <h6 class="fw-bold text-dark mb-0 d-flex align-items-center gap-2">
@@ -333,7 +333,7 @@
                                         $remainingSlugs = $selectedColleges->pluck('slug')->reject(fn($s) => $s === $col->slug)->join(',');
                                         $removeUrl = route('colleges.compare', ['colleges' => $remainingSlugs]);
                                     @endphp
-                                    <a href="{{ $removeUrl }}" class="remove-btn" title="Remove {{ $col->short_name ?: $col->name }} from comparison">
+                                    <a href="{{ $removeUrl }}" class="remove-btn" title="Remove {{ $col->short_name ?: $col->name }} from comparison" onclick="GP_COMPARE.remove('{{ $col->slug }}')">
                                         <i class="bi bi-x"></i>
                                     </a>
 
@@ -383,7 +383,7 @@
                                     <i class="bi bi-plus-circle-dotted fs-1 text-primary mb-2"></i>
                                     <h6 class="fw-bold text-dark mb-1">Add Another College</h6>
                                     <p class="small text-muted mb-3">Compare up to 4 institutions side-by-side</p>
-                                    <button type="button" class="btn btn-outline-primary btn-sm" onclick="document.querySelector('.select-college-slot:last-of-type').focus();">
+                                    <button type="button" class="btn btn-outline-primary btn-sm" onclick="focusAddCollegeSlot()">
                                         Select from List
                                     </button>
                                 </div>
@@ -717,4 +717,46 @@
     </div>
 
 </div>
+
+@push('scripts')
+<script>
+    function focusAddCollegeSlot() {
+        const selectorBar = document.getElementById('compareSelectorBar');
+        if (selectorBar) {
+            selectorBar.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        setTimeout(() => {
+            const slots = document.querySelectorAll('.select-college-slot');
+            for (let i = 0; i < slots.length; i++) {
+                if (!slots[i].value) {
+                    slots[i].focus();
+                    slots[i].classList.add('border-primary');
+                    break;
+                }
+            }
+        }, 400);
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        @if($selectedColleges->count() > 0)
+            @php
+                $activeList = $selectedColleges->map(function ($col) {
+                    return [
+                        'id' => $col->id,
+                        'slug' => $col->slug,
+                        'name' => $col->short_name ?: $col->name,
+                        'logo' => $col->logo ? (str_starts_with($col->logo, 'http') ? $col->logo : asset('storage/' . $col->logo)) : '',
+                    ];
+                })->values()->toArray();
+            @endphp
+            const activeColleges = {!! json_encode($activeList) !!};
+
+            // Update localStorage with active colleges from current matrix view
+            if (activeColleges && activeColleges.length > 0 && typeof GP_COMPARE !== 'undefined') {
+                GP_COMPARE.save(activeColleges);
+            }
+        @endif
+    });
+</script>
+@endpush
 @endsection

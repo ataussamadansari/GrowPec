@@ -180,6 +180,37 @@
         box-shadow: 0 6px 15px rgba(46, 30, 107, 0.25);
     }
 
+    .btn-card-compare {
+        background: #F1F5F9 !important;
+        color: #002B67 !important;
+        font-weight: 700 !important;
+        border-radius: 30px !important;
+        padding: 9px 20px !important;
+        font-size: 0.9rem !important;
+        border: 1px solid #CBD5E1 !important;
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+    }
+
+    .btn-card-compare:hover {
+        background: #E2E8F0 !important;
+        border-color: #94A3B8 !important;
+        color: #001B45 !important;
+        transform: translateY(-1px);
+    }
+
+    .btn-card-compare.is-active {
+        background: #002B67 !important;
+        color: #ffffff !important;
+        border-color: #002B67 !important;
+    }
+
+    .btn-card-compare.is-active i {
+        color: #D9A400 !important;
+    }
+
     @media (max-width: 767.98px) {
         .college-thumb-img {
             height: 190px;
@@ -1201,6 +1232,17 @@
 
                         <!-- Action Buttons Bar -->
                         <div class="d-flex flex-wrap justify-content-md-end align-items-center gap-2">
+                            <button type="button" 
+                                    class="btn btn-card-compare btn-add-compare"
+                                    data-college-id="{{ $college->id }}"
+                                    data-college-slug="{{ $college->slug }}"
+                                    data-college-name="{{ $college->short_name ?: $college->name }}"
+                                    data-college-logo="{{ $college->logo ? (str_starts_with($college->logo, 'http') ? $college->logo : asset('storage/' . $college->logo)) : '' }}"
+                                    onclick="toggleCollegeComparison(this)"
+                                    title="Compare this college">
+                                <i class="bi bi-arrow-left-right me-1"></i>
+                                <span class="compare-btn-text">Compare</span>
+                            </button>
                             <a href="{{ route('college.show', $college->slug) }}" class="btn btn-view-details">
                                 <i class="bi bi-eye me-1"></i> View Details
                             </a>

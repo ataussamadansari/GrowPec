@@ -3,8 +3,8 @@
 **Project:** GrowPec Education Portal  
 **Current Milestone:** v1.5 — College Comparison & Advanced Search Filters  
 **Last Updated:** 2026-10-18  
-**Current Phase:** Phase 22 (Comparison Dock & "Add to Compare" Actions)  
-**Milestone Status:** Phase 21 Completed (133 Tests Passing)  
+**Current Phase:** Phase 23 (Advanced Multi-Dimensional Search & Filtering)  
+**Milestone Status:** Phase 22 Completed (137 Tests Passing)  
 
 ---
 
@@ -13,9 +13,9 @@
 | Phase | Description | Status | Target |
 |---|---|---|---|
 | **Phase 21** | College Comparison Engine & Public Matrix View | **Completed** | Route `/compare`, comparison matrix view with sticky headers, eager-loaded metrics, launcher shortcuts |
-| **Phase 22** | Comparison Dock & "Add to Compare" Actions | **Ready** | Floating dock, card and detail page compare triggers, local storage persistence, switcher modal |
-| **Phase 23** | Advanced Multi-Dimensional Search & Filtering | **Pending** | Streams, degrees, locations, fee brackets, sorting controls, active filter chips, query-preserving pagination |
-| **Phase 24** | Comprehensive Pest Feature Tests, Pint & Verification | **Pending** | `CollegeComparisonTest`, `AdvancedCollegeSearchFilterTest`, 100% green tests (135+ tests), Pint formatting |
+| **Phase 22** | Comparison Dock & "Add to Compare" Actions | **Completed** | Floating dock, card and detail page compare triggers, local storage persistence, matrix sync |
+| **Phase 23** | Advanced Multi-Dimensional Search & Filtering | **Ready** | Streams, degrees, locations, fee brackets, sorting controls, active filter chips, query-preserving pagination |
+| **Phase 24** | Comprehensive Pest Feature Tests, Pint & Verification | **Pending** | `CollegeComparisonTest`, `AdvancedCollegeSearchFilterTest`, 100% green tests (137+ tests), Pint formatting |
 
 ---
 
@@ -24,8 +24,13 @@
   - Route `GET /compare` and `CollegeComparisonController` implemented with eager-loading across all 11 core relationships.
   - Responsive comparison view `colleges/compare.blade.php` supports side-by-side benchmarking of 2 to 4 universities with sticky headers, 9 metric rows, and lead inquiry CTAs.
   - Global navbar & footer updated with "Compare Colleges" links.
-  - Automated test suite `tests/Feature/CollegeComparisonTest.php` passing 6/6 tests. Full suite: 133 passed (584 assertions).
-  - Next recommended command: `/gsd-plan-phase 22` or `/gsd-execute-phase 22`.
-  - Multi-dimensional search upgrades both regular and online listings with stream, degree, fee bracket, and location filtering.
-  - Test suite health baseline: 127 passed tests (555 assertions), 100% green.
-  - Next recommended command: `/gsd-plan-phase 21` or `/gsd-progress --next`.
+  - Automated test suite `tests/Feature/CollegeComparisonTest.php` passing 6/6 tests.
+- **Phase 22 Completed:**
+  - Floating Comparison Dock (`#gpCompareDock`) implemented in `resources/views/layouts/app.blade.php` with client `localStorage` engine (`growpec_compare_colleges`), max 4 slots, remove, clear all, and dynamic launch button.
+  - "Compare" action buttons added to college cards in `resources/views/colleges/index.blade.php` with active state styling and instant dock sync.
+  - "Add to Compare" action button added to college detail profile hero in `resources/views/colleges/show.blade.php`.
+  - In-matrix active colleges synced with `localStorage` in `resources/views/colleges/compare.blade.php` and remove trigger wired.
+  - Feature test suite `tests/Feature/CollegeComparisonDockTest.php` passing 4/4 tests.
+  - Full test suite health: 137 passed tests (607 assertions), 100% green.
+  - Pint code formatting verified clean.
+  - Next recommended command: `/gsd-plan-phase 23`.
