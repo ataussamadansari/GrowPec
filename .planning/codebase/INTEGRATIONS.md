@@ -13,7 +13,7 @@ GrowPec functions primarily as a self-contained monolith with key data persisten
 - **Database Tables:** 25 migrations creating core tables:
   - System: `users`, `cache`, `jobs`, `system_settings`
   - Academics: `streams`, `courses`, `specializations`
-  - Colleges & Details: `colleges`, `college_courses`, `college_course_fees`, `college_course_specializations`, `college_accreditations`, `college_admission_sections`, `college_alumnis`, `college_career_outcomes`, `college_comparisons`, `college_documents`, `college_facilities`, `college_faqs`, `college_galleries`, `college_highlights`, `college_learning_experiences`, `college_loan_options`, `college_placement_stats`, `college_recruiters`, `college_reviews`, `college_scholarships`
+  - Colleges & Details: `colleges`, `college_courses`, `college_accreditations`, `college_admission_sections`, `college_facilities`, `college_faqs`, `college_highlights`, `college_placement_stats`, `college_recruiters`, `college_reviews`, `college_scholarships`, `college_quick_facts`
   - Geographic: `states`, `cities`
   - Leads CRM: `leads`, `lead_activities`
   - Administration: `banners`, `partners`, `leadership_messages`, `center_logins`
@@ -34,6 +34,12 @@ GrowPec functions primarily as a self-contained monolith with key data persisten
 - **Purpose:** Captures visitor enquiries submitted through admission modal forms, quick enquiry popups, and course enquiry forms.
 - **Payload:** Name, email, phone, city, state, course/stream interests, source tracking, and custom inquiry notes.
 - **Persistence:** Creates record in `leads` table and logs initial event in `lead_activities`.
+
+### Public College Review Submission API
+- **Route:** `POST /college/{slug}/reviews` (`CollegeReviewController@store`)
+- **Purpose:** Captures public guest and student reviews for colleges.
+- **Protection:** Honeypot field (`website_url` spam trap) and IP-based rate throttling (`throttle:5,60`).
+- **Persistence:** Inserts pending review into `college_reviews` requiring admin moderation before appearing publicly.
 
 ### Live Autocomplete & Cascading APIs
 - **Route:** `GET /api/live-search` (`HomeController@liveSearch`)

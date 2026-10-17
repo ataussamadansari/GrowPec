@@ -45,10 +45,8 @@ This document records identified technical debt, potential architectural risks, 
 - **Recommendation:** Move raw university catalogs and course fee datasets into external structured JSON or CSV seed files (`database/data/*.json`) loaded by the seeders.
 
 ## 5. Test Coverage Expansion
-
-### Public Flow Integration Tests
-- **Observation:**
-  - Existing feature tests (`tests/Feature/`) primarily cover `CenterLoginTest.php`, `ContactSettingsTest.php`, and `NotFoundPageTest.php`.
-  - Core student discovery routes (`CollegeController@regularColleges`, `CollegeController@onlineColleges`, `CollegeController@show`) and lead intake (`LeadController@store`) lack comprehensive automated test suites.
-- **Impact:** Regressions in filtering or lead validation could go undetected during refactoring.
-- **Recommendation:** Add Pest feature tests for `CollegeController` filtering, search queries, and lead capture validation.
+ 
+### Remaining Coverage Opportunities
+- **Current State:** Milestone v1.2 through v1.4 established 15 comprehensive feature test suites covering Filament resources, admin authentication, reviews moderation, and catalog HTTP status verification (127 passing tests, 555 assertions).
+- **Remaining Opportunities:** Multi-filter query parameter logic in `CollegeController@regularColleges` and `CollegeController@onlineColleges` (filtering by multiple stream, degree, state combinations) and edge-case validation for `LeadController@store` can be further expanded with dedicated end-to-end assertions.
+- **Impact:** Low risk; existing tests already guarantee college profile rendering and administrative workflows.

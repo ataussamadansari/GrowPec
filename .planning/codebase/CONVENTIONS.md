@@ -40,12 +40,13 @@ GrowPec adheres to official modern Laravel 12 development conventions and PSR st
 
 ### 3. Routing & Controllers
 - **Resourceful Routing:** Resource naming adheres to standard Laravel conventions: `index`, `create`, `store`, `show`, `edit`, `update`, `destroy`.
-- **Named Routes:** Named routes preferred everywhere (`colleges.regular`, `college.show`, `admin.leads.index`).
+- **Named Routes:** Named routes preferred everywhere (`colleges.regular`, `college.show`, `college.reviews.store`, `lead.submit`).
 - **Route URL Generation:** Always generated via `route('name', $params)` helper rather than hardcoded URLs.
-- **Controller Namespacing:** Clear separation between public front-facing controllers (`App\Http\Controllers`) and administration back-office controllers (`App\Http\Controllers\Admin`).
+- **Admin Control Plane:** Back-office administrative functionality is strictly managed through Filament Resources (`App\Filament\Resources\*`) and Pages (`App\Filament\Pages\*`), while public web routes are handled by dedicated controllers in `App\Http\Controllers`.
 
 ### 4. Blade View Conventions
-- **Layout Inheritance:** `@extends('layouts.app')` for public pages and `@extends('admin.layout')` for admin pages.
+- **Layout Inheritance:** Public portal views extend the master layout `@extends('layouts.app')`.
+- **Admin Panel UI:** Administrative views are generated dynamically through Filament v5 forms, tables, and widget components.
 - **Section & Stacks:** Standard content injection using `@yield('content')` or `@section('content')`, with `@push('styles')` and `@push('scripts')` for page-specific assets.
 - **HTML Escaping:** Standard Blade `{{ $variable }}` escaping used for user-generated or dynamic data to prevent XSS. Raw output `{!! $html !!}` strictly limited to sanitized HTML snippets.
 
