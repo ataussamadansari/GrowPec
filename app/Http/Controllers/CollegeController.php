@@ -121,6 +121,9 @@ class CollegeController extends Controller
     /**
      * Shared filter & query engine for both listing pages.
      */
+    /**
+     * Shared filter & query engine for both listing pages.
+     */
     private function getFilteredColleges(
         Request $request,
         string $mode,
@@ -129,7 +132,7 @@ class CollegeController extends Controller
     ) {
         $query = College::query()
             ->where('status', true)
-            ->where('college_mode', $mode)            // strict: no 'both' anymore
+            ->where('college_mode', $mode)
             ->with(['courses.stream', 'collegeCourses.course']);
 
         // 1. Text search
@@ -144,50 +147,123 @@ class CollegeController extends Controller
         }
 
         // 2. Course levels (UG, PG, Diploma, PhD, Certificate)
-        if ($request->filled('levels')) {
-            $levels = (array) $request->levels;
+        $levels = array_filter(array_merge(
+            (array) $request->input('levels', []),
+            $request->filled('level') ? [$request->input('level')] : []
+        ));
+        if (! empty($levels)) {
             $query->whereHas('courses', fn ($q) => $q->whereIn('level', $levels));
         }
 
-        // 3. Streams
-        if ($request->filled('streams')) {
-            $streams = (array) $request->streams;
-            $query->whereHas('courses.stream', fn ($q) => $q->whereIn('slug', $streams)->orWhereIn('id', $streams)
-            );
+        // 3. Streams (supports slug, ID, or name)
+        $streams = array_values(array_filter(array_merge(
+            (array) $request->input('streams', []),
+            $request->filled('stream') ? [$request->input('stream')] : []
+        )));
+        if (! empty($streams)) {
+            $numericStreams = array_filter($streams, 'is_numeric');
+            $stringStreams = array_filter($streams, fn ($s) => ! is_numeric($s));
+
+            $query->whereHas('courses.stream', function ($q) use ($numericStreams, $stringStreams) {
+                $q->where(function ($sq) use ($numericStreams, $stringStreams) {
+                    if (! empty($stringStreams)) {
+                        $sq->whereIn('slug', $stringStreams)
+                            ->orWhereIn('name', $stringStreams);
+                    }
+                    if (! empty($numericStreams)) {
+                        $sq->orWhereIn('streams.id', $numericStreams);
+                    }
+                });
+            });
         }
 
-        // 4. Specific courses
-        if ($request->filled('courses')) {
-            $courses = (array) $request->courses;
-            $query->whereHas('courses', fn ($q) => $q->whereIn('slug', $courses)->orWhereIn('courses.id', $courses)
-            );
+        // 4. Specific courses (supports slug, ID, or name)
+        $courses = array_values(array_filter(array_merge(
+            (array) $request->input('courses', []),
+            $request->filled('course') ? [$request->input('course')] : []
+        )));
+        if (! empty($courses)) {
+            $numericCourses = array_filter($courses, 'is_numeric');
+            $stringCourses = array_filter($courses, fn ($c) => ! is_numeric($c));
+
+            $query->whereHas('courses', function ($q) use ($numericCourses, $stringCourses) {
+                $q->where(function ($cq) use ($numericCourses, $stringCourses) {
+                    if (! empty($stringCourses)) {
+                        $cq->whereIn('courses.slug', $stringCourses)
+                            ->orWhereIn('courses.name', $stringCourses);
+                    }
+                    if (! empty($numericCourses)) {
+                        $cq->orWhereIn('courses.id', $numericCourses);
+                    }
+                });
+            });
         }
 
         // 5. Degree types
-        if ($request->filled('degree_types')) {
-            $degreeTypes = (array) $request->degree_types;
+        $degreeTypes = array_filter(array_merge(
+            (array) $request->input('degree_types', []),
+            $request->filled('degree_type') ? [$request->input('degree_type')] : []
+        ));
+        if (! empty($degreeTypes)) {
             $query->whereHas('courses', fn ($q) => $q->whereIn('degree_type', $degreeTypes));
         }
 
         // 6. Durations
-        if ($request->filled('durations')) {
-            $durations = (array) $request->durations;
+        $durations = array_filter(array_merge(
+            (array) $request->input('durations', []),
+            $request->filled('duration') ? [$request->input('duration')] : []
+        ));
+        if (! empty($durations)) {
             $query->whereHas('courses', fn ($q) => $q->whereIn('duration', $durations));
         }
 
-        // 7. States
-        if ($request->filled('states')) {
-            $query->whereIn('state', (array) $request->states);
+        // 7. States (supports string, ID, or slug)
+        $states = array_values(array_filter(array_merge(
+            (array) $request->input('states', []),
+            $request->filled('state') ? [$request->input('state')] : []
+        )));
+        if (! empty($states)) {
+            $numericStates = array_filter($states, 'is_numeric');
+            $stringStates = array_filter($states, fn ($s) => ! is_numeric($s));
+
+            $query->where(function ($q) use ($numericStates, $stringStates) {
+                if (! empty($stringStates)) {
+                    $q->whereIn('state', $stringStates)
+                        ->orWhereHas('stateRelation', fn ($sq) => $sq->whereIn('slug', $stringStates)->orWhereIn('name', $stringStates));
+                }
+                if (! empty($numericStates)) {
+                    $q->orWhereIn('state_id', $numericStates);
+                }
+            });
         }
 
-        // 8. Cities
-        if ($request->filled('cities')) {
-            $query->whereIn('city', (array) $request->cities);
+        // 8. Cities (supports string, ID, or slug)
+        $cities = array_values(array_filter(array_merge(
+            (array) $request->input('cities', []),
+            $request->filled('city') ? [$request->input('city')] : []
+        )));
+        if (! empty($cities)) {
+            $numericCities = array_filter($cities, 'is_numeric');
+            $stringCities = array_filter($cities, fn ($c) => ! is_numeric($c));
+
+            $query->where(function ($q) use ($numericCities, $stringCities) {
+                if (! empty($stringCities)) {
+                    $q->whereIn('city', $stringCities)
+                        ->orWhereHas('cityRelation', fn ($cq) => $cq->whereIn('slug', $stringCities)->orWhereIn('name', $stringCities));
+                }
+                if (! empty($numericCities)) {
+                    $q->orWhereIn('city_id', $numericCities);
+                }
+            });
         }
 
         // 9. College type (Govt / Private / Deemed / Autonomous)
-        if ($request->filled('types')) {
-            $query->whereIn('college_type', (array) $request->types);
+        $types = array_filter(array_merge(
+            (array) $request->input('types', []),
+            $request->filled('type') ? [$request->input('type')] : []
+        ));
+        if (! empty($types)) {
+            $query->whereIn('college_type', $types);
         }
 
         // 10. Hostel availability (regular only)
@@ -199,11 +275,14 @@ class CollegeController extends Controller
         }
 
         // 11. Fee ranges
-        if ($request->filled('fee_ranges')) {
-            $ranges = (array) $request->fee_ranges;
-            $query->whereHas('collegeCourses', function ($q) use ($ranges) {
-                $q->where(function ($sub) use ($ranges) {
-                    foreach ($ranges as $range) {
+        $feeRanges = array_filter(array_merge(
+            (array) $request->input('fee_ranges', []),
+            $request->filled('fee_range') ? [$request->input('fee_range')] : []
+        ));
+        if (! empty($feeRanges)) {
+            $query->whereHas('collegeCourses', function ($q) use ($feeRanges) {
+                $q->where(function ($sub) use ($feeRanges) {
+                    foreach ($feeRanges as $range) {
                         match ($range) {
                             'under_1l' => $sub->orWhere('fee_amount', '<', 100000),
                             '1l_to_2l' => $sub->orWhereBetween('fee_amount', [100000, 200000]),
@@ -218,8 +297,18 @@ class CollegeController extends Controller
             });
         }
 
+        // 12. Dynamic Sorting
+        $sort = $request->input('sort', 'popular');
+        match ($sort) {
+            'rating_desc', 'rating' => $query->orderByDesc('rating')->orderByDesc('is_featured')->orderByDesc('id'),
+            'name_asc' => $query->orderBy('name', 'asc'),
+            'name_desc' => $query->orderBy('name', 'desc'),
+            'established_desc' => $query->orderByDesc('established_year')->orderByDesc('is_featured'),
+            'established_asc' => $query->orderBy('established_year', 'asc')->orderByDesc('is_featured'),
+            default => $query->orderByDesc('is_featured')->orderByDesc('rating')->orderByDesc('id'),
+        };
+
         $colleges = $query
-            ->orderByDesc('is_featured')
             ->paginate(12)
             ->withQueryString();
 
@@ -230,11 +319,24 @@ class CollegeController extends Controller
         if ($allStates->isEmpty()) {
             $allStates = College::where('status', true)->distinct()->pluck('state')->filter();
         }
-        $allCities = City::where('status', true)->orderBy('name')->pluck('name');
-        if ($allCities->isEmpty()) {
-            $allCities = College::where('status', true)->distinct()->pluck('city')->filter();
+
+        $citiesQuery = City::where('status', true);
+        if (! empty($states)) {
+            $citiesQuery->whereHas('state', function ($sq) use ($states) {
+                $sq->whereIn('name', $states)->orWhereIn('id', $states)->orWhereIn('slug', $states);
+            });
         }
+        $allCities = $citiesQuery->orderBy('name')->pluck('name');
+        if ($allCities->isEmpty()) {
+            $collegeCityQuery = College::where('status', true);
+            if (! empty($states)) {
+                $collegeCityQuery->whereIn('state', $states);
+            }
+            $allCities = $collegeCityQuery->distinct()->pluck('city')->filter();
+        }
+
         $allDurations = Course::distinct()->pluck('duration')->filter()->values();
+        $activeFilterChips = $this->buildActiveFilterChips($request);
 
         return view($view, compact(
             'colleges',
@@ -243,8 +345,172 @@ class CollegeController extends Controller
             'allStates',
             'allCities',
             'allDurations',
+            'activeFilterChips',
             'pageTitle',
-            'mode'
+            'mode',
+            'sort'
         ));
+    }
+
+    /**
+     * Builds structured active filter chips metadata with individual removal URLs.
+     */
+    private function buildActiveFilterChips(Request $request): array
+    {
+        $chips = [];
+        $allParams = $request->query();
+
+        $makeRemoveUrl = function (string $key, ?string $val = null) use ($allParams, $request) {
+            $params = $allParams;
+            unset($params['page']);
+
+            if ($val === null) {
+                unset($params[$key]);
+            } elseif (isset($params[$key]) && is_array($params[$key])) {
+                $params[$key] = array_values(array_filter($params[$key], fn ($v) => (string) $v !== (string) $val));
+                if (empty($params[$key])) {
+                    unset($params[$key]);
+                }
+            } elseif (isset($params[$key])) {
+                unset($params[$key]);
+            }
+
+            return $request->url().(empty($params) ? '' : '?'.http_build_query($params));
+        };
+
+        if ($request->filled('search')) {
+            $chips[] = [
+                'label' => 'Search: "'.$request->search.'"',
+                'remove_url' => $makeRemoveUrl('search'),
+            ];
+        }
+
+        if ($request->filled('stream')) {
+            $chips[] = [
+                'label' => 'Stream: '.ucwords(str_replace('-', ' ', (string) $request->stream)),
+                'remove_url' => $makeRemoveUrl('stream'),
+            ];
+        }
+        if ($request->filled('streams')) {
+            foreach ((array) $request->streams as $s) {
+                $chips[] = [
+                    'label' => 'Stream: '.ucwords(str_replace('-', ' ', (string) $s)),
+                    'remove_url' => $makeRemoveUrl('streams', $s),
+                ];
+            }
+        }
+
+        if ($request->filled('course')) {
+            $chips[] = [
+                'label' => 'Course: '.strtoupper(str_replace('-', ' ', (string) $request->course)),
+                'remove_url' => $makeRemoveUrl('course'),
+            ];
+        }
+        if ($request->filled('courses')) {
+            foreach ((array) $request->courses as $c) {
+                $chips[] = [
+                    'label' => 'Course: '.strtoupper(str_replace('-', ' ', (string) $c)),
+                    'remove_url' => $makeRemoveUrl('courses', $c),
+                ];
+            }
+        }
+
+        if ($request->filled('state')) {
+            $chips[] = [
+                'label' => 'State: '.$request->state,
+                'remove_url' => $makeRemoveUrl('state'),
+            ];
+        }
+        if ($request->filled('states')) {
+            foreach ((array) $request->states as $st) {
+                $chips[] = [
+                    'label' => 'State: '.$st,
+                    'remove_url' => $makeRemoveUrl('states', $st),
+                ];
+            }
+        }
+
+        if ($request->filled('city')) {
+            $chips[] = [
+                'label' => 'City: '.$request->city,
+                'remove_url' => $makeRemoveUrl('city'),
+            ];
+        }
+        if ($request->filled('cities')) {
+            foreach ((array) $request->cities as $ct) {
+                $chips[] = [
+                    'label' => 'City: '.$ct,
+                    'remove_url' => $makeRemoveUrl('cities', $ct),
+                ];
+            }
+        }
+
+        if ($request->filled('level')) {
+            $chips[] = [
+                'label' => 'Level: '.strtoupper((string) $request->level),
+                'remove_url' => $makeRemoveUrl('level'),
+            ];
+        }
+        if ($request->filled('levels')) {
+            foreach ((array) $request->levels as $lvl) {
+                $chips[] = [
+                    'label' => 'Level: '.strtoupper((string) $lvl),
+                    'remove_url' => $makeRemoveUrl('levels', $lvl),
+                ];
+            }
+        }
+
+        $feeLabels = [
+            'under_1l' => '< ₹1 Lac',
+            '1l_to_2l' => '₹1 - 2 Lac',
+            '2l_to_3l' => '₹2 - 3 Lac',
+            '3l_to_5l' => '₹3 - 5 Lac',
+            '5l_to_10l' => '₹5 - 10 Lac',
+            'above_10l' => '> ₹10 Lac',
+        ];
+        if ($request->filled('fee_range')) {
+            $chips[] = [
+                'label' => 'Fee: '.($feeLabels[$request->fee_range] ?? $request->fee_range),
+                'remove_url' => $makeRemoveUrl('fee_range'),
+            ];
+        }
+        if ($request->filled('fee_ranges')) {
+            foreach ((array) $request->fee_ranges as $fr) {
+                $chips[] = [
+                    'label' => 'Fee: '.($feeLabels[$fr] ?? $fr),
+                    'remove_url' => $makeRemoveUrl('fee_ranges', $fr),
+                ];
+            }
+        }
+
+        if ($request->filled('type')) {
+            $chips[] = [
+                'label' => 'Type: '.$request->type,
+                'remove_url' => $makeRemoveUrl('type'),
+            ];
+        }
+        if ($request->filled('types')) {
+            foreach ((array) $request->types as $tp) {
+                $chips[] = [
+                    'label' => 'Type: '.$tp,
+                    'remove_url' => $makeRemoveUrl('types', $tp),
+                ];
+            }
+        }
+
+        if ($request->boolean('boys_hostel')) {
+            $chips[] = [
+                'label' => 'Boys Hostel',
+                'remove_url' => $makeRemoveUrl('boys_hostel'),
+            ];
+        }
+        if ($request->boolean('girls_hostel')) {
+            $chips[] = [
+                'label' => 'Girls Hostel',
+                'remove_url' => $makeRemoveUrl('girls_hostel'),
+            ];
+        }
+
+        return $chips;
     }
 }

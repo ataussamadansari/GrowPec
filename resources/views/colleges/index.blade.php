@@ -211,6 +211,35 @@
         color: #D9A400 !important;
     }
 
+    .active-filter-chip {
+        background: #EEF4F8;
+        color: #002B67;
+        border: 1px solid #C7D7E8;
+        border-radius: 20px;
+        padding: 5px 12px;
+        font-size: 0.82rem;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        transition: all 0.2s ease;
+    }
+
+    .active-filter-chip:hover {
+        background: #EF4444;
+        color: #ffffff;
+        border-color: #EF4444;
+        transform: translateY(-1px);
+    }
+
+    .active-filter-chip i {
+        font-size: 0.85rem;
+        opacity: 0.75;
+    }
+
+    .active-filter-chip:hover i {
+        opacity: 1;
+    }
+
     @media (max-width: 767.98px) {
         .college-thumb-img {
             height: 190px;
@@ -1171,18 +1200,48 @@
 
         <!-- Right Results Listing -->
         <div class="col-lg-9">
-            <!-- Active Filter Badges Counter -->
-            @php
-            $activeCount = count(array_filter([
-            request('search'), request('levels'), request('streams'), request('courses'),
-            request('degree_types'), request('durations'), request('states'), request('cities'),
-            request('types'), request('fee_ranges'), request('boys_hostel'), request('girls_hostel')
-            ]));
-            @endphp
-            @if($activeCount > 0)
-            <div class="d-flex justify-content-between align-items-center mb-3 bg-white p-2 px-3 rounded-3 border">
-                <small class="text-muted"><strong>{{ $activeCount }}</strong> active filter(s) applied</small>
-                <a href="{{ url()->current() }}" class="btn btn-sm btn-outline-danger py-0 px-2 small">Clear Filters</a>
+            <!-- 1. Top Results Count & Sorting Bar -->
+            <div class="d-flex flex-wrap justify-content-between align-items-center bg-white p-3 px-4 rounded-4 border shadow-sm mb-3">
+                <div class="results-counter text-muted small">
+                    Showing <strong class="text-dark">{{ $colleges->firstItem() ?? 0 }}-{{ $colleges->lastItem() ?? 0 }}</strong> of <strong class="text-dark">{{ $colleges->total() }}</strong> Universities
+                </div>
+
+                <div class="d-flex align-items-center gap-2 mt-2 mt-sm-0">
+                    <label for="collegeSortSelect" class="small text-secondary fw-semibold mb-0 text-nowrap">
+                        <i class="bi bi-arrow-down-up me-1"></i>Sort by:
+                    </label>
+                    <select id="collegeSortSelect" class="form-select form-select-sm border-secondary-subtle" style="width: auto; font-size: 0.85rem;" onchange="updateSort(this.value)">
+                        <option value="popular" {{ ($sort ?? 'popular') === 'popular' ? 'selected' : '' }}>Featured / Recommended</option>
+                        <option value="rating_desc" {{ ($sort ?? '') === 'rating_desc' ? 'selected' : '' }}>Highest Rating</option>
+                        <option value="name_asc" {{ ($sort ?? '') === 'name_asc' ? 'selected' : '' }}>University Name (A-Z)</option>
+                        <option value="name_desc" {{ ($sort ?? '') === 'name_desc' ? 'selected' : '' }}>University Name (Z-A)</option>
+                        <option value="established_desc" {{ ($sort ?? '') === 'established_desc' ? 'selected' : '' }}>Established (Newest)</option>
+                        <option value="established_asc" {{ ($sort ?? '') === 'established_asc' ? 'selected' : '' }}>Established (Oldest)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- 2. Active Filter Chips Bar -->
+            @if(!empty($activeFilterChips))
+            <div class="active-chips-bar bg-white p-3 px-4 rounded-4 border shadow-sm mb-3">
+                <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
+                    <div class="d-flex flex-wrap align-items-center gap-2">
+                        <span class="small fw-bold text-dark me-1">
+                            <i class="bi bi-funnel-fill text-primary me-1"></i>Active Filters ({{ count($activeFilterChips) }}):
+                        </span>
+                        @foreach($activeFilterChips as $chip)
+                        <a href="{{ $chip['remove_url'] }}" class="active-filter-chip badge text-decoration-none" title="Remove {{ $chip['label'] }}">
+                            <span>{{ $chip['label'] }}</span>
+                            <i class="bi bi-x-circle-fill ms-1"></i>
+                        </a>
+                        @endforeach
+                    </div>
+                    <div>
+                        <a href="{{ url()->current() }}" class="btn btn-sm btn-outline-danger py-1 px-3 small rounded-pill fw-semibold">
+                            <i class="bi bi-trash3 me-1"></i>Clear All
+                        </a>
+                    </div>
+                </div>
             </div>
             @endif
 
@@ -1326,6 +1385,13 @@
             document.getElementById('filterForm').submit();
         });
     });
+
+    function updateSort(val) {
+        const url = new URL(window.location.href);
+        url.searchParams.set('sort', val);
+        url.searchParams.delete('page');
+        window.location.href = url.toString();
+    }
 
     // 2. Real-time Instant Search inside Filter Lists
     document.querySelectorAll('.filter-inner-search').forEach(searchBox => {
