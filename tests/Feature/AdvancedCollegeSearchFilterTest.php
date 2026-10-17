@@ -212,3 +212,89 @@ test('pagination links preserve active filter queries', function () {
     expect($page2Url)->toContain('state=Karnataka');
     expect($page2Url)->toContain('sort=rating_desc');
 });
+
+test('can filter online colleges by stream and course level', function () {
+    $onlineCol1 = createFilterTestCollege([
+        'name' => 'Global Online Tech University',
+        'college_mode' => 'online',
+    ]);
+    $onlineCol2 = createFilterTestCollege([
+        'name' => 'National Distance Humanities University',
+        'college_mode' => 'online',
+    ]);
+
+    $stream = Stream::firstOrCreate(
+        ['slug' => 'computer-science-online'],
+        ['name' => 'Computer Science']
+    );
+    $course = Course::firstOrCreate(
+        ['slug' => 'mca-online'],
+        [
+            'name' => 'MCA Online',
+            'stream_id' => $stream->id,
+            'level' => 'PG',
+            'degree_type' => 'Degree',
+            'duration' => '2 Years',
+        ]
+    );
+
+    CollegeCourse::create([
+        'college_id' => $onlineCol1->id,
+        'course_id' => $course->id,
+        'fee_amount' => 120000,
+        'status' => true,
+    ]);
+
+    $response = $this->get(route('colleges.online', [
+        'stream' => 'computer-science-online',
+        'level' => 'PG',
+    ]));
+
+    $response->assertStatus(200);
+    expect($response->viewData('colleges')->pluck('id'))->toContain($onlineCol1->id);
+    expect($response->viewData('colleges')->pluck('id'))->not->toContain($onlineCol2->id);
+
+    $response->assertSee(route('college.show', $onlineCol1->slug));
+    $response->assertDontSee(route('college.show', $onlineCol2->slug));
+    $response->assertSee('Stream: Computer Science');
+    $response->assertSee('Level: PG');
+});
+
+test('can filter colleges by compound multi-dimensional criteria simultaneously', function () {
+    $targetCol = createFilterTestCollege([
+        'name' => 'Target Compound College',
+        'state' => 'Karnataka',
+        'city' => 'Bangalore',
+    ]);
+    $wrongStateCol = createFilterTestCollege([
+        'name' => 'Wrong State College',
+        'state' => 'Maharashtra',
+        'city' => 'Mumbai',
+    ]);
+    $wrongFeeCol = createFilterTestCollege([
+        'name' => 'Wrong Fee College',
+        'state' => 'Karnataka',
+        'city' => 'Bangalore',
+    ]);
+
+    attachTestCourse($targetCol, 'biotechnology', 'Biotechnology', 'b-tech-biotech', 'B.Tech Biotech', 80000); // under 1L
+    attachTestCourse($wrongStateCol, 'biotechnology', 'Biotechnology', 'b-tech-biotech', 'B.Tech Biotech', 80000); // under 1L, but wrong state
+    attachTestCourse($wrongFeeCol, 'biotechnology', 'Biotechnology', 'b-tech-biotech', 'B.Tech Biotech', 450000); // right stream & state, but fee 3-5L
+
+    $response = $this->get(route('colleges.regular', [
+        'stream' => 'biotechnology',
+        'state' => 'Karnataka',
+        'fee_range' => 'under_1l',
+    ]));
+
+    $response->assertStatus(200);
+    $matchedIds = $response->viewData('colleges')->pluck('id');
+    expect($matchedIds)->toContain($targetCol->id);
+    expect($matchedIds)->not->toContain($wrongStateCol->id);
+    expect($matchedIds)->not->toContain($wrongFeeCol->id);
+
+    $response->assertSee(route('college.show', $targetCol->slug));
+    $response->assertDontSee(route('college.show', $wrongStateCol->slug));
+    $response->assertDontSee(route('college.show', $wrongFeeCol->slug));
+    $response->assertSee('Active Filters (3):');
+});
