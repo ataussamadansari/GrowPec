@@ -1,73 +1,87 @@
 # Project Roadmap: GrowPec Education Portal
 
-**Current Milestone:** v1.3 — Architecture Cleanup & Schema Normalization  
-**Updated:** 2026-10-14  
+**Current Milestone:** v1.4 — Regular College Catalog Expansion (Colleges 9–15)  
+**Updated:** 2026-10-17  
 **Mode:** Agile / Structured  
 
 ---
 
-## Milestone v1.3 Phases Overview
+## Milestone v1.4 Phases Overview
 
 ```
-┌────────────────────────────────────────────────────────┐
-│ Phase 14: Controllers & Routes Cleanup                 │
-│ (v0_CollegeController, StudentProfile, legacy routes)  │
-└───────────────────────────┬────────────────────────────┘
-                            │
-                            ▼
-┌────────────────────────────────────────────────────────┐
-│ Phase 15: Model & Schema Normalization                 │
-│ (Drop comparisons, course fees/spec, experiences, migr)│
-└───────────────────────────┬────────────────────────────┘
-                            │
-                            ▼
-┌────────────────────────────────────────────────────────┐
-│ Phase 16: Verification, Pint Hygiene & Milestone Audit │
-│ (100% green tests, Pint compliance, milestone audit)   │
-└────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────┐
+│ Phase 17: Research & Implement Colleges 9–11                    │
+│ (MUIT Noida, Future University Bareilly, Haridwar University)   │
+└────────────────────────────────┬────────────────────────────────┘
+                                 │
+                                 ▼
+┌─────────────────────────────────────────────────────────────────┐
+│ Phase 18: Research & Implement Colleges 12–13                   │
+│ (COER University Roorkee, HRIT Group of Institutions Ghaziabad) │
+└────────────────────────────────┬────────────────────────────────┘
+                                 │
+                                 ▼
+┌─────────────────────────────────────────────────────────────────┐
+│ Phase 19: Research & Implement Colleges 14–15                   │
+│ (SRM IST NCR Modinagar, Noida International University NIU)     │
+└────────────────────────────────┬────────────────────────────────┘
+                                 │
+                                 ▼
+┌─────────────────────────────────────────────────────────────────┐
+│ Phase 20: Seeding Verification, Pint Hygiene & Full Test Suite  │
+│ (Seeder execution, 15-college Pest test suite, zero regressions)│
+└─────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
 ## Detailed Phase Breakdown
 
-### Phase 14: Controllers & Routes Cleanup
-- **Goal:** Remove dead controller prototypes, decommission legacy custom admin routes from `routes/web.php`, and safely retire obsolete `Admin/*` controllers and views now handled by Filament v5.
+### Phase 17: Research & Implement Colleges 9–11
+- **Goal:** Author 100% authentic, verified institution payloads in `RegularCollegeSeeder.php` for:
+  - 9. **Maharishi University of Information Technology (MUIT), Noida**
+  - 10. **Future University, Bareilly**
+  - 11. **Haridwar University, Roorkee / Haridwar**
 - **Tasks:**
-  - Remove unused prototype `app/Http/Controllers/v0_CollegeController.php`.
-  - Remove dead `app/Http/Controllers/StudentProfileController.php` and view `resources/views/student/profile.blade.php`.
-  - Remove legacy admin route block (`admin/legacy/*`, `admin/locations/*`, `admin/settings/*`, `admin/reviews/*`) from `routes/web.php`.
-  - Deprecate/retire obsolete custom Blade admin controllers (`app/Http/Controllers/Admin/*`) and templates (`resources/views/admin/`).
-  - Refactor or modernize legacy test files (`CenterLoginTest.php`, `ContactSettingsTest.php`, `CollegeReviewModerationTest.php`) so assertions run against current models and Filament panel resources.
-- **Status:** Completed
-- **Success Criteria:** No dead controllers remain; `routes/web.php` contains only active routes; all tests pass without relying on legacy admin routes.
+  - Define full institutional profiles: name, short name, slug, campus, approvals, NAAC/NIRF credentials, real fees, placements, recruiters, facilities, FAQs, scholarships, admission guides.
+  - Wire methods `maharishiUniversityNoida()`, `futureUniversityBareilly()`, and `haridwarUniversity()` into `collegeList()`.
+- **Status:** Planned
+- **Success Criteria:** Methods return complete arrays adhering to `seedSingleCollege` format without missing keys.
 
-### Phase 15: Model & Schema Normalization
-- **Goal:** Drop redundant database tables, delete orphaned models, eliminate duplicate migrations, and consolidate entity relationships.
+### Phase 18: Research & Implement Colleges 12–13
+- **Goal:** Author 100% authentic, verified institution payloads in `RegularCollegeSeeder.php` for:
+  - 12. **COER University, Roorkee**
+  - 13. **HRIT Group of Institutions, Ghaziabad**
 - **Tasks:**
-  - Create database migration to safely drop redundant tables: `college_comparisons`, `college_course_fees`, `college_course_specializations`, and `college_learning_experiences`.
-  - Remove orphaned Eloquent models: `CollegeComparison.php`, `CollegeCourseFee.php`, `CollegeCourseSpecialization.php`, and `CollegeLearningExperience.php`.
-  - Update `CollegeCourse.php` to remove obsolete `fees()` and `specializationFees()` relations.
-  - Update `College.php` to remove `learningExperiences()` in favor of `collegeHighlights()`.
-  - Update `resources/views/colleges/show.blade.php` to read course fee data directly from `collegeCourses`.
-  - Delete redundant duplicate migration `2026_09_15_202122_repair_college_alumni_table.php`.
-  - Update seeders to remove insert/truncate references to dropped tables.
-- **Status:** Completed
-- **Success Criteria:** Database schema normalized; 4 redundant tables dropped; 4 orphaned models deleted; public college views functioning cleanly.
+  - Define full institutional profiles: verified B.Tech/Management/Pharmacy/Law fees, placement records, recruiters, facilities, FAQs, scholarships, admission guides.
+  - Wire methods `coerUniversityRoorkee()` and `hritGhaziabad()` into `collegeList()`.
+- **Status:** Planned
+- **Success Criteria:** Both colleges structured with rich relational child data and connected into `collegeList()`.
 
-### Phase 16: Verification, Pint Hygiene & Milestone Audit
-- **Goal:** Validate end-to-end portal stability, guarantee 0 regressions, format all files, and generate milestone audit documentation.
+### Phase 19: Research & Implement Colleges 14–15
+- **Goal:** Author 100% authentic, verified institution payloads in `RegularCollegeSeeder.php` for:
+  - 14. **SRM Institute of Science and Technology (SRM IST - Delhi-NCR Campus), Modinagar, Ghaziabad**
+  - 15. **Noida International University (NIU), Greater Noida**
 - **Tasks:**
-  - Run complete test suite (`php artisan test --compact`) ensuring 100% green pass rate.
-  - Run Laravel Pint formatter (`vendor/bin/pint --format agent`).
-  - Verify migration status (`php artisan migrate:status`).
-  - Author `v1.3-MILESTONE-AUDIT.md` verifying all requirements are satisfied.
-- **Status:** Pending
-- **Success Criteria:** 100% green test suite, clean Pint formatting, zero regressions, and audit report compiled.
+  - Define full institutional profiles: verified programs (including MBBS/NIIMS hospital for NIU, NAAC A++ for SRM), verified fee structures, placement records, recruiters, facilities, FAQs, scholarships, admission guides.
+  - Wire methods `srmIstNcrGhaziabad()` and `noidaInternationalUniversity()` into `collegeList()`.
+- **Status:** Planned
+- **Success Criteria:** All 15 colleges defined in `RegularCollegeSeeder.php`.
+
+### Phase 20: Seeding Verification, Pint Hygiene & Full Test Suite
+- **Goal:** Execute database seeding, write comprehensive automated Pest tests covering all 15 colleges, format code with Pint, and verify 0 regressions.
+- **Tasks:**
+  - Run `php artisan db:seed --class=RegularCollegeSeeder` and verify all 15 colleges and child tables populate cleanly without errors.
+  - Create feature test `tests/Feature/RegularCollegesComprehensiveSeederTest.php` testing seeder idempotency, 15 colleges count, course relationships, and HTTP 200 responses on public show routes.
+  - Run `vendor/bin/pint --format agent` to maintain strict code hygiene.
+  - Run `php artisan test --compact` to confirm 100% green suite.
+- **Status:** Planned
+- **Success Criteria:** All 15 colleges seeded and tested, 100% green test suite, zero regressions.
 
 ---
 
 ## Milestone Archive
 - **Milestone v1.0 (Archived):** Project initialization, architecture mapping (`.planning/codebase/`), and distance/online university catalog foundation.
-- **Milestone v1.1 (Archived):** Public guest college review system (Phases 5-8) with honeypot anti-spam, rate throttling, public show integration, admin moderation, and 100% passing Pest tests.
-- **Milestone v1.2 (Archived):** Filament Admin Panel v5 Migration (Phases 9-13) — Complete migration of admin panel to Filament v5 with 11 resources, 8 relation managers, and 3 dashboard widgets (116 tests passing, 510 assertions). See [v1.2 Roadmap Archive](.planning/milestones/v1.2-ROADMAP.md) and [v1.2 Requirements Archive](.planning/milestones/v1.2-REQUIREMENTS.md).
+- **Milestone v1.1 (Archived):** Public guest college review system with honeypot anti-spam, rate throttling, public show integration, admin moderation, and 100% passing Pest tests.
+- **Milestone v1.2 (Archived):** Filament Admin Panel v5 Migration — Replaced custom Blade admin controllers with Filament v5 Resources, RelationManagers, and Dashboard widgets (116 tests passing).
+- **Milestone v1.3 (Archived):** Architecture Cleanup & Schema Normalization — Dropped 4 redundant tables, pruned obsolete models, simplified relationships, and verified 118 green tests.

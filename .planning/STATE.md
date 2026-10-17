@@ -1,39 +1,34 @@
 # Project State & Memory
 
 **Project:** GrowPec Education Portal  
-**Current Milestone:** v1.3 — Architecture Cleanup & Schema Normalization  
-**Last Updated:** 2026-10-14  
-**Current Phase:** Phase 16 (Verification, Pint Hygiene & Milestone Audit)  
-**Milestone Status:** In Progress  
+**Current Milestone:** v1.4 — Regular College Catalog Expansion (Colleges 9–15)  
+**Last Updated:** 2026-10-17  
+**Current Phase:** Phase 17 (Research & Implement Colleges 9–11: MUIT Noida, Future University Bareilly, Haridwar University)  
+**Milestone Status:** Ready for Planning / Execution  
 
 ---
 
-## Milestone v1.3 Phase Progress Tracker
+## Milestone v1.4 Phase Progress Tracker
 
 | Phase | Description | Status | Target |
 |---|---|---|---|
-| **Phase 14** | Controllers & Routes Cleanup (`v0_CollegeController`, `StudentProfile`, `admin/legacy/*`, test updates) | **Completed** | Dead controllers removed, legacy routes decommissioned |
-| **Phase 15** | Model & Schema Normalization (Drop redundant tables/models, consolidate highlights, fix migrations) | **Completed** | Clean DB schema, redundant entities removed |
-| **Phase 16** | Verification, Pint Hygiene & Milestone Audit (100% green tests, Pint compliance, milestone audit) | Planned | End-to-end verified with 0 regressions |
+| **Phase 17** | Research & Implement Colleges 9–11 (MUIT Noida, Future Univ Bareilly, Haridwar Univ) | Planned | Verified authentic college payloads in seeder |
+| **Phase 18** | Research & Implement Colleges 12–13 (COER Univ Roorkee, HRIT Ghaziabad) | Planned | Verified authentic college payloads in seeder |
+| **Phase 19** | Research & Implement Colleges 14–15 (SRM IST NCR Modinagar, Noida International Univ) | Planned | All 15 regular colleges implemented in seeder |
+| **Phase 20** | Seeding Verification, Pint Hygiene & Full Test Suite | Planned | 100% green tests covering all 15 regular colleges |
 
 ---
 
 ## Active Context & Decisions
-- **Phase 14 Shipped:** Removed dead controllers (`v0_CollegeController`, `StudentProfileController`), decommissioned legacy admin route blocks (`admin/legacy/*`), retired custom Blade controllers and views in `Admin/*`, and modernized tests.
-- **Phase 15 Shipped:**
-  - Safely dropped 4 redundant database tables (`college_comparisons`, `college_course_fees`, `college_course_specializations`, `college_learning_experiences`).
-  - Deleted duplicate repair migration `2026_09_15_202122_repair_college_alumni_table.php`.
-  - Deleted 4 orphaned models (`CollegeComparison.php`, `CollegeCourseFee.php`, `CollegeCourseSpecialization.php`, `CollegeLearningExperience.php`).
-  - Removed obsolete relationship methods from `College.php` and `CollegeCourse.php`.
-  - Removed eager load from `CollegeController::show()` and streamlined `resources/views/colleges/show.blade.php` to map course fees and specializations directly from `collegeCourses`.
-  - Cleaned truncate lists and dead insert loops in 5 seeders.
-  - Added `tests/Feature/CollegeDetailPageTest.php` (6 tests, 17 assertions).
-  - 100% green test suite: 118 passed (484 assertions). Pint compliant.
-- **Suite Health:** 118 total passing tests (484 assertions). Clean Pint formatting.
+- **Milestone v1.3 Completed & Archived:**
+  - Controllers, obsolete routes, redundant tables, and unused models normalized.
+  - 118 tests passed, 484 assertions, 100% green.
+- **Milestone v1.4 Scope:**
+  - Adding the 7 remaining regular colleges requested by user to complete the 15-college regular catalog.
+  - 100% authentic and real details: actual courses, verified semester/annual fees, genuine eligibility criteria, real NAAC/NIRF credentials, verified recruiter rosters, placement statistics, facilities, and scholarships.
+  - Test coverage ensuring zero regressions and valid public profile rendering for all 15 colleges.
 
 ---
 
 ## Next Steps
-Run `/gsd-plan-phase 16` to plan Verification, Pint Hygiene & Milestone Audit.
-
-
+Run `/gsd-plan-phase 17` to plan the implementation of Colleges 9–11 (Maharishi University Noida, Future University Bareilly, and Haridwar University).
