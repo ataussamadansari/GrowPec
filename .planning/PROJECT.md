@@ -1,26 +1,27 @@
 # Project: GrowPec Education Portal
 
-**Current State:** Active Milestone v1.5 — College Comparison & Advanced Search Filters  
+**Current State:** Active Milestone v2.0 — Flexible JSON-Based College Content Architecture & Schema Simplification  
 **Updated:** 2026-10-18  
 **Framework:** Laravel 12 on PHP 8.2+  
 **Admin Tool:** Filament Admin Panel v5 (`filament/filament:"^5.0"`)  
 **Database:** MySQL (growpec_db)  
-**Test Suite Health:** 127 passed tests (555 assertions), 100% green  
+**Test Suite Health:** 146 passed tests (664 assertions), 100% green  
 
 ---
 
 ## 1. Project Overview & Current State
 GrowPec is an education portal empowering students across India to discover, compare, and enroll in top regular and distance/online colleges.
 
-Following the successful completion of **Milestone v1.4 (Regular College Catalog Expansion)**:
-- 15 authentic, research-backed regular on-campus universities and 15 distance/online universities are seeded and operational in the system (30 total institutions).
-- All dead controllers and legacy admin routes have been eliminated; administration is 100% powered by Filament Admin Panel v5.
-- 127 automated Pest feature tests verify all public and administrative workflows with 0 regressions.
+Following the successful completion of **Milestone v1.5 (College Comparison & Advanced Search Filters)**:
+- 15 authentic regular on-campus universities and 11 online universities are active in MySQL.
+- Full side-by-side comparison engine (`/compare`) and floating comparison dock are operational.
+- Multi-dimensional search and filtering (streams, courses, locations, fee brackets) are active.
+- 146 automated Pest feature tests verify all public and administrative workflows with 0 regressions.
 
 ---
 
-## 2. Active Milestone Goals: v1.5 College Comparison & Advanced Search Filters
-The objective of Milestone v1.5 is to deliver a dedicated side-by-side college comparison experience and empower students with multi-dimensional filtering across streams, courses, locations, fee brackets, and ratings.
+## 2. Active Milestone Goals: v2.0 Flexible JSON-Based College Content Architecture & Schema Simplification
+The objective of Milestone v2.0 is to streamline the complex college schema and replace multiple fragmented informational child tables with one flexible, versioned JSON-based content system (`college_content_sections`), while keeping core academic, location, fee, review, and lead data strictly relational.
 
 ### Key Objectives:
 1. **Side-by-Side College Comparison Tool (`/compare`)**:

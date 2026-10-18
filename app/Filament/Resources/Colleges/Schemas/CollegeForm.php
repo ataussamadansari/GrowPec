@@ -49,22 +49,31 @@ class CollegeForm
                                             ->maxLength(100)
                                             ->placeholder('e.g. IITD, BITS Pilani')
                                             ->label('Short / Abbreviated Name'),
-                                        Select::make('college_mode')
+                                        Select::make('college_type')
                                             ->options([
-                                                'regular' => 'Regular (On-Campus)',
-                                                'online' => 'Online / Distance',
+                                                'Private' => 'Private',
+                                                'Govt' => 'Government (Central / State)',
+                                                'Deemed' => 'Deemed / Deemed-to-be University',
+                                                'Autonomous' => 'Autonomous Institute',
                                             ])
-                                            ->default('regular')
+                                            ->default('Private')
                                             ->required()
-                                            ->label('Delivery Mode'),
-                                        TextInput::make('college_type')
-                                            ->maxLength(100)
-                                            ->placeholder('e.g. Government, Private, Deemed')
-                                            ->label('Institution Type'),
+                                            ->label('Institution Ownership (Private / Government)'),
+                                        Select::make('institution_category')
+                                            ->options([
+                                                'University' => 'University (Degree Awarding)',
+                                                'College' => 'College (Affiliated)',
+                                                'Institute' => 'Institute (Autonomous / Standalone)',
+                                            ])
+                                            ->default('University')
+                                            ->required()
+                                            ->live()
+                                            ->label('Institution Category (College / University)'),
                                         TextInput::make('university_name')
                                             ->maxLength(150)
-                                            ->placeholder('e.g. University of Delhi')
-                                            ->label('Affiliated University'),
+                                            ->placeholder('e.g. AKTU, GGSIPU, University of Delhi')
+                                            ->label('Affiliated University')
+                                            ->helperText('Specify affiliated parent university if this is a College or Institute'),
                                         TextInput::make('established_year')
                                             ->numeric()
                                             ->maxLength(4)

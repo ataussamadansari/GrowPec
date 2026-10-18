@@ -49,10 +49,8 @@ class CollegeController extends Controller
                 'recruiters',
                 'careerOutcomes',
                 'collegeFacilities',
-                'loanOptions',
                 'collegeFaqs',
                 'gallery',
-                'alumni',
                 'approvedReviews',
             ])
             ->firstOrFail();
@@ -111,7 +109,7 @@ class CollegeController extends Controller
             ->where('status', true)
             ->where('college_mode', $college->college_mode)
             ->where('state', $college->state)
-            ->select(['id', 'name', 'slug', 'logo', 'banner_image', 'city', 'state', 'rating', 'college_type'])
+            ->select(['id', 'name', 'slug', 'logo', 'banner_image', 'city', 'state', 'rating', 'college_type', 'institution_category'])
             ->take(3)
             ->get();
 

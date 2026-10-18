@@ -2452,7 +2452,7 @@
                 <div class="d-flex flex-wrap gap-2 mb-2">
                     <span class="c-badge c-badge--blue">
                         <i class="bi bi-mortarboard-fill"></i>
-                        {{ $college->college_type }} University
+                        {{ $college->college_type }} {{ $college->institution_category ?? 'University' }}
                     </span>
                     @if($college->naac_grade)
                     <span class="c-badge c-badge--naac">
@@ -2668,8 +2668,8 @@
                                 <td><strong>{{ ucfirst($college->college_mode) }} Mode</strong></td>
                             </tr>
                             <tr>
-                                <td class="fw-semibold text-muted">University Type</td>
-                                <td>{{ $college->college_type }} University</td>
+                                <td class="fw-semibold text-muted">{{ $college->institution_category ? $college->institution_category.' Type' : 'Institution Type' }}</td>
+                                <td>{{ $college->college_type }} {{ $college->institution_category ?? 'University' }}</td>
                             </tr>
                             @if($college->established_year)
                             <tr>

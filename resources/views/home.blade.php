@@ -4959,7 +4959,7 @@
                         <div class="college-info">
                             <div class="college-info-row">
                                 <span class="college-info-icon"><i class="bi bi-bank2"></i></span>
-                                <span class="college-info-text">{{ $college->college_type ?: 'University / College' }}</span>
+                                <span class="college-info-text">{{ $college->college_type }} {{ $college->institution_category ?? 'University' }}</span>
                             </div>
                             <div class="college-info-row">
                                 <span class="college-info-icon"><i class="bi bi-geo-alt-fill text-danger"></i></span>
@@ -5027,7 +5027,7 @@
                         <div class="college-info">
                             <div class="college-info-row">
                                 <span class="college-info-icon"><i class="bi bi-bank2"></i></span>
-                                <span class="college-info-text">{{ $college->college_type ?: 'University' }}</span>
+                                <span class="college-info-text">{{ $college->college_type }} {{ $college->institution_category ?? 'University' }}</span>
                             </div>
                             <div class="college-info-row">
                                 <span class="college-info-icon"><i class="bi bi-geo-alt-fill text-danger"></i></span>

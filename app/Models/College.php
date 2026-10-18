@@ -21,6 +21,7 @@ class College extends Model
         'banner_image',
         'college_mode',
         'college_type',
+        'institution_category',
         'university_name',
         'website',
         'state',
@@ -268,6 +269,16 @@ class College extends Model
         return str_starts_with($this->sample_certificate_image, 'http')
             ? $this->sample_certificate_image
             : asset('storage/'.$this->sample_certificate_image);
+    }
+
+    public function getModeAttribute(): ?string
+    {
+        return $this->college_mode;
+    }
+
+    public function getTypeAttribute(): ?string
+    {
+        return $this->college_type;
     }
 
     public function isOnline(): bool

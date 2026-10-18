@@ -39,6 +39,21 @@ class CollegesTable
                     ->formatStateUsing(fn (string $state): string => ucfirst($state))
                     ->sortable()
                     ->label('Mode'),
+                TextColumn::make('institution_category')
+                    ->badge()
+                    ->color(fn (?string $state): string => match ($state) {
+                        'College' => 'warning',
+                        'Institute' => 'info',
+                        default => 'primary',
+                    })
+                    ->placeholder('University')
+                    ->sortable()
+                    ->label('Category'),
+                TextColumn::make('college_type')
+                    ->badge()
+                    ->color('gray')
+                    ->sortable()
+                    ->label('Ownership'),
                 TextColumn::make('state')
                     ->searchable()
                     ->sortable()
@@ -83,6 +98,21 @@ class CollegesTable
                         'online' => 'Online / Distance',
                     ])
                     ->label('Mode'),
+                SelectFilter::make('institution_category')
+                    ->options([
+                        'University' => 'University',
+                        'College' => 'College',
+                        'Institute' => 'Institute',
+                    ])
+                    ->label('Category'),
+                SelectFilter::make('college_type')
+                    ->options([
+                        'Private' => 'Private',
+                        'Govt' => 'Government',
+                        'Deemed' => 'Deemed',
+                        'Autonomous' => 'Autonomous',
+                    ])
+                    ->label('Ownership'),
                 SelectFilter::make('state_id')
                     ->relationship('stateRelation', 'name')
                     ->searchable()

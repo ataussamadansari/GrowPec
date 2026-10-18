@@ -1273,7 +1273,7 @@
                                 <i class="bi bi-geo-alt me-1 text-danger"></i> {{ $college->city }}, {{ $college->state }}
                             </span>
                             <span>
-                                <i class="bi bi-flag me-1 text-primary"></i> {{ $college->college_type }} University
+                                <i class="bi bi-flag me-1 text-primary"></i> {{ $college->college_type }} {{ $college->institution_category ?? 'University' }}
                             </span>
                         </div>
 

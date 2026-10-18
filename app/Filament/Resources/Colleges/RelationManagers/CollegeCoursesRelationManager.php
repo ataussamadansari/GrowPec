@@ -3,6 +3,8 @@
 namespace App\Filament\Resources\Colleges\RelationManagers;
 
 use App\Models\CollegeCourse;
+use App\Models\Course;
+use App\Models\Specialization;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
@@ -16,6 +18,7 @@ use Filament\Schemas\Schema;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Support\Str;
 
 class CollegeCoursesRelationManager extends RelationManager
 {
@@ -32,11 +35,66 @@ class CollegeCoursesRelationManager extends RelationManager
                     ->required()
                     ->searchable()
                     ->preload()
+                    ->live()
+                    ->afterStateUpdated(function ($state, callable $set) {
+                        if ($state) {
+                            $course = Course::find($state);
+                            if ($course?->duration) {
+                                $set('duration', $course->duration);
+                            }
+                        }
+                    })
                     ->label('Course / Degree'),
+                Select::make('specialization_id')
+                    ->label('Specialization (from Master)')
+                    ->placeholder('Select specialization or create new')
+                    ->options(function (callable $get) {
+                        $courseId = $get('course_id');
+                        if (! $courseId) {
+                            return Specialization::orderBy('name')->pluck('name', 'id');
+                        }
+
+                        return Specialization::where('course_id', $courseId)
+                            ->orderBy('name')
+                            ->pluck('name', 'id');
+                    })
+                    ->searchable()
+                    ->live()
+                    ->afterStateUpdated(function ($state, callable $set) {
+                        if ($state) {
+                            $spec = Specialization::find($state);
+                            if ($spec) {
+                                $set('specialization', $spec->name);
+                            }
+                        }
+                    })
+                    ->createOptionUsing(function (array $data, callable $get): int {
+                        $courseId = $get('course_id');
+                        $spec = Specialization::create([
+                            'course_id' => $courseId,
+                            'name' => $data['name'],
+                            'slug' => Str::slug($data['name']),
+                            'status' => true,
+                        ]);
+
+                        return $spec->id;
+                    })
+                    ->createOptionForm([
+                        TextInput::make('name')
+                            ->required()
+                            ->label('New Specialization Name')
+                            ->placeholder('e.g. Artificial Intelligence, Data Science'),
+                    ]),
                 TextInput::make('specialization')
                     ->maxLength(255)
                     ->placeholder('e.g. Computer Science, AI & ML, Finance')
-                    ->label('Specialization'),
+                    ->helperText('Auto-filled from selection above, or type custom specialization')
+                    ->label('Specialization Title'),
+                TextInput::make('duration')
+                    ->maxLength(50)
+                    ->placeholder('e.g. 4 Years')
+                    ->helperText('Auto-filled from Course master, can be modified')
+                    ->label('Duration'),
                 TextInput::make('fee_amount')
                     ->numeric()
                     ->placeholder('e.g. 125000')
@@ -49,10 +107,6 @@ class CollegeCoursesRelationManager extends RelationManager
                     ])
                     ->default('per_year')
                     ->label('Fee Structure'),
-                TextInput::make('duration')
-                    ->maxLength(50)
-                    ->placeholder('e.g. 4 Years')
-                    ->label('Duration'),
                 TextInput::make('eligibility')
                     ->maxLength(255)
                     ->placeholder('e.g. 10+2 with 50% in PCM')

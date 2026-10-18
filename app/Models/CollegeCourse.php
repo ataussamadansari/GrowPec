@@ -32,6 +32,25 @@ class CollegeCourse extends Model
         'sort_order' => 'integer',
     ];
 
+    protected static function booted(): void
+    {
+        static::saving(function (CollegeCourse $collegeCourse) {
+            // Auto-fill duration from Course master if blank
+            if (empty($collegeCourse->duration) && $collegeCourse->course_id) {
+                $collegeCourse->duration = Course::find($collegeCourse->course_id)?->duration;
+            }
+
+            // Keep specialization string and specialization_id synchronized
+            if ($collegeCourse->specialization_id && empty($collegeCourse->specialization)) {
+                $collegeCourse->specialization = Specialization::find($collegeCourse->specialization_id)?->name;
+            } elseif ($collegeCourse->specialization && empty($collegeCourse->specialization_id) && $collegeCourse->course_id) {
+                $collegeCourse->specialization_id = Specialization::where('course_id', $collegeCourse->course_id)
+                    ->where('name', $collegeCourse->specialization)
+                    ->value('id');
+            }
+        });
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Relationships
@@ -51,6 +70,11 @@ class CollegeCourse extends Model
     public function specialization(): BelongsTo
     {
         return $this->belongsTo(Specialization::class);
+    }
+
+    public function specializationRelation(): BelongsTo
+    {
+        return $this->belongsTo(Specialization::class, 'specialization_id');
     }
 
     /*
