@@ -2,8 +2,6 @@
 
 namespace App\Filament\Resources\Colleges\Schemas;
 
-use App\Models\City;
-use App\Models\State;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -45,6 +43,15 @@ class CollegeForm
                                             ->maxLength(255)
                                             ->unique(ignoreRecord: true)
                                             ->label('URL Slug'),
+                                        Select::make('college_mode')
+                                            ->options([
+                                                'regular' => 'Regular (On-Campus Physical University)',
+                                                'online' => 'Online (Distance / Online Degree University)',
+                                            ])
+                                            ->default('regular')
+                                            ->required()
+                                            ->live()
+                                            ->label('Education Mode'),
                                         TextInput::make('short_name')
                                             ->maxLength(100)
                                             ->placeholder('e.g. IITD, BITS Pilani')
@@ -82,7 +89,8 @@ class CollegeForm
                                         TextInput::make('campus_size')
                                             ->maxLength(100)
                                             ->placeholder('e.g. 320 Acres')
-                                            ->label('Campus Size'),
+                                            ->label('Campus Size')
+                                            ->visible(fn (Get $get) => $get('college_mode') !== 'online'),
                                         TextInput::make('website')
                                             ->url()
                                             ->maxLength(255)
@@ -100,23 +108,15 @@ class CollegeForm
                                     ->columns(2)
                                     ->components([
                                         Select::make('state_id')
-                                            ->relationship('stateRelation', 'name')
+                                            ->relationship('state', 'name')
                                             ->searchable()
                                             ->preload()
                                             ->label('Select State')
                                             ->live()
-                                            ->afterStateUpdated(function (Set $set, ?string $state) {
-                                                $set('city_id', null);
-                                                if ($state) {
-                                                    $stateModel = State::find($state);
-                                                    if ($stateModel) {
-                                                        $set('state', $stateModel->name);
-                                                    }
-                                                }
-                                            }),
+                                            ->afterStateUpdated(fn (Set $set) => $set('city_id', null)),
                                         Select::make('city_id')
                                             ->relationship(
-                                                'cityRelation',
+                                                'city',
                                                 'name',
                                                 modifyQueryUsing: fn ($query, Get $get) => $query->when(
                                                     $get('state_id'),
@@ -125,24 +125,7 @@ class CollegeForm
                                             )
                                             ->searchable()
                                             ->preload()
-                                            ->label('Select City')
-                                            ->live()
-                                            ->afterStateUpdated(function (Set $set, ?string $state) {
-                                                if ($state) {
-                                                    $cityModel = City::find($state);
-                                                    if ($cityModel) {
-                                                        $set('city', $cityModel->name);
-                                                    }
-                                                }
-                                            }),
-                                        TextInput::make('state')
-                                            ->required()
-                                            ->maxLength(100)
-                                            ->label('State Name'),
-                                        TextInput::make('city')
-                                            ->required()
-                                            ->maxLength(100)
-                                            ->label('City Name'),
+                                            ->label('Select City'),
                                         Textarea::make('address')
                                             ->rows(2)
                                             ->columnSpanFull()
@@ -172,8 +155,9 @@ class CollegeForm
                                             ->image()
                                             ->disk('public')
                                             ->directory('colleges/certificates')
-                                            ->label('Sample Degree / Certificate')
-                                            ->helperText('Sample certificate awarded to graduates'),
+                                            ->label('Sample Degree / Certificate (Online Authenticity)')
+                                            ->helperText('Sample certificate awarded to graduates')
+                                            ->visible(fn (Get $get) => $get('college_mode') === 'online'),
                                         FileUpload::make('brochure_pdf')
                                             ->disk('public')
                                             ->directory('colleges/brochures')
@@ -213,17 +197,20 @@ class CollegeForm
                                             ->label('UGC Approved'),
                                         TextInput::make('nirf_rank')
                                             ->numeric()
-                                            ->label('NIRF All India Rank'),
+                                            ->label('NIRF All India Rank')
+                                            ->visible(fn (Get $get) => $get('college_mode') !== 'online'),
                                         TextInput::make('nirf_year')
                                             ->numeric()
                                             ->placeholder('e.g. 2025')
-                                            ->label('NIRF Ranking Year'),
+                                            ->label('NIRF Ranking Year')
+                                            ->visible(fn (Get $get) => $get('college_mode') !== 'online'),
                                         TextInput::make('approvals')
                                             ->placeholder('e.g. AICTE, UGC, BCI, PCI')
                                             ->label('Accreditations & Approvals'),
                                         TextInput::make('entrance_exams')
                                             ->placeholder('e.g. JEE Main, GATE, CAT, CUET')
-                                            ->label('Accepted Entrance Exams'),
+                                            ->label('Accepted Entrance Exams')
+                                            ->visible(fn (Get $get) => $get('college_mode') !== 'online'),
                                     ]),
 
                                 Section::make('Placements & Hostel Amenities')
@@ -237,21 +224,14 @@ class CollegeForm
                                             ->maxLength(100)
                                             ->placeholder('e.g. 12.5 LPA')
                                             ->label('Average Salary Package'),
-                                        TextInput::make('top_recruiters')
-                                            ->maxLength(255)
-                                            ->placeholder('e.g. Google, Microsoft, Amazon, TCS, Deloitte')
-                                            ->label('Top Recruiters'),
                                         Toggle::make('has_boys_hostel')
                                             ->default(false)
-                                            ->label('Boys Hostel Facility Available'),
+                                            ->label('Boys Hostel Facility Available')
+                                            ->visible(fn (Get $get) => $get('college_mode') !== 'online'),
                                         Toggle::make('has_girls_hostel')
                                             ->default(false)
-                                            ->label('Girls Hostel Facility Available'),
-                                        Textarea::make('facilities')
-                                            ->rows(3)
-                                            ->columnSpanFull()
-                                            ->placeholder('e.g. Wi-Fi Campus, Modern Labs, Central Library, Sports Complex, Auditorium')
-                                            ->label('Campus Facilities Overview'),
+                                            ->label('Girls Hostel Facility Available')
+                                            ->visible(fn (Get $get) => $get('college_mode') !== 'online'),
                                     ]),
                             ]),
 
@@ -268,7 +248,8 @@ class CollegeForm
                                             ->label('Admission Process & Criteria'),
                                         Textarea::make('scholarship_info')
                                             ->rows(4)
-                                            ->label('Scholarships & Financial Aid Overview'),
+                                            ->label('Scholarships & Financial Aid Overview')
+                                            ->visible(fn (Get $get) => $get('college_mode') !== 'online'),
                                     ]),
 
                                 Section::make('Search Engine Optimization (SEO)')

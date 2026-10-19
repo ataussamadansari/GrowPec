@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Colleges\RelationManagers;
 
+use App\Models\College;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
@@ -17,12 +18,18 @@ use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 
 class CollegeFacilitiesRelationManager extends RelationManager
 {
     protected static string $relationship = 'collegeFacilities';
 
     protected static ?string $title = 'Campus Facilities';
+
+    public static function canViewForRecord(Model $ownerRecord, string $pageClass): bool
+    {
+        return $ownerRecord instanceof College && $ownerRecord->isRegular();
+    }
 
     public function form(Schema $schema): Schema
     {

@@ -50,4 +50,12 @@ class CollegeScholarship extends Model
 
         return 'As per eligibility';
     }
+
+    /**
+     * Backward-compatibility accessor for title (mapping to name).
+     */
+    public function getTitleAttribute(): string
+    {
+        return $this->name ?? '';
+    }
 }

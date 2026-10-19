@@ -9,7 +9,9 @@ use App\Filament\Resources\Colleges\RelationManagers\CollegeCoursesRelationManag
 use App\Filament\Resources\Colleges\RelationManagers\CollegeFacilitiesRelationManager;
 use App\Filament\Resources\Colleges\RelationManagers\CollegeFaqsRelationManager;
 use App\Filament\Resources\Colleges\RelationManagers\GalleryRelationManager;
+use App\Filament\Resources\Colleges\RelationManagers\HighlightsRelationManager;
 use App\Filament\Resources\Colleges\RelationManagers\PlacementStatsRelationManager;
+use App\Filament\Resources\Colleges\RelationManagers\RecruitersRelationManager;
 use App\Filament\Resources\Colleges\RelationManagers\ScholarshipsRelationManager;
 use App\Models\City;
 use App\Models\College;
@@ -90,8 +92,6 @@ test('college can be listed and created via livewire', function () {
             'college_mode' => 'regular',
             'state_id' => $this->state->id,
             'city_id' => $this->city->id,
-            'state' => 'Maharashtra',
-            'city' => 'Mumbai',
             'college_type' => 'Private',
             'rating' => 4.5,
             'status' => true,
@@ -103,7 +103,7 @@ test('college can be listed and created via livewire', function () {
         'name' => 'Apex Tech University',
         'slug' => $uniqueSlug,
         'college_mode' => 'regular',
-        'city' => 'Mumbai',
+        'city_id' => $this->city->id,
     ]);
 });
 
@@ -348,5 +348,53 @@ test('gallery relation manager creates photo entries', function () {
         'college_id' => $college->id,
         'title' => 'Main Auditorium Hall',
         'category' => 'Infrastructure',
+    ]);
+});
+
+test('highlights relation manager creates key highlight cards', function () {
+    $this->actingAs($this->admin);
+
+    $college = makeCollegeForTesting();
+
+    Livewire::test(HighlightsRelationManager::class, [
+        'ownerRecord' => $college,
+        'pageClass' => EditCollege::class,
+    ])
+        ->assertSuccessful()
+        ->callTableAction('create', data: [
+            'title' => 'NIRF 2025 Ranking',
+            'value' => 'Ranked #45 Pan India',
+            'icon' => 'bi-award-fill',
+            'status' => true,
+        ])
+        ->assertHasNoTableActionErrors();
+
+    $this->assertDatabaseHas('college_highlights', [
+        'college_id' => $college->id,
+        'title' => 'NIRF 2025 Ranking',
+        'value' => 'Ranked #45 Pan India',
+    ]);
+});
+
+test('recruiters relation manager creates corporate recruiter entries', function () {
+    $this->actingAs($this->admin);
+
+    $college = makeCollegeForTesting();
+
+    Livewire::test(RecruitersRelationManager::class, [
+        'ownerRecord' => $college,
+        'pageClass' => EditCollege::class,
+    ])
+        ->assertSuccessful()
+        ->callTableAction('create', data: [
+            'name' => 'Google Inc',
+            'description' => 'Annual Campus Recruitment Drive',
+            'status' => true,
+        ])
+        ->assertHasNoTableActionErrors();
+
+    $this->assertDatabaseHas('college_recruiters', [
+        'college_id' => $college->id,
+        'name' => 'Google Inc',
     ]);
 });

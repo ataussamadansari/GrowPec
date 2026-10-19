@@ -617,12 +617,12 @@
                         <td class="row-header">Scholarship Schemes</td>
                         @foreach($selectedColleges as $col)
                             <td>
-                                @if($col->scholarships->count() > 0)
+                                @if(($col->scholarships?->count() ?? 0) > 0)
                                     <ul class="list-unstyled mb-0 small">
-                                        @foreach($col->scholarships->take(3) as $sch)
+                                        @foreach(($col->scholarships?->take(3) ?? []) as $sch)
                                             <li class="mb-1 text-dark">
                                                 <i class="bi bi-check2 text-primary me-1"></i>
-                                                <strong>{{ $sch->title }}:</strong> {{ $sch->amount ?: 'Concession' }}
+                                                <strong>{{ $sch->name }}:</strong> {{ $sch->display_amount }}
                                             </li>
                                         @endforeach
                                     </ul>

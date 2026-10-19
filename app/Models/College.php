@@ -24,10 +24,10 @@ class College extends Model
         'institution_category',
         'university_name',
         'website',
-        'state',
         'state_id',
-        'city',
         'city_id',
+        'state',
+        'city',
         'address',
         'established_year',
         'campus_size',
@@ -37,17 +37,13 @@ class College extends Model
         'reviews_count',
         'highest_package',
         'average_package',
-        'top_recruiters',
         'has_boys_hostel',
         'has_girls_hostel',
-        'facilities',
         'overview',
         'admission_process',
         'scholarship_info',
         'sample_certificate_image',
         'brochure_pdf',
-        'faqs',
-        'highlights',
         'naac_grade',
         'ugc_approved',
         'nirf_rank',
@@ -82,6 +78,54 @@ class College extends Model
                 $college->slug = Str::slug($college->name).'-'.rand(100, 999);
             }
         });
+
+    }
+
+    /**
+     * Mutator: Automatically resolves state_id when 'state' string is supplied (e.g. in tests/seeders).
+     */
+    public function setStateAttribute(?string $value): void
+    {
+        if (! empty($value)) {
+            $state = State::firstOrCreate(
+                ['name' => $value],
+                ['slug' => Str::slug($value), 'status' => true]
+            );
+            $this->attributes['state_id'] = $state->id;
+        }
+    }
+
+    /**
+     * Mutator: Automatically resolves city_id when 'city' string is supplied (e.g. in tests/seeders).
+     */
+    public function setCityAttribute(?string $value): void
+    {
+        if (! empty($value)) {
+            $city = City::firstOrCreate(
+                [
+                    'name' => $value,
+                    'state_id' => $this->attributes['state_id'] ?? null,
+                ],
+                ['slug' => Str::slug($value), 'status' => true]
+            );
+            $this->attributes['city_id'] = $city->id;
+        }
+    }
+
+    /**
+     * Accessor: String name of state for backwards compatibility.
+     */
+    public function getStateNameAttribute(): string
+    {
+        return $this->state?->name ?? '';
+    }
+
+    /**
+     * Accessor: String name of city for backwards compatibility.
+     */
+    public function getCityNameAttribute(): string
+    {
+        return $this->city?->name ?? '';
     }
 
     /*
@@ -119,14 +163,24 @@ class College extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function stateRelation(): BelongsTo
+    public function state(): BelongsTo
     {
         return $this->belongsTo(State::class, 'state_id');
     }
 
-    public function cityRelation(): BelongsTo
+    public function city(): BelongsTo
     {
         return $this->belongsTo(City::class, 'city_id');
+    }
+
+    public function stateRelation(): BelongsTo
+    {
+        return $this->state();
+    }
+
+    public function cityRelation(): BelongsTo
+    {
+        return $this->city();
     }
 
     /*
@@ -138,6 +192,11 @@ class College extends Model
     public function collegeHighlights(): HasMany
     {
         return $this->hasMany(CollegeHighlight::class)->orderBy('sort_order');
+    }
+
+    public function highlights(): HasMany
+    {
+        return $this->collegeHighlights();
     }
 
     public function accreditations(): HasMany
@@ -155,6 +214,11 @@ class College extends Model
         return $this->hasMany(CollegeScholarship::class)->orderBy('sort_order');
     }
 
+    public function collegeScholarships(): HasMany
+    {
+        return $this->scholarships();
+    }
+
     public function placementStats(): HasMany
     {
         return $this->hasMany(CollegePlacementStat::class)->orderBy('sort_order');
@@ -163,6 +227,11 @@ class College extends Model
     public function recruiters(): HasMany
     {
         return $this->hasMany(CollegeRecruiter::class)->orderBy('sort_order');
+    }
+
+    public function getTopRecruitersAttribute(): string
+    {
+        return $this->recruiters->pluck('name')->implode(', ');
     }
 
     public function careerOutcomes(): HasMany
@@ -175,9 +244,9 @@ class College extends Model
         return $this->hasMany(CollegeFacility::class)->orderBy('sort_order');
     }
 
-    public function loanOptions(): HasMany
+    public function facilities(): HasMany
     {
-        return $this->hasMany(CollegeLoanOption::class)->orderBy('sort_order');
+        return $this->collegeFacilities();
     }
 
     public function collegeFaqs(): HasMany
@@ -185,19 +254,14 @@ class College extends Model
         return $this->hasMany(CollegeFaq::class)->orderBy('sort_order');
     }
 
+    public function faqs(): HasMany
+    {
+        return $this->collegeFaqs();
+    }
+
     public function gallery(): HasMany
     {
         return $this->hasMany(CollegeGallery::class)->orderBy('sort_order');
-    }
-
-    public function documents(): HasMany
-    {
-        return $this->hasMany(CollegeDocument::class)->orderBy('sort_order');
-    }
-
-    public function alumni(): HasMany
-    {
-        return $this->hasMany(CollegeAlumni::class)->orderBy('sort_order');
     }
 
     public function reviews(): HasMany

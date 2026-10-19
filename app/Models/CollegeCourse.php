@@ -109,4 +109,13 @@ class CollegeCourse extends Model
     {
         return $this->duration ?? $this->course?->duration;
     }
+
+    /**
+     * Resolves specialization title from relationship or attribute fallback.
+     */
+    public function getSpecializationTitleAttribute(): string
+    {
+        return $this->specializationRelation?->name
+            ?? (is_string($this->attributes['specialization'] ?? null) && ! empty($this->attributes['specialization']) ? $this->attributes['specialization'] : 'General / Core');
+    }
 }

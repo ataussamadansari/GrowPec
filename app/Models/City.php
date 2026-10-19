@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class City extends Model
 {
@@ -19,5 +20,15 @@ class City extends Model
     public function state(): BelongsTo
     {
         return $this->belongsTo(State::class);
+    }
+
+    public function colleges(): HasMany
+    {
+        return $this->hasMany(College::class, 'city_id');
+    }
+
+    public function __toString(): string
+    {
+        return (string) ($this->name ?? '');
     }
 }

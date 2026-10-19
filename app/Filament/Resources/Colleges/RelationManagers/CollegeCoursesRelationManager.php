@@ -88,13 +88,13 @@ class CollegeCoursesRelationManager extends RelationManager
                 TextInput::make('specialization')
                     ->maxLength(255)
                     ->placeholder('e.g. Computer Science, AI & ML, Finance')
-                    ->helperText('Auto-filled from selection above, or type custom specialization')
-                    ->label('Specialization Title'),
+                    ->helperText('Auto-filled from dropdown above. Leave blank if selecting a master specialization.')
+                    ->label('Specialization Title (Custom Override)'),
                 TextInput::make('duration')
                     ->maxLength(50)
                     ->placeholder('e.g. 4 Years')
-                    ->helperText('Auto-filled from Course master, can be modified')
-                    ->label('Duration'),
+                    ->helperText('Leave blank to inherit duration directly from Course master.')
+                    ->label('Duration (Override)'),
                 TextInput::make('fee_amount')
                     ->numeric()
                     ->placeholder('e.g. 125000')

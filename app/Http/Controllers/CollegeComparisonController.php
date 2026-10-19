@@ -52,7 +52,8 @@ class CollegeComparisonController extends Controller
 
         // Lightweight published list for switcher dropdowns
         $allColleges = College::where('status', true)
-            ->select(['id', 'name', 'short_name', 'slug', 'logo', 'college_mode', 'city', 'state'])
+            ->with(['city', 'state'])
+            ->select(['id', 'name', 'short_name', 'slug', 'logo', 'college_mode', 'city_id', 'state_id'])
             ->orderBy('name')
             ->get();
 

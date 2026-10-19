@@ -4708,8 +4708,257 @@
     .home-leadership-link:hover { transform:translateY(-2px); color:#fff; }
     .home-leadership-signoff { display:grid; gap:2px; justify-items:end; color:#71809B; font-size:.73rem; text-align:right; }
     .home-leadership-signoff strong { color:#142746; font-family:cursive; font-size:.95rem; font-weight:600; }
-    @media (max-width:767.98px) { .home-leadership-section { padding:56px 0; } .home-leadership-heading span { gap:9px; font-size:.67rem; } .home-leadership-heading span:before,.home-leadership-heading span:after { width:23px; } .home-leadership-card { padding:10px; border-radius:22px; } .home-leadership-card-inner,.home-leadership-card-ceo .home-leadership-card-inner { grid-template-columns:1fr; gap:0; } .home-leadership-card-ceo .home-leadership-portrait { order:0; } .home-leadership-portrait,.home-leadership-photo { min-height:250px; max-height:330px; } .home-leadership-copy { padding:20px 11px 13px; } .home-leadership-copy:before { top:4px; font-size:5rem; } .home-leadership-footer { align-items:flex-start; flex-direction:column; } .home-leadership-signoff { justify-items:start; text-align:left; } }
+    /* =========================================================
+       10. GROWPEC PLATFORM REVIEWS & RATINGS — PREMIUM UI REDESIGN
+       ========================================================= */
+    :root {
+        --gp-review-navy-950: #00122e;
+        --gp-review-navy-900: #00163F;
+        --gp-review-navy-800: #001F59;
+        --gp-review-navy-700: #0a327d;
+        --gp-review-gold-500: #F59E0B;
+        --gp-review-gold-600: #D97706;
+        --gp-review-gold-100: #FEF3C7;
+        --gp-review-gold-50:  #FFFBEB;
+        --gp-review-emerald-600: #059669;
+        --gp-review-emerald-50:  #ECFDF5;
+        --gp-review-card-border: #E2E8F0;
+        --gp-review-shadow: 0 4px 20px -2px rgba(0, 31, 89, 0.06), 0 2px 6px -1px rgba(0, 31, 89, 0.03);
+        --gp-review-shadow-hover: 0 20px 30px -8px rgba(0, 31, 89, 0.12), 0 8px 12px -3px rgba(0, 31, 89, 0.04);
+    }
 
+    .growpec-reviews-section {
+        position: relative;
+        overflow: hidden;
+        background: radial-gradient(ellipse at 15% 20%, rgba(245, 158, 11, 0.045), transparent 45%),
+                    radial-gradient(ellipse at 85% 80%, rgba(0, 31, 89, 0.04), transparent 50%),
+                    linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%) !important;
+    }
+
+    .gp-review-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: var(--gp-review-gold-50);
+        color: var(--gp-review-gold-600);
+        border: 1px solid var(--gp-review-gold-100);
+        padding: 6px 14px;
+        border-radius: 9999px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+    }
+
+    .gp-review-summary-card {
+        background: #ffffff;
+        border: 1px solid var(--gp-review-card-border);
+        border-radius: 24px;
+        box-shadow: var(--gp-review-shadow);
+        position: relative;
+        overflow: hidden;
+        transition: box-shadow 0.3s ease;
+    }
+
+    .gp-review-summary-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 320px;
+        height: 320px;
+        background: radial-gradient(circle, rgba(245, 158, 11, 0.06) 0%, transparent 70%);
+        pointer-events: none;
+    }
+
+    .gp-score-numeral {
+        font-size: clamp(3.2rem, 5.2vw, 4.2rem);
+        font-weight: 850;
+        letter-spacing: -0.04em;
+        line-height: 1;
+        background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .gp-stars-hero i {
+        font-size: 1.25rem;
+        color: var(--gp-review-gold-500);
+        margin: 0 1.5px;
+    }
+
+    .gp-meter-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 9px;
+    }
+    .gp-meter-row:last-child {
+        margin-bottom: 0;
+    }
+    .gp-meter-label {
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: #475569;
+        width: 60px;
+        flex-shrink: 0;
+    }
+    .gp-meter-track {
+        flex: 1;
+        height: 9px;
+        background-color: #F1F5F9;
+        border-radius: 9999px;
+        overflow: hidden;
+        position: relative;
+    }
+    .gp-meter-fill {
+        height: 100%;
+        border-radius: 9999px;
+        background: linear-gradient(90deg, #F59E0B 0%, #FBBF24 100%);
+        transition: width 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .gp-meter-val {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #64748B;
+        width: 44px;
+        text-align: right;
+        flex-shrink: 0;
+    }
+
+    .gp-review-card {
+        background: #ffffff;
+        border: 1px solid var(--gp-review-card-border);
+        border-radius: 20px;
+        box-shadow: var(--gp-review-shadow);
+        transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        padding: 24px;
+    }
+    .gp-review-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--gp-review-shadow-hover);
+        border-color: rgba(0, 31, 89, 0.20);
+    }
+
+    .gp-card-stars i {
+        font-size: 0.92rem;
+        margin-right: 1px;
+    }
+
+    .gp-review-title {
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: #0F172A;
+        line-height: 1.4;
+    }
+
+    .gp-review-quote {
+        font-size: 0.94rem;
+        line-height: 1.65;
+        color: #475569;
+        flex-grow: 1;
+        position: relative;
+    }
+
+    .gp-avatar-initials {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 0.92rem;
+        color: #ffffff;
+        background: linear-gradient(135deg, var(--gp-review-navy-800) 0%, #1e40af 100%);
+        box-shadow: 0 4px 10px rgba(0, 31, 89, 0.15);
+        flex-shrink: 0;
+    }
+
+    .gp-verified-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        background: var(--gp-review-emerald-50);
+        color: var(--gp-review-emerald-600);
+        border: 1px solid rgba(5, 150, 105, 0.2);
+        padding: 2px 8px;
+        border-radius: 9999px;
+        font-size: 0.72rem;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+    }
+
+    /* Modal dialog styling */
+    #websiteReviewModal .modal-dialog {
+        max-width: 560px;
+    }
+    #websiteReviewModal .modal-content {
+        border-radius: 24px;
+        border: none;
+        overflow: hidden;
+        box-shadow: 0 25px 50px -12px rgba(0, 22, 63, 0.35);
+    }
+    #websiteReviewModal .modal-header {
+        background: linear-gradient(135deg, var(--gp-review-navy-900) 0%, var(--gp-review-navy-800) 100%);
+        padding: 22px 28px;
+        border: none;
+    }
+    #websiteReviewModal .modal-body {
+        padding: 26px 28px 28px;
+    }
+
+    .gp-star-picker {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 10px 18px;
+        background: #F8FAFC;
+        border: 1.5px solid #E2E8F0;
+        border-radius: 9999px;
+    }
+    .gp-star-item {
+        cursor: pointer;
+        font-size: 1.9rem;
+        color: #CBD5E1;
+        transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.15s ease;
+        user-select: none;
+        line-height: 1;
+        padding: 0 2px;
+    }
+    .gp-star-item.active {
+        color: var(--gp-review-gold-500);
+    }
+    .gp-star-item:hover {
+        transform: scale(1.22);
+    }
+    .gp-star-item:active {
+        transform: scale(0.92);
+    }
+
+    .gp-form-input {
+        border: 1.5px solid #CBD5E1;
+        border-radius: 12px;
+        padding: 11px 15px;
+        font-size: 0.92rem;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .gp-form-input:focus {
+        border-color: var(--gp-review-navy-800);
+        box-shadow: 0 0 0 4px rgba(0, 31, 89, 0.10);
+        outline: none;
+    }
+
+    /* Backdrop blur for modal */
+    .modal-backdrop.show {
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        background-color: rgba(0, 22, 63, 0.58);
+    }
 </style>
 @endpush
 
@@ -5380,6 +5629,260 @@
 </section>
 
 {{-- =========================================================
+     10. GROWPEC PLATFORM REVIEWS & RATINGS — PREMIUM REDESIGN
+     ========================================================= --}}
+<section class="py-5 growpec-reviews-section" id="growpecReviewsSection">
+    <div class="container py-lg-3">
+        {{-- Session Flash Message --}}
+        @if(session('website_review_success'))
+        <div class="alert alert-success alert-dismissible fade show mb-4 shadow-sm border-0 rounded-4 p-3 d-flex align-items-center justify-content-between" style="background: #ECFDF5; border: 1px solid #A7F3D0 !important; color: #065F46;" role="alert">
+            <div class="d-flex align-items-center">
+                <div class="rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 38px; height: 38px; background: #D1FAE5; color: #059669;">
+                    <i class="bi bi-check-lg fs-5"></i>
+                </div>
+                <div>
+                    <strong class="d-block text-dark fw-bold">Review Submitted Successfully!</strong>
+                    <span class="small">{{ session('website_review_success') }}</span>
+                </div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        @endif
+
+        {{-- Section Header --}}
+        <div class="row align-items-end mb-4 g-3">
+            <div class="col-lg-8">
+                <span class="gp-review-badge mb-2">
+                    <i class="bi bi-patch-check-fill text-warning"></i> Authentic Student & Parent Voices
+                </span>
+                <h2 class="section-title mb-2 mt-1" style="font-size: clamp(1.75rem, 3vw, 2.35rem); font-weight: 850; color: var(--gp-review-navy-800); letter-spacing: -0.02em;">
+                    Real Guidance. Genuine Stories.
+                </h2>
+                <p class="text-secondary mb-0" style="font-size: 1.05rem; max-width: 650px;">
+                    Thousands of learners rely on GrowPec counselors for transparent college comparisons and admission support.
+                </p>
+            </div>
+            <div class="col-lg-4 text-lg-end">
+                <button type="button" class="btn px-4 py-2 fw-bold rounded-pill shadow-sm text-white" data-bs-toggle="modal" data-bs-target="#websiteReviewModal" style="background: linear-gradient(135deg, var(--gp-review-navy-800) 0%, #1e40af 100%); font-size: 0.95rem;">
+                    <i class="bi bi-pencil-square me-1"></i> Write a Review
+                </button>
+            </div>
+        </div>
+
+        {{-- Overall Rating Summary Card --}}
+        <div class="card gp-review-summary-card mb-5">
+            <div class="card-body p-4 p-md-5">
+                <div class="row g-4 align-items-center">
+                    {{-- Big Rating Score --}}
+                    <div class="col-md-4 text-center border-md-end pe-md-4">
+                        <div class="gp-score-numeral mb-1">
+                            {{ number_format($websiteReviewsStats['average'] ?? 5.0, 1) }}
+                        </div>
+                        <div class="gp-stars-hero mb-2">
+                            @php
+                                $avg = (float) ($websiteReviewsStats['average'] ?? 5.0);
+                                $fullStars = floor($avg);
+                                $hasHalf = ($avg - $fullStars) >= 0.3 && ($avg - $fullStars) <= 0.7;
+                            @endphp
+                            @for($i = 1; $i <= 5; $i++)
+                                @if($i <= $fullStars)
+                                    <i class="bi bi-star-fill"></i>
+                                @elseif($hasHalf && $i == $fullStars + 1)
+                                    <i class="bi bi-star-half"></i>
+                                @else
+                                    <i class="bi bi-star text-muted opacity-50"></i>
+                                @endif
+                            @endfor
+                        </div>
+                        <div class="text-muted fw-semibold small mb-3">
+                            Based on <strong class="text-dark">{{ $websiteReviewsStats['count'] ?? 0 }}</strong> verified student ratings
+                        </div>
+                        <div>
+                            <span class="gp-verified-pill">
+                                <i class="bi bi-shield-fill-check"></i> 100% Genuine & Moderated
+                            </span>
+                        </div>
+                    </div>
+
+                    {{-- Rating Breakdown Bars --}}
+                    <div class="col-md-8 ps-md-4">
+                        <div class="d-flex flex-column">
+                            @for($star = 5; $star >= 1; $star--)
+                                @php
+                                    $dist = $websiteReviewsStats['distribution'][$star] ?? ['count' => 0, 'percentage' => 0];
+                                @endphp
+                                <div class="gp-meter-row">
+                                    <span class="gp-meter-label">{{ $star }} Stars</span>
+                                    <div class="gp-meter-track" role="progressbar" aria-valuenow="{{ $dist['percentage'] }}" aria-valuemin="0" aria-valuemax="100">
+                                        <div class="gp-meter-fill" style="width: {{ $dist['percentage'] }}%;"></div>
+                                    </div>
+                                    <span class="gp-meter-val">{{ $dist['percentage'] }}%</span>
+                                </div>
+                            @endfor
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- Review Cards Grid --}}
+        @if($websiteReviews->count() > 0)
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-4">
+            @foreach($websiteReviews as $review)
+            <div class="col">
+                <div class="gp-review-card">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="gp-card-stars text-warning d-flex align-items-center">
+                            @for($i = 1; $i <= 5; $i++)
+                                @if($i <= $review->rating)
+                                    <i class="bi bi-star-fill text-warning"></i>
+                                @else
+                                    <i class="bi bi-star text-muted opacity-25"></i>
+                                @endif
+                            @endfor
+                            <span class="text-dark fw-bold ms-1" style="font-size: 0.82rem;">{{ number_format($review->rating, 1) }}</span>
+                        </div>
+                        @if($review->is_featured)
+                        <span class="badge bg-warning-subtle text-warning-emphasis fw-bold px-2 py-1 rounded-pill small" style="font-size: 0.7rem;">
+                            <i class="bi bi-pin-angle-fill me-1"></i> Featured
+                        </span>
+                        @endif
+                    </div>
+
+                    @if($review->title)
+                    <h3 class="gp-review-title mb-2">
+                        {{ $review->title }}
+                    </h3>
+                    @endif
+
+                    <p class="gp-review-quote mb-4">
+                        "{{ $review->review }}"
+                    </p>
+
+                    <div class="pt-3 border-top d-flex justify-content-between align-items-center mt-auto">
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="gp-avatar-initials">
+                                {{ strtoupper(substr($review->reviewer_name, 0, 1)) }}
+                            </div>
+                            <div>
+                                <div class="fw-bold text-dark small" style="font-size: 0.88rem;">{{ $review->reviewer_name }}</div>
+                                <div class="gp-verified-pill" style="font-size: 0.68rem; padding: 1px 6px;">
+                                    <i class="bi bi-patch-check-fill"></i> Verified Student
+                                </div>
+                            </div>
+                        </div>
+                        <span class="text-muted small" style="font-size: 0.78rem;">
+                            {{ $review->created_at?->diffForHumans() }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
+        @else
+        <div class="gp-review-summary-card text-center py-5 px-4 mb-4">
+            <div class="mb-3">
+                <div class="rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 64px; height: 64px; background: var(--gp-review-gold-50); color: var(--gp-review-gold-500);">
+                    <i class="bi bi-chat-heart-fill fs-2"></i>
+                </div>
+            </div>
+            <h3 class="fw-bold text-dark h4 mb-2">Be the first to review GrowPec!</h3>
+            <p class="text-muted mx-auto mb-4" style="max-width: 520px; font-size: 0.95rem;">
+                Have you explored or enrolled in a university through GrowPec? Share your experience to help thousands of future learners make confident decisions.
+            </p>
+            <div>
+                <button type="button" class="btn px-4 py-2 rounded-pill fw-bold text-white shadow-sm" data-bs-toggle="modal" data-bs-target="#websiteReviewModal" style="background: linear-gradient(135deg, var(--gp-review-navy-800) 0%, #1e40af 100%);">
+                    <i class="bi bi-pencil-square me-1"></i> Write the First Review
+                </button>
+            </div>
+        </div>
+        @endif
+    </div>
+</section>
+
+{{-- =========================================================
+     WEBSITE REVIEW SUBMISSION MODAL — PREMIUM REDESIGN
+     ========================================================= --}}
+<div class="modal fade" id="websiteReviewModal" tabindex="-1" aria-labelledby="websiteReviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content gp-modal-content">
+            <div class="modal-header gp-modal-header d-flex justify-content-between align-items-start">
+                <div>
+                    <h3 class="modal-title fw-bold text-white h5 mb-1" id="websiteReviewModalLabel">
+                        <i class="bi bi-star-fill text-warning me-2"></i> Rate & Review GrowPec
+                    </h3>
+                    <p class="text-white-50 small mb-0">
+                        Your honest feedback guides students making life-changing academic decisions.
+                    </p>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <form action="{{ route('website.reviews.store') }}" method="POST" id="websiteReviewForm" class="gp-modal-body">
+                @csrf
+                {{-- Anti-Spam Honeypot Field --}}
+                <input type="text" name="website_hp" id="website_hp" style="display:none !important; position:absolute !important; left:-9999px !important;" tabindex="-1" autocomplete="off">
+
+                {{-- Interactive Star Rating Selector --}}
+                <div class="mb-4 text-center">
+                    <label class="form-label fw-bold text-dark small d-block mb-2">How would you rate your overall experience? <span class="text-danger">*</span></label>
+                    <div class="gp-star-picker" id="starRatingGroup" role="radiogroup" aria-label="Rating Stars">
+                        @for($star = 1; $star <= 5; $star++)
+                        <span class="gp-star-item active" data-star="{{ $star }}" role="radio" aria-checked="{{ $star == 5 ? 'true' : 'false' }}" tabindex="0" title="{{ $star }} Stars">
+                            <i class="bi bi-star-fill"></i>
+                        </span>
+                        @endfor
+                        <input type="hidden" name="rating" id="selectedRatingInput" value="5" required>
+                    </div>
+                    <div id="starRatingText" class="small fw-bold text-warning-emphasis mt-2">★★★★★ Outstanding (5/5)</div>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label for="reviewer_name" class="form-label fw-bold text-dark small mb-1">Your Full Name <span class="text-danger">*</span></label>
+                        <input type="text" name="reviewer_name" id="reviewer_name" class="form-control gp-form-input" placeholder="e.g. Rahul Sharma" minlength="2" maxlength="100" required>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="email" class="form-label fw-bold text-dark small mb-1">Your Email Address <span class="text-danger">*</span></label>
+                        <input type="email" name="email" id="email" class="form-control gp-form-input" placeholder="e.g. rahul@example.com" maxlength="150" required>
+                    </div>
+                </div>
+
+                <div class="mb-3 d-flex align-items-center gap-1 text-muted" style="font-size: 0.78rem;">
+                    <i class="bi bi-shield-lock-fill text-success"></i> 
+                    <span>Privacy Guarantee: Your email address is kept 100% confidential and is never published.</span>
+                </div>
+
+                <div class="mb-3">
+                    <label for="review_title" class="form-label fw-bold text-dark small mb-1">Review Headline (Optional)</label>
+                    <input type="text" name="title" id="review_title" class="form-control gp-form-input" placeholder="e.g. Smooth counseling and verified universities" maxlength="150">
+                </div>
+
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <label for="review_body" class="form-label fw-bold text-dark small mb-0">Detailed Feedback <span class="text-danger">*</span></label>
+                        <span class="text-muted small fw-semibold" id="reviewCharCounter" style="font-size: 0.76rem;">0 / 1500 chars (min 15)</span>
+                    </div>
+                    <textarea name="review" id="review_body" rows="4" class="form-control gp-form-input" placeholder="Tell us how GrowPec helped you with college selection, course information, or admissions..." minlength="15" maxlength="1500" required></textarea>
+                </div>
+
+                <div class="d-flex align-items-center gap-2 p-2 px-3 rounded-3 mb-4" style="font-size: 0.8rem; background-color: #F0F9FF; border: 1px solid #BAE6FD; color: #0369A1;">
+                    <i class="bi bi-info-circle-fill fs-6 flex-shrink-0"></i>
+                    <div>Every review is moderated by our team to maintain platform authenticity.</div>
+                </div>
+
+                <div class="d-grid">
+                    <button type="submit" class="btn py-2 fw-bold rounded-pill text-white shadow-sm" style="background: linear-gradient(135deg, var(--gp-review-navy-800) 0%, #1e40af 100%); font-size: 0.95rem;">
+                        <i class="bi bi-send-fill me-1"></i> Submit Review for Moderation
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{{-- =========================================================
      HOME LIVE SEARCH SCRIPT
      ========================================================= --}}
 @push('scripts')
@@ -5647,6 +6150,120 @@
     homeSearchInput?.addEventListener('focus', () => {
         requestAnimationFrame(normalizeHomeLiveSearchDropdown);
     });
+
+    // Premium Star Rating & Physics for Website Review Modal
+    const starGroup = document.getElementById('starRatingGroup');
+    if (starGroup) {
+        const starItems = starGroup.querySelectorAll('.gp-star-item');
+        const ratingInput = document.getElementById('selectedRatingInput');
+        const ratingText = document.getElementById('starRatingText');
+        const labels = {
+            1: '★☆☆☆☆ Poor (1/5)',
+            2: '★★☆☆☆ Needs Improvement (2/5)',
+            3: '★★★☆☆ Average (3/5)',
+            4: '★★★★☆ Very Good (4/5)',
+            5: '★★★★★ Outstanding (5/5)'
+        };
+
+        let currentRating = parseInt(ratingInput?.value || 5, 10);
+
+        const renderStars = (rating) => {
+            starItems.forEach(item => {
+                const starVal = parseInt(item.getAttribute('data-star'), 10);
+                if (starVal <= rating) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+                item.setAttribute('aria-checked', starVal === rating ? 'true' : 'false');
+            });
+            if (ratingText && labels[rating]) {
+                ratingText.textContent = labels[rating];
+            }
+        };
+
+        const setRating = (rating) => {
+            currentRating = rating;
+            if (ratingInput) {
+                ratingInput.value = rating;
+            }
+            renderStars(rating);
+        };
+
+        starItems.forEach(item => {
+            const val = parseInt(item.getAttribute('data-star'), 10);
+
+            // Hover preview
+            item.addEventListener('mouseenter', () => {
+                renderStars(val);
+            });
+
+            // Click lock
+            item.addEventListener('click', () => {
+                setRating(val);
+            });
+
+            // Keyboard navigation
+            item.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' || e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    const next = Math.min(5, currentRating + 1);
+                    setRating(next);
+                    starItems[next - 1]?.focus();
+                } else if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    const prev = Math.max(1, currentRating - 1);
+                    setRating(prev);
+                    starItems[prev - 1]?.focus();
+                } else if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    setRating(val);
+                } else if (['1', '2', '3', '4', '5'].includes(e.key)) {
+                    setRating(parseInt(e.key, 10));
+                }
+            });
+        });
+
+        starGroup.addEventListener('mouseleave', () => {
+            renderStars(currentRating);
+        });
+
+        // Live Character Counter
+        const reviewTextarea = document.getElementById('review_body');
+        const charCounter = document.getElementById('reviewCharCounter');
+        if (reviewTextarea && charCounter) {
+            reviewTextarea.addEventListener('input', function() {
+                const count = this.value.length;
+                charCounter.textContent = `${count} / 1500 chars (min 15)`;
+                charCounter.style.color = count < 15 ? '#DC2626' : (count > 1400 ? '#D97706' : '#64748B');
+            });
+        }
+    }
+
+    // Animate Progress Bar Meters on Scroll Reveal
+    if ('IntersectionObserver' in window) {
+        const meterTracks = document.querySelectorAll('.growpec-reviews-section .gp-meter-fill');
+        if (meterTracks.length > 0) {
+            const initialWidths = Array.from(meterTracks).map(el => el.style.width);
+            meterTracks.forEach(el => { el.style.width = '0%'; });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        meterTracks.forEach((el, idx) => {
+                            setTimeout(() => {
+                                el.style.width = initialWidths[idx] || '0%';
+                            }, idx * 60);
+                        });
+                        observer.disconnect();
+                    }
+                });
+            }, { threshold: 0.2 });
+
+            const summaryCard = document.querySelector('.gp-review-summary-card');
+            if (summaryCard) observer.observe(summaryCard);
+        }
+    }
 </script>
 @endpush
 

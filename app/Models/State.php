@@ -13,4 +13,14 @@ class State extends Model
     {
         return $this->hasMany(City::class);
     }
+
+    public function colleges(): HasMany
+    {
+        return $this->hasMany(College::class, 'state_id');
+    }
+
+    public function __toString(): string
+    {
+        return (string) ($this->name ?? '');
+    }
 }

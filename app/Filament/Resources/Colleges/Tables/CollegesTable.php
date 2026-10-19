@@ -54,13 +54,13 @@ class CollegesTable
                     ->color('gray')
                     ->sortable()
                     ->label('Ownership'),
-                TextColumn::make('state')
+                TextColumn::make('state.name')
                     ->searchable()
                     ->sortable()
                     ->badge()
                     ->color('gray')
                     ->label('State'),
-                TextColumn::make('city')
+                TextColumn::make('city.name')
                     ->searchable()
                     ->sortable()
                     ->label('City'),
@@ -114,7 +114,7 @@ class CollegesTable
                     ])
                     ->label('Ownership'),
                 SelectFilter::make('state_id')
-                    ->relationship('stateRelation', 'name')
+                    ->relationship('state', 'name')
                     ->searchable()
                     ->preload()
                     ->label('State'),

@@ -1,10 +1,25 @@
 # Project State & Memory
 
 **Project:** GrowPec Education Portal  
-**Current Milestone:** v2.0 — Flexible JSON-Based College Content Architecture & Schema Simplification  
-**Last Updated:** 2026-10-18  
-**Current Phase:** Phase 25 (Full Existing-Code Audit & Migration Matrix) In Progress  
-**Milestone Status:** In Progress (146 Tests Passing, 100% Green Baseline)  
+**Current Milestone:** v2.1 — GrowPec Platform Reviews & Ratings System  
+**Last Updated:** 2026-10-19  
+**Milestone Status:** Completed & Polished (158 Tests Passing, 100% Green, 725 Assertions)  
+
+---
+
+## Reviews & Ratings System & UI Redesign (v2.1)
+- **Backend Foundation:**
+  - Table: `website_reviews` with status (`pending`, `approved`, `rejected`, `flagged`), IP tracking, email privacy protection, and honeypot field.
+  - Model: `App\Models\WebsiteReview` with auto-clearing public stats cache (`growpec_website_reviews_stats`).
+  - Controller: `App\Http\Controllers\WebsiteReviewController` with rate limiting (`throttle:5,60`).
+  - Filament Resource: `WebsiteReviewsResource` with moderation actions, tabs (`All`, `Pending`, `Approved`, `Rejected`, `Flagged`), and reason modals.
+- **UI Redesign Execution:**
+  - Contract: `.planning/phases/26-reviews-and-rating-ui-redesign/UI-SPEC.md`.
+  - Homepage (`home.blade.php`): Radial backdrop glow, oversized gold gradient score numeral (`gp-score-numeral`), animated progress bar tracks (`IntersectionObserver`), hover elevated cards (`translateY(-5px)`), verified student pill badges, accessible 5-star selector modal with live scale physics and character counter.
+  - College Profile (`colleges/show.blade.php`): Harmonized metrics card, gold score numeral, pill progress tracks, verified badges, and character counter.
+- **Quality Gates:**
+  - Laravel Pint: Passed agent formatting.
+  - Tests: 158 passed (725 assertions).
 
 ---
 

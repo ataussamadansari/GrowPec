@@ -11,7 +11,9 @@ use App\Filament\Resources\Colleges\RelationManagers\CollegeCoursesRelationManag
 use App\Filament\Resources\Colleges\RelationManagers\CollegeFacilitiesRelationManager;
 use App\Filament\Resources\Colleges\RelationManagers\CollegeFaqsRelationManager;
 use App\Filament\Resources\Colleges\RelationManagers\GalleryRelationManager;
+use App\Filament\Resources\Colleges\RelationManagers\HighlightsRelationManager;
 use App\Filament\Resources\Colleges\RelationManagers\PlacementStatsRelationManager;
+use App\Filament\Resources\Colleges\RelationManagers\RecruitersRelationManager;
 use App\Filament\Resources\Colleges\RelationManagers\ScholarshipsRelationManager;
 use App\Filament\Resources\Colleges\Schemas\CollegeForm;
 use App\Filament\Resources\Colleges\Tables\CollegesTable;
@@ -51,9 +53,11 @@ class CollegeResource extends Resource
     {
         return [
             CollegeCoursesRelationManager::class,
+            HighlightsRelationManager::class,
             AccreditationsRelationManager::class,
             CollegeFacilitiesRelationManager::class,
             PlacementStatsRelationManager::class,
+            RecruitersRelationManager::class,
             CareerOutcomesRelationManager::class,
             ScholarshipsRelationManager::class,
             CollegeFaqsRelationManager::class,

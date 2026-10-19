@@ -10,8 +10,10 @@ use App\Models\LeadershipMessage;
 use App\Models\Partner;
 use App\Models\Stream;
 use App\Models\SystemSetting;
+use App\Models\WebsiteReview;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class HomeController extends Controller
 {
@@ -60,6 +62,7 @@ class HomeController extends Controller
         */
         $regularColleges = College::where('college_mode', 'regular')
             ->where('status', true)
+            ->with(['state', 'city'])
             ->select([
                 'id',
                 'name',
@@ -70,8 +73,8 @@ class HomeController extends Controller
                 'college_type',
                 'institution_category',
                 'university_name',
-                'state',
-                'city',
+                'state_id',
+                'city_id',
                 'established_year',
                 'rating',
                 'is_featured',
@@ -86,6 +89,7 @@ class HomeController extends Controller
         */
         $onlineColleges = College::where('college_mode', 'online')
             ->where('status', true)
+            ->with(['state', 'city'])
             ->select([
                 'id',
                 'name',
@@ -96,8 +100,8 @@ class HomeController extends Controller
                 'college_type',
                 'institution_category',
                 'university_name',
-                'state',
-                'city',
+                'state_id',
+                'city_id',
                 'established_year',
                 'rating',
                 'is_featured',
@@ -161,6 +165,47 @@ class HomeController extends Controller
 
         /*
         |--------------------------------------------------------------------------
+        | GrowPec Website Reviews & Ratings (Approved Only)
+        |--------------------------------------------------------------------------
+        */
+        $websiteReviews = WebsiteReview::approved()
+            ->select([
+                'id',
+                'reviewer_name',
+                'rating',
+                'title',
+                'review',
+                'is_featured',
+                'created_at',
+            ])
+            ->orderByDesc('is_featured')
+            ->orderByDesc('created_at')
+            ->take(6)
+            ->get();
+
+        $websiteReviewsStats = Cache::remember('growpec_website_reviews_stats', 86400, function () {
+            $approved = WebsiteReview::approved();
+            $count = $approved->count();
+            $avg = $count > 0 ? round((float) $approved->avg('rating'), 1) : 5.0;
+
+            $distribution = [];
+            for ($i = 5; $i >= 1; $i--) {
+                $starCount = (clone $approved)->where('rating', $i)->count();
+                $distribution[$i] = [
+                    'count' => $starCount,
+                    'percentage' => $count > 0 ? round(($starCount / $count) * 100) : 0,
+                ];
+            }
+
+            return [
+                'average' => $avg,
+                'count' => $count,
+                'distribution' => $distribution,
+            ];
+        });
+
+        /*
+        |--------------------------------------------------------------------------
         | Home View
         |--------------------------------------------------------------------------
         */
@@ -175,7 +220,9 @@ class HomeController extends Controller
                 'onlineColleges',
                 'popularCourses',
                 'streams',
-                'popularCities'
+                'popularCities',
+                'websiteReviews',
+                'websiteReviewsStats'
             )
         );
     }

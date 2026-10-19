@@ -2249,95 +2249,119 @@
     }
 
     /* ═══════════════════════════════════════════════════════════════════
-       14. STUDENT REVIEWS SECTION STYLING
+       14. STUDENT REVIEWS SECTION STYLING — PREMIUM HARMONIZED REDESIGN
     ═══════════════════════════════════════════════════════════════════ */
     .c-reviews-summary-card {
-        background: #F8FAFC;
-        border: 1px solid var(--border);
-        border-radius: var(--radius-md);
-        padding: 24px;
-        margin-bottom: 24px;
+        background: #ffffff;
+        border: 1px solid #E2E8F0;
+        border-radius: 24px;
+        padding: 30px;
+        margin-bottom: 28px;
+        box-shadow: 0 4px 20px -2px rgba(0, 31, 89, 0.06);
+        position: relative;
+        overflow: hidden;
+    }
+    .c-reviews-summary-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 280px;
+        height: 280px;
+        background: radial-gradient(circle, rgba(245, 158, 11, 0.06) 0%, transparent 70%);
+        pointer-events: none;
     }
 
     .c-rating-score-box {
         text-align: center;
         padding-right: 24px;
-        border-right: 1px solid var(--border);
+        border-right: 1px solid #E2E8F0;
     }
     @media (max-width: 767px) {
         .c-rating-score-box {
             padding-right: 0;
             padding-bottom: 20px;
             border-right: none;
-            border-bottom: 1px solid var(--border);
+            border-bottom: 1px solid #E2E8F0;
             margin-bottom: 20px;
         }
     }
 
     .c-rating-big-num {
-        font-size: 3rem;
-        font-weight: 800;
-        color: var(--navy);
+        font-size: clamp(3rem, 5vw, 3.8rem);
+        font-weight: 850;
+        letter-spacing: -0.04em;
         line-height: 1;
-        letter-spacing: -0.03em;
+        background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
 
     .c-rating-meter-row {
         display: flex;
         align-items: center;
-        gap: 10px;
-        margin-bottom: 6px;
-        font-size: 0.8rem;
-        color: var(--muted);
+        gap: 12px;
+        margin-bottom: 8px;
+        font-size: 0.82rem;
+        color: #64748B;
+        font-weight: 600;
+    }
+    .c-rating-meter-row:last-child {
+        margin-bottom: 0;
     }
 
     .c-rating-meter-bar {
         flex: 1;
-        height: 8px;
-        background: #E2E8F0;
-        border-radius: 999px;
+        height: 9px;
+        background: #F1F5F9;
+        border-radius: 9999px;
         overflow: hidden;
     }
 
     .c-rating-meter-fill {
         height: 100%;
-        background: #F59E0B;
-        border-radius: 999px;
+        background: linear-gradient(90deg, #F59E0B 0%, #FBBF24 100%);
+        border-radius: 9999px;
+        transition: width 0.9s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .c-review-card {
-        background: #fff;
-        border: 1px solid var(--border);
-        border-radius: var(--radius-sm);
-        padding: 20px;
-        margin-bottom: 14px;
-        transition: transform .15s ease, box-shadow .15s ease;
+        background: #ffffff;
+        border: 1px solid #E2E8F0;
+        border-radius: 20px;
+        padding: 24px;
+        margin-bottom: 16px;
+        box-shadow: 0 4px 16px -2px rgba(0, 31, 89, 0.05);
+        transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease;
     }
     .c-review-card:hover {
-        box-shadow: var(--shadow-sm);
+        transform: translateY(-4px);
+        box-shadow: 0 16px 28px -6px rgba(0, 31, 89, 0.10);
+        border-color: rgba(0, 31, 89, 0.20);
     }
 
     .c-review-avatar {
-        width: 44px;
-        height: 44px;
+        width: 42px;
+        height: 42px;
         border-radius: 50%;
-        background: linear-gradient(135deg, var(--navy) 0%, #2563EB 100%);
+        background: linear-gradient(135deg, var(--navy) 0%, #1e40af 100%);
         color: #fff;
         font-weight: 700;
-        font-size: 1rem;
+        font-size: 0.92rem;
         display: flex;
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
+        box-shadow: 0 4px 10px rgba(0, 31, 89, 0.15);
     }
 
     .c-review-form-card {
-        background: #fff;
-        border: 1.5px solid #CBD5E1;
-        border-radius: var(--radius-md);
-        padding: 24px;
-        margin-top: 24px;
-        box-shadow: var(--shadow-sm);
+        background: #ffffff;
+        border: 1px solid #E2E8F0;
+        border-radius: 24px;
+        padding: 30px;
+        margin-top: 28px;
+        box-shadow: 0 4px 20px -2px rgba(0, 31, 89, 0.06);
     }
 
     /* Interactive Star Rating Widget */
@@ -2346,6 +2370,10 @@
         flex-direction: row-reverse;
         align-items: center;
         gap: 6px;
+        padding: 6px 14px;
+        background: #F8FAFC;
+        border: 1.5px solid #E2E8F0;
+        border-radius: 9999px;
     }
     .star-rating-widget input {
         position: absolute;
@@ -2358,18 +2386,19 @@
         cursor: pointer;
         transition: color .15s ease, transform .15s ease;
         line-height: 1;
+        padding: 0 2px;
     }
     .star-rating-widget label:hover,
     .star-rating-widget label:hover ~ label,
     .star-rating-widget input:checked ~ label {
         color: #F59E0B;
-        transform: scale(1.08);
+        transform: scale(1.15);
     }
     .c-rating-hint {
         font-size: 0.85rem;
-        font-weight: 600;
-        color: #F59E0B;
-        margin-left: 12px;
+        font-weight: 700;
+        color: #B45309;
+        margin-left: 14px;
     }
 
     .c-honeypot-field {
@@ -2634,7 +2663,35 @@
         {{-- ── RIGHT: Content Blocks ─────────────────────────────────── --}}
         <div class="col-md-10 col-lg-10">
 
-            {{-- ══ 1. OVERVIEW ══════════════════════════════════════════ --}}
+            {{-- ══ 1. KEY HIGHLIGHTS ══════════════════════════════════ --}}
+            @if($college->collegeHighlights->count() > 0)
+            <div class="c-block" id="sec-highlights">
+                <h2 class="c-block__title">
+                    <i class="bi bi-star-fill" style="color:var(--gold);"></i>
+                    Key Highlights &amp; USPs
+                </h2>
+                <div class="row g-2">
+                    @foreach($college->collegeHighlights->where('status', true) as $hl)
+                    <div class="col-md-6">
+                        <div class="c-highlight">
+                            <i class="bi {{ $hl->icon ?? 'bi-check-circle-fill' }}"></i>
+                            <div>
+                                <span class="fw-semibold">{{ $hl->title }}</span>
+                                @if($hl->value)
+                                <span class="text-muted"> — {{ $hl->value }}</span>
+                                @endif
+                                @if($hl->description)
+                                <div class="text-muted small mt-1">{{ $hl->description }}</div>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+            @endif
+
+            {{-- ══ 2. OVERVIEW ══════════════════════════════════════════ --}}
             <div class="c-block" id="sec-overview">
                 <h2 class="c-block__title">
                     <i class="bi bi-info-circle-fill" style="color:var(--gold);"></i>
@@ -2757,35 +2814,7 @@
                 </div>
             </div>
 
-            {{-- ══ 3. KEY HIGHLIGHTS ══════════════════════════════════ --}}
-            @if($college->collegeHighlights->count() > 0)
-            <div class="c-block" id="sec-highlights">
-                <h2 class="c-block__title">
-                    <i class="bi bi-star-fill" style="color:var(--gold);"></i>
-                    Key Highlights &amp; USPs
-                </h2>
-                <div class="row g-2">
-                    @foreach($college->collegeHighlights->where('status', true) as $hl)
-                    <div class="col-md-6">
-                        <div class="c-highlight">
-                            <i class="bi {{ $hl->icon ?? 'bi-check-circle-fill' }}"></i>
-                            <div>
-                                <span class="fw-semibold">{{ $hl->title }}</span>
-                                @if($hl->value)
-                                <span class="text-muted"> — {{ $hl->value }}</span>
-                                @endif
-                                @if($hl->description)
-                                <div class="text-muted small mt-1">{{ $hl->description }}</div>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-                    @endforeach
-                </div>
-            </div>
-            @endif
-
-            {{-- ══ 4. COURSES, FEES & SPECIALIZATIONS ════════════════ --}}
+            {{-- ══ 3. COURSES, FEES & SPECIALIZATIONS ════════════════ --}}
             @if($college->collegeCourses->count() > 0)
             <div class="c-block" id="sec-courses">
                 <h2 class="c-block__title">
@@ -2812,8 +2841,8 @@
 
                 $programRows = $courseEntries->map(function ($entry) use ($courseModel) {
                     return [
-                        'specialization' => $entry->specialization?->name ?? $entry->specialization ?? 'General / Core',
-                        'duration' => $entry->duration ?? $courseModel?->duration ?? 'N/A',
+                        'specialization' => $entry->specialization_title,
+                        'duration' => $entry->effective_duration ?? $courseModel?->duration ?? 'N/A',
                         'eligibility' => $entry->eligibility ?? '10+2 or Equivalent',
                         'fee_amount' => $entry->fee_amount,
                         'fee_type' => $entry->fee_type,
@@ -3061,261 +3090,468 @@
             </div>
             @endif
 
-            {{-- ══ 6. APPROVALS & ACCREDITATIONS ══════════════════════ --}}
-            @if($college->accreditations->count() > 0 || !empty($college->approvals))
-            <div class="c-block" id="sec-accreditations">
-                <h2 class="c-block__title">
-                    <i class="bi bi-shield-check" style="color:var(--gold);"></i>
-                    Approvals &amp; Accreditations
-                </h2>
-                <div class="c-table-scroll">
-                    <table class="tbl-yellow">
-                        <thead>
-                            <tr>
-                                <th>Statutory Body / Authority</th>
-                                <th>Accreditation &amp; Status</th>
-                                <th>Grade / Rank</th>
-                                <th>Year</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if($college->accreditations->count() > 0)
-                            @foreach($college->accreditations->where('status', true) as $acc)
-                            <tr>
-                                <td class="fw-bold">{{ $acc->authority }}</td>
-                                <td>{{ $acc->accreditation }}</td>
-                                <td>
-                                    @if($acc->grade)
-                                    <span class="c-badge c-badge--green">{{ $acc->grade }}</span>
-                                    @elseif($acc->rank)
-                                    Rank {{ $acc->rank }}
-                                    @else
-                                    <span class="text-muted">—</span>
-                                    @endif
-                                </td>
-                                <td class="text-muted">{{ $acc->year ?? '—' }}</td>
-                            </tr>
-                            @endforeach
-                            @else
-                            <tr>
-                                <td class="fw-bold">UGC</td>
-                                <td>Recognized — Section 2(f) &amp; 12(B)</td>
-                                <td><span class="c-badge c-badge--green">Approved</span></td>
-                                <td class="text-muted">Valid</td>
-                            </tr>
-                            @if($college->naac_grade)
-                            <tr>
-                                <td class="fw-bold">NAAC</td>
-                                <td>National Assessment &amp; Accreditation Council</td>
-                                <td><span class="c-badge c-badge--naac">{{ $college->naac_grade }}</span></td>
-                                <td class="text-muted">{{ $college->nirf_year ?? 'Current' }}</td>
-                            </tr>
-                            @endif
-                            @endif
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            @endif
-
-            {{-- ══ 7. PLACEMENTS & RECRUITERS ═════════════════════════ --}}
-            @if($college->placementStats->count() > 0 || !empty($college->highest_package) || !empty($college->average_package))
-            <div class="c-block" id="sec-placements">
-                <h2 class="c-block__title">
-                    <i class="bi bi-briefcase-fill text-danger"></i>
-                    Placement Records &amp; Top Recruiters
-                </h2>
-
-                {{-- Stat cards --}}
-                @php $stats = $college->placementStats->where('status', true); @endphp
-                @if($stats->count() > 0)
-                <div class="row g-3 mb-4">
-                    @foreach($stats as $stat)
-                    <div class="col-6 col-md-4 col-xl-3">
-                        <div class="c-stat">
-                            <div class="c-stat__value">{{ $stat->value }}</div>
-                            <div class="c-stat__label">{{ $stat->label }}</div>
-                            @if($stat->year || $stat->course)
-                            <div class="c-stat__sub">{{ $stat->course ?? '' }} {{ $stat->year ? '(' . $stat->year . ')' : '' }}</div>
-                            @endif
-                        </div>
+            @if($college->isOnline())
+                {{-- ══ ONLINE 5. APPROVALS ══════════════════════════════════════ --}}
+                @if($college->accreditations->count() > 0 || !empty($college->approvals) || $college->ugc_approved || $college->naac_grade)
+                <div class="c-block" id="sec-accreditations">
+                    <h2 class="c-block__title">
+                        <i class="bi bi-shield-check" style="color:var(--gold);"></i>
+                        Approvals &amp; Government Recognitions
+                    </h2>
+                    <div class="c-table-scroll">
+                        <table class="tbl-yellow">
+                            <thead>
+                                <tr>
+                                    <th>Statutory Body / Authority</th>
+                                    <th>Accreditation &amp; Status</th>
+                                    <th>Grade / Rank</th>
+                                    <th>Year</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if($college->accreditations->count() > 0)
+                                @foreach($college->accreditations->where('status', true) as $acc)
+                                <tr>
+                                    <td class="fw-bold">{{ $acc->authority }}</td>
+                                    <td>{{ $acc->accreditation }}</td>
+                                    <td>
+                                        @if($acc->grade)
+                                        <span class="c-badge c-badge--green">{{ $acc->grade }}</span>
+                                        @elseif($acc->rank)
+                                        Rank {{ $acc->rank }}
+                                        @else
+                                        <span class="text-muted">—</span>
+                                        @endif
+                                    </td>
+                                    <td class="text-muted">{{ $acc->year ?? '—' }}</td>
+                                </tr>
+                                @endforeach
+                                @else
+                                <tr>
+                                    <td class="fw-bold">UGC-DEB</td>
+                                    <td>Recognized for Online &amp; Distance Degree Delivery</td>
+                                    <td><span class="c-badge c-badge--green">Approved</span></td>
+                                    <td class="text-muted">Valid</td>
+                                </tr>
+                                @if($college->naac_grade)
+                                <tr>
+                                    <td class="fw-bold">NAAC</td>
+                                    <td>National Assessment &amp; Accreditation Council</td>
+                                    <td><span class="c-badge c-badge--naac">{{ $college->naac_grade }}</span></td>
+                                    <td class="text-muted">{{ $college->nirf_year ?? 'Current' }}</td>
+                                </tr>
+                                @endif
+                                @endif
+                            </tbody>
+                        </table>
                     </div>
-                    @endforeach
-                </div>
-                @else
-                <div class="row g-3 mb-4">
-                    @if($college->highest_package)
-                    <div class="col-6 col-md-4">
-                        <div class="c-stat">
-                            <div class="c-stat__value" style="color:var(--green);">{{ $college->highest_package }}</div>
-                            <div class="c-stat__label">Highest Package</div>
-                        </div>
-                    </div>
-                    @endif
-                    @if($college->average_package)
-                    <div class="col-6 col-md-4">
-                        <div class="c-stat">
-                            <div class="c-stat__value">{{ $college->average_package }}</div>
-                            <div class="c-stat__label">Average Package</div>
-                        </div>
-                    </div>
-                    @endif
                 </div>
                 @endif
 
-                {{-- Recruiters --}}
-                @if($college->recruiters->count() > 0)
-                <h6 class="fw-bold text-muted mb-3" style="font-size:.78rem;letter-spacing:.05em;text-transform:uppercase;">
-                    Top Hiring Companies
-                </h6>
-                <div class="d-flex flex-wrap gap-2">
-                    @foreach($college->recruiters->where('status', true) as $rec)
-                    <div class="c-recruiter">
-                        @if($rec->logo_url)
-                        <img src="{{ $rec->logo_url }}" alt="{{ $rec->name }}">
-                        @else
-                        <i class="bi bi-building text-muted"></i>
+                {{-- ══ ONLINE 6. LEARNING METHODOLOGY ═══════════════════════════ --}}
+                <div class="c-block" id="sec-learning">
+                    <h2 class="c-block__title">
+                        <i class="bi bi-laptop" style="color:var(--navy);"></i>
+                        Online Learning Experience &amp; Pedagogy
+                    </h2>
+                    <p class="text-muted small mb-3">
+                        Designed for working professionals and regular students alike with modern interactive digital learning systems:
+                    </p>
+                    <div class="row g-3 mb-4">
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="p-3 bg-light rounded-3 text-center h-100">
+                                <i class="bi bi-camera-video-fill text-primary fs-3 d-block mb-2"></i>
+                                <strong class="d-block small mb-1">Live &amp; Recorded</strong>
+                                <span class="text-muted" style="font-size:.78rem;">Live weekend sessions with 24/7 recorded lecture repository</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="p-3 bg-light rounded-3 text-center h-100">
+                                <i class="bi bi-phone-fill text-success fs-3 d-block mb-2"></i>
+                                <strong class="d-block small mb-1">Mobile LMS App</strong>
+                                <span class="text-muted" style="font-size:.78rem;">Access study materials, e-library &amp; assignments anywhere</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="p-3 bg-light rounded-3 text-center h-100">
+                                <i class="bi bi-people-fill text-warning fs-3 d-block mb-2"></i>
+                                <strong class="d-block small mb-1">Dedicated Mentors</strong>
+                                <span class="text-muted" style="font-size:.78rem;">Personal academic advisor for continuous guidance and support</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="p-3 bg-light rounded-3 text-center h-100">
+                                <i class="bi bi-award-fill text-danger fs-3 d-block mb-2"></i>
+                                <strong class="d-block small mb-1">Industry Projects</strong>
+                                <span class="text-muted" style="font-size:.78rem;">Hands-on capstone projects tailored to industry demand</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    @if($college->careerOutcomes->count() > 0)
+                    <h6 class="fw-bold text-muted mb-2" style="font-size:.82rem;text-transform:uppercase;letter-spacing:.05em;">Target Career Outcomes</h6>
+                    <div class="c-table-scroll">
+                        <table class="tbl-yellow">
+                            <thead>
+                                <tr>
+                                    <th>Career Role</th>
+                                    <th>Industry</th>
+                                    <th>Avg. Salary</th>
+                                    <th>Salary Range</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($college->careerOutcomes->where('status', true) as $co)
+                                <tr>
+                                    <td class="fw-bold">{{ $co->career_role }}</td>
+                                    <td class="text-muted small">{{ $co->industry }}</td>
+                                    <td><strong style="color:var(--green);">{{ $co->average_salary }}</strong></td>
+                                    <td class="text-muted small">{{ $co->salary_range ?? '—' }}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    @endif
+                </div>
+
+                {{-- ══ ONLINE 7. DEGREE (SAMPLE CERTIFICATE) ═══════════════════ --}}
+                @if($college->certificate_url)
+                <div class="c-block" id="sec-certificate">
+                    <h2 class="c-block__title">
+                        <i class="bi bi-patch-check-fill" style="color:var(--green);"></i>
+                        Degree Authenticity &amp; Sample Certificate
+                    </h2>
+                    <p class="text-muted small mb-3">
+                        Online degrees awarded by <strong>{{ $college->name }}</strong> are recognized by UGC-DEB and hold equal parity with on-campus conventional degrees for government jobs, corporate employment, and international studies.
+                    </p>
+                    <div class="c-cert-box text-center p-3 bg-light rounded-3">
+                        <img src="{{ $college->certificate_url }}"
+                            class="img-fluid rounded shadow-sm"
+                            style="max-height:380px;object-fit:contain;"
+                            alt="Sample Degree Certificate — {{ $college->name }}">
+                    </div>
+                </div>
+                @endif
+
+                {{-- ══ ONLINE 8. PLACEMENTS & RECRUITERS ═══════════════════════ --}}
+                @if($college->placementStats->count() > 0 || $college->recruiters->count() > 0 || !empty($college->highest_package) || !empty($college->average_package))
+                <div class="c-block" id="sec-placements">
+                    <h2 class="c-block__title">
+                        <i class="bi bi-briefcase-fill text-danger"></i>
+                        Placement Records &amp; Corporate Partners
+                    </h2>
+                    @php $stats = $college->placementStats->where('status', true); @endphp
+                    @if($stats->count() > 0)
+                    <div class="row g-3 mb-4">
+                        @foreach($stats as $stat)
+                        <div class="col-6 col-md-4 col-xl-3">
+                            <div class="c-stat">
+                                <div class="c-stat__value">{{ $stat->value }}</div>
+                                <div class="c-stat__label">{{ $stat->label }}</div>
+                                @if($stat->year || $stat->course)
+                                <div class="c-stat__sub">{{ $stat->course ?? '' }} {{ $stat->year ? '(' . $stat->year . ')' : '' }}</div>
+                                @endif
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                    @elseif(!empty($college->highest_package) || !empty($college->average_package))
+                    <div class="row g-3 mb-4">
+                        @if($college->highest_package)
+                        <div class="col-6 col-md-4">
+                            <div class="c-stat">
+                                <div class="c-stat__value" style="color:var(--green);">{{ $college->highest_package }}</div>
+                                <div class="c-stat__label">Highest Package</div>
+                            </div>
+                        </div>
                         @endif
-                        {{ $rec->name }}
+                        @if($college->average_package)
+                        <div class="col-6 col-md-4">
+                            <div class="c-stat">
+                                <div class="c-stat__value">{{ $college->average_package }}</div>
+                                <div class="c-stat__label">Average Package</div>
+                            </div>
+                        </div>
+                        @endif
                     </div>
-                    @endforeach
-                </div>
-                @elseif(!empty($college->top_recruiters))
-                <div class="p-3 bg-light rounded-3">
-                    <strong class="small d-block text-dark mb-1">Top Hiring Partners:</strong>
-                    <p class="small text-muted mb-0">{{ $college->top_recruiters }}</p>
-                </div>
-                @endif
-            </div>
-            @endif
-
-            {{-- ══ 8. SCHOLARSHIPS ════════════════════════════════════ --}}
-            @if($college->scholarships->count() > 0 || !empty($college->scholarship_info))
-            <div class="c-block" id="sec-scholarships">
-                <h2 class="c-block__title">
-                    <i class="bi bi-award-fill" style="color:var(--gold);"></i>
-                    Scholarships &amp; Financial Support
-                </h2>
-
-                @if($college->scholarships->count() > 0)
-                <div class="c-table-scroll">
-                    <table class="tbl-yellow">
-                        <thead>
-                            <tr>
-                                <th>Scholarship Name</th>
-                                <th>Eligibility</th>
-                                <th>Criteria</th>
-                                <th>Amount / Waiver</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($college->scholarships->where('status', true) as $sch)
-                            <tr>
-                                <td class="fw-bold">{{ $sch->name }}</td>
-                                <td class="text-muted small">{{ $sch->eligibility ?? '—' }}</td>
-                                <td class="text-muted small">{{ $sch->criteria ?? '—' }}</td>
-                                <td>
-                                    <strong style="color:var(--green);">{{ $sch->display_amount }}</strong>
-                                    @if($sch->description)
-                                    <div class="text-muted small">{{ $sch->description }}</div>
-                                    @endif
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-                @else
-                <p class="text-secondary small mb-0" style="line-height:1.8;">{{ $college->scholarship_info }}</p>
-                @endif
-            </div>
-            @endif
-
-            {{-- ══ 9. SAMPLE DEGREE ══════════════════════════════════ --}}
-            @if($college->certificate_url)
-            <div class="c-block" id="sec-certificate">
-                <h2 class="c-block__title">
-                    <i class="bi bi-patch-check-fill" style="color:var(--green);"></i>
-                    Sample Degree &amp; Certification
-                </h2>
-                <p class="text-muted small mb-3">
-                    Degrees from <strong>{{ $college->name }}</strong> carry full government approvals and are valid for government jobs, corporate hiring, and higher studies worldwide.
-                </p>
-                <div class="c-cert-box">
-                    <img src="{{ $college->certificate_url }}"
-                        class="img-fluid rounded shadow-sm"
-                        style="max-height:380px;object-fit:contain;"
-                        alt="Sample Certificate — {{ $college->name }}">
-                </div>
-            </div>
-            @endif
-
-            {{-- ══ 10. CAMPUS FACILITIES ══════════════════════════════ --}}
-            @if($college->isRegular() && ($college->collegeFacilities->count() > 0 || $college->has_boys_hostel || $college->has_girls_hostel || $college->campus_size))
-            <div class="c-block" id="sec-facilities">
-                <h2 class="c-block__title">
-                    <i class="bi bi-buildings-fill" style="color:#0EA5E9;"></i>
-                    Campus Infrastructure &amp; Facilities
-                </h2>
-
-                @if($college->collegeFacilities->count() > 0)
-                <div class="d-flex flex-wrap gap-2">
-                    @foreach($college->collegeFacilities->where('status', true) as $fac)
-                    <span class="c-badge c-badge--dark p-2">
-                        <i class="bi {{ $fac->icon ?? 'bi-check-circle' }}" style="color:var(--navy);"></i>
-                        {{ $fac->name }}
-                    </span>
-                    @endforeach
-                </div>
-                @else
-                <div class="d-flex flex-wrap gap-2">
-                    <span class="c-badge c-badge--dark p-2"><i class="bi bi-wifi" style="color:var(--navy);"></i> High-Speed Wi-Fi</span>
-                    <span class="c-badge c-badge--dark p-2"><i class="bi bi-book" style="color:var(--green);"></i> Digital Library</span>
-                    @if($college->has_boys_hostel)
-                    <span class="c-badge c-badge--dark p-2"><i class="bi bi-house"></i> Boys Hostel</span>
                     @endif
-                    @if($college->has_girls_hostel)
-                    <span class="c-badge c-badge--dark p-2"><i class="bi bi-house-heart" style="color:#ef4444;"></i> Girls Hostel</span>
+
+                    @if($college->recruiters->count() > 0)
+                    <h6 class="fw-bold text-muted mb-3" style="font-size:.78rem;letter-spacing:.05em;text-transform:uppercase;">
+                        Top Hiring Companies
+                    </h6>
+                    <div class="d-flex flex-wrap gap-2">
+                        @foreach($college->recruiters->where('status', true) as $rec)
+                        <div class="c-recruiter">
+                            @if($rec->logo_url)
+                            <img src="{{ $rec->logo_url }}" alt="{{ $rec->name }}">
+                            @else
+                            <i class="bi bi-building text-muted"></i>
+                            @endif
+                            {{ $rec->name }}
+                        </div>
+                        @endforeach
+                    </div>
                     @endif
-                    <span class="c-badge c-badge--dark p-2"><i class="bi bi-cup-hot" style="color:var(--gold);"></i> Cafeteria</span>
-                    <span class="c-badge c-badge--dark p-2"><i class="bi bi-trophy" style="color:var(--gold);"></i> Sports Arena</span>
-                    <span class="c-badge c-badge--dark p-2"><i class="bi bi-hospital" style="color:#0EA5E9;"></i> Medical Centre</span>
-                    <span class="c-badge c-badge--dark p-2"><i class="bi bi-pc-display" style="color:var(--navy);"></i> Computer Labs</span>
                 </div>
                 @endif
-            </div>
-            @endif
 
-            {{-- ══ 11. CAREER OUTCOMES ════════════════════════════════ --}}
-            @if($college->careerOutcomes->count() > 0)
-            <div class="c-block" id="sec-careers">
-                <h2 class="c-block__title">
-                    <i class="bi bi-person-workspace" style="color:var(--navy);"></i>
-                    Career Outcomes &amp; Job Roles
-                </h2>
-                <div class="c-table-scroll">
-                    <table class="tbl-yellow">
-                        <thead>
-                            <tr>
-                                <th>Career Role</th>
-                                <th>Industry</th>
-                                <th>Avg. Salary</th>
-                                <th>Salary Range</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($college->careerOutcomes->where('status', true) as $co)
-                            <tr>
-                                <td class="fw-bold">{{ $co->career_role }}</td>
-                                <td class="text-muted small">{{ $co->industry }}</td>
-                                <td><strong style="color:var(--green);">{{ $co->average_salary }}</strong></td>
-                                <td class="text-muted small">{{ $co->salary_range ?? '—' }}</td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                {{-- ══ ONLINE 9. FEE & EMI PLANS ═══════════════════════════════ --}}
+                <div class="c-block" id="sec-fee-emi">
+                    <h2 class="c-block__title">
+                        <i class="bi bi-credit-card-2-front" style="color:var(--green-dk);"></i>
+                        Fee Structure &amp; Flexible No-Cost EMI Options
+                    </h2>
+                    <p class="text-muted small mb-3">
+                        Online education at <strong>{{ $college->name }}</strong> is designed to be affordable with convenient zero-cost EMI financing options and semester-wise installments.
+                    </p>
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-4">
+                            <div class="p-3 border rounded-3 bg-white h-100 shadow-sm">
+                                <span class="badge bg-success mb-2">0% Interest</span>
+                                <h6 class="fw-bold mb-1">No-Cost Monthly EMI</h6>
+                                <p class="text-muted small mb-2">Pay your program tuition in easy installments starting as low as ₹2,500/month.</p>
+                                <span class="text-success small fw-semibold"><i class="bi bi-check-circle-fill me-1"></i>Zero hidden charges</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3 border rounded-3 bg-white h-100 shadow-sm">
+                                <span class="badge bg-primary mb-2">Semester Plan</span>
+                                <h6 class="fw-bold mb-1">Semester-wise Payments</h6>
+                                <p class="text-muted small mb-2">Flexible installment schedules aligned with academic examination terms.</p>
+                                <span class="text-primary small fw-semibold"><i class="bi bi-check-circle-fill me-1"></i>Pre-session payment facility</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3 border rounded-3 bg-white h-100 shadow-sm">
+                                <span class="badge bg-warning text-dark mb-2">Education Loan</span>
+                                <h6 class="fw-bold mb-1">Quick Loan Assistance</h6>
+                                <p class="text-muted small mb-2">Instant loan sanctions through partner NBFCs and nationalized banks with minimal documentation.</p>
+                                <span class="text-dark small fw-semibold"><i class="bi bi-check-circle-fill me-1"></i>100% paperless approval</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-3 rounded-3 d-flex flex-wrap align-items-center justify-content-between gap-3" style="background:#EBF7ED;border:1px solid #C4E7CA;">
+                        <div>
+                            <strong class="d-block" style="color:var(--green-dk);">Want to check your EMI eligibility for this university?</strong>
+                            <span class="text-muted small">Our academic counselors provide instant eligibility and loan assistance for free.</span>
+                        </div>
+                        <button type="button" class="btn btn-sm btn-success px-3 fw-bold" onclick="document.getElementById('cEnquiryForm')?.scrollIntoView({behavior:'smooth'})">
+                            Check EMI Eligibility
+                        </button>
+                    </div>
                 </div>
-            </div>
+
+            @else
+                {{-- ══ REGULAR MODE ═════════════════════════════════════════════ --}}
+
+                {{-- ══ REGULAR 5. SCHOLARSHIPS ═════════════════════════════════ --}}
+                @if(($college->scholarships?->count() ?? 0) > 0 || !empty($college->scholarship_info))
+                <div class="c-block" id="sec-scholarships">
+                    <h2 class="c-block__title">
+                        <i class="bi bi-award-fill" style="color:var(--gold);"></i>
+                        Scholarships &amp; Financial Support
+                    </h2>
+
+                    @if(($college->scholarships?->count() ?? 0) > 0)
+                    <div class="c-table-scroll">
+                        <table class="tbl-yellow">
+                            <thead>
+                                <tr>
+                                    <th>Scholarship Name</th>
+                                    <th>Eligibility</th>
+                                    <th>Criteria</th>
+                                    <th>Amount / Waiver</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($college->scholarships->where('status', true) as $sch)
+                                <tr>
+                                    <td class="fw-bold">{{ $sch->name }}</td>
+                                    <td class="text-muted small">{{ $sch->eligibility ?? '—' }}</td>
+                                    <td class="text-muted small">{{ $sch->criteria ?? '—' }}</td>
+                                    <td>
+                                        <strong style="color:var(--green);">{{ $sch->display_amount }}</strong>
+                                        @if($sch->description)
+                                        <div class="text-muted small">{{ $sch->description }}</div>
+                                        @endif
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    @else
+                    <p class="text-secondary small mb-0" style="line-height:1.8;">{{ $college->scholarship_info }}</p>
+                    @endif
+                </div>
+                @endif
+
+                {{-- ══ REGULAR 6. PLACEMENTS ═══════════════════════════════════ --}}
+                @if($college->placementStats->count() > 0 || $college->recruiters->count() > 0 || !empty($college->highest_package) || !empty($college->average_package))
+                <div class="c-block" id="sec-placements">
+                    <h2 class="c-block__title">
+                        <i class="bi bi-briefcase-fill text-danger"></i>
+                        Placement Records &amp; Top Recruiters
+                    </h2>
+
+                    @php $stats = $college->placementStats->where('status', true); @endphp
+                    @if($stats->count() > 0)
+                    <div class="row g-3 mb-4">
+                        @foreach($stats as $stat)
+                        <div class="col-6 col-md-4 col-xl-3">
+                            <div class="c-stat">
+                                <div class="c-stat__value">{{ $stat->value }}</div>
+                                <div class="c-stat__label">{{ $stat->label }}</div>
+                                @if($stat->year || $stat->course)
+                                <div class="c-stat__sub">{{ $stat->course ?? '' }} {{ $stat->year ? '(' . $stat->year . ')' : '' }}</div>
+                                @endif
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                    @elseif(!empty($college->highest_package) || !empty($college->average_package))
+                    <div class="row g-3 mb-4">
+                        @if($college->highest_package)
+                        <div class="col-6 col-md-4">
+                            <div class="c-stat">
+                                <div class="c-stat__value" style="color:var(--green);">{{ $college->highest_package }}</div>
+                                <div class="c-stat__label">Highest Package</div>
+                            </div>
+                        </div>
+                        @endif
+                        @if($college->average_package)
+                        <div class="col-6 col-md-4">
+                            <div class="c-stat">
+                                <div class="c-stat__value">{{ $college->average_package }}</div>
+                                <div class="c-stat__label">Average Package</div>
+                            </div>
+                        </div>
+                        @endif
+                    </div>
+                    @endif
+
+                    @if($college->recruiters->count() > 0)
+                    <h6 class="fw-bold text-muted mb-3" style="font-size:.78rem;letter-spacing:.05em;text-transform:uppercase;">
+                        Top Hiring Companies
+                    </h6>
+                    <div class="d-flex flex-wrap gap-2">
+                        @foreach($college->recruiters->where('status', true) as $rec)
+                        <div class="c-recruiter">
+                            @if($rec->logo_url)
+                            <img src="{{ $rec->logo_url }}" alt="{{ $rec->name }}">
+                            @else
+                            <i class="bi bi-building text-muted"></i>
+                            @endif
+                            {{ $rec->name }}
+                        </div>
+                        @endforeach
+                    </div>
+                    @endif
+                </div>
+                @endif
+
+                {{-- ══ REGULAR 7. CAMPUS INFRASTRUCTURE & FACILITIES ═══════════ --}}
+                @if($college->collegeFacilities->count() > 0 || $college->has_boys_hostel || $college->has_girls_hostel || $college->campus_size)
+                <div class="c-block" id="sec-facilities">
+                    <h2 class="c-block__title">
+                        <i class="bi bi-buildings-fill" style="color:#0EA5E9;"></i>
+                        Campus Infrastructure &amp; Facilities
+                    </h2>
+
+                    @if($college->collegeFacilities->count() > 0)
+                    <div class="d-flex flex-wrap gap-2">
+                        @foreach($college->collegeFacilities->where('status', true) as $fac)
+                        <span class="c-badge c-badge--dark p-2">
+                            <i class="bi {{ $fac->icon ?? 'bi-check-circle' }}" style="color:var(--navy);"></i>
+                            {{ $fac->name }}
+                        </span>
+                        @endforeach
+                    </div>
+                    @else
+                    <div class="d-flex flex-wrap gap-2">
+                        <span class="c-badge c-badge--dark p-2"><i class="bi bi-wifi" style="color:var(--navy);"></i> High-Speed Wi-Fi</span>
+                        <span class="c-badge c-badge--dark p-2"><i class="bi bi-book" style="color:var(--green);"></i> Digital Library</span>
+                        @if($college->has_boys_hostel)
+                        <span class="c-badge c-badge--dark p-2"><i class="bi bi-house"></i> Boys Hostel</span>
+                        @endif
+                        @if($college->has_girls_hostel)
+                        <span class="c-badge c-badge--dark p-2"><i class="bi bi-house-heart" style="color:#ef4444;"></i> Girls Hostel</span>
+                        @endif
+                        <span class="c-badge c-badge--dark p-2"><i class="bi bi-cup-hot" style="color:var(--gold);"></i> Cafeteria</span>
+                        <span class="c-badge c-badge--dark p-2"><i class="bi bi-trophy" style="color:var(--gold);"></i> Sports Arena</span>
+                        <span class="c-badge c-badge--dark p-2"><i class="bi bi-hospital" style="color:#0EA5E9;"></i> Medical Centre</span>
+                        <span class="c-badge c-badge--dark p-2"><i class="bi bi-pc-display" style="color:var(--navy);"></i> Computer Labs</span>
+                    </div>
+                    @endif
+                </div>
+                @endif
+
+                {{-- ══ REGULAR 8. RANKINGS & ACCREDITATIONS ════════════════════ --}}
+                @if($college->accreditations->count() > 0 || !empty($college->approvals) || $college->nirf_rank || $college->naac_grade)
+                <div class="c-block" id="sec-accreditations">
+                    <h2 class="c-block__title">
+                        <i class="bi bi-trophy" style="color:var(--gold);"></i>
+                        Rankings &amp; Accreditations
+                    </h2>
+                    <div class="c-table-scroll">
+                        <table class="tbl-yellow">
+                            <thead>
+                                <tr>
+                                    <th>Ranking / Accreditation Body</th>
+                                    <th>Accreditation &amp; Status</th>
+                                    <th>Grade / Rank</th>
+                                    <th>Year</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if($college->nirf_rank)
+                                <tr>
+                                    <td class="fw-bold">NIRF</td>
+                                    <td>National Institutional Ranking Framework</td>
+                                    <td><span class="c-badge c-badge--gold">Rank {{ $college->nirf_rank }}</span></td>
+                                    <td class="text-muted">{{ $college->nirf_year ?? 'Current' }}</td>
+                                </tr>
+                                @endif
+                                @if($college->naac_grade)
+                                <tr>
+                                    <td class="fw-bold">NAAC</td>
+                                    <td>National Assessment &amp; Accreditation Council</td>
+                                    <td><span class="c-badge c-badge--naac">{{ $college->naac_grade }}</span></td>
+                                    <td class="text-muted">Current</td>
+                                </tr>
+                                @endif
+                                @if($college->accreditations->count() > 0)
+                                @foreach($college->accreditations->where('status', true) as $acc)
+                                <tr>
+                                    <td class="fw-bold">{{ $acc->authority }}</td>
+                                    <td>{{ $acc->accreditation }}</td>
+                                    <td>
+                                        @if($acc->grade)
+                                        <span class="c-badge c-badge--green">{{ $acc->grade }}</span>
+                                        @elseif($acc->rank)
+                                        Rank {{ $acc->rank }}
+                                        @else
+                                        <span class="text-muted">—</span>
+                                        @endif
+                                    </td>
+                                    <td class="text-muted">{{ $acc->year ?? '—' }}</td>
+                                </tr>
+                                @endforeach
+                                @elseif(!empty($college->approvals))
+                                <tr>
+                                    <td class="fw-bold">Approvals</td>
+                                    <td>Government Recognized</td>
+                                    <td><span class="c-badge c-badge--green">{{ $college->approvals }}</span></td>
+                                    <td class="text-muted">Valid</td>
+                                </tr>
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                @endif
             @endif
 
             {{-- ══ 12. FAQs ══════════════════════════════════════════ --}}
@@ -3406,23 +3642,28 @@
 
                 {{-- Aggregate Metrics Card --}}
                 <div class="c-reviews-summary-card">
-                    <div class="row align-items-center">
+                    <div class="row align-items-center g-4">
                         <div class="col-md-4">
                             <div class="c-rating-score-box">
-                                <div class="c-rating-big-num">{{ number_format($avgScore, 1) }}</div>
-                                <div class="text-warning mb-1" style="font-size:1.15rem;">
+                                <div class="c-rating-big-num mb-1">{{ number_format($avgScore, 1) }}</div>
+                                <div class="text-warning mb-2" style="font-size:1.25rem;">
                                     @for($i = 1; $i <= 5; $i++)
                                         @if($i <= floor($avgScore))
                                             <i class="bi bi-star-fill"></i>
                                         @elseif($i - 0.5 <= $avgScore)
                                             <i class="bi bi-star-half"></i>
                                         @else
-                                            <i class="bi bi-star text-muted" style="opacity:.4;"></i>
+                                            <i class="bi bi-star text-muted" style="opacity:.35;"></i>
                                         @endif
                                     @endfor
                                 </div>
-                                <div class="text-muted small">
-                                    Based on <strong>{{ $totalApproved }}</strong> {{ Str::plural('approved review', $totalApproved) }}
+                                <div class="text-muted small fw-semibold mb-2">
+                                    Based on <strong class="text-dark">{{ $totalApproved }}</strong> {{ Str::plural('verified review', $totalApproved) }}
+                                </div>
+                                <div>
+                                    <span class="badge px-3 py-1 rounded-pill" style="background:#ECFDF5;color:#059669;border:1px solid rgba(5,150,105,0.2);font-size:0.75rem;">
+                                        <i class="bi bi-shield-check me-1"></i> 100% Genuine & Moderated
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -3434,20 +3675,22 @@
                                         $pct = $totalApproved > 0 ? round(($cnt / $totalApproved) * 100) : 0;
                                     @endphp
                                     <div class="c-rating-meter-row">
-                                        <span style="min-width:42px;">{{ $star }} <i class="bi bi-star-fill text-warning"></i></span>
+                                        <span style="min-width:55px;">{{ $star }} <i class="bi bi-star-fill text-warning ms-1"></i></span>
                                         <div class="c-rating-meter-bar">
                                             <div class="c-rating-meter-fill" style="width: {{ $pct }}%;"></div>
                                         </div>
-                                        <span style="min-width:28px;text-align:right;">{{ $cnt }}</span>
+                                        <span style="min-width:38px;text-align:right;">{{ $pct }}%</span>
                                     </div>
                                 @endforeach
                             </div>
                         </div>
                         <div class="col-md-3 text-center text-md-end mt-3 mt-md-0">
-                            <a href="#reviewFormCard" class="btn btn-warning text-dark fw-bold rounded-pill px-4 py-2 w-100" style="font-size:.85rem;background:#F59E0B;border-color:#F59E0B;">
-                                <i class="bi bi-pencil-fill me-1"></i> Rate This College
+                            <a href="#reviewFormCard" class="btn text-white fw-bold rounded-pill px-4 py-2 w-100 shadow-sm" style="font-size:.88rem;background:linear-gradient(135deg, var(--navy) 0%, #1e40af 100%);border:none;">
+                                <i class="bi bi-pencil-square me-1"></i> Rate This College
                             </a>
-                            <div class="text-muted mt-2" style="font-size:.72rem;">No login required</div>
+                            <div class="text-muted mt-2 small" style="font-size:.75rem;">
+                                <i class="bi bi-shield-lock me-1"></i>No login required
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -3461,43 +3704,45 @@
                                 {{ strtoupper(substr($review->reviewer_name, 0, 1)) }}
                             </div>
                             <div class="flex-grow-1">
-                                <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-1">
+                                <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-2">
                                     <div>
                                         <h4 class="h6 mb-0 fw-bold text-dark d-inline-block">{{ $review->reviewer_name }}</h4>
                                         @if($review->course)
-                                        <span class="badge bg-light text-secondary border ms-1" style="font-size:.7rem;font-weight:500;">
+                                        <span class="badge bg-light text-secondary border ms-1" style="font-size:.7rem;font-weight:600;">
                                             <i class="bi bi-mortarboard me-1"></i>{{ $review->course }}
                                         </span>
                                         @endif
-                                        <span class="badge bg-success-subtle text-success border border-success-subtle ms-1" style="font-size:.68rem;">
+                                        <span class="badge px-2 py-1 rounded-pill ms-1" style="background:#ECFDF5;color:#059669;border:1px solid rgba(5,150,105,0.2);font-size:.68rem;font-weight:600;">
                                             <i class="bi bi-shield-check me-1"></i>Verified Review
                                         </span>
                                     </div>
-                                    <span class="text-muted" style="font-size:.75rem;">
+                                    <span class="text-muted small" style="font-size:.76rem;">
                                         {{ $review->created_at ? $review->created_at->diffForHumans() : 'Recently' }}
                                     </span>
                                 </div>
-                                <div class="text-warning mb-2" style="font-size:.85rem;">
+                                <div class="text-warning mb-2 d-flex align-items-center" style="font-size:.88rem;">
                                     @for($s = 1; $s <= 5; $s++)
                                         <i class="bi {{ $s <= $review->rating ? 'bi-star-fill' : 'bi-star text-muted' }}" style="{{ $s > $review->rating ? 'opacity:.3;' : '' }}"></i>
                                     @endfor
-                                    <span class="text-dark fw-semibold ms-1" style="font-size:.8rem;">{{ $review->rating }}.0</span>
+                                    <span class="text-dark fw-bold ms-1" style="font-size:.82rem;">{{ number_format($review->rating, 1) }}</span>
                                 </div>
-                                <p class="text-secondary mb-0" style="font-size:.86rem;line-height:1.65;">
-                                    {{ $review->review }}
+                                <p class="text-secondary mb-0" style="font-size:.92rem;line-height:1.65;">
+                                    "{{ $review->review }}"
                                 </p>
                             </div>
                         </div>
                     </div>
                     @empty
-                    <div class="text-center py-5 px-3 bg-light rounded-3 border border-dashed mb-3">
-                        <i class="bi bi-chat-heart text-muted" style="font-size:2.4rem;opacity:.6;"></i>
-                        <h5 class="fw-bold mt-3 mb-1 text-dark" style="font-size:1rem;">Be the First to Review</h5>
-                        <p class="text-muted small mb-3" style="max-width:440px;margin:0 auto;">
-                            No visitor reviews yet for {{ $college->name }}. Share your honest insights about academics, faculty, placements, or admission support!
+                    <div class="text-center py-5 px-3 bg-white rounded-4 border mb-3 shadow-sm" style="border-radius:24px;">
+                        <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width:60px;height:60px;background:#FFFBEB;color:#F59E0B;">
+                            <i class="bi bi-chat-heart-fill fs-2"></i>
+                        </div>
+                        <h4 class="fw-bold mt-1 mb-1 text-dark h5">Be the First to Review</h4>
+                        <p class="text-muted small mb-4" style="max-width:460px;margin:0 auto;font-size:0.92rem;">
+                            No visitor reviews yet for {{ $college->name }}. Share your genuine insights about academics, faculty, placements, or admission guidance!
                         </p>
-                        <a href="#reviewFormCard" class="btn btn-sm btn-outline-primary rounded-pill px-4">
-                            <i class="bi bi-star me-1"></i> Write the First Review
+                        <a href="#reviewFormCard" class="btn btn-outline-primary rounded-pill px-4 fw-semibold" style="font-size:0.88rem;">
+                            <i class="bi bi-pencil-square me-1"></i> Write the First Review
                         </a>
                     </div>
                     @endforelse
@@ -3505,12 +3750,12 @@
 
                 {{-- Write a Review Form Card --}}
                 <div class="c-review-form-card" id="reviewFormCard">
-                    <div class="d-flex align-items-center gap-2 mb-3">
-                        <div class="rounded-circle bg-warning-subtle text-warning d-flex align-items-center justify-content-center" style="width:36px;height:36px;">
-                            <i class="bi bi-pencil-fill"></i>
+                    <div class="d-flex align-items-center gap-3 mb-4 pb-3 border-bottom">
+                        <div class="rounded-circle text-white d-flex align-items-center justify-content-center shadow-sm" style="width:42px;height:42px;background:linear-gradient(135deg, var(--navy) 0%, #1e40af 100%);">
+                            <i class="bi bi-pencil-fill fs-6"></i>
                         </div>
                         <div>
-                            <h3 class="h5 fw-bold mb-0 text-dark">Share Your Experience</h3>
+                            <h3 class="h5 fw-bold mb-0 text-dark">Share Your Experience with {{ $college->name }}</h3>
                             <div class="text-muted small">Help prospective students make informed admission decisions (No login required)</div>
                         </div>
                     </div>
@@ -3522,8 +3767,8 @@
                         <input type="text" name="website_hp" value="" class="c-honeypot-field" tabindex="-1" autocomplete="off">
 
                         {{-- Interactive Star Rating --}}
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold small text-dark d-block mb-1">
+                        <div class="mb-4">
+                            <label class="form-label fw-bold small text-dark d-block mb-2">
                                 Overall Rating <span class="text-danger">*</span>
                             </label>
                             <div class="d-flex align-items-center">
@@ -3548,31 +3793,33 @@
 
                         <div class="row g-3 mb-3">
                             <div class="col-md-4">
-                                <label class="form-label fw-semibold small text-dark">
+                                <label class="form-label fw-bold small text-dark mb-1">
                                     Full Name <span class="text-danger">*</span>
                                 </label>
-                                <input type="text" name="reviewer_name" class="form-control form-control-sm @error('reviewer_name') is-invalid @enderror"
+                                <input type="text" name="reviewer_name" class="form-control rounded-3 @error('reviewer_name') is-invalid @enderror"
                                     value="{{ old('reviewer_name') }}" placeholder="e.g. Rahul Sharma" required minlength="2" maxlength="100">
                                 @error('reviewer_name')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                             <div class="col-md-4">
-                                <label class="form-label fw-semibold small text-dark">
+                                <label class="form-label fw-bold small text-dark mb-1">
                                     Email Address <span class="text-danger">*</span>
                                 </label>
-                                <input type="email" name="email" class="form-control form-control-sm @error('email') is-invalid @enderror"
+                                <input type="email" name="email" class="form-control rounded-3 @error('email') is-invalid @enderror"
                                     value="{{ old('email') }}" placeholder="e.g. rahul@example.com" required maxlength="150">
-                                <div class="form-text" style="font-size:.72rem;">Kept private, never published publicly</div>
+                                <div class="form-text" style="font-size:.74rem;">
+                                    <i class="bi bi-shield-lock text-success me-1"></i>Kept private, never published
+                                </div>
                                 @error('email')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                             <div class="col-md-4">
-                                <label class="form-label fw-semibold small text-dark">
+                                <label class="form-label fw-bold small text-dark mb-1">
                                     Course / Degree <span class="text-muted fw-normal">(Optional)</span>
                                 </label>
-                                <input type="text" name="course" class="form-control form-control-sm @error('course') is-invalid @enderror"
+                                <input type="text" name="course" class="form-control rounded-3 @error('course') is-invalid @enderror"
                                     value="{{ old('course') }}" placeholder="e.g. MBA, B.Tech, Online MCA" maxlength="120">
                                 @error('course')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -3581,26 +3828,26 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label fw-semibold small text-dark">
-                                Detailed Feedback & Review <span class="text-danger">*</span>
-                            </label>
-                            <textarea name="review" rows="4" class="form-control form-control-sm @error('review') is-invalid @enderror"
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <label class="form-label fw-bold small text-dark mb-0">
+                                    Detailed Feedback & Review <span class="text-danger">*</span>
+                                </label>
+                                <span class="text-muted small fw-semibold" id="collegeReviewCharCounter" style="font-size:.75rem;">0 / 1500 chars (min 15)</span>
+                            </div>
+                            <textarea name="review" rows="4" class="form-control rounded-3 @error('review') is-invalid @enderror"
                                 placeholder="Describe faculty support, infrastructure, course curriculum, placements, LMS experience, or admission guidance..."
                                 required minlength="15" maxlength="1500">{{ old('review') }}</textarea>
-                            <div class="d-flex justify-content-between form-text" style="font-size:.72rem;">
-                                <span>Minimum 15 characters, maximum 1500 characters.</span>
-                            </div>
                             @error('review')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
 
                         <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 pt-2">
-                            <div class="d-flex align-items-center gap-2 text-muted" style="font-size:.74rem;">
-                                <i class="bi bi-shield-lock-fill text-primary fs-6"></i>
+                            <div class="d-flex align-items-center gap-2 text-muted" style="font-size:.76rem;">
+                                <i class="bi bi-shield-check text-success fs-6"></i>
                                 <span>Reviews are moderated by administrators prior to public display to ensure authenticity.</span>
                             </div>
-                            <button type="submit" class="btn btn-primary rounded-pill px-4 py-2 fw-semibold" id="submitReviewBtn" style="font-size:.85rem;">
+                            <button type="submit" class="btn text-white rounded-pill px-4 py-2 fw-bold shadow-sm" id="submitReviewBtn" style="font-size:.9rem;background:linear-gradient(135deg, var(--navy) 0%, #1e40af 100%);border:none;">
                                 <i class="bi bi-send-fill me-1"></i> Submit Review
                             </button>
                         </div>
@@ -3873,6 +4120,17 @@
                     ratingHint.textContent = hints[radio.value] || '';
                     ratingHint.style.color = '#B45309';
                 }
+            });
+        }
+
+        /* ── College Review Live Character Counter ───────────────────── */
+        const collegeReviewTextarea = document.querySelector('#collegeReviewForm textarea[name="review"]');
+        const collegeCharCounter = document.getElementById('collegeReviewCharCounter');
+        if (collegeReviewTextarea && collegeCharCounter) {
+            collegeReviewTextarea.addEventListener('input', function() {
+                const count = this.value.length;
+                collegeCharCounter.textContent = `${count} / 1500 chars (min 15)`;
+                collegeCharCounter.style.color = count < 15 ? '#DC2626' : (count > 1400 ? '#D97706' : '#64748B');
             });
         }
     });

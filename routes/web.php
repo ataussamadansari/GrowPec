@@ -8,6 +8,7 @@ use App\Http\Controllers\CollegeReviewController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LeadController;
 use App\Http\Controllers\LeadershipMessagePageController;
+use App\Http\Controllers\WebsiteReviewController;
 use App\Http\Middleware\AdminMiddleware;
 // Middlewares
 use App\Http\Middleware\CheckMaintenanceMode;
@@ -43,6 +44,9 @@ Route::middleware(['web', CheckMaintenanceMode::class])->group(function () {
     Route::get('/college/{slug}', [CollegeController::class, 'show'])->name('college.show');
     Route::post('/college/{slug}/reviews', [CollegeReviewController::class, 'store'])
         ->name('college.reviews.store')
+        ->middleware('throttle:5,60');
+    Route::post('/website-reviews', [WebsiteReviewController::class, 'store'])
+        ->name('website.reviews.store')
         ->middleware('throttle:5,60');
 
     // Static Pages
