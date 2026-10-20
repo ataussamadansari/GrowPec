@@ -52,6 +52,14 @@ class CollegeForm
                                             ->required()
                                             ->live()
                                             ->label('Education Mode'),
+                                        Select::make('parent_college_id')
+                                            ->relationship('parentCollege', 'name', fn ($query) => $query->where('college_mode', 'regular'))
+                                            ->searchable()
+                                            ->preload()
+                                            ->nullable()
+                                            ->label('Parent University (Regular Campus)')
+                                            ->helperText('Link this online campus to its parent on-campus university')
+                                            ->visible(fn (Get $get) => $get('college_mode') === 'online'),
                                         TextInput::make('short_name')
                                             ->maxLength(100)
                                             ->placeholder('e.g. IITD, BITS Pilani')

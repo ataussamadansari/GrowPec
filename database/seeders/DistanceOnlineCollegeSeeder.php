@@ -100,6 +100,8 @@ class DistanceOnlineCollegeSeeder extends Seeder
             'name' => 'IIMT University Online, Meerut',
             'short_name' => 'IIMT University Online',
             'slug' => 'iimt-university-online',
+            'logo' => 'colleges/logos/T9Qg5zf2x4utLhRAFCFn1GVlNNpGwEXhHIzNAMnJ.png',
+            'banner_image' => 'colleges/banners/nBpLdLKB6qzGO4qCWM2fUcjB9gYFRMgd2d1sTI4W.jpg',
             'type' => 'Private',
             'university' => 'IIMT University, Meerut',
             'website' => 'https://onlineiimtu.in',
@@ -732,6 +734,8 @@ class DistanceOnlineCollegeSeeder extends Seeder
             'name' => 'Bennett University Online, Greater Noida',
             'short_name' => 'Bennett Online',
             'slug' => 'bennett-university-online',
+            'logo' => 'colleges/logos/ShHkrCvmhW174kIReNEl5n7ZIeP7iVos1zEzRIys.jpg',
+            'banner_image' => 'colleges/banners/kNqgbUX9SqzAystfwB2kxePRrDUotvKOCbfbBaUT.jpg',
             'type' => 'Private',
             'university' => 'Bennett University (The Times Group)',
             'website' => 'https://www.bennettonline.com',
@@ -1044,6 +1048,8 @@ class DistanceOnlineCollegeSeeder extends Seeder
             'name' => 'Teerthanker Mahaveer University Online, Moradabad',
             'short_name' => 'TMU Online',
             'slug' => 'tmu-university-online',
+            'logo' => 'colleges/logos/ZTWXso7Jpm1Ug1NTXVyh8C9F4NxlwrPtnMsNZeqa.jpg',
+            'banner_image' => 'colleges/banners/Bk8bI7TC0TQnSesw8FMhpdgK1h4XpjVHZoCxKlIp.jpg',
             'type' => 'Private',
             'university' => 'Teerthanker Mahaveer University (TMU)',
             'website' => 'https://www.tmuonline.ac.in',
@@ -1640,6 +1646,8 @@ class DistanceOnlineCollegeSeeder extends Seeder
             'name' => 'SGT University Online, Gurugram',
             'short_name' => 'SGT University Online',
             'slug' => 'sgt-university-online',
+            'logo' => 'colleges/logos/YFRPmnfrWi32Ek5U0MDfxEJqZrhPn72nOc0ypUWv.png',
+            'banner_image' => 'colleges/banners/YRITTgNFH5YABuEY2SwrUU4ytAMEnkjjpSNKWx54.jpg',
             'type' => 'Private',
             'university' => 'Shree Guru Gobind Singh Tricentenary University',
             'website' => 'https://sgtonline.in',
@@ -2349,6 +2357,8 @@ class DistanceOnlineCollegeSeeder extends Seeder
             'name' => 'Swami Vivekanand Subharti University Online & Distance, Meerut',
             'short_name' => 'Subharti University DDE',
             'slug' => 'subharti-university-online',
+            'logo' => 'colleges/logos/NTp2alQQcvCjycAsxu8A3fNXEHTHFDE4Lf40BR0j.png',
+            'banner_image' => 'colleges/banners/JsEvs8vtpLii6eWJoONud4M6Gw6H8hMfTZrxlDJg.webp',
             'type' => 'Private',
             'university' => 'Swami Vivekanand Subharti University (SVSU), Meerut',
             'website' => 'https://subhartidde.com',
@@ -3058,6 +3068,8 @@ class DistanceOnlineCollegeSeeder extends Seeder
             'name' => 'Mangalayatan University Online, Aligarh',
             'short_name' => 'Mangalayatan University Online',
             'slug' => 'mangalayatan-university-online',
+            'logo' => 'colleges/logos/w4Ypzd9r3YeE3OtyhjMMufyiOiSczGDAN9Qi2H0X.webp',
+            'banner_image' => 'colleges/banners/EfuN7Z6knYtwWCguhkE1ILPhtdWzp9h9IhrqsIFE.webp',
             'type' => 'Private',
             'university' => 'Mangalayatan University, Aligarh',
             'website' => 'https://online.mangalayatan.in',
@@ -3815,6 +3827,8 @@ class DistanceOnlineCollegeSeeder extends Seeder
             'name' => 'Chaudhary Charan Singh University Online & Distance, Meerut',
             'short_name' => 'CCSU Online / CDOE',
             'slug' => 'ccsu-university-online',
+            'logo' => 'colleges/logos/chnRfaQiIm7j23zqpxLmlNJzEroNI5odP7Zo6Oah.jpg',
+            'banner_image' => 'colleges/banners/lyUmCzKeCZ8PArfhfGLl2f9n57WXqmTgzaXEC70s.jpg',
             'type' => 'State Public',
             'university' => 'Chaudhary Charan Singh University, Meerut',
             'website' => 'https://www.ccsuniversitycdoe.com',
@@ -4374,6 +4388,8 @@ class DistanceOnlineCollegeSeeder extends Seeder
             'name' => 'Amity University Online, Noida',
             'short_name' => 'Amity Online',
             'slug' => 'amity-university-online',
+            'logo' => 'colleges/logos/fUJWjOPVV5ppBQTyRgqgFn17eT7XfszanKSOyqX7.jpg',
+            'banner_image' => 'colleges/banners/FdwE98LbWnmwNfzk2kPzab6LVFlLqFUcXDT35EDx.jpg',
             'type' => 'Private',
             'university' => 'Amity University Uttar Pradesh (AUUP), Noida',
             'website' => 'https://amityonline.com',
@@ -5095,6 +5111,8 @@ class DistanceOnlineCollegeSeeder extends Seeder
             'name' => 'Lovely Professional University Online, Phagwara',
             'short_name' => 'LPU Online',
             'slug' => 'lpu-university-online',
+            'logo' => 'colleges/logos/qmt0eHfnyDZstyUrL8QNenJqTsici03TisuRYnKM.jpg',
+            'banner_image' => 'colleges/banners/4YtKNrRgemPaNS6NLoK66eI4JE7BAxjJnlMOVsmd.jpg',
             'type' => 'Private',
             'university' => 'Lovely Professional University, Phagwara',
             'website' => 'https://www.lpuonline.com',
@@ -5775,6 +5793,8 @@ class DistanceOnlineCollegeSeeder extends Seeder
             'name' => 'Chandigarh University Online, Mohali',
             'short_name' => 'CU Online',
             'slug' => 'chandigarh-university-online',
+            'logo' => 'colleges/logos/HZOHE4NE1vLbVryGja73uGX5UhhbR4gmrIYRuIdz.jpg',
+            'banner_image' => 'colleges/banners/j9qBSpnSGMXdFJurEE5vXDBGoKEjqFbjSWGzrnNP.webp',
             'type' => 'Private',
             'university' => 'Chandigarh University, Mohali',
             'website' => 'https://onlinecu.in',
@@ -6587,6 +6607,8 @@ Every online degree conferred by Chandigarh University holds equal legal status 
             'name' => 'Shobhit University Centre for Distance and Online Education, Meerut',
             'short_name' => 'Shobhit University Online',
             'slug' => 'shobhit-university-online',
+            'logo' => 'colleges/logos/Bd5E4H7p6NXkZ3hJceB3CKwRyvBaggYCD7WeGQi6.png',
+            'banner_image' => 'colleges/banners/b0H95npEMhpltIh5Q0eNKKJXh9OmV9CkeWDJDsLg.png',
             'type' => 'Deemed',
             'university' => 'Shobhit Institute of Engineering and Technology (Deemed to-be-University), Meerut',
             'website' => 'https://shobhitodl.in',
@@ -7348,13 +7370,25 @@ All distance and online degrees awarded by Shobhit University carry complete sta
 
         $existing = DB::table('colleges')->where('slug', $def['slug'])->first();
         if ($existing) {
-            $collegeId = (int) $existing->id;
-            DB::table('colleges')->where('id', $collegeId)->update($payload);
-            $this->cleanCollegeChildData($collegeId);
-        } else {
-            $payload['created_at'] = $now;
-            $collegeId = (int) DB::table('colleges')->insertGetId($payload);
+            // Safe rerun: preserve existing college details, IDs, uploaded images and child records.
+            // Only fill image fields when the database field is currently empty.
+            $imageUpdates = [];
+            if (empty($existing->logo) && ! empty($def['logo'] ?? null)) {
+                $imageUpdates['logo'] = $def['logo'];
+            }
+            if (empty($existing->banner_image) && ! empty($def['banner_image'] ?? null)) {
+                $imageUpdates['banner_image'] = $def['banner_image'];
+            }
+            if ($imageUpdates !== []) {
+                $imageUpdates['updated_at'] = $now;
+                DB::table('colleges')->where('id', $existing->id)->update($imageUpdates);
+            }
+
+            return;
         }
+
+        $payload['created_at'] = $now;
+        $collegeId = (int) DB::table('colleges')->insertGetId($payload);
 
         // 3. Insert Relational Child Data
         $this->insertCollegeCourses($collegeId, $def['courses']);
@@ -7751,8 +7785,8 @@ All distance and online degrees awarded by Shobhit University carry complete sta
             'name' => $d['name'],
             'short_name' => $d['short_name'],
             'slug' => $d['slug'],
-            'logo' => null,
-            'banner_image' => null,
+            'logo' => $d['logo'] ?? null,
+            'banner_image' => $d['banner_image'] ?? null,
             'college_mode' => 'online',
             'college_type' => $typeMap[$d['type']] ?? 'Private',
             'university_name' => $d['university'],

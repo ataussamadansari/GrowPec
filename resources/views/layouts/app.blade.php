@@ -25,6 +25,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
         rel="stylesheet">
 
+    @stack('styles')
+
     <style>
         :root {
             --primary-purple: #002B67;
@@ -2440,6 +2442,7 @@
         });
     </script>
 
+    @if(!request()->routeIs('colleges.compare'))
     <!-- =========================================================
          GrowPEC Floating Comparison Dock
          ========================================================= -->
@@ -2480,6 +2483,7 @@
             </div>
         </div>
     </div>
+    @endif
 
     <!-- Comparison Dock Engine Script -->
     <script>

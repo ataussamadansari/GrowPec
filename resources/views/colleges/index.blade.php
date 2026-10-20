@@ -1200,28 +1200,8 @@
 
         <!-- Right Results Listing -->
         <div class="col-lg-9">
-            <!-- 1. Top Results Count & Sorting Bar -->
-            <div class="d-flex flex-wrap justify-content-between align-items-center bg-white p-3 px-4 rounded-4 border shadow-sm mb-3">
-                <div class="results-counter text-muted small">
-                    Showing <strong class="text-dark">{{ $colleges->firstItem() ?? 0 }}-{{ $colleges->lastItem() ?? 0 }}</strong> of <strong class="text-dark">{{ $colleges->total() }}</strong> Universities
-                </div>
-
-                <div class="d-flex align-items-center gap-2 mt-2 mt-sm-0">
-                    <label for="collegeSortSelect" class="small text-secondary fw-semibold mb-0 text-nowrap">
-                        <i class="bi bi-arrow-down-up me-1"></i>Sort by:
-                    </label>
-                    <select id="collegeSortSelect" class="form-select form-select-sm border-secondary-subtle" style="width: auto; font-size: 0.85rem;" onchange="updateSort(this.value)">
-                        <option value="popular" {{ ($sort ?? 'popular') === 'popular' ? 'selected' : '' }}>Featured / Recommended</option>
-                        <option value="rating_desc" {{ ($sort ?? '') === 'rating_desc' ? 'selected' : '' }}>Highest Rating</option>
-                        <option value="name_asc" {{ ($sort ?? '') === 'name_asc' ? 'selected' : '' }}>University Name (A-Z)</option>
-                        <option value="name_desc" {{ ($sort ?? '') === 'name_desc' ? 'selected' : '' }}>University Name (Z-A)</option>
-                        <option value="established_desc" {{ ($sort ?? '') === 'established_desc' ? 'selected' : '' }}>Established (Newest)</option>
-                        <option value="established_asc" {{ ($sort ?? '') === 'established_asc' ? 'selected' : '' }}>Established (Oldest)</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- 2. Active Filter Chips Bar -->
+        
+            <!-- 1. Active Filter Chips Bar -->
             @if(!empty($activeFilterChips))
             <div class="active-chips-bar bg-white p-3 px-4 rounded-4 border shadow-sm mb-3">
                 <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
@@ -1386,12 +1366,6 @@
         });
     });
 
-    function updateSort(val) {
-        const url = new URL(window.location.href);
-        url.searchParams.set('sort', val);
-        url.searchParams.delete('page');
-        window.location.href = url.toString();
-    }
 
     // 2. Real-time Instant Search inside Filter Lists
     document.querySelectorAll('.filter-inner-search').forEach(searchBox => {

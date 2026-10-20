@@ -14,6 +14,7 @@ class College extends Model
     use HasFactory;
 
     protected $fillable = [
+        'parent_college_id',
         'name',
         'short_name',
         'slug',
@@ -181,6 +182,27 @@ class College extends Model
     public function cityRelation(): BelongsTo
     {
         return $this->city();
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Relationships — Institutional Hierarchy
+    |--------------------------------------------------------------------------
+    */
+
+    public function parentCollege(): BelongsTo
+    {
+        return $this->belongsTo(College::class, 'parent_college_id');
+    }
+
+    public function childColleges(): HasMany
+    {
+        return $this->hasMany(College::class, 'parent_college_id');
+    }
+
+    public function onlineCampuses(): HasMany
+    {
+        return $this->childColleges()->where('college_mode', 'online');
     }
 
     /*

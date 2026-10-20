@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('colleges', function (Blueprint $table) {
-            //
+            if (! Schema::hasColumn('colleges', 'parent_college_id')) {
+                $table->foreignId('parent_college_id')->nullable()->after('id')->constrained('colleges')->nullOnDelete();
+            }
         });
     }
 
@@ -22,7 +24,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('colleges', function (Blueprint $table) {
-            //
+            if (Schema::hasColumn('colleges', 'parent_college_id')) {
+                $table->dropConstrainedForeignId('parent_college_id');
+            }
         });
     }
 };

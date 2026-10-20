@@ -398,3 +398,27 @@ test('recruiters relation manager creates corporate recruiter entries', function
         'name' => 'Google Inc',
     ]);
 });
+
+test('college model supports parent and child online college relationships and fillable parent_college_id', function () {
+    $parent = makeCollegeForTesting([
+        'name' => 'Apex Regular University',
+        'slug' => 'apex-regular-university-'.uniqid(),
+        'college_mode' => 'regular',
+    ]);
+
+    $onlineChild = College::create([
+        'parent_college_id' => $parent->id,
+        'name' => 'Apex Online University',
+        'slug' => 'apex-online-university-'.uniqid(),
+        'college_mode' => 'online',
+        'state_id' => $this->state->id,
+        'city_id' => $this->city->id,
+        'status' => true,
+    ]);
+
+    expect($onlineChild->parentCollege)->not->toBeNull()
+        ->and($onlineChild->parentCollege->id)->toBe($parent->id)
+        ->and($parent->childColleges)->toHaveCount(1)
+        ->and($parent->onlineCampuses)->toHaveCount(1)
+        ->and($parent->onlineCampuses->first()->id)->toBe($onlineChild->id);
+});

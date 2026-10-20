@@ -57,10 +57,11 @@ class HomeController extends Controller
 
         /*
         |--------------------------------------------------------------------------
-        | Regular Colleges
+        | Regular Universities
         |--------------------------------------------------------------------------
         */
         $regularColleges = College::where('college_mode', 'regular')
+            ->where('institution_category', 'university')
             ->where('status', true)
             ->with(['state', 'city'])
             ->select([
@@ -84,10 +85,39 @@ class HomeController extends Controller
 
         /*
         |--------------------------------------------------------------------------
-        | Online Colleges
+        | Online Universities
         |--------------------------------------------------------------------------
         */
         $onlineColleges = College::where('college_mode', 'online')
+            ->where('institution_category', 'university')
+            ->where('status', true)
+            ->with(['state', 'city'])
+            ->select([
+                'id',
+                'name',
+                'slug',
+                'logo',
+                'banner_image',
+                'college_mode',
+                'college_type',
+                'institution_category',
+                'university_name',
+                'state_id',
+                'city_id',
+                'established_year',
+                'rating',
+                'is_featured',
+            ])
+            ->orderByDesc('is_featured')
+            ->get();
+
+        /*
+        |--------------------------------------------------------------------------
+        | Regular & Online Colleges
+        |--------------------------------------------------------------------------
+        */
+
+        $roColleges = College::where('institution_category', '!=', 'university')
             ->where('status', true)
             ->with(['state', 'city'])
             ->select([
@@ -218,6 +248,7 @@ class HomeController extends Controller
                 'leadershipMessages',
                 'regularColleges',
                 'onlineColleges',
+                'roColleges',
                 'popularCourses',
                 'streams',
                 'popularCities',

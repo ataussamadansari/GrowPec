@@ -95,6 +95,8 @@ class RegularCollegeSeeder extends Seeder
             'name' => 'Graphic Era (Deemed to be University)',
             'short_name' => 'Graphic Era Dehradun',
             'slug' => 'graphic-era-deemed-to-be-university-dehradun',
+            'logo' => 'colleges/logos/4H7NBmu0hT2hhGGSYjtuyOyXRfohqULrbA7rDHl7.png',
+            'banner_image' => 'colleges/banners/MuzLQAiSdq0zpDbYomJm7Fodtp8s98VsWnPAV3YC.jpg',
             'type' => 'Deemed',
             'university' => 'Graphic Era (Deemed to be University)',
             'website' => 'https://geu.ac.in',
@@ -706,6 +708,8 @@ class RegularCollegeSeeder extends Seeder
             'name' => 'IIMT University',
             'short_name' => 'IIMT Meerut',
             'slug' => 'iimt-university-meerut',
+            'logo' => 'colleges/logos/p3QVakco3XEoliphMhXoPEbgKfPIbxFBImdQfx7j.png',
+            'banner_image' => 'colleges/banners/G0fwBENsMTK9zmtwim3gNNUvmtS8tAzeQ6IRGUSh.jpg',
             'type' => 'Private',
             'university' => 'IIMT University',
             'website' => 'https://www.iimtu.edu.in',
@@ -1285,6 +1289,8 @@ class RegularCollegeSeeder extends Seeder
             'name' => 'Bennett University',
             'short_name' => 'Bennett University Greater Noida',
             'slug' => 'bennett-university-greater-noida',
+            'logo' => 'colleges/logos/HyWI0u9kZuCT8Wcrr9WW7ysARqo8qTpYYYpD9nO9.jpg',
+            'banner_image' => 'colleges/banners/Zl7ZBX1EJVsx8OScgJAHbNCiSbyGMV77Qp7Tbs0R.jpg',
             'type' => 'Private',
             'university' => 'Bennett University',
             'website' => 'https://www.bennett.edu.in',
@@ -1722,6 +1728,8 @@ class RegularCollegeSeeder extends Seeder
             'name' => 'Metro University',
             'short_name' => 'Metro University Greater Noida',
             'slug' => 'metro-university-greater-noida',
+            'logo' => 'colleges/logos/NQOEC801kV1FA3fq5WqN6FZdSDE0eOxKT8LDTIGO.png',
+            'banner_image' => 'colleges/banners/eAcPmKlgcDUm2LRvXFe425lAvjbr4HvP9bTL7LHL.webp',
             'type' => 'Private',
             'university' => 'Metro University',
             'website' => 'https://metrouniversity.in',
@@ -2148,6 +2156,8 @@ class RegularCollegeSeeder extends Seeder
             'name' => 'Dr. K.N. Modi University',
             'short_name' => 'DKNMU Modinagar',
             'slug' => 'dr-k-n-modi-university-modinagar',
+            'logo' => 'colleges/logos/NAjL34fcVR0B2tOpg3oulMEgNv4j8eTaxzdfMw0U.jpg',
+            'banner_image' => 'colleges/banners/jShs3VHWqQvBmHsm2jYHNb795VNc47DMAPksGXCN.png',
             'type' => 'Private',
             'university' => 'Dr. K.N. Modi University',
             'website' => 'https://dknmu.org',
@@ -2670,6 +2680,8 @@ class RegularCollegeSeeder extends Seeder
             'name' => 'Galgotias University',
             'short_name' => 'Galgotias Greater Noida',
             'slug' => 'galgotias-university-greater-noida',
+            'logo' => 'colleges/logos/6dPNbKKbOjEh8Ki4N48dNmGtjzTZJmP70Zl9Smlp.webp',
+            'banner_image' => 'colleges/banners/D1H04Y47cZBZpeptlLOVKjgh1MIK8UU5nvmh1wbt.webp',
             'type' => 'Private',
             'university' => 'Galgotias University',
             'website' => 'https://www.galgotiasuniversity.edu.in',
@@ -3294,13 +3306,25 @@ class RegularCollegeSeeder extends Seeder
 
         $existing = DB::table('colleges')->where('slug', $def['slug'])->first();
         if ($existing) {
-            $collegeId = (int) $existing->id;
-            DB::table('colleges')->where('id', $collegeId)->update($payload);
-            $this->cleanCollegeChildData($collegeId);
-        } else {
-            $payload['created_at'] = $now;
-            $collegeId = (int) DB::table('colleges')->insertGetId($payload);
+            // Safe rerun: preserve existing college details, IDs, uploaded images and child records.
+            // Only fill image fields when the database field is currently empty.
+            $imageUpdates = [];
+            if (empty($existing->logo) && ! empty($def['logo'] ?? null)) {
+                $imageUpdates['logo'] = $def['logo'];
+            }
+            if (empty($existing->banner_image) && ! empty($def['banner_image'] ?? null)) {
+                $imageUpdates['banner_image'] = $def['banner_image'];
+            }
+            if ($imageUpdates !== []) {
+                $imageUpdates['updated_at'] = $now;
+                DB::table('colleges')->where('id', $existing->id)->update($imageUpdates);
+            }
+
+            return;
         }
+
+        $payload['created_at'] = $now;
+        $collegeId = (int) DB::table('colleges')->insertGetId($payload);
 
         // 3. Insert Relational Child Data
         $this->insertCollegeCourses($collegeId, $def['courses']);
@@ -3618,8 +3642,8 @@ class RegularCollegeSeeder extends Seeder
             'name' => $d['name'],
             'short_name' => $d['short_name'],
             'slug' => $d['slug'],
-            'logo' => null,
-            'banner_image' => null,
+            'logo' => $d['logo'] ?? null,
+            'banner_image' => $d['banner_image'] ?? null,
             'college_mode' => 'regular',
             'college_type' => $typeMap[$d['type']] ?? 'Private',
             'university_name' => $d['university'],
@@ -3694,6 +3718,8 @@ class RegularCollegeSeeder extends Seeder
             'name' => 'Teerthanker Mahaveer University',
             'short_name' => 'TMU Moradabad',
             'slug' => 'teerthanker-mahaveer-university-moradabad',
+            'logo' => 'colleges/logos/jaTJGXbypQ2xRaFfrV8MZx4rEzqrzWVlftCRBi0e.jpg',
+            'banner_image' => 'colleges/banners/mSmLt7kWUigtTbTeqjRSq6SViN8KAZyGeGmM6Orw.jpg',
             'type' => 'Private',
             'university' => 'Teerthanker Mahaveer University',
             'website' => 'https://www.tmu.ac.in',
@@ -4159,6 +4185,8 @@ class RegularCollegeSeeder extends Seeder
             'name' => 'Amrapali University',
             'short_name' => 'Amrapali Haldwani',
             'slug' => 'amrapali-university-haldwani',
+            'logo' => 'colleges/logos/FJsO9K2KkFdt9eZkcpgOrcqMcVbSvzhr6OY51EVR.png',
+            'banner_image' => 'colleges/banners/7Vs984YeL92FoPeIC4838IW5gTyUUo7yC490Z6TX.webp',
             'type' => 'Private',
             'university' => 'Amrapali University',
             'website' => 'https://amrapali.ac.in',
@@ -4575,6 +4603,8 @@ class RegularCollegeSeeder extends Seeder
             'name' => 'Maharishi University of Information Technology',
             'short_name' => 'MUIT Noida',
             'slug' => 'maharishi-university-of-information-technology-noida',
+            'logo' => 'colleges/logos/01M56T5FPPCZ2D9DPMAXMR2DZN.png',
+            'banner_image' => 'colleges/banners/01M56T5FPSVWRMSREZATSBKWAN.webp',
             'type' => 'Private',
             'university' => 'Maharishi University of Information Technology',
             'website' => 'https://muitnoida.edu.in',
@@ -4850,6 +4880,8 @@ class RegularCollegeSeeder extends Seeder
             'name' => 'Future University',
             'short_name' => 'Future University Bareilly',
             'slug' => 'future-university-bareilly',
+            'logo' => 'colleges/logos/01M56ST5QN876JA3T9HF2X20TS.jpeg',
+            'banner_image' => 'colleges/banners/01M56ST5QPRB18X35T4DTYP0HY.jpeg',
             'type' => 'Private',
             'university' => 'Future University',
             'website' => 'https://www.futureuniversity.in',
@@ -5126,6 +5158,8 @@ class RegularCollegeSeeder extends Seeder
             'name' => 'Haridwar University',
             'short_name' => 'Haridwar University Roorkee',
             'slug' => 'haridwar-university-roorkee',
+            'logo' => 'colleges/logos/01M56TQZ52ADG0W3711MHC4VZZ.png',
+            'banner_image' => 'colleges/banners/01M56TQZ54K8K52E2ZY17M5975.jpeg',
             'type' => 'Private',
             'university' => 'Haridwar University',
             'website' => 'https://huroorkee.ac.in',
@@ -5402,6 +5436,8 @@ class RegularCollegeSeeder extends Seeder
             'name' => 'COER University',
             'short_name' => 'COER University Roorkee',
             'slug' => 'coer-university-roorkee',
+            'logo' => 'colleges/logos/01M56SYRBF72NEWB42B1BKK8DJ.jpeg',
+            'banner_image' => 'colleges/banners/01M56SYRBHC5QHQ57RKAATBNHZ.webp',
             'type' => 'Private',
             'university' => 'COER University',
             'website' => 'https://coeruniversity.ac.in',
@@ -5701,6 +5737,8 @@ class RegularCollegeSeeder extends Seeder
             'name' => 'HRIT Group of Institutions',
             'short_name' => 'HRIT Ghaziabad',
             'slug' => 'hrit-group-of-institutions-ghaziabad',
+            'logo' => 'colleges/logos/01M56TXP1NA3PBGP1RCNNWJ8SJ.webp',
+            'banner_image' => 'colleges/banners/01M56TXP1PDR351TP26TSS24RN.webp',
             'type' => 'Private',
             'university' => 'HRIT University / Dr. A.P.J. Abdul Kalam Technical University (AKTU)',
             'website' => 'https://www.hrituniversity.edu.in',
@@ -5977,6 +6015,8 @@ class RegularCollegeSeeder extends Seeder
             'name' => 'SRM Institute of Science and Technology (NCR Campus)',
             'short_name' => 'SRM IST Modinagar',
             'slug' => 'srm-institute-of-science-and-technology-ncr-campus-ghaziabad',
+            'logo' => 'colleges/logos/01M56V42S462PPR7XZ80QSZ20F.jpg',
+            'banner_image' => 'colleges/banners/01M56V42S6XWP4H525JPWRNF4M.png',
             'type' => 'Deemed',
             'university' => 'SRM Institute of Science and Technology (Deemed to be University, Chennai)',
             'website' => 'https://www.srmup.in',
@@ -6253,6 +6293,8 @@ class RegularCollegeSeeder extends Seeder
             'name' => 'Noida International University',
             'short_name' => 'NIU Greater Noida',
             'slug' => 'noida-international-university-greater-noida',
+            'logo' => 'colleges/logos/01M56TBCWXFEF3FYTVVKT6WM7B.jpg',
+            'banner_image' => 'colleges/banners/01M56TBCWZKWZ6AJ2M0VS5XS8J.webp',
             'type' => 'Private',
             'university' => 'Noida International University',
             'website' => 'https://niu.edu.in',

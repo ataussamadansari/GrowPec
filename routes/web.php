@@ -40,6 +40,7 @@ Route::middleware(['web', CheckMaintenanceMode::class])->group(function () {
     // Colleges Listing, Comparison & Details
     Route::get('/colleges', [CollegeController::class, 'regularColleges'])->name('colleges.regular');
     Route::get('/online-colleges', [CollegeController::class, 'onlineColleges'])->name('colleges.online');
+    Route::get('/online-regular-colleges', [CollegeController::class, 'orColleges'])->name('colleges.onlineregular');
     Route::get('/compare', [CollegeComparisonController::class, 'index'])->name('colleges.compare');
     Route::get('/college/{slug}', [CollegeController::class, 'show'])->name('college.show');
     Route::post('/college/{slug}/reviews', [CollegeReviewController::class, 'store'])

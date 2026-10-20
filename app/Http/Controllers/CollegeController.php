@@ -17,7 +17,12 @@ class CollegeController extends Controller
      */
     public function regularColleges(Request $request)
     {
-        return $this->getFilteredColleges($request, 'regular', 'colleges.index', 'Regular Universities in India');
+        return $this->getFilteredColleges(
+            $request,
+            'regular',
+            'colleges.index',
+            'Regular Universities in India'
+        );
     }
 
     /**
@@ -25,7 +30,25 @@ class CollegeController extends Controller
      */
     public function onlineColleges(Request $request)
     {
-        return $this->getFilteredColleges($request, 'online', 'colleges.index', 'Online & Distance Universities in India');
+        return $this->getFilteredColleges(
+            $request,
+            'online',
+            'colleges.index',
+            'Online & Distance Universities in India'
+        );
+    }
+
+    /**
+     * Online & distance colleges listing with filters.
+     */
+    public function orColleges(Request $request)
+    {
+        return $this->getFilteredColleges(
+            $request,
+            'online-regular',
+            'colleges.index',
+            'Regular & Online Colleges in India'
+        );
     }
 
     /**
@@ -161,9 +184,21 @@ class CollegeController extends Controller
         string $view,
         string $pageTitle
     ) {
+        // $query = College::query()
+        //     ->where('status', true)
+        //     ->where('college_mode', $mode)
+        //     ->with(['courses.stream', 'collegeCourses.course', 'city', 'state']);
+
         $query = College::query()
             ->where('status', true)
-            ->where('college_mode', $mode)
+            ->when(
+                $mode === 'online-regular',
+                fn ($q) => $q->where(function ($sub) {
+                    $sub->whereNull('institution_category')
+                        ->orWhere('institution_category', '!=', 'university');
+                }),
+                fn ($q) => $q->where('college_mode', $mode)
+            )
             ->with(['courses.stream', 'collegeCourses.course', 'city', 'state']);
 
         // 1. Text search
@@ -327,19 +362,46 @@ class CollegeController extends Controller
         }
 
         // 12. Dynamic Sorting
-        $sort = $request->input('sort', 'popular');
+        $sort = $request->input('sort', 'oldest');
+
         match ($sort) {
-            'rating_desc', 'rating' => $query->orderByDesc('rating')->orderByDesc('is_featured')->orderByDesc('id'),
+            'rating_desc', 'rating' => $query
+                ->orderByDesc('rating')
+                ->orderBy('id', 'asc'),
+
             'name_asc' => $query->orderBy('name', 'asc'),
+
             'name_desc' => $query->orderBy('name', 'desc'),
-            'established_desc' => $query->orderByDesc('established_year')->orderByDesc('is_featured'),
-            'established_asc' => $query->orderBy('established_year', 'asc')->orderByDesc('is_featured'),
-            default => $query->orderByDesc('is_featured')->orderByDesc('rating')->orderByDesc('id'),
+
+            'established_desc' => $query
+                ->orderByDesc('established_year')
+                ->orderBy('id', 'asc'),
+
+            'established_asc' => $query
+                ->orderBy('established_year', 'asc')
+                ->orderBy('id', 'asc'),
+
+            default => $query->orderBy('id', 'asc'),
         };
 
         $colleges = $query
             ->paginate(12)
             ->withQueryString();
+
+        // 12. Dynamic Sorting
+        // $sort = $request->input('sort', 'popular');
+        // match ($sort) {
+        //     'rating_desc', 'rating' => $query->orderByDesc('rating')->orderByDesc('is_featured')->orderByDesc('id'),
+        //     'name_asc' => $query->orderBy('name', 'asc'),
+        //     'name_desc' => $query->orderBy('name', 'desc'),
+        //     'established_desc' => $query->orderByDesc('established_year')->orderByDesc('is_featured'),
+        //     'established_asc' => $query->orderBy('established_year', 'asc')->orderByDesc('is_featured'),
+        //     default => $query->orderByDesc('is_featured')->orderByDesc('rating')->orderByDesc('id'),
+        // };
+
+        // $colleges = $query
+        //     ->paginate(12)
+        //     ->withQueryString();
 
         // Filter sidebar data
         $allStreams = Stream::withCount('courses')->orderBy('name')->get();

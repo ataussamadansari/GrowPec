@@ -4708,208 +4708,29 @@
     .home-leadership-link:hover { transform:translateY(-2px); color:#fff; }
     .home-leadership-signoff { display:grid; gap:2px; justify-items:end; color:#71809B; font-size:.73rem; text-align:right; }
     .home-leadership-signoff strong { color:#142746; font-family:cursive; font-size:.95rem; font-weight:600; }
+    @media (max-width:767.98px) { .home-leadership-section { padding:56px 0; } .home-leadership-heading span { gap:9px; font-size:.67rem; } .home-leadership-heading span:before,.home-leadership-heading span:after { width:23px; } .home-leadership-card { padding:10px; border-radius:22px; } .home-leadership-card-inner,.home-leadership-card-ceo .home-leadership-card-inner { grid-template-columns:1fr; gap:0; } .home-leadership-card-ceo .home-leadership-portrait { order:0; } .home-leadership-portrait,.home-leadership-photo { min-height:250px; max-height:330px; } .home-leadership-copy { padding:20px 11px 13px; } .home-leadership-copy:before { top:4px; font-size:5rem; } .home-leadership-footer { align-items:flex-start; flex-direction:column; } .home-leadership-signoff { justify-items:start; text-align:left; } }
     /* =========================================================
-       10. GROWPEC PLATFORM REVIEWS & RATINGS — PREMIUM UI REDESIGN
+       10. REVIEWS — Tailwind-first UI
+       Keep only the small custom styles needed for the interactive
+       star picker and Bootstrap modal integration.
        ========================================================= */
     :root {
         --gp-review-navy-950: #00122e;
         --gp-review-navy-900: #00163F;
         --gp-review-navy-800: #001F59;
-        --gp-review-navy-700: #0a327d;
         --gp-review-gold-500: #F59E0B;
-        --gp-review-gold-600: #D97706;
-        --gp-review-gold-100: #FEF3C7;
-        --gp-review-gold-50:  #FFFBEB;
         --gp-review-emerald-600: #059669;
-        --gp-review-emerald-50:  #ECFDF5;
-        --gp-review-card-border: #E2E8F0;
-        --gp-review-shadow: 0 4px 20px -2px rgba(0, 31, 89, 0.06), 0 2px 6px -1px rgba(0, 31, 89, 0.03);
-        --gp-review-shadow-hover: 0 20px 30px -8px rgba(0, 31, 89, 0.12), 0 8px 12px -3px rgba(0, 31, 89, 0.04);
     }
 
-    .growpec-reviews-section {
-        position: relative;
-        overflow: hidden;
-        background: radial-gradient(ellipse at 15% 20%, rgba(245, 158, 11, 0.045), transparent 45%),
-                    radial-gradient(ellipse at 85% 80%, rgba(0, 31, 89, 0.04), transparent 50%),
-                    linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%) !important;
-    }
-
-    .gp-review-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        background: var(--gp-review-gold-50);
-        color: var(--gp-review-gold-600);
-        border: 1px solid var(--gp-review-gold-100);
-        padding: 6px 14px;
-        border-radius: 9999px;
-        font-size: 0.8rem;
-        font-weight: 700;
-        letter-spacing: 0.02em;
-    }
-
-    .gp-review-summary-card {
-        background: #ffffff;
-        border: 1px solid var(--gp-review-card-border);
-        border-radius: 24px;
-        box-shadow: var(--gp-review-shadow);
-        position: relative;
-        overflow: hidden;
-        transition: box-shadow 0.3s ease;
-    }
-
-    .gp-review-summary-card::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 320px;
-        height: 320px;
-        background: radial-gradient(circle, rgba(245, 158, 11, 0.06) 0%, transparent 70%);
-        pointer-events: none;
-    }
-
-    .gp-score-numeral {
-        font-size: clamp(3.2rem, 5.2vw, 4.2rem);
-        font-weight: 850;
-        letter-spacing: -0.04em;
-        line-height: 1;
-        background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-
-    .gp-stars-hero i {
-        font-size: 1.25rem;
-        color: var(--gp-review-gold-500);
-        margin: 0 1.5px;
-    }
-
-    .gp-meter-row {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        margin-bottom: 9px;
-    }
-    .gp-meter-row:last-child {
-        margin-bottom: 0;
-    }
-    .gp-meter-label {
-        font-size: 0.82rem;
-        font-weight: 700;
-        color: #475569;
-        width: 60px;
-        flex-shrink: 0;
-    }
-    .gp-meter-track {
-        flex: 1;
-        height: 9px;
-        background-color: #F1F5F9;
-        border-radius: 9999px;
-        overflow: hidden;
-        position: relative;
-    }
-    .gp-meter-fill {
-        height: 100%;
-        border-radius: 9999px;
-        background: linear-gradient(90deg, #F59E0B 0%, #FBBF24 100%);
-        transition: width 0.9s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .gp-meter-val {
-        font-size: 0.8rem;
-        font-weight: 600;
-        color: #64748B;
-        width: 44px;
-        text-align: right;
-        flex-shrink: 0;
-    }
-
-    .gp-review-card {
-        background: #ffffff;
-        border: 1px solid var(--gp-review-card-border);
-        border-radius: 20px;
-        box-shadow: var(--gp-review-shadow);
-        transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease;
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-        padding: 24px;
-    }
-    .gp-review-card:hover {
-        transform: translateY(-5px);
-        box-shadow: var(--gp-review-shadow-hover);
-        border-color: rgba(0, 31, 89, 0.20);
-    }
-
-    .gp-card-stars i {
-        font-size: 0.92rem;
-        margin-right: 1px;
-    }
-
-    .gp-review-title {
-        font-size: 1.05rem;
-        font-weight: 700;
-        color: #0F172A;
-        line-height: 1.4;
-    }
-
-    .gp-review-quote {
-        font-size: 0.94rem;
-        line-height: 1.65;
-        color: #475569;
-        flex-grow: 1;
-        position: relative;
-    }
-
-    .gp-avatar-initials {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 700;
-        font-size: 0.92rem;
-        color: #ffffff;
-        background: linear-gradient(135deg, var(--gp-review-navy-800) 0%, #1e40af 100%);
-        box-shadow: 0 4px 10px rgba(0, 31, 89, 0.15);
-        flex-shrink: 0;
-    }
-
-    .gp-verified-pill {
-        display: inline-flex;
-        align-items: center;
-        gap: 4px;
-        background: var(--gp-review-emerald-50);
-        color: var(--gp-review-emerald-600);
-        border: 1px solid rgba(5, 150, 105, 0.2);
-        padding: 2px 8px;
-        border-radius: 9999px;
-        font-size: 0.72rem;
-        font-weight: 600;
-        letter-spacing: 0.02em;
-    }
-
-    /* Modal dialog styling */
-    #websiteReviewModal .modal-dialog {
-        max-width: 560px;
-    }
+    #websiteReviewModal .modal-dialog { max-width: 600px; }
     #websiteReviewModal .modal-content {
+        border: 0;
         border-radius: 24px;
-        border: none;
         overflow: hidden;
-        box-shadow: 0 25px 50px -12px rgba(0, 22, 63, 0.35);
+        box-shadow: 0 25px 70px rgba(0, 22, 63, .28);
     }
-    #websiteReviewModal .modal-header {
-        background: linear-gradient(135deg, var(--gp-review-navy-900) 0%, var(--gp-review-navy-800) 100%);
-        padding: 22px 28px;
-        border: none;
-    }
-    #websiteReviewModal .modal-body {
-        padding: 26px 28px 28px;
-    }
+    #websiteReviewModal .modal-header { border: 0; }
+    #websiteReviewModal .modal-body { padding: 0; }
 
     .gp-star-picker {
         display: inline-flex;
@@ -4925,40 +4746,498 @@
         cursor: pointer;
         font-size: 1.9rem;
         color: #CBD5E1;
-        transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.15s ease;
+        transition: transform .15s ease, color .15s ease;
         user-select: none;
         line-height: 1;
         padding: 0 2px;
     }
-    .gp-star-item.active {
-        color: var(--gp-review-gold-500);
-    }
-    .gp-star-item:hover {
-        transform: scale(1.22);
-    }
-    .gp-star-item:active {
-        transform: scale(0.92);
-    }
+    .gp-star-item.active { color: var(--gp-review-gold-500); }
+    .gp-star-item:hover { transform: scale(1.12); }
+    .gp-star-item:focus-visible { outline: 2px solid #1D4ED8; outline-offset: 3px; border-radius: 4px; }
 
     .gp-form-input {
-        border: 1.5px solid #CBD5E1;
+        display: block;
+        width: 100%;
+        border: 1px solid #CBD5E1;
         border-radius: 12px;
-        padding: 11px 15px;
-        font-size: 0.92rem;
-        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        padding: 11px 14px;
+        font-size: .92rem;
+        color: #0F172A;
+        background: #fff;
+        transition: border-color .2s ease, box-shadow .2s ease;
     }
     .gp-form-input:focus {
-        border-color: var(--gp-review-navy-800);
-        box-shadow: 0 0 0 4px rgba(0, 31, 89, 0.10);
+        border-color: #1D4ED8;
+        box-shadow: 0 0 0 4px rgba(29, 78, 216, .10);
         outline: none;
     }
-
-    /* Backdrop blur for modal */
     .modal-backdrop.show {
-        backdrop-filter: blur(6px);
-        -webkit-backdrop-filter: blur(6px);
-        background-color: rgba(0, 22, 63, 0.58);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        background-color: rgba(0, 22, 63, .58);
     }
+
+    /* Reviews layout guardrails: keep this section stable even when the
+       site's legacy Bootstrap/global button rules override utility styles. */
+    .growpec-reviews-section { position: relative; isolation: isolate; padding: 3.5rem 0; background: linear-gradient(180deg,#fff 0%,#f5f8fc 52%,#fff 100%); color:#172033; }
+    .growpec-reviews-section *, #websiteReviewModal * { box-sizing: border-box; }
+    .growpec-reviews-section .container { width:100%; max-width:1280px; margin-left:auto; margin-right:auto; padding-left:16px; padding-right:16px; }
+    .growpec-reviews-section h2,.growpec-reviews-section h3,.growpec-reviews-section h4,.growpec-reviews-section p { overflow-wrap:anywhere; }
+    .growpec-reviews-section button:not(.btn-close) { border:0 !important; color:#fff !important; background-color:#082f63 !important; cursor:pointer; font-family:inherit; }
+    .growpec-reviews-section button:not(.btn-close):hover { background-color:#104783 !important; }
+    .gp-review-summary-card { width:100%; }
+    .gp-review-summary-card > .grid { display:grid; grid-template-columns:minmax(0,1fr); }
+    .gp-review-summary-card .grid.grid-cols-\[4\.25rem_minmax\(0\,1fr\)_2\.75rem\],
+    .gp-review-summary-card .grid[class*="grid-cols-"] { display:grid; }
+    .gp-review-summary-card .gp-meter-fill { display:block; min-width:0; }
+    .growpec-reviews-section .grid.grid-cols-1 { display:grid; grid-template-columns:minmax(0,1fr); }
+    .growpec-reviews-section article { min-width:0; }
+    #websiteReviewModal { padding:12px; }
+    #websiteReviewModal .modal-dialog { width:100%; max-width:600px; margin:0 auto; min-height:calc(100% - 24px); display:flex; align-items:center; }
+    #websiteReviewModal .modal-content { width:100%; max-height:calc(100dvh - 24px); display:flex; flex-direction:column; background:#fff; }
+    #websiteReviewModal .modal-header { flex:0 0 auto; display:flex; align-items:flex-start; justify-content:space-between; gap:16px; padding:20px 24px; background:linear-gradient(110deg,#020617,#082f63); }
+    #websiteReviewModal .modal-header .modal-title { color:#fff !important; font-size:1.25rem; line-height:1.35; }
+    #websiteReviewModal .modal-header p { color:#dbeafe; }
+    #websiteReviewModal #websiteReviewForm { min-height:0; overflow-y:auto; overscroll-behavior:contain; padding:22px 24px; }
+    #websiteReviewModal .gp-form-input { min-height:46px; font-size:16px; }
+    #websiteReviewModal textarea.gp-form-input { min-height:120px; }
+    #websiteReviewModal #websiteReviewForm button[type="submit"] { display:flex; width:100%; min-height:50px; align-items:center; justify-content:center; gap:8px; border:0; border-radius:12px; background:linear-gradient(100deg,#082f63,#075e54) !important; color:#fff !important; padding:13px 18px; font-weight:800; white-space:normal; text-align:center; }
+    #websiteReviewModal .gp-star-picker { max-width:100%; }
+    @media (min-width:768px) {
+        .growpec-reviews-section { padding:4.5rem 0; }
+        .gp-review-summary-card > .grid { grid-template-columns:minmax(240px,.85fr) minmax(0,1.5fr); }
+        .growpec-reviews-section .grid.grid-cols-1.md\:grid-cols-2 { grid-template-columns:repeat(2,minmax(0,1fr)); }
+        #websiteReviewModal #websiteReviewForm .grid.grid-cols-1 { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    }
+    @media (min-width:1200px) {
+        .growpec-reviews-section .grid.grid-cols-1.md\:grid-cols-2.xl\:grid-cols-3 { grid-template-columns:repeat(3,minmax(0,1fr)); }
+    }
+    @media (max-width:575.98px) {
+        .growpec-reviews-section { padding:2.75rem 0; }
+        .growpec-reviews-section .container { padding-left:16px; padding-right:16px; }
+        #websiteReviewModal { padding:8px; }
+        #websiteReviewModal .modal-dialog { min-height:calc(100% - 16px); }
+        #websiteReviewModal .modal-content { max-height:calc(100dvh - 16px); border-radius:20px; }
+        #websiteReviewModal .modal-header { padding:17px 18px; }
+        #websiteReviewModal #websiteReviewForm { padding:18px; }
+        #websiteReviewModal #websiteReviewForm .grid.grid-cols-1 { grid-template-columns:minmax(0,1fr); }
+        .gp-star-picker { gap:6px; padding:9px 12px; }
+        .gp-star-item { font-size:1.65rem; }
+    }
+
+
+
+    /* GrowPec reviews — standalone custom CSS (does not depend on Tailwind output) */
+    #growpecReviewsSection { position:relative; isolation:isolate; overflow:hidden; padding:64px 0; color:#172033; background:linear-gradient(145deg,#f8fbff 0%,#edf5fc 48%,#f8fbff 100%); }
+    #growpecReviewsSection > .container { position:relative; z-index:1; width:100%; max-width:1180px; margin:0 auto; padding:0 24px; }
+    #growpecReviewsSection [aria-hidden="true"].absolute { position:absolute; pointer-events:none; border-radius:50%; filter:blur(48px); opacity:.5; }
+    #growpecReviewsSection h2,#growpecReviewsSection h3,#growpecReviewsSection h4,#growpecReviewsSection p { overflow-wrap:anywhere; }
+    #growpecReviewsSection h2 { margin:0; color:#101828; font-size:clamp(2rem,4vw,3rem); font-weight:800; line-height:1.13; letter-spacing:-.035em; }
+    #growpecReviewsSection h2 span { color:#124a83; }
+    #growpecReviewsSection h3 { margin:0; color:#142238; font-weight:800; line-height:1.3; }
+    #growpecReviewsSection p { margin-top:10px; margin-bottom:0; color:#5d6b7e; line-height:1.7; }
+    #growpecReviewsSection .container > .mb-8 { display:flex; align-items:flex-end; justify-content:space-between; gap:28px; margin-bottom:34px; }
+    #growpecReviewsSection .container > .mb-8 > div:first-child { max-width:760px; }
+    #growpecReviewsSection .container > .mb-8 > div:first-child > span { display:inline-flex; align-items:center; gap:8px; margin-bottom:18px; padding:9px 14px; border:1px solid #f5d58a; border-radius:999px; background:#fff8e6; color:#8a4b08; font-size:12px; font-weight:800; letter-spacing:.08em; }
+    #growpecReviewsSection .container > .mb-8 > div:first-child > p { max-width:680px; font-size:17px; }
+    #growpecReviewsSection button:not(.btn-close) { display:inline-flex; align-items:center; justify-content:center; gap:9px; min-height:48px; padding:13px 21px; border:1px solid #082f63 !important; border-radius:12px; background:linear-gradient(110deg,#082f63,#075e54) !important; color:#fff !important; font-family:inherit; font-size:14px; font-weight:750; line-height:1.35; text-align:center; text-decoration:none; white-space:normal; box-shadow:0 8px 20px rgba(8,47,99,.16); cursor:pointer; transition:transform .2s ease,box-shadow .2s ease,filter .2s ease; }
+    #growpecReviewsSection button:not(.btn-close):hover { background:linear-gradient(110deg,#104783,#087a66) !important; color:#fff !important; transform:translateY(-1px); box-shadow:0 12px 25px rgba(8,47,99,.2); }
+    #growpecReviewsSection button:focus-visible { outline:3px solid #93c5fd; outline-offset:3px; }
+    .gp-review-summary-card { width:100%; margin-bottom:42px; overflow:hidden; border:1px solid #dce5ef; border-radius:24px; background:#fff; box-shadow:0 15px 42px rgba(15,23,42,.07); }
+    .gp-review-summary-card > .grid { display:grid; grid-template-columns:minmax(0,1fr); }
+    .gp-review-summary-card > .grid > div:first-child { display:flex; flex-direction:column; align-items:center; justify-content:center; padding:34px 28px; border-bottom:1px solid #e7edf4; background:linear-gradient(145deg,#f8fafc,#f1f6fb); text-align:center; }
+    .gp-review-summary-card > .grid > div:first-child > span:first-child { color:#64748b; font-size:12px; font-weight:800; letter-spacing:.13em; text-transform:uppercase; }
+    .gp-review-summary-card > .grid > div:first-child > div:nth-child(2) { margin-top:12px; color:#101828; font-size:clamp(3.4rem,8vw,4.5rem); font-weight:850; letter-spacing:-.06em; line-height:1; }
+    .gp-review-summary-card > .grid > div:first-child > div:nth-child(3) { display:flex; justify-content:center; gap:5px; margin-top:16px; color:#f59e0b; font-size:23px; }
+    .gp-review-summary-card > .grid > div:first-child > p { margin-top:12px; color:#59677a; font-size:14px; }
+    .gp-review-summary-card > .grid > div:first-child > p strong { color:#172033; }
+    .gp-review-summary-card > .grid > div:first-child > span:last-child { display:inline-flex; align-items:center; gap:6px; margin-top:16px; padding:7px 12px; border:1px solid #b8ead4; border-radius:999px; background:#ecfdf5; color:#08744d; font-size:12px; font-weight:750; }
+    .gp-review-summary-card > .grid > div:last-child { padding:28px; }
+    .gp-review-summary-card > .grid > div:last-child > div:first-child { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:24px; }
+    .gp-review-summary-card > .grid > div:last-child > div:first-child h3 { font-size:20px; }
+    .gp-review-summary-card > .grid > div:last-child > div:first-child span { color:#64748b; font-size:13px; }
+    .gp-review-summary-card > .grid > div:last-child > div:last-child { display:flex; flex-direction:column; gap:16px; }
+    .gp-review-summary-card > .grid > div:last-child > div:last-child > div { display:grid; grid-template-columns:64px minmax(0,1fr) 42px; align-items:center; gap:12px; }
+    .gp-review-summary-card > .grid > div:last-child > div:last-child > div > span:first-child { color:#526176; font-size:13px; font-weight:700; }
+    .gp-review-summary-card .gp-meter-fill { display:block; min-width:0; height:100%; border-radius:999px; background:linear-gradient(90deg,#f59e0b,#fcd34d); }
+    .gp-review-summary-card [role="progressbar"] { height:10px; overflow:hidden; border-radius:999px; background:#edf1f6; }
+    .gp-review-summary-card > .grid > div:last-child > div:last-child > div > span:last-child { color:#64748b; font-size:12px; font-weight:700; text-align:right; }
+    #growpecReviewsSection .container > .mb-5 { display:flex; align-items:flex-end; justify-content:space-between; gap:16px; margin-bottom:22px; }
+    #growpecReviewsSection .container > .mb-5 h3 { font-size:clamp(1.35rem,3vw,1.8rem); letter-spacing:-.025em; }
+    #growpecReviewsSection .container > .mb-5 p { margin-top:5px; font-size:14px; }
+    #growpecReviewsSection .container > .mb-5 > span { padding:7px 12px; border-radius:999px; background:#e9eff6; color:#46566b; font-size:12px; font-weight:750; }
+    #growpecReviewsSection .container > .grid.grid-cols-1 { display:grid; grid-template-columns:minmax(0,1fr); gap:20px; }
+    #growpecReviewsSection article { display:flex; min-width:0; height:100%; flex-direction:column; padding:24px; border:1px solid #dce5ef; border-radius:20px; background:#fff; box-shadow:0 5px 18px rgba(15,23,42,.045); transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease; }
+    #growpecReviewsSection article:hover { transform:translateY(-3px); border-color:#a9c9ee; box-shadow:0 15px 32px rgba(15,23,42,.09); }
+    #growpecReviewsSection article > div:first-child { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:17px; }
+    #growpecReviewsSection article > div:first-child > div { display:flex; align-items:center; flex-wrap:wrap; gap:8px; }
+    #growpecReviewsSection article .bi-star-fill { color:#f59e0b; }
+    #growpecReviewsSection article .bi-star { color:#dbe3ed; }
+    #growpecReviewsSection article > div:first-child > div > span { padding:4px 7px; border-radius:5px; background:#fff7e6; color:#92400e; font-size:12px; font-weight:800; }
+    #growpecReviewsSection article > div:first-child > span { padding:5px 9px; border:1px solid #f3d48a; border-radius:999px; background:#fff8e6; color:#8a4b08; font-size:11px; font-weight:750; }
+    #growpecReviewsSection article h4 { margin:0 0 10px; color:#152238; font-size:17px; font-weight:800; line-height:1.45; }
+    #growpecReviewsSection article > div.relative { position:relative; flex:1; margin-bottom:22px; padding-left:15px; }
+    #growpecReviewsSection article > div.relative > span { position:absolute; top:2px; bottom:2px; left:0; width:3px; border-radius:5px; background:linear-gradient(#174b86,#059669); }
+    #growpecReviewsSection article > div.relative p { color:#58677b; font-size:14px; line-height:1.8; }
+    #growpecReviewsSection article footer { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:auto; padding-top:17px; border-top:1px solid #edf1f5; }
+    #growpecReviewsSection article footer > div:first-child { display:flex; min-width:0; align-items:center; gap:11px; }
+    #growpecReviewsSection article footer > div:first-child > div:first-child { display:grid; width:42px; height:42px; flex-shrink:0; place-items:center; border-radius:50%; background:linear-gradient(135deg,#082f63,#1d5da0); color:#fff; font-size:14px; font-weight:800; }
+    #growpecReviewsSection article footer > div:first-child > div:last-child { min-width:0; }
+    #growpecReviewsSection article footer > div:first-child > div:last-child > div:first-child { overflow:hidden; color:#1e293b; font-size:13px; font-weight:800; text-overflow:ellipsis; white-space:nowrap; }
+    #growpecReviewsSection article footer > div:first-child > div:last-child > div:last-child { margin-top:4px; color:#08744d; font-size:11px; font-weight:750; }
+    #growpecReviewsSection article footer time { flex-shrink:0; color:#8a97a8; font-size:11px; text-align:right; }
+    #growpecReviewsSection .container > .rounded-3xl.border-dashed { padding:48px 24px; border:1px dashed #cbd5e1; border-radius:22px; background:#fff; text-align:center; box-shadow:0 8px 28px rgba(15,23,42,.04); }
+    #growpecReviewsSection .container > .rounded-3xl.border-dashed > span { display:grid; width:62px; height:62px; margin:0 auto; place-items:center; border-radius:18px; background:#fff7e6; color:#b77909; font-size:26px; }
+    #growpecReviewsSection .container > .rounded-3xl.border-dashed h3 { margin-top:18px; font-size:clamp(1.4rem,3vw,1.8rem); }
+    #growpecReviewsSection .container > .rounded-3xl.border-dashed p { max-width:600px; margin:9px auto 0; font-size:15px; }
+    #growpecReviewsSection .container > .rounded-3xl.border-dashed button { margin-top:22px; }
+    #websiteReviewModal .modal-dialog { width:calc(100% - 16px); max-width:640px; margin:8px auto; display:flex; align-items:center; min-height:calc(100% - 16px); }
+    #websiteReviewModal .modal-content { display:flex; width:100%; max-height:calc(100dvh - 16px); flex-direction:column; overflow:hidden; border:0; border-radius:22px; background:#fff; box-shadow:0 24px 70px rgba(0,22,63,.3); }
+    #websiteReviewModal .modal-header { display:flex; flex:0 0 auto; align-items:flex-start; justify-content:space-between; gap:16px; padding:22px 26px; border:0; background:linear-gradient(110deg,#020617,#082f63 70%,#104783); }
+    #websiteReviewModal .modal-title { margin:0 0 7px; color:#fff !important; font-size:21px; font-weight:800; line-height:1.4; }
+    #websiteReviewModal .modal-header p { margin:0; color:#dbeafe; font-size:14px; line-height:1.65; }
+    #websiteReviewModal #websiteReviewForm { display:flex; min-height:0; flex-direction:column; gap:18px; overflow-y:auto; overscroll-behavior:contain; padding:24px 26px; }
+    #websiteReviewModal #websiteReviewForm > div { min-width:0; }
+    #websiteReviewModal #websiteReviewForm label { display:block; margin-bottom:7px; color:#263548; font-size:14px; font-weight:750; line-height:1.5; }
+    #websiteReviewModal .gp-form-input { display:block; width:100%; min-height:48px; padding:12px 14px; border:1px solid #cbd5e1; border-radius:12px; background:#fff; color:#172033; font-family:inherit; font-size:16px; line-height:1.5; box-shadow:inset 0 1px 2px rgba(15,23,42,.025); }
+    #websiteReviewModal .gp-form-input::placeholder { color:#8a95a5; opacity:1; }
+    #websiteReviewModal .gp-form-input:focus { border-color:#2563eb; outline:0; box-shadow:0 0 0 4px rgba(37,99,235,.12); }
+    #websiteReviewModal textarea.gp-form-input { min-height:130px; resize:vertical; }
+    #websiteReviewModal .gp-star-picker { display:inline-flex; max-width:100%; align-items:center; justify-content:center; gap:clamp(5px,2vw,12px); padding:12px 20px; border:1px solid #dbe4ef; border-radius:999px; background:#f8fafc; }
+    #websiteReviewModal .gp-star-item { padding:0 2px; color:#cbd5e1; font-size:clamp(1.6rem,5vw,2.2rem); line-height:1; cursor:pointer; }
+    #websiteReviewModal .gp-star-item.active { color:#f59e0b; }
+    #websiteReviewModal #starRatingText { margin-top:10px; color:#9a6700; font-size:14px; font-weight:800; }
+    #websiteReviewModal #reviewCharCounter { color:#64748b; font-size:12px; }
+    #websiteReviewModal #websiteReviewForm button[type="submit"] { display:flex; width:100%; min-height:50px; align-items:center; justify-content:center; gap:9px; padding:14px 18px; border:0; border-radius:12px; background:linear-gradient(110deg,#082f63,#075e54) !important; color:#fff !important; font-size:15px; font-weight:800; line-height:1.45; text-align:center; white-space:normal; }
+    #websiteReviewModal .btn-close { flex-shrink:0; opacity:.95; }
+    @media (min-width:768px) {
+        .gp-review-summary-card > .grid { grid-template-columns:minmax(240px,.82fr) minmax(0,1.5fr); }
+        .gp-review-summary-card > .grid > div:first-child { border-right:1px solid #e7edf4; border-bottom:0; }
+        #growpecReviewsSection .container > .grid.grid-cols-1 { grid-template-columns:repeat(2,minmax(0,1fr)); }
+        #websiteReviewModal #websiteReviewForm > .grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+    }
+    @media (min-width:1100px) {
+        #growpecReviewsSection .container > .grid.grid-cols-1 { grid-template-columns:repeat(3,minmax(0,1fr)); gap:24px; }
+    }
+    @media (max-width:767px) {
+        #growpecReviewsSection { padding:42px 0; }
+        #growpecReviewsSection > .container { padding-right:18px; padding-left:18px; }
+        #growpecReviewsSection .container > .mb-8 { align-items:stretch; flex-direction:column; gap:20px; margin-bottom:26px; }
+        #growpecReviewsSection .container > .mb-8 > div:last-child { width:100%; }
+        #growpecReviewsSection .container > .mb-8 > div:last-child button { width:100%; }
+        .gp-review-summary-card { margin-bottom:34px; border-radius:20px; }
+        .gp-review-summary-card > .grid > div:first-child { padding:28px 18px; }
+        .gp-review-summary-card > .grid > div:last-child { padding:24px 18px 28px; }
+        .gp-review-summary-card > .grid > div:last-child > div:last-child > div { grid-template-columns:58px minmax(0,1fr) 36px; gap:9px; }
+        #growpecReviewsSection .container > .mb-5 { align-items:flex-start; }
+        #growpecReviewsSection article { padding:20px; }
+        #websiteReviewModal .modal-header { padding:18px 19px; }
+        #websiteReviewModal #websiteReviewForm { gap:16px; padding:19px; }
+    }
+    @media (max-width:380px) {
+        #growpecReviewsSection > .container { padding-right:12px; padding-left:12px; }
+        .gp-review-summary-card > .grid > div:last-child { padding-right:14px; padding-left:14px; }
+        #websiteReviewModal .modal-header { padding:16px; }
+        #websiteReviewModal #websiteReviewForm { padding:16px; }
+        #websiteReviewModal .gp-star-picker { gap:4px; padding:10px 12px; }
+    }
+
+
+
+    /* FINAL OVERRIDES: compact review cards + animated gradient border.
+       Kept at the end of this style block so legacy review rules cannot undo it. */
+    .growpec-reviews-section .gp-review-summary-card {
+        margin-bottom: 24px !important;
+        border-radius: 18px !important;
+    }
+    .growpec-reviews-section .gp-review-summary-card > .grid > div:first-child {
+        padding: 22px 18px !important;
+    }
+    .growpec-reviews-section .gp-review-summary-card > .grid > div:last-child {
+        padding: 20px 22px !important;
+    }
+    .growpec-reviews-section .gp-review-summary-card > .grid > div:last-child > div:first-child {
+        margin-bottom: 16px !important;
+    }
+    .growpec-reviews-section .gp-review-summary-card > .grid > div:last-child > div:last-child {
+        gap: 10px !important;
+    }
+    .growpec-reviews-section .gp-review-summary-card > .grid > div:last-child > div:last-child > div {
+        gap: 9px !important;
+    }
+    .growpec-reviews-section .mb-5.flex.items-end.justify-between {
+        margin-bottom: 16px !important;
+    }
+    .growpec-reviews-section article {
+        position: relative !important;
+        isolation: isolate;
+        min-width: 0;
+        padding: 15px 15px 13px !important;
+        border: 1px solid transparent !important;
+        border-radius: 15px !important;
+        background:
+            linear-gradient(#fff, #fff) padding-box,
+            linear-gradient(115deg, #16a36a 0%, #f4c542 27%, #56b9ff 56%, #1d4ed8 78%, #16a36a 100%) border-box !important;
+        background-size: 100% 100%, 250% 250% !important;
+        animation: gpReviewGradientBorder 7s linear infinite;
+        box-shadow: 0 5px 16px rgba(15, 23, 42, .045) !important;
+        transition: transform .22s ease, box-shadow .22s ease !important;
+    }
+    .growpec-reviews-section article:hover {
+        box-shadow: 0 10px 24px rgba(15, 23, 42, .09) !important;
+    }
+    .growpec-reviews-section article > div:first-child {
+        margin-bottom: 10px !important;
+    }
+    .growpec-reviews-section article h4 {
+        margin-bottom: 6px !important;
+        font-size: 15px !important;
+        line-height: 1.35 !important;
+    }
+    .growpec-reviews-section article > div.relative {
+        flex: 0 0 auto !important;
+        margin-bottom: 8px !important;
+        padding-left: 11px !important;
+    }
+    /* Keep reviewer avatar, name and timestamp directly under the review text. */
+    .growpec-reviews-section article footer {
+        margin-top: 0 !important;
+        align-items: center !important;
+    }
+    .growpec-reviews-section article > div.relative p {
+        font-size: 12.5px !important;
+        line-height: 1.65 !important;
+        color: #657184 !important;
+    }
+    .growpec-reviews-section article footer {
+        gap: 8px !important;
+        padding-top: 11px !important;
+    }
+    .growpec-reviews-section article footer > div:first-child { gap: 9px !important; }
+    .growpec-reviews-section article footer .h-11.w-11 {
+        width: 34px !important;
+        height: 34px !important;
+        font-size: 11px !important;
+    }
+    .growpec-reviews-section article footer time { font-size: 10px !important; }
+    @keyframes gpReviewGradientBorder {
+        0% { background-position: 0 0, 0% 50%; }
+        50% { background-position: 0 0, 100% 50%; }
+        100% { background-position: 0 0, 0% 50%; }
+    }
+    @media (min-width: 768px) {
+        .growpec-reviews-section .grid.grid-cols-1.md\\:grid-cols-2.xl\\:grid-cols-3 {
+            grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+            gap: 14px !important;
+        }
+    }
+    @media (max-width: 767.98px) {
+        .growpec-reviews-section { padding: 34px 0 !important; }
+        .growpec-reviews-section .container { padding-left: 18px !important; padding-right: 18px !important; }
+        .growpec-reviews-section article { padding: 14px !important; }
+        .growpec-reviews-section .gp-review-summary-card > .grid > div:first-child { padding: 22px 16px !important; }
+        .growpec-reviews-section .gp-review-summary-card > .grid > div:last-child { padding: 18px 16px 20px !important; }
+        .growpec-reviews-section article > div.relative p { font-size: 13px !important; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .growpec-reviews-section article { animation: none !important; }
+    }
+
+    /* Compact testimonial cards inspired by the supplied reference. */
+    .growpec-reviews-section .grid.grid-cols-1.items-stretch.gap-5.md\:grid-cols-2.xl\:grid-cols-3 {
+        display: grid !important;
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        align-items: stretch !important;
+        gap: 12px !important;
+    }
+    .growpec-reviews-section article.gp-testimonial-card {
+        display: flex !important;
+        flex-direction: column !important;
+        align-self: stretch;
+        min-height: 0 !important;
+        padding: 13px 13px 11px !important;
+        border: 1px solid transparent !important;
+        border-radius: 12px !important;
+        background: linear-gradient(#fff,#fff) padding-box, linear-gradient(115deg,#38bdf8,#60a5fa,#a7f3d0,#38bdf8) border-box !important;
+        background-size: 100% 100%, 220% 220% !important;
+        animation: gpReviewGradientBorder 8s linear infinite;
+        box-shadow: 0 2px 7px rgba(15,23,42,.035) !important;
+        transform: none !important;
+    }
+    .gp-testimonial-author { display:flex; align-items:center; gap:8px; min-width:0; }
+    .gp-testimonial-avatar { width:27px; height:27px; flex:0 0 27px; display:grid; place-items:center; border-radius:50%; color:#fff; font-size:10px; font-weight:800; background:linear-gradient(135deg,#0f766e,#1d4ed8); box-shadow:0 0 0 2px #e8f5f1; }
+    .gp-testimonial-author-copy { min-width:0; flex:1; }
+    .gp-testimonial-name { overflow:hidden; color:#111827; font-size:11px; font-weight:800; line-height:1.25; text-overflow:ellipsis; white-space:nowrap; }
+    .gp-testimonial-role { margin-top:2px; color:#8a94a4; font-size:9px; line-height:1.2; }
+    .gp-testimonial-featured { color:#d97706; font-size:11px; }
+    .gp-testimonial-rating { display:flex; align-items:center; gap:4px; margin-top:8px; }
+    .gp-testimonial-stars { display:inline-flex; gap:1px; color:#f59e0b; font-size:10px; white-space:nowrap; }
+    .gp-testimonial-score { color:#374151; font-size:9px; font-weight:700; white-space:nowrap; }
+    .gp-testimonial-divider { height:1px; width:100%; margin:7px 0; border-top:1px dashed #d9e0e8; }
+    .growpec-reviews-section article.gp-testimonial-card h4.gp-testimonial-title { margin:0 0 5px !important; color:#1f2937 !important; font-size:11px !important; line-height:1.35 !important; }
+    .growpec-reviews-section article.gp-testimonial-card p.gp-testimonial-text { margin:0 !important; color:#7b8492 !important; font-size:9px !important; line-height:1.55 !important; overflow-wrap:anywhere; }
+    .gp-testimonial-footer { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:5px; margin-top:8px; padding-top:6px; border-top:1px solid #f0f2f5; }
+    .gp-testimonial-verified { display:inline-flex; align-items:center; gap:3px; color:#087f5b; font-size:9px; font-weight:700; }
+    .gp-testimonial-footer time { color:#9aa3af; font-size:9px; }
+    @media (max-width: 767.98px) {
+        .growpec-reviews-section .grid.grid-cols-1.items-stretch.gap-5.md\:grid-cols-2.xl\:grid-cols-3 { grid-template-columns:repeat(2,minmax(0,1fr)) !important; gap:10px !important; }
+        .growpec-reviews-section article.gp-testimonial-card { padding:11px 10px 9px !important; }
+        .gp-testimonial-name { font-size:10px; }
+        .gp-testimonial-role,.gp-testimonial-score,.gp-testimonial-verified,.gp-testimonial-footer time { font-size:8px; }
+        .growpec-reviews-section article.gp-testimonial-card p.gp-testimonial-text { font-size:9px !important; }
+    }
+    @media (max-width: 420px) {
+        .growpec-reviews-section .grid.grid-cols-1.items-stretch.gap-5.md\:grid-cols-2.xl\:grid-cols-3 { grid-template-columns:1fr !important; }
+    }
+
+
+    /* Review header: avatar, reviewer, rating and time above the review content. */
+    .gp-testimonial-header { display:flex; flex-direction:column; gap:7px; min-width:0; }
+    .gp-testimonial-header .gp-testimonial-author { width:100%; }
+    .gp-testimonial-header-meta { display:flex; align-items:center; flex-wrap:wrap; gap:5px; min-width:0; }
+    .gp-testimonial-header-meta time { margin-left:auto; color:#9aa3af; font-size:9px; white-space:nowrap; }
+    .gp-testimonial-role { display:flex; align-items:center; gap:3px; }
+    .gp-testimonial-role .bi-patch-check-fill { color:#07845b; }
+    .gp-testimonial-rating { display:none !important; }
+    .gp-testimonial-footer { display:none !important; }
+    .gp-testimonial-divider { margin:8px 0 7px; }
+    @media (max-width: 767.98px) {
+        .gp-testimonial-header-meta time { font-size:8px; }
+    }
+
+
+
+    /* Review carousel: readable type, horizontal swipe and gentle auto-scroll. */
+    .growpec-reviews-section .gp-testimonial-track {
+        display: flex !important;
+        align-items: stretch !important;
+        gap: 18px !important;
+        width: 100%;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        padding: 5px 3px 18px !important;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+        scrollbar-color: #8bcbb7 #eaf1f4;
+        overscroll-behavior-x: contain;
+    }
+    .growpec-reviews-section .gp-testimonial-track::-webkit-scrollbar { height: 7px; }
+    .growpec-reviews-section .gp-testimonial-track::-webkit-scrollbar-track { background: #eaf1f4; border-radius: 99px; }
+    .growpec-reviews-section .gp-testimonial-track::-webkit-scrollbar-thumb { background: linear-gradient(90deg,#10a66a,#f2bd35,#60a5fa); border-radius: 99px; }
+    .growpec-reviews-section article.gp-testimonial-card {
+        flex: 0 0 calc((100% - 36px) / 3) !important;
+        width: calc((100% - 36px) / 3) !important;
+        min-width: 280px !important;
+        scroll-snap-align: start;
+        padding: 19px 18px 16px !important;
+    }
+    .gp-testimonial-avatar { width: 38px !important; height: 38px !important; flex-basis: 38px !important; font-size: 14px !important; }
+    .gp-testimonial-name { font-size: 15px !important; line-height: 1.3 !important; }
+    .gp-testimonial-role { font-size: 12px !important; }
+    .gp-testimonial-header-meta { gap: 7px !important; }
+    .gp-testimonial-header-meta time { font-size: 12px !important; }
+    .gp-testimonial-stars { font-size: 14px !important; gap: 2px !important; }
+    .gp-testimonial-score { font-size: 12px !important; }
+    .growpec-reviews-section article.gp-testimonial-card h4.gp-testimonial-title { font-size: 17px !important; line-height: 1.4 !important; margin-bottom: 8px !important; }
+    .growpec-reviews-section article.gp-testimonial-card p.gp-testimonial-text { font-size: 14px !important; line-height: 1.65 !important; }
+    @media (max-width: 767.98px) {
+        .growpec-reviews-section .gp-testimonial-track { gap: 14px !important; margin-right: -2px; padding-bottom: 16px !important; }
+        .growpec-reviews-section article.gp-testimonial-card { flex-basis: 84% !important; width: 84% !important; min-width: 255px !important; padding: 17px 16px 15px !important; }
+        .gp-testimonial-name { font-size: 15px !important; }
+        .gp-testimonial-role { font-size: 12px !important; }
+        .gp-testimonial-header-meta time { font-size: 11px !important; }
+        .growpec-reviews-section article.gp-testimonial-card h4.gp-testimonial-title { font-size: 17px !important; }
+        .growpec-reviews-section article.gp-testimonial-card p.gp-testimonial-text { font-size: 14px !important; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .growpec-reviews-section .gp-testimonial-track { scroll-behavior: auto; }
+        .growpec-reviews-section article.gp-testimonial-card { animation: none !important; }
+    }
+
+    /* Carousel controls and expandable review copy */
+    .growpec-reviews-section .gp-testimonial-controls { display:flex; align-items:center; gap:9px; flex-shrink:0; }
+    .growpec-reviews-section .gp-testimonial-controls .gp-testimonial-arrow { display:grid; place-items:center; width:42px; height:42px; padding:0; border:1px solid #d8e5ef !important; border-radius:50%; background:#fff !important; color:#0b3158 !important; box-shadow:0 5px 14px rgba(15,45,75,.08); transition:transform .2s ease, background .2s ease, color .2s ease; }
+    .growpec-reviews-section .gp-testimonial-controls .gp-testimonial-arrow:hover { transform:translateY(-2px); background:#073b66 !important; color:#fff !important; }
+    .growpec-reviews-section .gp-testimonial-controls .gp-testimonial-arrow i { font-size:17px; }
+    .growpec-reviews-section .gp-testimonial-review-copy { margin-top:0; }
+    .growpec-reviews-section .gp-review-full[hidden] { display:none !important; }
+    #growpecReviewsSection .gp-review-read-toggle { display:inline !important; min-height:0 !important; margin:0 0 0 5px !important; padding:0 !important; border:0 !important; border-radius:0 !important; background:transparent !important; color:#087f68 !important; font:inherit !important; font-weight:800 !important; line-height:inherit !important; text-align:left !important; text-decoration:none; white-space:nowrap; box-shadow:none !important; vertical-align:baseline; cursor:pointer; }
+    #growpecReviewsSection .gp-review-read-toggle:hover { transform:none !important; background:transparent !important; color:#064e3b !important; text-decoration:underline; box-shadow:none !important; }
+    .growpec-reviews-section .gp-review-read-toggle:hover { background:transparent !important; color:#064e3b !important; text-decoration:underline; }
+    .growpec-reviews-section .gp-review-read-toggle i { transition:transform .2s ease; }
+    .growpec-reviews-section .gp-review-read-toggle[aria-expanded="true"] i { transform:rotate(180deg); }
+    @media (max-width:767.98px) {
+        .growpec-reviews-section .gp-testimonial-controls .gp-testimonial-arrow { width:36px; height:36px; }
+        .growpec-reviews-section .mb-5.flex.items-end.justify-between { align-items:center !important; }
+    }
+
+    /* Final review controls: paired arrow pill and inline read-more links */
+    .growpec-reviews-section .gp-testimonial-controls { gap:0 !important; overflow:hidden; border:1px solid #d4dee8; border-radius:999px; background:#e9eef4; }
+    .growpec-reviews-section .gp-testimonial-controls .gp-testimonial-arrow { width:46px !important; height:38px !important; border:0 !important; border-radius:0 !important; background:transparent !important; color:#102b45 !important; box-shadow:none !important; }
+    .growpec-reviews-section .gp-testimonial-controls .gp-testimonial-arrow + .gp-testimonial-arrow { border-left:1px solid #d4dee8 !important; }
+    .growpec-reviews-section .gp-testimonial-controls .gp-testimonial-arrow:hover { transform:none; background:#dbe5ef !important; color:#006b58 !important; }
+    .growpec-reviews-section .gp-testimonial-controls .gp-testimonial-arrow i { font-size:20px !important; }
+    .growpec-reviews-section .gp-testimonial-review-copy p.gp-testimonial-text { position:relative; }
+    .growpec-reviews-section .gp-review-full[hidden] { display:none !important; }
+    #growpecReviewsSection .gp-review-read-toggle { display:inline !important; min-height:0 !important; margin:0 0 0 5px !important; padding:0 !important; border:0 !important; border-radius:0 !important; background:transparent !important; color:#087f68 !important; font:inherit !important; font-weight:800 !important; line-height:inherit !important; white-space:nowrap; vertical-align:baseline; box-shadow:none !important; }
+    #growpecReviewsSection .gp-review-read-toggle:hover { transform:none !important; background:transparent !important; text-decoration:underline; box-shadow:none !important; }
+    .growpec-reviews-section .gp-review-read-toggle:hover { background:transparent !important; text-decoration:underline; }
+    .growpec-reviews-section .gp-review-read-toggle i { display:none !important; }
+
+
+    /* Final fixes: reliable Read more toggle and consistent testimonial sizing. */
+    .growpec-reviews-section .gp-testimonial-track { align-items: stretch !important; }
+    .growpec-reviews-section article.gp-testimonial-card { height:auto !important; min-height:0 !important; align-self:flex-start !important; }
+    .growpec-reviews-section .gp-testimonial-review-copy { flex:1 1 auto !important; min-height:0; }
+    .growpec-reviews-section .gp-testimonial-review-copy p.gp-testimonial-text { margin:0 !important; }
+    .growpec-reviews-section .gp-review-preview[hidden],
+    .growpec-reviews-section .gp-review-full[hidden] { display:none !important; }
+    .growpec-reviews-section .gp-review-read-toggle {
+        display:inline !important; width:auto !important; min-height:0 !important;
+        margin:0 0 0 5px !important; padding:0 !important; border:0 !important;
+        border-radius:0 !important; background:transparent !important; box-shadow:none !important;
+        color:#087f68 !important; font:inherit !important; font-weight:800 !important;
+        line-height:inherit !important; text-decoration:none !important; white-space:nowrap !important;
+        vertical-align:baseline !important; cursor:pointer !important;
+    }
+    .growpec-reviews-section .gp-review-read-toggle:hover,
+    .growpec-reviews-section .gp-review-read-toggle:focus,
+    .growpec-reviews-section .gp-review-read-toggle:active { background:transparent !important; background-color:transparent !important; box-shadow:none !important; outline-offset:2px; color:#064e3b !important; text-decoration:underline !important; }
+    @media (max-width:767.98px) {
+        .growpec-reviews-section article.gp-testimonial-card { min-height:0 !important; }
+    }
+
+    /* Review card header layout: name + rating, avatar, verified + time, divider, review text. */
+    .growpec-reviews-section .gp-testimonial-track { align-items:flex-start !important; }
+    .growpec-reviews-section article.gp-testimonial-card { height:auto !important; min-height:0 !important; align-self:flex-start !important; }
+    .growpec-reviews-section .gp-testimonial-header { display:flex !important; flex-direction:column !important; gap:8px !important; }
+    .growpec-reviews-section .gp-testimonial-header-top { display:flex !important; align-items:center !important; justify-content:space-between !important; gap:10px !important; min-width:0; width:100%; }
+    .growpec-reviews-section .gp-testimonial-header-top .gp-testimonial-name { flex:1 1 auto; min-width:0; white-space:normal; overflow-wrap:anywhere; font-size:16px !important; }
+    .growpec-reviews-section .gp-testimonial-header-rating { display:inline-flex !important; align-items:center; gap:5px; flex:0 0 auto; }
+    .growpec-reviews-section .gp-testimonial-header-rating .gp-testimonial-stars { color:#f59e0b; font-size:14px !important; white-space:nowrap; }
+    .growpec-reviews-section .gp-testimonial-header-rating .gp-testimonial-score { font-size:13px !important; }
+    .growpec-reviews-section .gp-testimonial-avatar-row { display:flex; align-items:center; width:100%; }
+    .growpec-reviews-section .gp-testimonial-avatar { width:42px !important; height:42px !important; flex:0 0 42px !important; font-size:16px !important; }
+    .growpec-reviews-section .gp-testimonial-header-bottom { display:flex !important; align-items:center !important; justify-content:space-between !important; gap:8px !important; padding-left:0 !important; min-width:0; width:100%; }
+    .growpec-reviews-section .gp-testimonial-header-bottom .gp-testimonial-role { margin:0 !important; font-size:13px !important; }
+    .growpec-reviews-section .gp-testimonial-header-bottom time { margin-left:auto; color:#8793a4; font-size:12px !important; white-space:nowrap; }
+    .growpec-reviews-section .gp-testimonial-divider { margin:10px 0 !important; }
+    .growpec-reviews-section .gp-testimonial-review-copy { flex:0 1 auto !important; }
+    .growpec-reviews-section .gp-review-read-toggle,
+    .growpec-reviews-section .gp-review-read-toggle:hover,
+    .growpec-reviews-section .gp-review-read-toggle:focus,
+    .growpec-reviews-section .gp-review-read-toggle:active { background:none !important; background-color:transparent !important; border:0 !important; box-shadow:none !important; }
+    @media (max-width:480px) {
+        .growpec-reviews-section .gp-testimonial-header-top { gap:6px !important; }
+        .growpec-reviews-section .gp-testimonial-header-top .gp-testimonial-name { font-size:14px !important; }
+        .growpec-reviews-section .gp-testimonial-header-rating .gp-testimonial-stars { font-size:11px !important; }
+        .growpec-reviews-section .gp-testimonial-header-rating .gp-testimonial-score { font-size:11px !important; }
+        .growpec-reviews-section .gp-testimonial-header-bottom .gp-testimonial-role,
+        .growpec-reviews-section .gp-testimonial-header-bottom time { font-size:10px !important; }
+    }
+
 </style>
 @endpush
 
@@ -5312,6 +5591,80 @@
 </section>
 
 {{-- =========================================================
+     Top Regular/Distance Colleges
+     ========================================================= --}}
+<section class="py-5 college-grid-section">
+    <div class="container">
+        <div class="cities-heading mb-4">
+            <span class="badge bg-primary-subtle text-primary fw-bold mb-2">
+                Campus & Distance Programs
+            </span>
+
+            <h3 class="section-title mb-2">Top Regular & Distance Colleges</h3>
+
+            <div class="cities-heading-line mt-2"></div>
+
+            <span class="top-college-scroll-hint mt-2">
+                <i class="bi bi-arrow-left-right"></i> Swipe to explore
+            </span>
+        </div>
+
+        {{-- Show only 10 colleges on homepage; horizontal scroll on all devices --}}
+        <div class="top-colleges-scroll">
+            @forelse($roColleges as $college)
+            <div class="top-college-item">
+                <a href="{{ route('college.show', $college->slug) }}" class="college-card">
+                    <div class="college-image-wrapper">
+                        <img src="{{ $college->banner_url }}" class="college-card-img" alt="{{ $college->name }}" loading="lazy">
+                        @if($college->college_type)
+                        <span class="college-type-pill">{{ $college->college_type }}</span>
+                        @endif
+                        <div class="college-logo-wrapper">
+                            <img src="{{ $college->logo_url ?? $college->banner_url }}" class="college-logo" alt="{{ $college->name }} logo" loading="lazy">
+                        </div>
+                    </div>
+
+                    <div class="college-card-body">
+                        <h5 class="college-name">{{ $college->name }}</h5>
+                        <div class="college-info">
+                            <div class="college-info-row">
+                                <span class="college-info-icon"><i class="bi bi-bank2"></i></span>
+                                <span class="college-info-text">{{ $college->college_type }} {{ $college->institution_category ?? 'University' }}</span>
+                            </div>
+                            <div class="college-info-row">
+                                <span class="college-info-icon"><i class="bi bi-geo-alt-fill text-danger"></i></span>
+                                <span class="college-info-text">{{ $college->state }}, {{ $college->city }}</span>
+                            </div>
+                            <div class="college-info-row">
+                                <span class="college-info-icon"><i class="bi bi-gear-fill"></i></span>
+                                <span class="college-info-text">
+                                    @if($college->established_year)
+                                    Estd year {{ $college->established_year }}
+                                    @else
+                                    Established info unavailable
+                                    @endif
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            @empty
+            <div class="col-12 text-center py-5">
+                <p class="text-muted mb-0">Colleges are being updated. Check back soon!</p>
+            </div>
+            @endforelse
+        </div>
+
+        <div class="college-view-all-wrap">
+            <a href="{{ route('colleges.onlineregular') }}" class="btn btn-outline-primary btn-sm section-link">
+                View All <i class="bi bi-chevron-right"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+{{-- =========================================================
       CEO & Other team Message
      ========================================================= --}}
 @if(isset($leadershipMessages) && $leadershipMessages->isNotEmpty())
@@ -5631,170 +5984,177 @@
 {{-- =========================================================
      10. GROWPEC PLATFORM REVIEWS & RATINGS — PREMIUM REDESIGN
      ========================================================= --}}
-<section class="py-5 growpec-reviews-section" id="growpecReviewsSection">
-    <div class="container py-lg-3">
-        {{-- Session Flash Message --}}
+<section class="growpec-reviews-section relative isolate overflow-hidden bg-gradient-to-b from-white via-slate-50 to-white py-14 sm:py-16 lg:py-20" id="growpecReviewsSection" aria-labelledby="growpecReviewsTitle">
+    <div aria-hidden="true" class="pointer-events-none absolute -left-28 top-10 h-72 w-72 rounded-full bg-amber-100/40 blur-3xl"></div>
+    <div aria-hidden="true" class="pointer-events-none absolute -right-24 bottom-0 h-80 w-80 rounded-full bg-blue-100/50 blur-3xl"></div>
+
+    <div class="container relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        {{-- Session flash message --}}
         @if(session('website_review_success'))
-        <div class="alert alert-success alert-dismissible fade show mb-4 shadow-sm border-0 rounded-4 p-3 d-flex align-items-center justify-content-between" style="background: #ECFDF5; border: 1px solid #A7F3D0 !important; color: #065F46;" role="alert">
-            <div class="d-flex align-items-center">
-                <div class="rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 38px; height: 38px; background: #D1FAE5; color: #059669;">
-                    <i class="bi bi-check-lg fs-5"></i>
-                </div>
-                <div>
-                    <strong class="d-block text-dark fw-bold">Review Submitted Successfully!</strong>
-                    <span class="small">{{ session('website_review_success') }}</span>
-                </div>
+        <div class="alert mb-7 flex items-start gap-3 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-4 text-emerald-900 shadow-sm sm:items-center sm:px-5" role="status" aria-live="polite">
+            <span class="mt-0.5 grid h-10 w-10 shrink-0 place-items-center rounded-full bg-emerald-100 text-xl text-emerald-700 sm:mt-0">
+                <i class="bi bi-check-lg" aria-hidden="true"></i>
+            </span>
+            <div class="min-w-0 flex-1">
+                <strong class="block font-bold">Review submitted successfully</strong>
+                <span class="mt-0.5 block text-sm text-emerald-800">{{ session('website_review_success') }}</span>
             </div>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <button type="button" class="grid h-8 w-8 shrink-0 place-items-center rounded-full text-emerald-800 transition hover:bg-emerald-100" data-bs-dismiss="alert" aria-label="Dismiss message">
+                <i class="bi bi-x-lg" aria-hidden="true"></i>
+            </button>
         </div>
         @endif
 
-        {{-- Section Header --}}
-        <div class="row align-items-end mb-4 g-3">
-            <div class="col-lg-8">
-                <span class="gp-review-badge mb-2">
-                    <i class="bi bi-patch-check-fill text-warning"></i> Authentic Student & Parent Voices
+        {{-- Header --}}
+        <div class="mb-8 flex flex-col gap-5 sm:mb-10 lg:flex-row lg:items-end lg:justify-between">
+            <div class="max-w-3xl">
+                <span class="mb-4 inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-3.5 py-2 text-xs font-bold uppercase tracking-[0.12em] text-amber-800 sm:text-sm">
+                    <i class="bi bi-patch-check-fill text-amber-500" aria-hidden="true"></i>
+                    Authentic student &amp; parent voices
                 </span>
-                <h2 class="section-title mb-2 mt-1" style="font-size: clamp(1.75rem, 3vw, 2.35rem); font-weight: 850; color: var(--gp-review-navy-800); letter-spacing: -0.02em;">
-                    Real Guidance. Genuine Stories.
+                <h2 id="growpecReviewsTitle" class="text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl lg:text-[2.7rem]">
+                    Real guidance. <span class="text-blue-800">Genuine stories.</span>
                 </h2>
-                <p class="text-secondary mb-0" style="font-size: 1.05rem; max-width: 650px;">
-                    Thousands of learners rely on GrowPec counselors for transparent college comparisons and admission support.
+                <p class="mt-3 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
+                    Read experiences shared by learners and parents about college discovery, comparisons, and admission guidance.
                 </p>
             </div>
-            <div class="col-lg-4 text-lg-end">
-                <button type="button" class="btn px-4 py-2 fw-bold rounded-pill shadow-sm text-white" data-bs-toggle="modal" data-bs-target="#websiteReviewModal" style="background: linear-gradient(135deg, var(--gp-review-navy-800) 0%, #1e40af 100%); font-size: 0.95rem;">
-                    <i class="bi bi-pencil-square me-1"></i> Write a Review
+            <div class="shrink-0">
+                <button type="button" data-bs-toggle="modal" data-bs-target="#websiteReviewModal" class="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-blue-950 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-blue-950/15 transition duration-200 hover:-translate-y-0.5 hover:bg-blue-900 focus:outline-none focus:ring-4 focus:ring-blue-200 sm:w-auto sm:px-6">
+                    <i class="bi bi-pencil-square text-base" aria-hidden="true"></i>
+                    Write a review
                 </button>
             </div>
         </div>
 
-        {{-- Overall Rating Summary Card --}}
-        <div class="card gp-review-summary-card mb-5">
-            <div class="card-body p-4 p-md-5">
-                <div class="row g-4 align-items-center">
-                    {{-- Big Rating Score --}}
-                    <div class="col-md-4 text-center border-md-end pe-md-4">
-                        <div class="gp-score-numeral mb-1">
-                            {{ number_format($websiteReviewsStats['average'] ?? 5.0, 1) }}
-                        </div>
-                        <div class="gp-stars-hero mb-2">
-                            @php
-                                $avg = (float) ($websiteReviewsStats['average'] ?? 5.0);
-                                $fullStars = floor($avg);
-                                $hasHalf = ($avg - $fullStars) >= 0.3 && ($avg - $fullStars) <= 0.7;
-                            @endphp
-                            @for($i = 1; $i <= 5; $i++)
-                                @if($i <= $fullStars)
-                                    <i class="bi bi-star-fill"></i>
-                                @elseif($hasHalf && $i == $fullStars + 1)
-                                    <i class="bi bi-star-half"></i>
-                                @else
-                                    <i class="bi bi-star text-muted opacity-50"></i>
-                                @endif
-                            @endfor
-                        </div>
-                        <div class="text-muted fw-semibold small mb-3">
-                            Based on <strong class="text-dark">{{ $websiteReviewsStats['count'] ?? 0 }}</strong> verified student ratings
-                        </div>
-                        <div>
-                            <span class="gp-verified-pill">
-                                <i class="bi bi-shield-fill-check"></i> 100% Genuine & Moderated
-                            </span>
-                        </div>
+        {{-- Rating overview --}}
+        <div class="gp-review-summary-card mb-9 overflow-hidden rounded-3xl border border-slate-200/90 bg-white shadow-[0_12px_40px_rgba(15,23,42,0.06)] sm:mb-12">
+            <div class="grid lg:grid-cols-[0.85fr_1.5fr]">
+                <div class="flex flex-col items-center justify-center border-b border-slate-100 bg-slate-50/70 px-5 py-8 text-center sm:px-8 lg:border-b-0 lg:border-r lg:py-10">
+                    <span class="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Overall rating</span>
+                    <div class="mt-3 text-6xl font-black leading-none tracking-[-0.06em] text-slate-950 sm:text-7xl">
+                        {{ number_format($websiteReviewsStats['average'] ?? 5.0, 1) }}
                     </div>
+                    <div class="mt-4 flex items-center gap-1 text-xl text-amber-500" aria-label="Overall rating stars">
+                        @php
+                            $avg = (float) ($websiteReviewsStats['average'] ?? 5.0);
+                            $fullStars = floor($avg);
+                            $hasHalf = ($avg - $fullStars) >= 0.3 && ($avg - $fullStars) <= 0.7;
+                        @endphp
+                        @for($i = 1; $i <= 5; $i++)
+                            @if($i <= $fullStars)
+                                <i class="bi bi-star-fill" aria-hidden="true"></i>
+                            @elseif($hasHalf && $i == $fullStars + 1)
+                                <i class="bi bi-star-half" aria-hidden="true"></i>
+                            @else
+                                <i class="bi bi-star text-slate-300" aria-hidden="true"></i>
+                            @endif
+                        @endfor
+                    </div>
+                    <p class="mt-3 text-sm text-slate-600">
+                        Based on <strong class="font-extrabold text-slate-950">{{ $websiteReviewsStats['count'] ?? 0 }}</strong> verified student ratings
+                    </p>
+                    <span class="mt-4 inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-xs font-bold text-emerald-800">
+                        <i class="bi bi-shield-check text-emerald-600" aria-hidden="true"></i>
+                        Moderated reviews
+                    </span>
+                </div>
 
-                    {{-- Rating Breakdown Bars --}}
-                    <div class="col-md-8 ps-md-4">
-                        <div class="d-flex flex-column">
-                            @for($star = 5; $star >= 1; $star--)
-                                @php
-                                    $dist = $websiteReviewsStats['distribution'][$star] ?? ['count' => 0, 'percentage' => 0];
-                                @endphp
-                                <div class="gp-meter-row">
-                                    <span class="gp-meter-label">{{ $star }} Stars</span>
-                                    <div class="gp-meter-track" role="progressbar" aria-valuenow="{{ $dist['percentage'] }}" aria-valuemin="0" aria-valuemax="100">
-                                        <div class="gp-meter-fill" style="width: {{ $dist['percentage'] }}%;"></div>
-                                    </div>
-                                    <span class="gp-meter-val">{{ $dist['percentage'] }}%</span>
+                <div class="px-5 py-7 sm:px-8 sm:py-9 lg:px-10">
+                    <div class="mb-5 flex items-center justify-between gap-3">
+                        <h3 class="text-base font-extrabold text-slate-900 sm:text-lg">Rating breakdown</h3>
+                        <span class="text-xs font-medium text-slate-500">By star level</span>
+                    </div>
+                    <div class="flex flex-col gap-4">
+                        @for($star = 5; $star >= 1; $star--)
+                            @php
+                                $dist = $websiteReviewsStats['distribution'][$star] ?? ['count' => 0, 'percentage' => 0];
+                            @endphp
+                            <div class="grid grid-cols-[4.25rem_minmax(0,1fr)_2.75rem] items-center gap-3 sm:grid-cols-[5rem_minmax(0,1fr)_3rem]">
+                                <span class="text-xs font-bold text-slate-600 sm:text-sm">{{ $star }} star{{ $star === 1 ? '' : 's' }}</span>
+                                <div class="h-2.5 overflow-hidden rounded-full bg-slate-100" role="progressbar" aria-label="{{ $star }} star reviews" aria-valuenow="{{ $dist['percentage'] }}" aria-valuemin="0" aria-valuemax="100">
+                                    <div class="gp-meter-fill h-full rounded-full bg-gradient-to-r from-amber-400 to-yellow-300 transition-[width] duration-700 ease-out" style="width: {{ $dist['percentage'] }}%;"></div>
                                 </div>
-                            @endfor
-                        </div>
+                                <span class="text-right text-xs font-semibold tabular-nums text-slate-500">{{ $dist['percentage'] }}%</span>
+                            </div>
+                        @endfor
                     </div>
                 </div>
             </div>
         </div>
 
-        {{-- Review Cards Grid --}}
-        @if($websiteReviews->count() > 0)
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-4">
-            @foreach($websiteReviews as $review)
-            <div class="col">
-                <div class="gp-review-card">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <div class="gp-card-stars text-warning d-flex align-items-center">
-                            @for($i = 1; $i <= 5; $i++)
-                                @if($i <= $review->rating)
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                @else
-                                    <i class="bi bi-star text-muted opacity-25"></i>
-                                @endif
-                            @endfor
-                            <span class="text-dark fw-bold ms-1" style="font-size: 0.82rem;">{{ number_format($review->rating, 1) }}</span>
-                        </div>
-                        @if($review->is_featured)
-                        <span class="badge bg-warning-subtle text-warning-emphasis fw-bold px-2 py-1 rounded-pill small" style="font-size: 0.7rem;">
-                            <i class="bi bi-pin-angle-fill me-1"></i> Featured
-                        </span>
-                        @endif
-                    </div>
-
-                    @if($review->title)
-                    <h3 class="gp-review-title mb-2">
-                        {{ $review->title }}
-                    </h3>
-                    @endif
-
-                    <p class="gp-review-quote mb-4">
-                        "{{ $review->review }}"
-                    </p>
-
-                    <div class="pt-3 border-top d-flex justify-content-between align-items-center mt-auto">
-                        <div class="d-flex align-items-center gap-2">
-                            <div class="gp-avatar-initials">
-                                {{ strtoupper(substr($review->reviewer_name, 0, 1)) }}
-                            </div>
-                            <div>
-                                <div class="fw-bold text-dark small" style="font-size: 0.88rem;">{{ $review->reviewer_name }}</div>
-                                <div class="gp-verified-pill" style="font-size: 0.68rem; padding: 1px 6px;">
-                                    <i class="bi bi-patch-check-fill"></i> Verified Student
-                                </div>
-                            </div>
-                        </div>
-                        <span class="text-muted small" style="font-size: 0.78rem;">
-                            {{ $review->created_at?->diffForHumans() }}
-                        </span>
-                    </div>
-                </div>
+        {{-- Review cards --}}
+        <div class="mb-5 flex items-end justify-between gap-4">
+            <div>
+                <h3 class="text-xl font-extrabold tracking-tight text-slate-950 sm:text-2xl">What people are saying</h3>
+                <p class="mt-1 text-sm text-slate-500">Experiences from the GrowPec community</p>
             </div>
+            @if($websiteReviews->count() > 0)
+            <div class="gp-testimonial-controls" aria-label="Review carousel controls">
+                <button type="button" class="gp-testimonial-arrow" id="gpReviewsPrev" aria-label="Previous reviews"><i class="bi bi-arrow-left" aria-hidden="true"></i></button>
+                <button type="button" class="gp-testimonial-arrow" id="gpReviewsNext" aria-label="Next reviews"><i class="bi bi-arrow-right" aria-hidden="true"></i></button>
+            </div>
+            @endif
+        </div>
+
+        @if($websiteReviews->count() > 0)
+        <div class="gp-testimonial-track" id="gpTestimonialTrack" role="region" aria-label="GrowPec student reviews" tabindex="0">
+            @foreach($websiteReviews as $review)
+            <article class="gp-testimonial-card group flex h-full min-w-0 flex-col">
+                <header class="gp-testimonial-header gp-testimonial-header-compact">
+                    <div class="gp-testimonial-avatar" aria-hidden="true">{{ strtoupper(substr($review->reviewer_name, 0, 1)) }}</div>
+                    <div class="gp-testimonial-author-info">
+                        <div class="gp-testimonial-author-line">
+                            <span class="gp-testimonial-name">{{ $review->reviewer_name }}</span>
+                            @if($review->is_featured)
+                            <span class="gp-testimonial-featured" title="Featured review"><i class="bi bi-pin-angle-fill" aria-hidden="true"></i></span>
+                            @endif
+                        </div>
+                        <span class="gp-testimonial-role"><i class="bi bi-patch-check-fill" aria-hidden="true"></i> Verified Student</span>
+                    </div>
+                    <div class="gp-testimonial-header-right">
+                        <div class="gp-testimonial-header-rating" aria-label="Rated {{ $review->rating }} out of 5">
+                            <span class="gp-testimonial-stars" aria-hidden="true">
+                                @for($i = 1; $i <= 5; $i++)
+                                    @if($i <= $review->rating)
+                                        <i class="bi bi-star-fill"></i>
+                                    @else
+                                        <i class="bi bi-star"></i>
+                                    @endif
+                                @endfor
+                            </span>
+                            <span class="gp-testimonial-score">{{ number_format($review->rating, 1) }}</span>
+                        </div>
+                        <time datetime="{{ $review->created_at?->toIso8601String() }}">{{ $review->created_at?->diffForHumans() }}</time>
+                    </div>
+                </header>
+                <div class="gp-testimonial-divider"></div>
+                <div class="gp-testimonial-review-copy">
+                    @php($reviewText = trim((string) $review->review))
+                    @php($reviewNeedsToggle = mb_strlen($reviewText) > 180)
+                    <p class="gp-testimonial-text">
+                        @if($reviewNeedsToggle)
+                            <span class="gp-review-preview">{{ rtrim(mb_substr($reviewText, 0, 180)) }}…</span><span class="gp-review-full" hidden>{{ $reviewText }}</span><button type="button" class="gp-review-read-toggle" aria-expanded="false">Read more</button>
+                        @else
+                            {{ $reviewText }}
+                        @endif
+                    </p>
+                </div>
+            </article>
             @endforeach
         </div>
         @else
-        <div class="gp-review-summary-card text-center py-5 px-4 mb-4">
-            <div class="mb-3">
-                <div class="rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 64px; height: 64px; background: var(--gp-review-gold-50); color: var(--gp-review-gold-500);">
-                    <i class="bi bi-chat-heart-fill fs-2"></i>
-                </div>
-            </div>
-            <h3 class="fw-bold text-dark h4 mb-2">Be the first to review GrowPec!</h3>
-            <p class="text-muted mx-auto mb-4" style="max-width: 520px; font-size: 0.95rem;">
-                Have you explored or enrolled in a university through GrowPec? Share your experience to help thousands of future learners make confident decisions.
+        <div class="rounded-3xl border border-dashed border-slate-300 bg-white px-5 py-12 text-center shadow-sm sm:px-8 sm:py-16">
+            <span class="mx-auto grid h-16 w-16 place-items-center rounded-2xl bg-amber-50 text-3xl text-amber-600 ring-1 ring-amber-100">
+                <i class="bi bi-chat-heart-fill" aria-hidden="true"></i>
+            </span>
+            <h3 class="mt-5 text-xl font-extrabold text-slate-950 sm:text-2xl">Be the first to review GrowPec</h3>
+            <p class="mx-auto mt-2 max-w-xl text-sm leading-6 text-slate-600 sm:text-base">
+                Have you explored or enrolled in a university through GrowPec? Share your experience to help future learners make confident decisions.
             </p>
-            <div>
-                <button type="button" class="btn px-4 py-2 rounded-pill fw-bold text-white shadow-sm" data-bs-toggle="modal" data-bs-target="#websiteReviewModal" style="background: linear-gradient(135deg, var(--gp-review-navy-800) 0%, #1e40af 100%);">
-                    <i class="bi bi-pencil-square me-1"></i> Write the First Review
-                </button>
-            </div>
+            <button type="button" data-bs-toggle="modal" data-bs-target="#websiteReviewModal" class="mt-6 inline-flex items-center justify-center gap-2 rounded-xl bg-blue-950 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-blue-950/15 transition hover:bg-blue-900 focus:outline-none focus:ring-4 focus:ring-blue-200">
+                <i class="bi bi-pencil-square" aria-hidden="true"></i> Write the first review
+            </button>
         </div>
         @endif
     </div>
@@ -5805,27 +6165,27 @@
      ========================================================= --}}
 <div class="modal fade" id="websiteReviewModal" tabindex="-1" aria-labelledby="websiteReviewModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content gp-modal-content">
-            <div class="modal-header gp-modal-header d-flex justify-content-between align-items-start">
+        <div class="modal-content overflow-hidden rounded-3xl border-0 shadow-2xl">
+            <div class="modal-header flex items-start justify-between gap-4 bg-gradient-to-r from-slate-950 via-blue-950 to-blue-800 px-5 py-5 sm:px-7">
                 <div>
-                    <h3 class="modal-title fw-bold text-white h5 mb-1" id="websiteReviewModalLabel">
+                    <h3 class="modal-title mb-1 text-lg font-extrabold text-white" id="websiteReviewModalLabel">
                         <i class="bi bi-star-fill text-warning me-2"></i> Rate & Review GrowPec
                     </h3>
-                    <p class="text-white-50 small mb-0">
-                        Your honest feedback guides students making life-changing academic decisions.
+                    <p class="mb-0 text-sm leading-6 text-blue-100">
+                        Your honest feedback helps students make confident academic decisions.
                     </p>
                 </div>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
-            <form action="{{ route('website.reviews.store') }}" method="POST" id="websiteReviewForm" class="gp-modal-body">
+            <form action="{{ route('website.reviews.store') }}" method="POST" id="websiteReviewForm" class="space-y-5 px-5 py-6 sm:px-7">
                 @csrf
                 {{-- Anti-Spam Honeypot Field --}}
                 <input type="text" name="website_hp" id="website_hp" style="display:none !important; position:absolute !important; left:-9999px !important;" tabindex="-1" autocomplete="off">
 
                 {{-- Interactive Star Rating Selector --}}
-                <div class="mb-4 text-center">
-                    <label class="form-label fw-bold text-dark small d-block mb-2">How would you rate your overall experience? <span class="text-danger">*</span></label>
+                <div class="text-center">
+                    <label class="mb-3 block text-sm font-bold text-slate-800">How would you rate your overall experience? <span class="text-red-600">*</span></label>
                     <div class="gp-star-picker" id="starRatingGroup" role="radiogroup" aria-label="Rating Stars">
                         @for($star = 1; $star <= 5; $star++)
                         <span class="gp-star-item active" data-star="{{ $star }}" role="radio" aria-checked="{{ $star == 5 ? 'true' : 'false' }}" tabindex="0" title="{{ $star }} Stars">
@@ -5834,49 +6194,46 @@
                         @endfor
                         <input type="hidden" name="rating" id="selectedRatingInput" value="5" required>
                     </div>
-                    <div id="starRatingText" class="small fw-bold text-warning-emphasis mt-2">★★★★★ Outstanding (5/5)</div>
+                    <div id="starRatingText" class="mt-2 text-sm font-extrabold text-amber-700">★★★★★ Outstanding (5/5)</div>
                 </div>
 
-                <div class="row g-3 mb-3">
-                    <div class="col-md-6">
-                        <label for="reviewer_name" class="form-label fw-bold text-dark small mb-1">Your Full Name <span class="text-danger">*</span></label>
-                        <input type="text" name="reviewer_name" id="reviewer_name" class="form-control gp-form-input" placeholder="e.g. Rahul Sharma" minlength="2" maxlength="100" required>
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    <div>
+                        <label for="reviewer_name" class="mb-1.5 block text-sm font-bold text-slate-800">Your full name <span class="text-red-600">*</span></label>
+                        <input type="text" name="reviewer_name" id="reviewer_name" class="gp-form-input" placeholder="e.g. Rahul Sharma" minlength="2" maxlength="100" autocomplete="name" required>
                     </div>
-
-                    <div class="col-md-6">
-                        <label for="email" class="form-label fw-bold text-dark small mb-1">Your Email Address <span class="text-danger">*</span></label>
-                        <input type="email" name="email" id="email" class="form-control gp-form-input" placeholder="e.g. rahul@example.com" maxlength="150" required>
+                    <div>
+                        <label for="email" class="mb-1.5 block text-sm font-bold text-slate-800">Your email address <span class="text-red-600">*</span></label>
+                        <input type="email" name="email" id="email" class="gp-form-input" placeholder="e.g. rahul@example.com" maxlength="150" autocomplete="email" required>
                     </div>
                 </div>
 
-                <div class="mb-3 d-flex align-items-center gap-1 text-muted" style="font-size: 0.78rem;">
-                    <i class="bi bi-shield-lock-fill text-success"></i> 
-                    <span>Privacy Guarantee: Your email address is kept 100% confidential and is never published.</span>
+                <div class="flex items-start gap-2 text-xs leading-5 text-slate-500">
+                    <i class="bi bi-shield-lock-fill mt-0.5 text-emerald-600" aria-hidden="true"></i>
+                    <span><strong class="font-bold text-slate-700">Privacy promise:</strong> your email address is kept confidential and is never published.</span>
                 </div>
 
-                <div class="mb-3">
-                    <label for="review_title" class="form-label fw-bold text-dark small mb-1">Review Headline (Optional)</label>
-                    <input type="text" name="title" id="review_title" class="form-control gp-form-input" placeholder="e.g. Smooth counseling and verified universities" maxlength="150">
-                </div>
+                <!--<div>-->
+                <!--    <label for="review_title" class="mb-1.5 block text-sm font-bold text-slate-800">Review headline <span class="font-medium text-slate-400">(optional)</span></label>-->
+                <!--    <input type="text" name="title" id="review_title" class="gp-form-input" placeholder="e.g. Helpful counseling and clear information" maxlength="150">-->
+                <!--</div>-->
 
-                <div class="mb-3">
-                    <div class="d-flex justify-content-between align-items-center mb-1">
-                        <label for="review_body" class="form-label fw-bold text-dark small mb-0">Detailed Feedback <span class="text-danger">*</span></label>
-                        <span class="text-muted small fw-semibold" id="reviewCharCounter" style="font-size: 0.76rem;">0 / 1500 chars (min 15)</span>
+                <div>
+                    <div class="mb-1.5 flex items-center justify-between gap-3">
+                        <label for="review_body" class="block text-sm font-bold text-slate-800">Detailed feedback <span class="text-red-600">*</span></label>
+                        <span class="shrink-0 text-xs font-medium text-slate-500" id="reviewCharCounter">0 / 1500 chars (min 15)</span>
                     </div>
-                    <textarea name="review" id="review_body" rows="4" class="form-control gp-form-input" placeholder="Tell us how GrowPec helped you with college selection, course information, or admissions..." minlength="15" maxlength="1500" required></textarea>
+                    <textarea name="review" id="review_body" rows="4" class="gp-form-input resize-y" placeholder="Tell us about your college search, course information, or admission guidance experience..." minlength="15" maxlength="1500" required></textarea>
                 </div>
 
-                <div class="d-flex align-items-center gap-2 p-2 px-3 rounded-3 mb-4" style="font-size: 0.8rem; background-color: #F0F9FF; border: 1px solid #BAE6FD; color: #0369A1;">
-                    <i class="bi bi-info-circle-fill fs-6 flex-shrink-0"></i>
-                    <div>Every review is moderated by our team to maintain platform authenticity.</div>
+                <div class="flex items-start gap-2.5 rounded-xl border border-sky-200 bg-sky-50 px-3.5 py-3 text-xs leading-5 text-sky-800">
+                    <i class="bi bi-info-circle-fill mt-0.5 shrink-0" aria-hidden="true"></i>
+                    <span>Every review is moderated by our team before it appears publicly.</span>
                 </div>
 
-                <div class="d-grid">
-                    <button type="submit" class="btn py-2 fw-bold rounded-pill text-white shadow-sm" style="background: linear-gradient(135deg, var(--gp-review-navy-800) 0%, #1e40af 100%); font-size: 0.95rem;">
-                        <i class="bi bi-send-fill me-1"></i> Submit Review for Moderation
-                    </button>
-                </div>
+                <button type="submit" class="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-950 to-blue-800 px-5 py-3 text-sm font-extrabold text-white shadow-lg shadow-blue-950/15 transition hover:from-blue-900 hover:to-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-200">
+                    <i class="bi bi-send-fill" aria-hidden="true"></i> Submit review for moderation
+                </button>
             </form>
         </div>
     </div>
@@ -6264,9 +6621,230 @@
             if (summaryCard) observer.observe(summaryCard);
         }
     }
+
+
+    // Review carousel: advance one card every 2 seconds; arrows and Read more work without a page reload.
+    (() => {
+        const track = document.getElementById('gpTestimonialTrack');
+        if (!track || track.dataset.carouselReady === '1') return;
+        track.dataset.carouselReady = '1';
+        const cards = Array.from(track.querySelectorAll('.gp-testimonial-card'));
+        const prev = document.getElementById('gpReviewsPrev');
+        const next = document.getElementById('gpReviewsNext');
+        if (!cards.length) return;
+
+        const cardStep = () => {
+            const first = cards[0];
+            if (!first) return track.clientWidth;
+            const styles = window.getComputedStyle(track);
+            const gap = parseFloat(styles.columnGap || styles.gap || '0') || 0;
+            return first.getBoundingClientRect().width + gap;
+        };
+        const move = (direction) => {
+            const max = track.scrollWidth - track.clientWidth;
+            if (max <= 2) return;
+            const step = cardStep();
+            if (direction > 0 && track.scrollLeft >= max - 4) {
+                track.scrollTo({ left: 0, behavior: 'smooth' });
+            } else if (direction < 0 && track.scrollLeft <= 4) {
+                track.scrollTo({ left: max, behavior: 'smooth' });
+            } else {
+                track.scrollBy({ left: direction * step, behavior: 'smooth' });
+            }
+        };
+        prev?.addEventListener('click', () => move(-1));
+        next?.addEventListener('click', () => move(1));
+
+        track.querySelectorAll('.gp-review-read-toggle').forEach((button) => {
+            button.addEventListener('click', () => {
+                const copy = button.closest('.gp-testimonial-review-copy');
+                const preview = copy?.querySelector('.gp-review-preview');
+                const full = copy?.querySelector('.gp-review-full');
+                if (!preview || !full) return;
+                const isExpanded = button.getAttribute('aria-expanded') === 'true';
+                const shouldExpand = !isExpanded;
+                preview.hidden = shouldExpand;
+                full.hidden = !shouldExpand;
+                button.setAttribute('aria-expanded', shouldExpand ? 'true' : 'false');
+                button.textContent = shouldExpand ? 'Read less' : 'Read more';
+            });
+        });
+
+        if (cards.length < 2 || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        let timer = null;
+        let resumeTimer = null;
+        const stop = () => { if (timer) window.clearInterval(timer); timer = null; };
+        const start = () => {
+            stop();
+            if (document.hidden) return;
+            timer = window.setInterval(() => {
+                if (!track.matches(':hover') && !track.contains(document.activeElement) && !track.dataset.userInteracting) move(1);
+            }, 2000);
+        };
+        const pauseBriefly = () => {
+            track.dataset.userInteracting = '1';
+            stop();
+            if (resumeTimer) window.clearTimeout(resumeTimer);
+            resumeTimer = window.setTimeout(() => {
+                delete track.dataset.userInteracting;
+                start();
+            }, 2200);
+        };
+        track.addEventListener('pointerdown', pauseBriefly, { passive:true });
+        track.addEventListener('touchstart', pauseBriefly, { passive:true });
+        track.addEventListener('wheel', pauseBriefly, { passive:true });
+        track.addEventListener('mouseenter', stop);
+        track.addEventListener('mouseleave', start);
+        track.addEventListener('focusin', stop);
+        track.addEventListener('focusout', () => window.setTimeout(start, 250));
+        prev?.addEventListener('click', pauseBriefly);
+        next?.addEventListener('click', pauseBriefly);
+        document.addEventListener('visibilitychange', () => document.hidden ? stop() : start());
+        start();
+    })();
+
 </script>
+
+
+<style>
+/* Review card header aligned to the supplied reference: avatar left, name/verification beside it, stars at right. */
+.growpec-reviews-section .gp-testimonial-header-compact {
+    display: grid !important;
+    grid-template-columns: 42px minmax(0, 1fr) auto !important;
+    grid-template-rows: auto !important;
+    align-items: start !important;
+    column-gap: 10px !important;
+    row-gap: 0 !important;
+    width: 100%;
+    min-width: 0;
+}
+.growpec-reviews-section .gp-testimonial-header-compact > .gp-testimonial-avatar {
+    grid-column: 1;
+    grid-row: 1;
+    width: 38px !important;
+    height: 38px !important;
+    flex: 0 0 38px !important;
+    font-size: 14px !important;
+    align-self: start;
+}
+.growpec-reviews-section .gp-testimonial-author-info {
+    grid-column: 2;
+    grid-row: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    min-width: 0;
+}
+.growpec-reviews-section .gp-testimonial-author-line {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    min-width: 0;
+    max-width: 100%;
+}
+.growpec-reviews-section .gp-testimonial-author-line .gp-testimonial-name {
+    display: block;
+    min-width: 0;
+    font-size: 14px !important;
+    font-weight: 750;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+}
+.growpec-reviews-section .gp-testimonial-author-info .gp-testimonial-role {
+    margin: 0 !important;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 11px !important;
+    line-height: 1.25;
+    white-space: normal;
+}
+.growpec-reviews-section .gp-testimonial-header-right {
+    grid-column: 3;
+    grid-row: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 5px;
+    min-width: 0;
+}
+.growpec-reviews-section .gp-testimonial-header-right .gp-testimonial-header-rating {
+    display: flex !important;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 4px;
+    white-space: nowrap;
+}
+.growpec-reviews-section .gp-testimonial-header-right .gp-testimonial-stars {
+    color: #fbbf24;
+    font-size: 13px !important;
+    letter-spacing: -1px;
+    white-space: nowrap;
+}
+.growpec-reviews-section .gp-testimonial-header-right .gp-testimonial-score {
+    display: none;
+}
+.growpec-reviews-section .gp-testimonial-header-right time {
+    color: #8793a4;
+    font-size: 10px !important;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+@media (max-width: 420px) {
+    .growpec-reviews-section .gp-testimonial-header-compact {
+        grid-template-columns: 36px minmax(0, 1fr) auto !important;
+        column-gap: 7px !important;
+    }
+    .growpec-reviews-section .gp-testimonial-header-compact > .gp-testimonial-avatar {
+        width: 34px !important;
+        height: 34px !important;
+        flex-basis: 34px !important;
+        font-size: 13px !important;
+    }
+    .growpec-reviews-section .gp-testimonial-author-line .gp-testimonial-name { font-size: 13px !important; }
+    .growpec-reviews-section .gp-testimonial-author-info .gp-testimonial-role { font-size: 10px !important; }
+    .growpec-reviews-section .gp-testimonial-header-right .gp-testimonial-stars { font-size: 11px !important; }
+    .growpec-reviews-section .gp-testimonial-header-right time { font-size: 9px !important; }
+}
+</style>
+
 @endpush
 
 @endsection
 
 <!-- End v3 -->
+
+{{-- Final override: keep Read more / Read less as transparent inline text links. --}}
+<style>
+html body .growpec-reviews-section button.gp-review-read-toggle,
+html body .growpec-reviews-section button.gp-review-read-toggle:hover,
+html body .growpec-reviews-section button.gp-review-read-toggle:focus,
+html body .growpec-reviews-section button.gp-review-read-toggle:active,
+html body #growpecReviewsSection button.gp-review-read-toggle {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    outline-color: currentColor;
+    padding: 0 !important;
+    min-height: 0 !important;
+    border-radius: 0 !important;
+    color: #087f68 !important;
+    display: inline !important;
+    font: inherit !important;
+    font-weight: 700 !important;
+    line-height: inherit !important;
+    vertical-align: baseline !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+}
+html body .growpec-reviews-section button.gp-review-read-toggle:hover,
+html body .growpec-reviews-section button.gp-review-read-toggle:focus {
+    background: transparent !important;
+    background-color: transparent !important;
+    text-decoration: underline !important;
+}
+</style>
+

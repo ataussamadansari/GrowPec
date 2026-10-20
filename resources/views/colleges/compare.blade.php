@@ -3,261 +3,76 @@
 @section('title', $pageTitle . ' - GrowPec')
 
 @push('styles')
-<style>
-    .compare-hero {
-        background: linear-gradient(135deg, #001B45 0%, #002B67 100%);
-        color: #ffffff;
-        padding: 40px 0 35px;
-        position: relative;
-        overflow: hidden;
-    }
-    .compare-hero::after {
-        content: '';
-        position: absolute;
-        bottom: -40px;
-        right: -40px;
-        width: 240px;
-        height: 240px;
-        background: radial-gradient(circle, rgba(217, 164, 0, 0.15) 0%, transparent 70%);
-        border-radius: 50%;
-        pointer-events: none;
-    }
-    .breadcrumb-item a {
-        color: rgba(255, 255, 255, 0.75);
-        text-decoration: none;
-    }
-    .breadcrumb-item.active {
-        color: #D9A400;
-    }
-
-    /* Comparison Table Styling */
-    .compare-table-wrapper {
-        background: #ffffff;
-        border-radius: 16px;
-        border: 1px solid #E5E7EB;
-        box-shadow: 0 4px 20px rgba(0, 43, 103, 0.05);
-        overflow-x: auto;
-        position: relative;
-    }
-    .compare-table {
-        min-width: 820px;
-        margin-bottom: 0;
-        border-collapse: separate;
-        border-spacing: 0;
-    }
-    .compare-table th, 
-    .compare-table td {
-        padding: 16px 20px;
-        vertical-align: middle;
-        border-bottom: 1px solid #F1F5F9;
-        border-right: 1px solid #F1F5F9;
-    }
-    .compare-table th:last-child,
-    .compare-table td:last-child {
-        border-right: none;
-    }
-
-    /* Sticky Row Header (Leftmost column) */
-    .compare-table .row-header {
-        position: sticky;
-        left: 0;
-        background: #F8FAFC;
-        z-index: 10;
-        width: 220px;
-        min-width: 220px;
-        font-weight: 700;
-        color: #1E293B;
-        font-size: 0.88rem;
-        box-shadow: 2px 0 5px rgba(0,0,0,0.02);
-    }
-
-    /* Sticky College Card Headers (Top row) */
-    .compare-table .college-header-cell {
-        background: #FFFFFF;
-        position: sticky;
-        top: 70px;
-        z-index: 20;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
-        width: 280px;
-        min-width: 280px;
-    }
-    .compare-table .row-header.college-header-corner {
-        top: 70px;
-        z-index: 30;
-        background: #F8FAFC;
-    }
-
-    /* College Card Inside Table Header */
-    .compare-college-card {
-        text-align: center;
-        padding: 12px 6px;
-        position: relative;
-    }
-    .compare-college-card .remove-btn {
-        position: absolute;
-        top: 4px;
-        right: 4px;
-        width: 26px;
-        height: 26px;
-        border-radius: 50%;
-        background: #F1F5F9;
-        border: 1px solid #E2E8F0;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        color: #64748B;
-        text-decoration: none;
-        transition: all 0.2s ease;
-        font-size: 0.85rem;
-    }
-    .compare-college-card .remove-btn:hover {
-        background: #EF4444;
-        border-color: #EF4444;
-        color: #FFFFFF;
-    }
-    .compare-college-card .college-logo {
-        width: 68px;
-        height: 68px;
-        object-fit: contain;
-        background: #FFFFFF;
-        border: 1px solid #E2E8F0;
-        border-radius: 12px;
-        padding: 6px;
-        margin-bottom: 12px;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.04);
-    }
-    .compare-college-card .college-title {
-        font-size: 1rem;
-        font-weight: 800;
-        color: #002B67;
-        margin-bottom: 6px;
-        line-height: 1.3;
-    }
-    .compare-college-card .college-meta {
-        font-size: 0.78rem;
-        color: #64748B;
-        margin-bottom: 8px;
-    }
-
-    /* Section Category Row */
-    .compare-table .category-row td {
-        background: #EEF4F8;
-        color: #002B67;
-        font-weight: 800;
-        text-transform: uppercase;
-        font-size: 0.75rem;
-        letter-spacing: 0.6px;
-        padding: 10px 20px;
-        border-top: 2px solid #E2E8F0;
-        border-bottom: 2px solid #E2E8F0;
-    }
-
-    /* Metric Badges & Pills */
-    .metric-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-        padding: 4px 10px;
-        border-radius: 6px;
-        font-size: 0.78rem;
-        font-weight: 600;
-    }
-    .badge-naac {
-        background: #FEF3C7;
-        color: #92400E;
-        border: 1px solid #FDE68A;
-    }
-    .badge-nirf {
-        background: #E0E7FF;
-        color: #3730A3;
-        border: 1px solid #C7D2FE;
-    }
-    .badge-ugc {
-        background: #DCFCE7;
-        color: #166534;
-        border: 1px solid #BBF7D0;
-    }
-    .rating-stars {
-        color: #F59E0B;
-        font-size: 0.9rem;
-    }
-
-    /* Empty Add Column Slot */
-    .add-college-slot {
-        background: #F8FAFC;
-        border: 2px dashed #CBD5E1;
-        border-radius: 12px;
-        padding: 24px 14px;
-        text-align: center;
-        transition: all 0.2s ease;
-    }
-    .add-college-slot:hover {
-        border-color: #002B67;
-        background: #F1F5F9;
-    }
-
-    /* Benchmark Launchpad Cards */
-    .launcher-card {
-        background: #ffffff;
-        border-radius: 16px;
-        border: 1px solid #E5E7EB;
-        padding: 24px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
-        margin-bottom: 30px;
-    }
-    .popular-pair-card {
-        border: 1px solid #E2E8F0;
-        border-radius: 12px;
-        padding: 18px 20px;
-        transition: all 0.25s ease;
-        background: #ffffff;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
-    .popular-pair-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 10px 25px rgba(0, 43, 103, 0.08);
-        border-color: #002B67;
-    }
-    .popular-pair-title {
-        font-weight: 700;
-        font-size: 0.98rem;
-        color: #002B67;
-        margin-bottom: 8px;
-    }
-</style>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+        corePlugins: {
+            preflight: false,
+        },
+        theme: {
+            extend: {
+                colors: {
+                    brand: {
+                        navy: '#002B67',
+                        darkNavy: '#001B45',
+                        darkerNavy: '#00122E',
+                        gold: '#D9A400',
+                        goldHover: '#B78300',
+                        goldLight: '#FEF9C3',
+                        green: '#008A43',
+                        greenLight: '#DCFCE7',
+                    }
+                }
+            }
+        }
+    };
+</script>
 @endpush
 
 @section('content')
 <!-- Hero Section -->
-<section class="compare-hero">
-    <div class="container">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb mb-2">
-                <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('colleges.regular') }}">Colleges</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Compare</li>
+<section class="relative bg-gradient-to-r from-[#00122E] via-[#001B45] to-[#002B67] text-white py-10 lg:py-12 overflow-hidden">
+    <!-- Ambient Backdrop Light -->
+    <div class="absolute -bottom-20 -right-20 w-96 h-96 rounded-full bg-amber-400/10 blur-3xl pointer-events-none"></div>
+    <div class="absolute -top-20 -left-20 w-72 h-72 rounded-full bg-blue-500/10 blur-3xl pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb" class="mb-3">
+            <ol class="flex items-center gap-2 text-xs text-slate-300">
+                <li>
+                    <a href="{{ route('home') }}" class="hover:text-amber-400 transition-colors">Home</a>
+                </li>
+                <li><span class="text-slate-500">/</span></li>
+                <li>
+                    <a href="{{ route('colleges.regular') }}" class="hover:text-amber-400 transition-colors">Colleges</a>
+                </li>
+                <li><span class="text-slate-500">/</span></li>
+                <li class="text-amber-400 font-semibold" aria-current="page">Compare</li>
             </ol>
         </nav>
-        <div class="row align-items-center">
-            <div class="col-lg-8">
-                <h1 class="h2 fw-bold text-white mb-2">
-                    <i class="bi bi-intersect me-2 text-warning"></i>Compare Top Universities & Colleges
+
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+            <div>
+                <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight flex items-center gap-3">
+                    <i class="bi bi-intersect text-amber-400 text-2xl lg:text-3xl"></i>
+                    Compare Top Universities & Colleges
                 </h1>
-                <p class="text-white-50 mb-0">
+                <p class="mt-2 text-sm sm:text-base text-slate-300 max-w-2xl leading-relaxed">
                     Side-by-side benchmark of authentic accreditation, tuition fees, placement packages, student reviews, and courses.
                 </p>
             </div>
-            <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+
+            <div class="shrink-0">
                 @if($selectedColleges->count() >= 2)
-                    <span class="badge bg-warning text-dark px-3 py-2 fs-6 rounded-pill">
-                        <i class="bi bi-check2-circle me-1"></i>Comparing {{ $selectedColleges->count() }} of 4 Colleges
+                    <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold bg-amber-400 text-slate-950 shadow-md">
+                        <i class="bi bi-check2-circle text-sm"></i>
+                        Comparing {{ $selectedColleges->count() }} of 4 Colleges
                     </span>
                 @else
-                    <span class="badge bg-light text-dark px-3 py-2 fs-6 rounded-pill">
-                        <i class="bi bi-info-circle me-1"></i>Select 2 to 4 Colleges to Benchmark
+                    <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold bg-white/15 text-white border border-white/20 backdrop-blur-sm">
+                        <i class="bi bi-info-circle text-sm text-amber-400"></i>
+                        Select 2 to 4 Colleges to Benchmark
                     </span>
                 @endif
             </div>
@@ -265,458 +80,538 @@
     </div>
 </section>
 
-<div class="container py-4 py-lg-5">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
 
     <!-- Interactive College Selector Bar -->
-    <div class="launcher-card mb-4" id="compareSelectorBar">
-        <form method="GET" action="{{ route('colleges.compare') }}" id="compareForm" class="row g-3 align-items-end">
-            <div class="col-12 mb-1">
-                <h6 class="fw-bold text-dark mb-0 d-flex align-items-center gap-2">
-                    <i class="bi bi-sliders text-primary"></i> Customize Comparison Slots
-                </h6>
-                <small class="text-muted">Select universities from the dropdowns below to instantly benchmark.</small>
+    <div class="bg-white/95 backdrop-blur-md rounded-2xl border border-slate-200/90 shadow-xs p-5 lg:p-6" id="compareSelectorBar">
+        <form method="GET" action="{{ route('colleges.compare') }}" id="compareForm" class="space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-slate-100 pb-3">
+                <div>
+                    <h6 class="text-sm lg:text-base font-bold text-slate-900 flex items-center gap-2 mb-0">
+                        <i class="bi bi-sliders text-[#002B67]"></i> Customize Comparison Slots
+                    </h6>
+                    <p class="text-xs text-slate-500 mt-0.5 mb-0">Select universities from the dropdowns below to instantly benchmark.</p>
+                </div>
+                <div class="text-xs text-slate-400">
+                    Max 4 institutions
+                </div>
             </div>
 
-            @php
-                $slotCount = max(2, min(4, $selectedColleges->count() + 1));
-            @endphp
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                @for($i = 0; $i < 4; $i++)
+                    @php
+                        $currentSlug = $selectedColleges->get($i)?->slug ?? '';
+                    @endphp
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1.5">
+                            College Slot {{ $i + 1 }}
+                            <span class="font-normal text-[11px] {{ $i < 2 ? 'text-amber-600 font-semibold' : 'text-slate-400' }}">
+                                {{ $i < 2 ? '(Required)' : '(Optional)' }}
+                            </span>
+                        </label>
+                        <select name="colleges[]" 
+                                class="w-full rounded-xl border border-slate-300 bg-slate-50/50 px-3.5 py-2.5 text-xs lg:text-sm font-medium text-slate-800 focus:border-[#002B67] focus:ring-2 focus:ring-[#002B67]/20 focus:bg-white transition-all shadow-xs outline-none select-college-slot"
+                                onchange="document.getElementById('compareForm').submit();">
+                            <option value="">-- Choose College --</option>
+                            @foreach($allColleges as $college)
+                                <option value="{{ $college->slug }}" {{ $currentSlug === $college->slug ? 'selected' : '' }}>
+                                    {{ $college->short_name ?: $college->name }} ({{ $college->cityRelation?->name ?: $college->city ?: 'India' }})
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                @endfor
+            </div>
 
-            @for($i = 0; $i < 4; $i++)
-                @php
-                    $currentSlug = $selectedColleges->get($i)?->slug ?? '';
-                @endphp
-                <div class="col-md-6 col-lg-3">
-                    <label class="form-label small fw-semibold text-muted mb-1">
-                        College Slot {{ $i + 1 }} {{ $i < 2 ? '(Required)' : '(Optional)' }}
-                    </label>
-                    <select name="colleges[]" class="form-select select-college-slot" onchange="document.getElementById('compareForm').submit();">
-                        <option value="">-- Choose College --</option>
-                        @foreach($allColleges as $college)
-                            <option value="{{ $college->slug }}" {{ $currentSlug === $college->slug ? 'selected' : '' }}>
-                                {{ $college->short_name ?: $college->name }} ({{ $college->city ?: 'India' }})
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-            @endfor
-
-            <div class="col-12 text-end pt-2">
+            <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
                 @if($selectedColleges->count() > 0)
-                    <a href="{{ route('colleges.compare') }}" class="btn btn-outline-secondary btn-sm me-2">
-                        <i class="bi bi-arrow-counterclockwise me-1"></i>Reset Slots
+                    <a href="{{ route('colleges.compare') }}" 
+                       class="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold text-slate-600 hover:text-slate-900 bg-white border border-slate-200 hover:bg-slate-50 rounded-xl transition-all shadow-xs">
+                        <i class="bi bi-arrow-counterclockwise"></i> Reset Slots
                     </a>
                 @endif
-                <button type="submit" class="btn btn-primary btn-sm px-4 fw-bold">
-                    <i class="bi bi-arrow-repeat me-1"></i>Update Comparison
+                <button type="submit" 
+                        class="inline-flex items-center gap-1.5 px-5 py-2 text-xs font-bold text-white bg-[#002B67] hover:bg-[#001B45] rounded-xl shadow-xs transition-all cursor-pointer">
+                    <i class="bi bi-arrow-repeat"></i> Update Comparison
                 </button>
             </div>
         </form>
     </div>
 
     @if($selectedColleges->count() >= 2)
-        <!-- Side-by-Side Comparison Matrix -->
-        <div class="compare-table-wrapper mb-5">
-            <table class="table compare-table">
-                <thead>
-                    <tr>
-                        <th class="row-header college-header-corner text-muted small">
-                            <div class="d-flex flex-column justify-content-center h-100">
-                                <span class="fw-bold text-uppercase text-primary letter-spacing-1">Comparison Matrix</span>
-                                <small class="text-muted">{{ $selectedColleges->count() }} Colleges Benchmarked</small>
-                            </div>
-                        </th>
-                        @foreach($selectedColleges as $col)
-                            <th class="college-header-cell">
-                                <div class="compare-college-card">
+        <!-- Side-by-Side Comparison Matrix Table -->
+        <div class="bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden relative">
+            <div class="overflow-x-auto scroll-smooth">
+                <table class="w-full min-w-[860px] border-collapse text-left text-sm">
+                    <thead>
+                        <tr>
+                            <!-- Sticky Left Header -->
+                            <th class="sticky left-0 top-0 z-30 bg-slate-50/95 backdrop-blur-sm border-r border-b border-slate-200/80 w-60 min-w-60 p-5 align-top shadow-[2px_0_8px_rgba(0,0,0,0.02)]">
+                                <div class="flex flex-col justify-center h-full">
+                                    <span class="text-xs font-extrabold uppercase tracking-wider text-[#002B67]">
+                                        Comparison Matrix
+                                    </span>
+                                    <span class="text-xs text-slate-500 mt-1">
+                                        {{ $selectedColleges->count() }} Colleges Benchmarked
+                                    </span>
+                                </div>
+                            </th>
+
+                            <!-- College Header Cards -->
+                            @foreach($selectedColleges as $col)
+                                <th class="w-72 min-w-72 p-5 border-b border-r border-slate-200/80 last:border-r-0 align-top relative bg-white">
                                     @php
-                                        // Remove this college from query params
                                         $remainingSlugs = $selectedColleges->pluck('slug')->reject(fn($s) => $s === $col->slug)->join(',');
                                         $removeUrl = route('colleges.compare', ['colleges' => $remainingSlugs]);
                                     @endphp
-                                    <a href="{{ $removeUrl }}" class="remove-btn" title="Remove {{ $col->short_name ?: $col->name }} from comparison" onclick="GP_COMPARE.remove('{{ $col->slug }}')">
-                                        <i class="bi bi-x"></i>
+                                    <a href="{{ $removeUrl }}" 
+                                       class="absolute top-3 right-3 w-7 h-7 rounded-full bg-slate-100 hover:bg-rose-50 text-slate-400 hover:text-rose-600 border border-slate-200 flex items-center justify-center transition-all shadow-xs" 
+                                       title="Remove {{ $col->short_name ?: $col->name }} from comparison" 
+                                       onclick="GP_COMPARE.remove('{{ $col->slug }}')">
+                                        <i class="bi bi-x text-lg"></i>
                                     </a>
 
-                                    <img src="{{ $col->logo ? (str_starts_with($col->logo, 'http') ? $col->logo : asset('storage/' . $col->logo)) : 'https://placehold.co/100x100?text=' . urlencode($col->short_name ?: 'College') }}" 
-                                         alt="{{ $col->name }} Logo" 
-                                         class="college-logo">
+                                    <div class="text-center">
+                                        <img src="{{ $col->logo ? (str_starts_with($col->logo, 'http') ? $col->logo : asset('storage/' . $col->logo)) : 'https://placehold.co/100x100?text=' . urlencode($col->short_name ?: 'College') }}" 
+                                             alt="{{ $col->name }} Logo" 
+                                             class="w-16 h-16 p-2 rounded-xl border border-slate-200 bg-white object-contain shadow-xs mx-auto mb-3">
 
-                                    <h5 class="college-title">
-                                        <a href="{{ route('college.show', $col->slug) }}" class="text-decoration-none text-primary">
-                                            {{ $col->short_name ?: $col->name }}
-                                        </a>
-                                    </h5>
+                                        <h5 class="text-sm font-bold text-[#002B67] hover:text-blue-700 transition-colors line-clamp-2 leading-snug">
+                                            <a href="{{ route('college.show', $col->slug) }}">
+                                                {{ $col->short_name ?: $col->name }}
+                                            </a>
+                                        </h5>
 
-                                    <div class="college-meta">
-                                        <i class="bi bi-geo-alt-fill text-danger me-1"></i>
-                                        {{ $col->cityRelation?->name ?: $col->city ?: 'India' }}, 
-                                        {{ $col->stateRelation?->name ?: $col->state ?: '' }}
+                                        <div class="flex items-center justify-center gap-1 text-xs text-slate-500 font-medium mt-1.5">
+                                            <i class="bi bi-geo-alt-fill text-rose-500"></i>
+                                            <span>
+                                                {{ $col->cityRelation?->name ?: $col->city ?: 'India' }}, 
+                                                {{ $col->stateRelation?->name ?: $col->state ?: '' }}
+                                            </span>
+                                        </div>
+
+                                        <div class="flex items-center justify-center gap-1.5 mt-2.5">
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-100 text-slate-700 border border-slate-200 uppercase tracking-wide">
+                                                {{ ucfirst($col->mode ?: 'regular') }}
+                                            </span>
+                                            @if($col->type)
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-blue-50 text-blue-700 border border-blue-200">
+                                                    {{ $col->type }}
+                                                </span>
+                                            @endif
+                                        </div>
+
+                                        <!-- Quick Enquire CTA -->
+                                        <button type="button" 
+                                                class="w-full mt-3.5 py-2 px-3 text-xs font-bold rounded-xl bg-gradient-to-r from-[#D9A400] to-[#E5AC00] hover:from-[#B78300] hover:to-[#D9A400] text-slate-950 shadow-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#counselingModal"
+                                                data-college-id="{{ $col->id }}"
+                                                data-college-name="{{ $col->name }}">
+                                            <i class="bi bi-send-fill text-xs"></i> Enquire Now
+                                        </button>
                                     </div>
+                                </th>
+                            @endforeach
 
-                                    <div class="d-flex justify-content-center align-items-center gap-1 mb-3">
-                                        <span class="badge bg-light text-dark border">
-                                            {{ ucfirst($col->mode ?: 'regular') }}
-                                        </span>
-                                        @if($col->type)
-                                            <span class="badge bg-primary-subtle text-primary border border-primary-subtle">
-                                                {{ $col->type }}
+                            <!-- Empty Add Slot -->
+                            @if($selectedColleges->count() < 4)
+                                <th class="w-60 min-w-60 p-5 border-b border-slate-200/80 align-middle bg-slate-50/40 text-center">
+                                    <div class="h-full min-h-[220px] rounded-2xl border-2 border-dashed border-slate-300 hover:border-[#002B67] p-5 flex flex-col items-center justify-center transition-all hover:bg-white group">
+                                        <i class="bi bi-plus-circle text-2xl text-slate-400 group-hover:text-[#002B67] mb-2 transition-colors"></i>
+                                        <h6 class="text-xs font-bold text-slate-800 mb-0.5">Add Another College</h6>
+                                        <p class="text-[11px] text-slate-500 mb-3 leading-relaxed">Compare up to 4 institutions side-by-side</p>
+                                        <button type="button" 
+                                                class="px-3 py-1.5 text-xs font-semibold text-[#002B67] bg-white border border-[#002B67]/30 hover:bg-[#002B67] hover:text-white rounded-lg transition-all shadow-xs cursor-pointer" 
+                                                onclick="focusAddCollegeSlot()">
+                                            Select from List
+                                        </button>
+                                    </div>
+                                </th>
+                            @endif
+                        </tr>
+                    </thead>
+
+                    <tbody class="divide-y divide-slate-100">
+                        <!-- Category: Accreditations & Recognitions -->
+                        <tr>
+                            <td colspan="{{ $selectedColleges->count() + ($selectedColleges->count() < 4 ? 2 : 1) }}" 
+                                class="bg-slate-100/90 text-[#002B67] font-bold text-xs uppercase tracking-wider px-5 py-3 border-y border-slate-200">
+                                <div class="flex items-center gap-2">
+                                    <i class="bi bi-award text-[#002B67]"></i> Accreditations & Recognitions
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="sticky left-0 z-20 bg-slate-50/95 backdrop-blur-sm font-semibold text-xs text-slate-700 px-5 py-4 border-r border-slate-200/80 shadow-[2px_0_8px_rgba(0,0,0,0.02)]">
+                                Accreditation Badges
+                            </td>
+                            @foreach($selectedColleges as $col)
+                                <td class="px-5 py-4 border-r border-slate-100 last:border-r-0 align-middle">
+                                    <div class="flex flex-wrap gap-1.5">
+                                        @if($col->naac_grade)
+                                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold bg-amber-50 text-amber-900 border border-amber-200">
+                                                <i class="bi bi-patch-check-fill text-amber-600"></i> NAAC {{ $col->naac_grade }}
                                             </span>
                                         @endif
-                                    </div>
-
-                                    <!-- Quick Enquire CTA in Header -->
-                                    <button type="button" 
-                                            class="btn btn-warning btn-sm w-100 fw-bold shadow-sm"
-                                            data-bs-toggle="modal" 
-                                            data-bs-target="#counselingModal"
-                                            data-college-id="{{ $col->id }}"
-                                            data-college-name="{{ $col->name }}">
-                                        <i class="bi bi-send-fill me-1"></i>Enquire Now
-                                    </button>
-                                </div>
-                            </th>
-                        @endforeach
-
-                        @if($selectedColleges->count() < 4)
-                            <th class="college-header-cell" style="width: 240px; min-width: 240px;">
-                                <div class="add-college-slot h-100 d-flex flex-column align-items-center justify-content-center">
-                                    <i class="bi bi-plus-circle-dotted fs-1 text-primary mb-2"></i>
-                                    <h6 class="fw-bold text-dark mb-1">Add Another College</h6>
-                                    <p class="small text-muted mb-3">Compare up to 4 institutions side-by-side</p>
-                                    <button type="button" class="btn btn-outline-primary btn-sm" onclick="focusAddCollegeSlot()">
-                                        Select from List
-                                    </button>
-                                </div>
-                            </th>
-                        @endif
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Category: Overview & Recognition -->
-                    <tr class="category-row">
-                        <td colspan="{{ $selectedColleges->count() + ($selectedColleges->count() < 4 ? 2 : 1) }}">
-                            <i class="bi bi-award me-1"></i> Accreditations & Recognitions
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="row-header">Accreditation Badges</td>
-                        @foreach($selectedColleges as $col)
-                            <td>
-                                <div class="d-flex flex-wrap gap-1">
-                                    @if($col->naac_grade)
-                                        <span class="metric-badge badge-naac">
-                                            <i class="bi bi-patch-check-fill"></i> NAAC {{ $col->naac_grade }}
-                                        </span>
-                                    @endif
-                                    @if($col->ugc_approved)
-                                        <span class="metric-badge badge-ugc">
-                                            <i class="bi bi-check-circle-fill"></i> UGC Recognized
-                                        </span>
-                                    @endif
-                                    @if($col->nirf_rank)
-                                        <span class="metric-badge badge-nirf">
-                                            <i class="bi bi-trophy-fill"></i> NIRF #{{ $col->nirf_rank }}
-                                        </span>
-                                    @endif
-                                    @if($col->accreditations->count() > 0)
-                                        @foreach($col->accreditations->take(2) as $acc)
-                                            <span class="badge bg-secondary-subtle text-secondary border">
-                                                {{ $acc->body_name }} {{ $acc->grade ? '(' . $acc->grade . ')' : '' }}
+                                        @if($col->ugc_approved)
+                                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-50 text-emerald-900 border border-emerald-200">
+                                                <i class="bi bi-check-circle-fill text-emerald-600"></i> UGC Recognized
                                             </span>
-                                        @endforeach
+                                        @endif
+                                        @if($col->nirf_rank)
+                                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold bg-indigo-50 text-indigo-900 border border-indigo-200">
+                                                <i class="bi bi-trophy-fill text-indigo-600"></i> NIRF #{{ $col->nirf_rank }}
+                                            </span>
+                                        @endif
+                                        @if($col->accreditations->count() > 0)
+                                            @foreach($col->accreditations->take(2) as $acc)
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium bg-slate-100 text-slate-700 border border-slate-200">
+                                                    {{ $acc->body_name }} {{ $acc->grade ? '(' . $acc->grade . ')' : '' }}
+                                                </span>
+                                            @endforeach
+                                        @endif
+                                    </div>
+                                </td>
+                            @endforeach
+                            @if($selectedColleges->count() < 4) <td class="bg-slate-50/20"></td> @endif
+                        </tr>
+                        <tr>
+                            <td class="sticky left-0 z-20 bg-slate-50/95 backdrop-blur-sm font-semibold text-xs text-slate-700 px-5 py-4 border-r border-slate-200/80 shadow-[2px_0_8px_rgba(0,0,0,0.02)]">
+                                Established Year
+                            </td>
+                            @foreach($selectedColleges as $col)
+                                <td class="px-5 py-4 border-r border-slate-100 last:border-r-0 font-bold text-slate-800 text-sm align-middle">
+                                    {{ $col->established_year ?: $col->year ?: '—' }}
+                                </td>
+                            @endforeach
+                            @if($selectedColleges->count() < 4) <td class="bg-slate-50/20"></td> @endif
+                        </tr>
+                        <tr>
+                            <td class="sticky left-0 z-20 bg-slate-50/95 backdrop-blur-sm font-semibold text-xs text-slate-700 px-5 py-4 border-r border-slate-200/80 shadow-[2px_0_8px_rgba(0,0,0,0.02)]">
+                                Campus Size
+                            </td>
+                            @foreach($selectedColleges as $col)
+                                <td class="px-5 py-4 border-r border-slate-100 last:border-r-0 text-slate-700 text-sm align-middle">
+                                    {{ $col->campus_size ?: $col->campus ?: 'State-of-the-art Campus' }}
+                                </td>
+                            @endforeach
+                            @if($selectedColleges->count() < 4) <td class="bg-slate-50/20"></td> @endif
+                        </tr>
+
+                        <!-- Category: Ratings & Student Sentiment -->
+                        <tr>
+                            <td colspan="{{ $selectedColleges->count() + ($selectedColleges->count() < 4 ? 2 : 1) }}" 
+                                class="bg-slate-100/90 text-[#002B67] font-bold text-xs uppercase tracking-wider px-5 py-3 border-y border-slate-200">
+                                <div class="flex items-center gap-2">
+                                    <i class="bi bi-star-fill text-amber-500"></i> Ratings & Student Sentiment
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="sticky left-0 z-20 bg-slate-50/95 backdrop-blur-sm font-semibold text-xs text-slate-700 px-5 py-4 border-r border-slate-200/80 shadow-[2px_0_8px_rgba(0,0,0,0.02)]">
+                                Student Rating
+                            </td>
+                            @foreach($selectedColleges as $col)
+                                <td class="px-5 py-4 border-r border-slate-100 last:border-r-0 align-middle">
+                                    <div class="flex items-center gap-2">
+                                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-amber-50 border border-amber-200 text-amber-900 font-extrabold text-xs">
+                                            ★ {{ number_format($col->average_rating, 1) }}
+                                        </span>
+                                        <div class="text-amber-500 text-xs flex items-center gap-0.5">
+                                            @for($star = 1; $star <= 5; $star++)
+                                                <i class="bi {{ $star <= round($col->average_rating) ? 'bi-star-fill' : 'bi-star' }}"></i>
+                                            @endfor
+                                        </div>
+                                    </div>
+                                    <small class="text-slate-500 text-xs block mt-1">
+                                        Based on {{ $col->approved_reviews_count ?: $col->reviews_count ?: 0 }} verified student reviews
+                                    </small>
+                                </td>
+                            @endforeach
+                            @if($selectedColleges->count() < 4) <td class="bg-slate-50/20"></td> @endif
+                        </tr>
+
+                        <!-- Category: Tuition Fees & Programs -->
+                        <tr>
+                            <td colspan="{{ $selectedColleges->count() + ($selectedColleges->count() < 4 ? 2 : 1) }}" 
+                                class="bg-slate-100/90 text-[#002B67] font-bold text-xs uppercase tracking-wider px-5 py-3 border-y border-slate-200">
+                                <div class="flex items-center gap-2">
+                                    <i class="bi bi-currency-rupee text-[#002B67]"></i> Tuition Fees & Programs
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="sticky left-0 z-20 bg-slate-50/95 backdrop-blur-sm font-semibold text-xs text-slate-700 px-5 py-4 border-r border-slate-200/80 shadow-[2px_0_8px_rgba(0,0,0,0.02)]">
+                                Annual Fee Range
+                            </td>
+                            @foreach($selectedColleges as $col)
+                                @php
+                                    $validFees = $col->collegeCourses->where('fee_amount', '>', 0)->pluck('fee_amount');
+                                    $minFee = $validFees->min();
+                                    $maxFee = $validFees->max();
+                                @endphp
+                                <td class="px-5 py-4 border-r border-slate-100 last:border-r-0 align-middle">
+                                    @if($minFee && $maxFee)
+                                        <div class="font-extrabold text-emerald-700 text-base">
+                                            ₹{{ number_format($minFee) }} - ₹{{ number_format($maxFee) }}
+                                        </div>
+                                        <span class="text-xs text-slate-500 block mt-0.5">Per year (varies by program)</span>
+                                    @else
+                                        <span class="text-xs text-slate-500">Affordable / Contact for Structure</span>
                                     @endif
-                                </div>
+                                </td>
+                            @endforeach
+                            @if($selectedColleges->count() < 4) <td class="bg-slate-50/20"></td> @endif
+                        </tr>
+                        <tr>
+                            <td class="sticky left-0 z-20 bg-slate-50/95 backdrop-blur-sm font-semibold text-xs text-slate-700 px-5 py-4 border-r border-slate-200/80 shadow-[2px_0_8px_rgba(0,0,0,0.02)]">
+                                Key Programs Offered
                             </td>
-                        @endforeach
-                        @if($selectedColleges->count() < 4) <td></td> @endif
-                    </tr>
-                    <tr>
-                        <td class="row-header">Established Year</td>
-                        @foreach($selectedColleges as $col)
-                            <td class="fw-bold text-dark">
-                                {{ $col->established_year ?: $col->year ?: '—' }}
-                            </td>
-                        @endforeach
-                        @if($selectedColleges->count() < 4) <td></td> @endif
-                    </tr>
-                    <tr>
-                        <td class="row-header">Campus Size</td>
-                        @foreach($selectedColleges as $col)
-                            <td>
-                                {{ $col->campus_size ?: $col->campus ?: 'State-of-the-art Campus' }}
-                            </td>
-                        @endforeach
-                        @if($selectedColleges->count() < 4) <td></td> @endif
-                    </tr>
-
-                    <!-- Category: Reviews & Ratings -->
-                    <tr class="category-row">
-                        <td colspan="{{ $selectedColleges->count() + ($selectedColleges->count() < 4 ? 2 : 1) }}">
-                            <i class="bi bi-star-fill text-warning me-1"></i> Ratings & Student Sentiment
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="row-header">Student Rating</td>
-                        @foreach($selectedColleges as $col)
-                            <td>
-                                <div class="d-flex align-items-center gap-2">
-                                    <span class="badge bg-warning text-dark fs-6 fw-bold px-2 py-1">
-                                        ★ {{ number_format($col->average_rating, 1) }}
+                            @foreach($selectedColleges as $col)
+                                @php
+                                    $courseNames = $col->collegeCourses->map(fn($cc) => $cc->course?->name)->filter()->unique()->take(6);
+                                @endphp
+                                <td class="px-5 py-4 border-r border-slate-100 last:border-r-0 align-middle">
+                                    <div class="flex flex-wrap gap-1.5">
+                                        @forelse($courseNames as $cName)
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium bg-slate-100 text-slate-700 border border-slate-200">
+                                                {{ $cName }}
+                                            </span>
+                                        @empty
+                                            <span class="text-xs text-slate-400">Comprehensive degree options</span>
+                                        @endforelse
+                                    </div>
+                                    <span class="text-xs font-semibold text-[#002B67] mt-2 block">
+                                        Total {{ $col->collegeCourses->count() }} active courses
                                     </span>
-                                    <div class="rating-stars">
-                                        @for($star = 1; $star <= 5; $star++)
-                                            <i class="bi {{ $star <= round($col->average_rating) ? 'bi-star-fill' : 'bi-star' }}"></i>
-                                        @endfor
-                                    </div>
-                                </div>
-                                <small class="text-muted d-block mt-1">
-                                    Based on {{ $col->approved_reviews_count ?: $col->reviews_count ?: 0 }} verified student reviews
-                                </small>
-                            </td>
-                        @endforeach
-                        @if($selectedColleges->count() < 4) <td></td> @endif
-                    </tr>
+                                </td>
+                            @endforeach
+                            @if($selectedColleges->count() < 4) <td class="bg-slate-50/20"></td> @endif
+                        </tr>
 
-                    <!-- Category: Tuition Fees & Courses -->
-                    <tr class="category-row">
-                        <td colspan="{{ $selectedColleges->count() + ($selectedColleges->count() < 4 ? 2 : 1) }}">
-                            <i class="bi bi-currency-rupee me-1"></i> Tuition Fees & Programs
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="row-header">Annual Fee Range</td>
-                        @foreach($selectedColleges as $col)
-                            @php
-                                $validFees = $col->collegeCourses->where('fee_amount', '>', 0)->pluck('fee_amount');
-                                $minFee = $validFees->min();
-                                $maxFee = $validFees->max();
-                            @endphp
-                            <td>
-                                @if($minFee && $maxFee)
-                                    <div class="fw-bold text-success fs-6">
-                                        ₹{{ number_format($minFee) }} - ₹{{ number_format($maxFee) }}
-                                    </div>
-                                    <small class="text-muted">Per year (varies by program)</small>
-                                @else
-                                    <span class="text-muted">Affordable / Contact for Structure</span>
-                                @endif
-                            </td>
-                        @endforeach
-                        @if($selectedColleges->count() < 4) <td></td> @endif
-                    </tr>
-                    <tr>
-                        <td class="row-header">Key Programs Offered</td>
-                        @foreach($selectedColleges as $col)
-                            @php
-                                $courseNames = $col->collegeCourses->map(fn($cc) => $cc->course?->name)->filter()->unique()->take(6);
-                            @endphp
-                            <td>
-                                <div class="d-flex flex-wrap gap-1">
-                                    @forelse($courseNames as $cName)
-                                        <span class="badge bg-light text-dark border">
-                                            {{ $cName }}
-                                        </span>
-                                    @empty
-                                        <span class="text-muted small">Comprehensive degree options</span>
-                                    @endforelse
+                        <!-- Category: Placements & Career Statistics -->
+                        <tr>
+                            <td colspan="{{ $selectedColleges->count() + ($selectedColleges->count() < 4 ? 2 : 1) }}" 
+                                class="bg-slate-100/90 text-[#002B67] font-bold text-xs uppercase tracking-wider px-5 py-3 border-y border-slate-200">
+                                <div class="flex items-center gap-2">
+                                    <i class="bi bi-briefcase-fill text-[#002B67]"></i> Placements & Career Statistics
                                 </div>
-                                <small class="text-primary mt-2 d-inline-block">
-                                    Total {{ $col->collegeCourses->count() }} active courses
-                                </small>
                             </td>
-                        @endforeach
-                        @if($selectedColleges->count() < 4) <td></td> @endif
-                    </tr>
-
-                    <!-- Category: Placements & Recruiters -->
-                    <tr class="category-row">
-                        <td colspan="{{ $selectedColleges->count() + ($selectedColleges->count() < 4 ? 2 : 1) }}">
-                            <i class="bi bi-briefcase-fill me-1"></i> Placements & Career Statistics
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="row-header">Highest Package</td>
-                        @foreach($selectedColleges as $col)
-                            @php
-                                $highestPackage = $col->placementStats->first()?->highest_package ?: $col->highest_package;
-                            @endphp
-                            <td>
-                                <span class="badge bg-success-subtle text-success fs-6 fw-bold px-2 py-1">
-                                    <i class="bi bi-trophy me-1"></i>{{ $highestPackage ?: 'Top Offers' }}
-                                </span>
+                        </tr>
+                        <tr>
+                            <td class="sticky left-0 z-20 bg-slate-50/95 backdrop-blur-sm font-semibold text-xs text-slate-700 px-5 py-4 border-r border-slate-200/80 shadow-[2px_0_8px_rgba(0,0,0,0.02)]">
+                                Highest Package
                             </td>
-                        @endforeach
-                        @if($selectedColleges->count() < 4) <td></td> @endif
-                    </tr>
-                    <tr>
-                        <td class="row-header">Average Package</td>
-                        @foreach($selectedColleges as $col)
-                            @php
-                                $avgPackage = $col->placementStats->first()?->average_package ?: $col->average_package;
-                            @endphp
-                            <td>
-                                <span class="fw-bold text-dark fs-6">
+                            @foreach($selectedColleges as $col)
+                                @php
+                                    $highestPackage = $col->placementStats->first()?->highest_package ?: $col->highest_package;
+                                @endphp
+                                <td class="px-5 py-4 border-r border-slate-100 last:border-r-0 align-middle">
+                                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
+                                        <i class="bi bi-trophy-fill text-emerald-600"></i>
+                                        {{ $highestPackage ?: 'Top Offers' }}
+                                    </span>
+                                </td>
+                            @endforeach
+                            @if($selectedColleges->count() < 4) <td class="bg-slate-50/20"></td> @endif
+                        </tr>
+                        <tr>
+                            <td class="sticky left-0 z-20 bg-slate-50/95 backdrop-blur-sm font-semibold text-xs text-slate-700 px-5 py-4 border-r border-slate-200/80 shadow-[2px_0_8px_rgba(0,0,0,0.02)]">
+                                Average Package
+                            </td>
+                            @foreach($selectedColleges as $col)
+                                @php
+                                    $avgPackage = $col->placementStats->first()?->average_package ?: $col->average_package;
+                                @endphp
+                                <td class="px-5 py-4 border-r border-slate-100 last:border-r-0 font-bold text-slate-800 text-sm align-middle">
                                     {{ $avgPackage ?: '₹4.50 LPA - ₹6.50 LPA' }}
-                                </span>
+                                </td>
+                            @endforeach
+                            @if($selectedColleges->count() < 4) <td class="bg-slate-50/20"></td> @endif
+                        </tr>
+                        <tr>
+                            <td class="sticky left-0 z-20 bg-slate-50/95 backdrop-blur-sm font-semibold text-xs text-slate-700 px-5 py-4 border-r border-slate-200/80 shadow-[2px_0_8px_rgba(0,0,0,0.02)]">
+                                Top Corporate Recruiters
                             </td>
-                        @endforeach
-                        @if($selectedColleges->count() < 4) <td></td> @endif
-                    </tr>
-                    <tr>
-                        <td class="row-header">Top Corporate Recruiters</td>
-                        @foreach($selectedColleges as $col)
-                            <td>
-                                <div class="d-flex flex-wrap gap-1">
-                                    @forelse($col->recruiters->take(5) as $rec)
-                                        <span class="badge bg-light text-secondary border">
-                                            {{ $rec->name }}
-                                        </span>
-                                    @empty
-                                        <span class="text-muted small">TCS, Infosys, Wipro, HCL, Tech Mahindra</span>
-                                    @endforelse
+                            @foreach($selectedColleges as $col)
+                                <td class="px-5 py-4 border-r border-slate-100 last:border-r-0 align-middle">
+                                    <div class="flex flex-wrap gap-1.5">
+                                        @forelse($col->recruiters->take(5) as $rec)
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium bg-slate-50 text-slate-700 border border-slate-200">
+                                                {{ $rec->name }}
+                                            </span>
+                                        @empty
+                                            <span class="text-xs text-slate-400">TCS, Infosys, Wipro, HCL, Tech Mahindra</span>
+                                        @endforelse
+                                    </div>
+                                </td>
+                            @endforeach
+                            @if($selectedColleges->count() < 4) <td class="bg-slate-50/20"></td> @endif
+                        </tr>
+
+                        <!-- Category: Campus Amenities & Infrastructure -->
+                        <tr>
+                            <td colspan="{{ $selectedColleges->count() + ($selectedColleges->count() < 4 ? 2 : 1) }}" 
+                                class="bg-slate-100/90 text-[#002B67] font-bold text-xs uppercase tracking-wider px-5 py-3 border-y border-slate-200">
+                                <div class="flex items-center gap-2">
+                                    <i class="bi bi-building text-[#002B67]"></i> Campus Amenities & Infrastructure
                                 </div>
                             </td>
-                        @endforeach
-                        @if($selectedColleges->count() < 4) <td></td> @endif
-                    </tr>
+                        </tr>
+                        <tr>
+                            <td class="sticky left-0 z-20 bg-slate-50/95 backdrop-blur-sm font-semibold text-xs text-slate-700 px-5 py-4 border-r border-slate-200/80 shadow-[2px_0_8px_rgba(0,0,0,0.02)]">
+                                Key Facilities
+                            </td>
+                            @foreach($selectedColleges as $col)
+                                <td class="px-5 py-4 border-r border-slate-100 last:border-r-0 align-middle">
+                                    <div class="flex flex-wrap gap-1.5">
+                                        @forelse($col->collegeFacilities->take(6) as $fac)
+                                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium bg-slate-50 text-slate-700 border border-slate-200">
+                                                <i class="bi bi-check-lg text-emerald-600 font-bold"></i> {{ $fac->name }}
+                                            </span>
+                                        @empty
+                                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium bg-slate-50 text-slate-700 border border-slate-200"><i class="bi bi-wifi text-emerald-600"></i> High-Speed Wi-Fi</span>
+                                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium bg-slate-50 text-slate-700 border border-slate-200"><i class="bi bi-hospital text-emerald-600"></i> Medical Aid</span>
+                                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium bg-slate-50 text-slate-700 border border-slate-200"><i class="bi bi-houses text-emerald-600"></i> Hostel Facility</span>
+                                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium bg-slate-50 text-slate-700 border border-slate-200"><i class="bi bi-book text-emerald-600"></i> Digital Library</span>
+                                        @endforelse
+                                    </div>
+                                </td>
+                            @endforeach
+                            @if($selectedColleges->count() < 4) <td class="bg-slate-50/20"></td> @endif
+                        </tr>
 
-                    <!-- Category: Campus Facilities & Amenities -->
-                    <tr class="category-row">
-                        <td colspan="{{ $selectedColleges->count() + ($selectedColleges->count() < 4 ? 2 : 1) }}">
-                            <i class="bi bi-building me-1"></i> Campus Amenities & Infrastructure
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="row-header">Key Facilities</td>
-                        @foreach($selectedColleges as $col)
-                            <td>
-                                <div class="d-flex flex-wrap gap-1">
-                                    @forelse($col->collegeFacilities->take(6) as $fac)
-                                        <span class="badge bg-light text-dark border">
-                                            <i class="bi bi-check-lg text-success me-1"></i>{{ $fac->name }}
-                                        </span>
-                                    @empty
-                                        <span class="badge bg-light text-dark border"><i class="bi bi-wifi text-success me-1"></i>High-Speed Wi-Fi</span>
-                                        <span class="badge bg-light text-dark border"><i class="bi bi-hospital text-success me-1"></i>Medical Aid</span>
-                                        <span class="badge bg-light text-dark border"><i class="bi bi-houses text-success me-1"></i>Hostel Facility</span>
-                                        <span class="badge bg-light text-dark border"><i class="bi bi-book text-success me-1"></i>Digital Library</span>
-                                    @endforelse
+                        <!-- Category: Scholarships & Aid -->
+                        <tr>
+                            <td colspan="{{ $selectedColleges->count() + ($selectedColleges->count() < 4 ? 2 : 1) }}" 
+                                class="bg-slate-100/90 text-[#002B67] font-bold text-xs uppercase tracking-wider px-5 py-3 border-y border-slate-200">
+                                <div class="flex items-center gap-2">
+                                    <i class="bi bi-mortarboard text-[#002B67]"></i> Scholarships & Aid
                                 </div>
                             </td>
-                        @endforeach
-                        @if($selectedColleges->count() < 4) <td></td> @endif
-                    </tr>
-
-                    <!-- Category: Scholarships -->
-                    <tr class="category-row">
-                        <td colspan="{{ $selectedColleges->count() + ($selectedColleges->count() < 4 ? 2 : 1) }}">
-                            <i class="bi bi-mortarboard me-1"></i> Scholarships & Aid
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="row-header">Scholarship Schemes</td>
-                        @foreach($selectedColleges as $col)
-                            <td>
-                                @if(($col->scholarships?->count() ?? 0) > 0)
-                                    <ul class="list-unstyled mb-0 small">
-                                        @foreach(($col->scholarships?->take(3) ?? []) as $sch)
-                                            <li class="mb-1 text-dark">
-                                                <i class="bi bi-check2 text-primary me-1"></i>
-                                                <strong>{{ $sch->name }}:</strong> {{ $sch->display_amount }}
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                @else
-                                    <span class="small text-muted">Merit, Sports & Defense Concessions Available</span>
-                                @endif
+                        </tr>
+                        <tr>
+                            <td class="sticky left-0 z-20 bg-slate-50/95 backdrop-blur-sm font-semibold text-xs text-slate-700 px-5 py-4 border-r border-slate-200/80 shadow-[2px_0_8px_rgba(0,0,0,0.02)]">
+                                Scholarship Schemes
                             </td>
-                        @endforeach
-                        @if($selectedColleges->count() < 4) <td></td> @endif
-                    </tr>
+                            @foreach($selectedColleges as $col)
+                                <td class="px-5 py-4 border-r border-slate-100 last:border-r-0 align-middle">
+                                    @if(($col->scholarships?->count() ?? 0) > 0)
+                                        <ul class="space-y-1.5 text-xs text-slate-700 list-none p-0 m-0">
+                                            @foreach(($col->scholarships?->take(3) ?? []) as $sch)
+                                                <li class="flex items-start gap-1.5">
+                                                    <i class="bi bi-check2 text-[#002B67] font-bold shrink-0 mt-0.5"></i>
+                                                    <span><strong>{{ $sch->name }}:</strong> {{ $sch->display_amount }}</span>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    @else
+                                        <span class="text-xs text-slate-400">Merit, Sports & Defense Concessions Available</span>
+                                    @endif
+                                </td>
+                            @endforeach
+                            @if($selectedColleges->count() < 4) <td class="bg-slate-50/20"></td> @endif
+                        </tr>
 
-                    <!-- Final Action CTAs -->
-                    <tr class="table-light">
-                        <td class="row-header">Admissions & Actions</td>
-                        @foreach($selectedColleges as $col)
-                            <td class="p-3">
-                                <div class="d-flex flex-column gap-2">
-                                    <button type="button" 
-                                            class="btn btn-warning fw-bold shadow-sm"
-                                            data-bs-toggle="modal" 
-                                            data-bs-target="#counselingModal"
-                                            data-college-id="{{ $col->id }}"
-                                            data-college-name="{{ $col->name }}">
-                                        <i class="bi bi-send-fill me-1"></i>Apply / Enquire Now
-                                    </button>
-                                    <a href="{{ route('college.show', $col->slug) }}" class="btn btn-outline-primary btn-sm">
-                                        View Full Profile <i class="bi bi-arrow-right ms-1"></i>
-                                    </a>
-                                </div>
+                        <!-- Final Action CTAs -->
+                        <tr class="bg-slate-50/70">
+                            <td class="sticky left-0 z-20 bg-slate-100/95 backdrop-blur-sm font-bold text-xs text-slate-800 px-5 py-5 border-r border-slate-200/80 shadow-[2px_0_8px_rgba(0,0,0,0.02)]">
+                                Admissions & Actions
                             </td>
-                        @endforeach
-                        @if($selectedColleges->count() < 4) <td></td> @endif
-                    </tr>
-                </tbody>
-            </table>
+                            @foreach($selectedColleges as $col)
+                                <td class="px-5 py-5 border-r border-slate-200/80 last:border-r-0 align-middle">
+                                    <div class="flex flex-col gap-2">
+                                        <button type="button" 
+                                                class="w-full py-2.5 px-4 text-xs font-bold rounded-xl bg-gradient-to-r from-[#D9A400] to-[#E5AC00] hover:from-[#B78300] hover:to-[#D9A400] text-slate-950 shadow-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#counselingModal"
+                                                data-college-id="{{ $col->id }}"
+                                                data-college-name="{{ $col->name }}">
+                                            <i class="bi bi-send-fill text-xs"></i> Apply / Enquire Now
+                                        </button>
+                                        <a href="{{ route('college.show', $col->slug) }}" 
+                                           class="w-full py-2 px-3 text-xs font-semibold text-[#002B67] hover:text-white bg-white hover:bg-[#002B67] border border-[#002B67]/30 rounded-xl transition-all flex items-center justify-center gap-1.5 shadow-xs text-center">
+                                            View Full Profile <i class="bi bi-arrow-right text-xs"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            @endforeach
+                            @if($selectedColleges->count() < 4) <td class="bg-slate-50/20"></td> @endif
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     @else
-        <!-- Launcher & Popular Benchmarks State (When < 2 colleges selected) -->
-        <div class="row gy-4 mb-5">
-            <div class="col-12 text-center my-3">
-                <span class="badge bg-primary-subtle text-primary px-3 py-2 rounded-pill fw-bold mb-2">
-                    <i class="bi bi-lightning-charge-fill me-1"></i>Fast-Track Comparison
+        <!-- Fast-Track Benchmark Pairs Launcher State (When < 2 colleges selected) -->
+        <div class="space-y-6">
+            <div class="text-center max-w-2xl mx-auto pt-2 pb-4">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-blue-50 text-[#002B67] border border-blue-200 mb-2">
+                    <i class="bi bi-lightning-charge-fill text-amber-500"></i> Fast-Track Comparison
                 </span>
-                <h3 class="fw-bold text-dark">Popular University Benchmark Pairs</h3>
-                <p class="text-muted col-lg-8 mx-auto">
+                <h3 class="text-xl sm:text-2xl font-bold text-slate-900">Popular University Benchmark Pairs</h3>
+                <p class="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
                     Choose one of our curated university comparisons below or select custom colleges from the slot menu above to view full side-by-side details.
                 </p>
             </div>
 
-            @foreach($popularPairs as $pair)
-                <div class="col-md-6 col-lg-6">
-                    <div class="popular-pair-card">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                @foreach($popularPairs as $pair)
+                    <div class="bg-white rounded-2xl border border-slate-200/90 p-5 lg:p-6 flex flex-col justify-between hover:-translate-y-1 hover:shadow-md hover:border-[#002B67]/40 transition-all group">
                         <div>
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <span class="badge bg-{{ $pair['badge_color'] }}-subtle text-{{ $pair['badge_color'] }} border border-{{ $pair['badge_color'] }}-subtle">
+                            <div class="flex items-center justify-between gap-2 mb-2.5">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-blue-50 text-blue-700 border border-blue-200">
                                     {{ $pair['tag'] }}
                                 </span>
-                                <small class="text-muted"><i class="bi bi-arrow-left-right me-1"></i>Head-to-Head</small>
+                                <small class="text-slate-400 text-xs flex items-center gap-1">
+                                    <i class="bi bi-arrow-left-right text-slate-400"></i> Head-to-Head
+                                </small>
                             </div>
-                            <h5 class="popular-pair-title">{{ $pair['title'] }}</h5>
-                            <p class="small text-muted mb-4">{{ $pair['desc'] }}</p>
+                            <h5 class="text-base font-bold text-slate-900 group-hover:text-[#002B67] transition-colors leading-snug">
+                                {{ $pair['title'] }}
+                            </h5>
+                            <p class="text-xs text-slate-500 mt-1.5 mb-5 leading-relaxed">
+                                {{ $pair['desc'] }}
+                            </p>
                         </div>
                         <div>
                             @php
                                 $compareUrl = route('colleges.compare', ['colleges' => implode(',', $pair['slugs'])]);
                             @endphp
-                            <a href="{{ $compareUrl }}" class="btn btn-outline-primary w-100 fw-bold">
-                                Compare These Universities <i class="bi bi-arrow-right ms-1"></i>
+                            <a href="{{ $compareUrl }}" 
+                               class="w-full py-2.5 px-4 text-xs font-bold text-[#002B67] group-hover:bg-[#002B67] group-hover:text-white bg-blue-50/60 rounded-xl border border-blue-200 transition-all flex items-center justify-center gap-1.5 shadow-xs">
+                                Compare These Universities <i class="bi bi-arrow-right"></i>
                             </a>
                         </div>
                     </div>
-                </div>
-            @endforeach
+                @endforeach
+            </div>
         </div>
     @endif
 
-    <!-- Comparison Guide FAQ / Informational Card -->
-    <div class="card border-0 bg-light rounded-4 p-4 p-lg-5 mb-4">
-        <div class="row align-items-center">
-            <div class="col-lg-8">
-                <h4 class="fw-bold text-dark mb-2">Need Expert Counseling & Guidance?</h4>
-                <p class="text-muted mb-0">
-                    Not sure which university best fits your budget, career goals, or eligibility? Our senior academic counselors provide 100% free personalized consultation.
-                </p>
-            </div>
-            <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
-                <button type="button" class="btn btn-warning px-4 py-2 fw-bold shadow-sm" data-bs-toggle="modal" data-bs-target="#counselingModal">
-                    <i class="bi bi-telephone-fill me-1"></i>Talk to a Counselor
-                </button>
-            </div>
+    <!-- Expert Counseling & Guidance Banner -->
+    <div class="bg-gradient-to-r from-slate-50 to-blue-50/60 rounded-2xl border border-slate-200/80 p-6 lg:p-8 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 shadow-xs">
+        <div>
+            <h4 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2 mb-1">
+                <i class="bi bi-headset text-[#002B67]"></i> Need Expert Counseling & Guidance?
+            </h4>
+            <p class="text-xs sm:text-sm text-slate-600 mb-0 leading-relaxed max-w-2xl">
+                Not sure which university best fits your budget, career goals, or eligibility? Our senior academic counselors provide 100% free personalized consultation.
+            </p>
+        </div>
+        <div class="shrink-0">
+            <button type="button" 
+                    class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 text-xs font-bold text-slate-950 bg-gradient-to-r from-[#D9A400] to-[#E5AC00] hover:from-[#B78300] hover:to-[#D9A400] rounded-xl shadow-xs transition-all cursor-pointer" 
+                    data-bs-toggle="modal" 
+                    data-bs-target="#counselingModal">
+                <i class="bi bi-telephone-fill text-xs"></i> Talk to a Counselor
+            </button>
         </div>
     </div>
 
 </div>
+@endsection
 
 @push('scripts')
 <script>
@@ -730,7 +625,7 @@
             for (let i = 0; i < slots.length; i++) {
                 if (!slots[i].value) {
                     slots[i].focus();
-                    slots[i].classList.add('border-primary');
+                    slots[i].classList.add('ring-2', 'ring-[#002B67]', 'border-[#002B67]');
                     break;
                 }
             }
@@ -751,7 +646,7 @@
             @endphp
             const activeColleges = {!! json_encode($activeList) !!};
 
-            // Update localStorage with active colleges from current matrix view
+            // Synchronize localStorage with active colleges in view
             if (activeColleges && activeColleges.length > 0 && typeof GP_COMPARE !== 'undefined') {
                 GP_COMPARE.save(activeColleges);
             }
@@ -759,4 +654,3 @@
     });
 </script>
 @endpush
-@endsection
