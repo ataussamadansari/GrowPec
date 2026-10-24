@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             StreamCourseSpecializationSeeder::class, // 5. Streams, Courses & Specializations
             RegularCollegeSeeder::class,             // 6. Regular Campus Colleges & Universities
             DistanceOnlineCollegeSeeder::class,      // 7. Distance & Online Universities
+            MeerutCollegesSeeder::class,              // 8. Meerut Campus Colleges (Forte, ABSSIT, Dewan, MIET, BIT, Translam)
         ]);
     }
 }
