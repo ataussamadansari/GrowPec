@@ -271,3 +271,69 @@ test('manage settings page updates system settings', function () {
         ->and(SystemSetting::get('general.support_email'))->toBe('contact@growpec.com')
         ->and(SystemSetting::get('social.facebook'))->toBe('https://facebook.com/growpecofficial');
 });
+
+test('manage settings page updates multi phone and address directories with map embed url', function () {
+    $this->actingAs($this->admin);
+
+    Livewire::test(ManageSettings::class)
+        ->assertSuccessful()
+        ->fillForm([
+            'general_site_name' => 'GrowPec Admissions',
+            'general_support_phone' => '+91 99999 11111',
+            'general_support_phone_secondary' => '+91 99999 22222',
+            'general_support_phones' => [
+                ['title' => 'Counseling Desk', 'number' => '+91 99999 11111'],
+                ['title' => 'Toll Free Line', 'number' => '1800 123 9999'],
+            ],
+            'general_office_address' => 'Plot 55, Sector 63, Noida, UP',
+            'general_map_embed_url' => 'https://www.google.com/maps/embed?pb=testmap',
+            'general_office_addresses' => [
+                [
+                    'title' => 'Corporate HQ',
+                    'address' => 'Plot 55, Sector 63, Noida, UP',
+                    'map_url' => 'https://www.google.com/maps/embed?pb=testmap',
+                ],
+                [
+                    'title' => 'Bangalore Hub',
+                    'address' => 'Indiranagar 100ft Road, Bengaluru',
+                    'map_url' => 'https://www.google.com/maps/embed?pb=bangaloremap',
+                ],
+            ],
+        ])
+        ->call('save')
+        ->assertHasNoFormErrors();
+
+    expect(SystemSetting::get('general.support_phone'))->toBe('+91 99999 11111')
+        ->and(SystemSetting::get('general.support_phone_secondary'))->toBe('1800 123 9999')
+        ->and(SystemSetting::getPhones())->toHaveCount(2)
+        ->and(SystemSetting::getPhones()[0]['title'])->toBe('Counseling Desk')
+        ->and(SystemSetting::getPhones()[1]['number'])->toBe('1800 123 9999')
+        ->and(SystemSetting::get('general.office_address'))->toBe('Plot 55, Sector 63, Noida, UP')
+        ->and(SystemSetting::get('general.map_embed_url'))->toBe('https://www.google.com/maps/embed?pb=testmap')
+        ->and(SystemSetting::getAddresses())->toHaveCount(2)
+        ->and(SystemSetting::getAddresses()[1]['title'])->toBe('Bangalore Hub');
+});
+
+test('manage settings page toggles system features and reflects on frontend', function () {
+    $this->actingAs($this->admin);
+
+    Livewire::test(ManageSettings::class)
+        ->assertSuccessful()
+        ->fillForm([
+            'general_whatsapp_number' => '919876543210',
+            'features_enable_floating_whatsapp' => true,
+            'features_enable_comparison_dock' => true,
+            'features_enable_lead_email_alert' => true,
+        ])
+        ->call('save')
+        ->assertHasNoFormErrors();
+
+    expect(SystemSetting::get('features.enable_floating_whatsapp'))->toBe('1')
+        ->and(SystemSetting::get('features.enable_comparison_dock'))->toBe('1')
+        ->and(SystemSetting::get('features.enable_lead_email_alert'))->toBe('1');
+
+    $response = $this->get(route('home'));
+    $response->assertSee('gp-floating-whatsapp', false)
+        ->assertSee('wa.me/919876543210', false)
+        ->assertSee('id="gpCompareDock"', false);
+});

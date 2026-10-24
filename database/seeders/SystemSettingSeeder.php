@@ -14,9 +14,11 @@ class SystemSettingSeeder extends Seeder
             ['key' => 'general.site_name',      'value' => 'GrowPec',                          'group' => 'general', 'type' => 'string'],
             ['key' => 'general.tagline',         'value' => 'Discover. Apply. Grow.',           'group' => 'general', 'type' => 'string'],
             ['key' => 'general.support_phone',   'value' => '9876543210',                       'group' => 'general', 'type' => 'string'],
+            ['key' => 'general.support_phone_secondary', 'value' => '9876543211',               'group' => 'general', 'type' => 'string'],
             ['key' => 'general.whatsapp_number', 'value' => '919876543210',                     'group' => 'general', 'type' => 'string'],
             ['key' => 'general.support_email',   'value' => 'support@growpec.com',              'group' => 'general', 'type' => 'string'],
             ['key' => 'general.office_address',  'value' => 'GrowPec Education Pvt. Ltd., India', 'group' => 'general', 'type' => 'string'],
+            ['key' => 'general.map_embed_url',   'value' => 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d115408.08799849581!2d82.9087063!3d25.321684', 'group' => 'general', 'type' => 'string'],
 
             // Theme
             ['key' => 'theme.primary_color',     'value' => '#002B67',                          'group' => 'theme',   'type' => 'color'],
@@ -29,6 +31,7 @@ class SystemSettingSeeder extends Seeder
             ['key' => 'features.enable_floating_whatsapp', 'value' => '1', 'group' => 'features', 'type' => 'boolean'],
             ['key' => 'features.enable_lead_email_alert',  'value' => '1', 'group' => 'features', 'type' => 'boolean'],
             ['key' => 'features.enable_partner_strip',     'value' => '1', 'group' => 'features', 'type' => 'boolean'],
+            ['key' => 'features.enable_comparison_dock',   'value' => '1', 'group' => 'features', 'type' => 'boolean'],
 
             // Ads
             ['key' => 'ads.enable_listing_ad',  'value' => '0', 'group' => 'ads', 'type' => 'boolean'],

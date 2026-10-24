@@ -7,6 +7,7 @@ use App\Models\City;
 use App\Models\CollegeCourse;
 use App\Models\Lead;
 use App\Models\State;
+use App\Models\SystemSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -96,12 +97,15 @@ class LeadController extends Controller
 
         $lead = Lead::create($validated);
 
-        try {
-            Mail::to('admin@growpec.com')->send(new NewLeadAlertMail($lead));
-        } catch (\Throwable $e) {
-            Log::error('Lead mail failed: '.$e->getMessage(), [
-                'lead_id' => $lead->id,
-            ]);
+        if ((string) SystemSetting::get('features.enable_lead_email_alert', '1') === '1') {
+            $alertRecipient = SystemSetting::get('general.support_email') ?: config('mail.from.address', 'admin@growpec.com');
+            try {
+                Mail::to($alertRecipient)->send(new NewLeadAlertMail($lead));
+            } catch (\Throwable $e) {
+                Log::error('Lead mail failed: '.$e->getMessage(), [
+                    'lead_id' => $lead->id,
+                ]);
+            }
         }
 
         return response()->json([
