@@ -125,13 +125,6 @@ class SystemSetting extends Model
                 'title' => 'Helpline',
                 'number' => trim($settings['general.support_phone']),
             ];
-
-            if (! empty($settings['general.support_phone_secondary'])) {
-                $phones[] = [
-                    'title' => 'Admission Desk',
-                    'number' => trim($settings['general.support_phone_secondary']),
-                ];
-            }
         }
 
         return $phones;

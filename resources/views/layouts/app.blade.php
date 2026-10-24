@@ -1206,68 +1206,6 @@
         .gp-footer-verified i {
             color: #008A43 !important;
         }
-
-        /* Floating WhatsApp Quick Guidance CTA */
-        .gp-floating-whatsapp {
-            position: fixed;
-            bottom: 24px;
-            left: 24px;
-            z-index: 1040;
-            width: 52px;
-            height: 52px;
-            border-radius: 50%;
-            background: #25D366;
-            color: #ffffff !important;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.65rem;
-            box-shadow: 0 8px 24px rgba(37, 211, 102, 0.45);
-            transition: all 0.25s ease;
-            text-decoration: none;
-        }
-
-        .gp-floating-whatsapp:hover {
-            transform: scale(1.08) translateY(-2px);
-            background: #20BA5A;
-            box-shadow: 0 12px 28px rgba(37, 211, 102, 0.6);
-            color: #ffffff !important;
-        }
-
-        .gp-floating-whatsapp-tooltip {
-            position: absolute;
-            left: 62px;
-            background: #001B45;
-            color: #ffffff;
-            font-size: 0.78rem;
-            font-weight: 600;
-            padding: 5px 12px;
-            border-radius: 8px;
-            white-space: nowrap;
-            opacity: 0;
-            pointer-events: none;
-            transform: translateX(-6px);
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
-        }
-
-        .gp-floating-whatsapp:hover .gp-floating-whatsapp-tooltip {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        @media (max-width: 767.98px) {
-            .gp-floating-whatsapp {
-                bottom: 18px;
-                left: 18px;
-                width: 46px;
-                height: 46px;
-                font-size: 1.45rem;
-            }
-            .gp-floating-whatsapp-tooltip {
-                display: none;
-            }
-        }
     </style>
     @stack('styles')
 </head>
@@ -2504,26 +2442,7 @@
         });
     </script>
 
-    @php
-        $enableCompareDock = (string) ($siteSettings['features.enable_comparison_dock'] ?? '1') === '1';
-        $enableFloatingWhatsapp = (string) ($siteSettings['features.enable_floating_whatsapp'] ?? '1') === '1';
-        $whatsappNumber = preg_replace('/\D/', '', $siteSettings['general.whatsapp_number'] ?? '');
-    @endphp
-
-    @if($enableFloatingWhatsapp && !empty($whatsappNumber))
-    <!-- Floating WhatsApp Quick Guidance CTA -->
-    <a href="https://wa.me/{{ $whatsappNumber }}?text={{ urlencode('Hello GrowPec, I need admission guidance.') }}" 
-       class="gp-floating-whatsapp shadow-lg" 
-       target="_blank" 
-       rel="noopener noreferrer" 
-       aria-label="Chat with Admission Counselor on WhatsApp"
-       title="Chat on WhatsApp">
-        <i class="bi bi-whatsapp"></i>
-        <span class="gp-floating-whatsapp-tooltip">Chat with Counselor</span>
-    </a>
-    @endif
-
-    @if($enableCompareDock && !request()->routeIs('colleges.compare'))
+    @if(!request()->routeIs('colleges.compare'))
     <!-- =========================================================
          GrowPEC Floating Comparison Dock
          ========================================================= -->
