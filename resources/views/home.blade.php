@@ -6181,9 +6181,6 @@
                     </p>
                 </div>
                 <div class="flex items-center gap-2 shrink-0">
-                    <button type="button" onclick="copyGrowPecReviewLink(this)" class="btn btn-sm btn-outline-light rounded-lg px-2.5 py-1 text-xs font-semibold" title="Copy direct link to this review dialog">
-                        <i class="bi bi-link-45deg me-1"></i> Copy link
-                    </button>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
             </div>
