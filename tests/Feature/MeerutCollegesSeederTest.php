@@ -17,6 +17,7 @@ test('meerut colleges seeder inserts all 6 colleges with authentic courses and r
 
     expect($college)->not->toBeNull();
     expect($college->name)->toBe($name);
+    expect($college->institution_category)->toBe('College');
     expect($college->city->name)->toBe('Meerut');
     expect($college->state->name)->toBe('Uttar Pradesh');
     expect($college->collegeCourses()->count())->toBeGreaterThan(0);
