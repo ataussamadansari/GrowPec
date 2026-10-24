@@ -16,6 +16,7 @@ use App\Models\City;
 // Models for Public JSON APIs
 use App\Models\College;
 use App\Models\Specialization;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -49,6 +50,33 @@ Route::middleware(['web', CheckMaintenanceMode::class])->group(function () {
     Route::post('/website-reviews', [WebsiteReviewController::class, 'store'])
         ->name('website.reviews.store')
         ->middleware('throttle:5,60');
+    Route::get('/reviews/write', function (Request $request) {
+        $params = ['write_review' => 1];
+        if ($request->filled('rating')) {
+            $params['rating'] = (int) $request->input('rating');
+        }
+
+        return redirect()->to(route('home', $params).'#growpecReviewsSection');
+    })->name('website.reviews.write');
+    Route::get('/rate-us', function (Request $request) {
+        $params = ['write_review' => 1];
+        if ($request->filled('rating')) {
+            $params['rating'] = (int) $request->input('rating');
+        }
+
+        return redirect()->to(route('home', $params).'#growpecReviewsSection');
+    })->name('website.reviews.rate');
+    Route::get('/reviews', function (Request $request) {
+        $params = [];
+        if ($request->has('write') || $request->has('write_review') || $request->has('rate')) {
+            $params['write_review'] = 1;
+        }
+        if ($request->filled('rating')) {
+            $params['rating'] = (int) $request->input('rating');
+        }
+
+        return redirect()->to(route('home', $params).'#growpecReviewsSection');
+    })->name('website.reviews.index');
 
     // Static Pages
     Route::get('/leadership-message/{leadershipMessage}', [LeadershipMessagePageController::class, 'show'])

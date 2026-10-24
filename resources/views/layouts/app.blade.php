@@ -1545,6 +1545,11 @@
                                 <i class="bi bi-chevron-right"></i> Contact Us
                             </a>
                         </li>
+                        <li>
+                            <a href="{{ route('website.reviews.write') }}">
+                                <i class="bi bi-chevron-right"></i> Rate &amp; Review GrowPec
+                            </a>
+                        </li>
                         @if(isset($centerLogins) && $centerLogins->isNotEmpty())
                             @foreach($centerLogins as $cLogin)
                                 <li>

@@ -6019,7 +6019,7 @@
                     Read experiences shared by learners and parents about college discovery, comparisons, and admission guidance.
                 </p>
             </div>
-            <div class="shrink-0">
+            <div class="shrink-0 flex flex-wrap items-center gap-2.5">
                 <button type="button" data-bs-toggle="modal" data-bs-target="#websiteReviewModal" class="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-blue-950 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-blue-950/15 transition duration-200 hover:-translate-y-0.5 hover:bg-blue-900 focus:outline-none focus:ring-4 focus:ring-blue-200 sm:w-auto sm:px-6">
                     <i class="bi bi-pencil-square text-base" aria-hidden="true"></i>
                     Write a review
@@ -6152,9 +6152,14 @@
             <p class="mx-auto mt-2 max-w-xl text-sm leading-6 text-slate-600 sm:text-base">
                 Have you explored or enrolled in a university through GrowPec? Share your experience to help future learners make confident decisions.
             </p>
-            <button type="button" data-bs-toggle="modal" data-bs-target="#websiteReviewModal" class="mt-6 inline-flex items-center justify-center gap-2 rounded-xl bg-blue-950 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-blue-950/15 transition hover:bg-blue-900 focus:outline-none focus:ring-4 focus:ring-blue-200">
-                <i class="bi bi-pencil-square" aria-hidden="true"></i> Write the first review
-            </button>
+            <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+                <button type="button" data-bs-toggle="modal" data-bs-target="#websiteReviewModal" class="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-950 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-blue-950/15 transition hover:bg-blue-900 focus:outline-none focus:ring-4 focus:ring-blue-200">
+                    <i class="bi bi-pencil-square" aria-hidden="true"></i> Write the first review
+                </button>
+                <button type="button" onclick="copyGrowPecReviewLink(this)" class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm font-bold text-slate-700 shadow-sm transition hover:bg-slate-50 hover:text-blue-950">
+                    <i class="bi bi-link-45deg text-lg text-blue-900" aria-hidden="true"></i> Share direct link
+                </button>
+            </div>
         </div>
         @endif
     </div>
@@ -6175,13 +6180,29 @@
                         Your honest feedback helps students make confident academic decisions.
                     </p>
                 </div>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="flex items-center gap-2 shrink-0">
+                    <button type="button" onclick="copyGrowPecReviewLink(this)" class="btn btn-sm btn-outline-light rounded-lg px-2.5 py-1 text-xs font-semibold" title="Copy direct link to this review dialog">
+                        <i class="bi bi-link-45deg me-1"></i> Copy link
+                    </button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
             </div>
 
             <form action="{{ route('website.reviews.store') }}" method="POST" id="websiteReviewForm" class="space-y-5 px-5 py-6 sm:px-7">
                 @csrf
                 {{-- Anti-Spam Honeypot Field --}}
                 <input type="text" name="website_hp" id="website_hp" style="display:none !important; position:absolute !important; left:-9999px !important;" tabindex="-1" autocomplete="off">
+
+                @if($errors->hasAny(['reviewer_name', 'email', 'rating', 'review', 'website_hp']))
+                    <div class="rounded-xl border border-red-200 bg-red-50 p-3.5 text-xs text-red-700">
+                        <strong class="font-bold">Please correct the following:</strong>
+                        <ul class="mt-1 list-inside list-disc">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
 
                 {{-- Interactive Star Rating Selector --}}
                 <div class="text-center">
@@ -6596,6 +6617,125 @@
             });
         }
     }
+
+    // =========================================================
+    // DIRECT OPEN WEBSITE REVIEW RATING DIALOG BY LINK
+    // Handles links like:
+    // - /reviews/write
+    // - /rate-us
+    // - /?write_review=1
+    // - /?write=1
+    // - /#write-review or /#websiteReviewModal
+    // - /?write_review=1&rating=5
+    // =========================================================
+    function handleDirectOpenReviewModal() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const hash = (window.location.hash || '').toLowerCase();
+        const hasFormErrors = {{ $errors->hasAny(['reviewer_name', 'email', 'rating', 'review', 'website_hp']) ? 'true' : 'false' }};
+
+        const shouldOpen =
+            hasFormErrors ||
+            urlParams.get('write_review') === '1' ||
+            urlParams.get('write') === '1' ||
+            urlParams.get('review') === 'open' ||
+            urlParams.get('review') === 'write' ||
+            urlParams.get('review') === '1' ||
+            urlParams.get('rate') === '1' ||
+            urlParams.get('rating_dialog') === '1' ||
+            hash === '#write-review' ||
+            hash === '#writereview' ||
+            hash === '#websitereviewmodal' ||
+            hash === '#rate-us' ||
+            hash === '#rate-growpec';
+
+        if (!shouldOpen) return;
+
+        const modalEl = document.getElementById('websiteReviewModal');
+        if (!modalEl) return;
+
+        // Optional pre-select rating from URL parameter (?rating=1..5)
+        const ratingParam = parseInt(urlParams.get('rating'), 10);
+        if (!isNaN(ratingParam) && ratingParam >= 1 && ratingParam <= 5) {
+            const starItem = modalEl.querySelector(`.gp-star-item[data-star="${ratingParam}"]`);
+            if (starItem) {
+                starItem.click();
+            }
+        }
+
+        const openModalInstance = () => {
+            if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+                const modalInstance = bootstrap.Modal.getOrCreateInstance(modalEl);
+                modalInstance.show();
+
+                modalEl.addEventListener('shown.bs.modal', function onShown() {
+                    const reviewerNameInput = document.getElementById('reviewer_name');
+                    if (reviewerNameInput && !hasFormErrors) {
+                        reviewerNameInput.focus();
+                    }
+                    modalEl.removeEventListener('shown.bs.modal', onShown);
+                });
+            }
+        };
+
+        // If Bootstrap is already loaded, show with a smooth microtask delay
+        if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+            setTimeout(openModalInstance, 120);
+        } else {
+            let retries = 0;
+            const retryInterval = setInterval(() => {
+                retries++;
+                if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+                    clearInterval(retryInterval);
+                    openModalInstance();
+                } else if (retries > 25) {
+                    clearInterval(retryInterval);
+                }
+            }, 100);
+        }
+    }
+
+    // Direct open execution on page load
+    handleDirectOpenReviewModal();
+
+    // Listen to hash change (e.g. clicking an anchor #write-review)
+    window.addEventListener('hashchange', handleDirectOpenReviewModal);
+
+    // Global copy direct review link function
+    window.copyGrowPecReviewLink = function(buttonElement) {
+        const reviewUrl = "{{ route('website.reviews.write') }}";
+        const copyToClipboard = (text) => {
+            if (navigator.clipboard && window.isSecureContext) {
+                return navigator.clipboard.writeText(text);
+            }
+            return new Promise((resolve, reject) => {
+                const tempInput = document.createElement('input');
+                tempInput.value = text;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                try {
+                    const ok = document.execCommand('copy');
+                    document.body.removeChild(tempInput);
+                    ok ? resolve() : reject();
+                } catch (e) {
+                    document.body.removeChild(tempInput);
+                    reject(e);
+                }
+            });
+        };
+
+        copyToClipboard(reviewUrl).then(() => {
+            if (!buttonElement) return;
+            const originalHtml = buttonElement.innerHTML;
+            buttonElement.innerHTML = '<i class="bi bi-check2 text-emerald-600"></i> Copied!';
+            buttonElement.classList.add('border-emerald-500');
+            setTimeout(() => {
+                buttonElement.innerHTML = originalHtml;
+                buttonElement.classList.remove('border-emerald-500');
+            }, 2500);
+        }).catch(() => {
+            prompt('Copy direct review dialog link:', reviewUrl);
+        });
+    };
 
     // Animate Progress Bar Meters on Scroll Reveal
     if ('IntersectionObserver' in window) {

@@ -136,3 +136,40 @@ test('homepage only calculates average rating from approved website reviews', fu
         ->assertDontSee('Pending Review')
         ->assertDontSee('Rejected Review');
 });
+
+test('direct review link redirects to home with write_review parameter and anchor', function () {
+    $response = $this->get(route('website.reviews.write'));
+
+    $response->assertRedirect(route('home', ['write_review' => 1]).'#growpecReviewsSection');
+});
+
+test('direct review link with rating parameter passes rating in redirect', function () {
+    $response = $this->get(route('website.reviews.write', ['rating' => 5]));
+
+    $response->assertRedirect(route('home', ['write_review' => 1, 'rating' => 5]).'#growpecReviewsSection');
+});
+
+test('rate-us route redirects to home with write_review parameter', function () {
+    $response = $this->get(route('website.reviews.rate'));
+
+    $response->assertRedirect(route('home', ['write_review' => 1]).'#growpecReviewsSection');
+});
+
+test('reviews index route redirects to home reviews section', function () {
+    $response = $this->get(route('website.reviews.index'));
+
+    $response->assertRedirect(route('home').'#growpecReviewsSection');
+
+    $withWrite = $this->get(route('website.reviews.index', ['write' => 1]));
+    $withWrite->assertRedirect(route('home', ['write_review' => 1]).'#growpecReviewsSection');
+});
+
+test('homepage renders auto-open review modal and direct link triggers', function () {
+    $response = $this->get(route('home', ['write_review' => 1]));
+
+    $response->assertOk()
+        ->assertSee('id="websiteReviewModal"', false)
+        ->assertSee('handleDirectOpenReviewModal', false)
+        ->assertSee('copyGrowPecReviewLink', false)
+        ->assertSee('Share direct link');
+});
